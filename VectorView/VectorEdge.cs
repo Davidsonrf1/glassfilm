@@ -12,11 +12,14 @@ namespace VectorView
         VectorPoint start = null;
         VectorPoint end = null;
 
+        VectorShape shape = null;
+
         Color lineColor = Color.DarkGray;
         float lineWidth = 1.0f;
 
-        public VectorEdge(VectorDocument doc) : base(doc)
+        public VectorEdge(VectorDocument doc, VectorShape shape) : base(doc)
         {
+            this.shape = shape;
         }
 
         public Color LineColor
@@ -130,6 +133,11 @@ namespace VectorView
             }
 
             return 1;
+        }
+
+        public virtual Recalculate()
+        {
+
         }
     }
 }

@@ -8,7 +8,7 @@ namespace VectorView
 {
     public class VectorQuadraticBezier : VectorEdge
     {
-        public VectorQuadraticBezier(VectorDocument doc) : base(doc)
+        public VectorQuadraticBezier(VectorDocument doc, VectorShape shape) : base(doc, shape)
         {
         }
     }

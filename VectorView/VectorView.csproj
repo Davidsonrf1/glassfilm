@@ -42,6 +42,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Bezier\BezierCurve.cs" />
+    <Compile Include="Bezier\CubicBezier.cs" />
+    <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="Tools\TransformTool.cs" />
     <Compile Include="Tools\SelectionTool.cs" />
     <Compile Include="VectorCubicBezier.cs" />

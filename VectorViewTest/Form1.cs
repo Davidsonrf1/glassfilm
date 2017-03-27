@@ -30,7 +30,7 @@ namespace VectorViewTest
             r.LineTo(600, 145);
             r.LineTo(12, 40);
             r.LineTo(10, 200);
-            r.ClosePath();
+            r.EndPath();
 
             doc.Scale = 6.14f;
             //doc.OffsetX = -100;

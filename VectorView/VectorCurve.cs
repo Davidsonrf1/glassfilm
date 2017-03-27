@@ -7,10 +7,26 @@ using System.Threading.Tasks;
 
 namespace VectorView
 {
-    public class VectorCurve : VectorObject
+    public class VectorCurve : VectorEdge
     {
-        public VectorCurve(VectorDocument doc) : base(doc)
+        int resolution = 128;
+
+        public VectorCurve(VectorDocument doc, VectorShape shape) : base(doc, shape)
         {
+
+        }
+
+        public int Resolution
+        {
+            get
+            {
+                return resolution;
+            }
+
+            set
+            {
+                resolution = value;
+            }
         }
 
         public override RectangleF GetBoundBox()

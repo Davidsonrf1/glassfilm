@@ -10,6 +10,8 @@ namespace VectorView
         List<VectorPoint> points = new List<VectorPoint>();
         List<VectorEdge> edges = new List<VectorEdge>();
 
+        RectangleF boundingBox = new RectangleF();
+
         public IEnumerable<VectorEdge> Edges()
         {
             foreach (VectorEdge e in edges)
@@ -17,7 +19,6 @@ namespace VectorView
                 yield return e;
             }
         }
-
 
         public IEnumerable<VectorPoint> Points()
         {
@@ -61,15 +62,46 @@ namespace VectorView
             }
         }
 
+        bool updating = false;
+        public void BeginUpdate()
+        {
+            updating = true;
+        }
+
+        public void EndUpdate()
+        {
+            updating = false;
+            RecalculateShape();
+        }
+
+        public void RecalculateShape()
+        {
+            foreach (VectorEdge e in edges)
+            {
+                e.Recalculate();
+            }
+        }
+
+        internal void UpdatePoint(VectorPoint p)
+        {
+            if (!updating)
+            {
+                RecalculateShape();
+            }
+        }
+
         public VectorPoint AddPoint(float x, float y)
         {
-            VectorPoint p = new VectorPoint(Document);
+            VectorPoint p = new VectorPoint(Document, this);
 
             p.X = x;
             p.Y = y;
 
             curPoint = p;
             points.Add(p);
+
+            if (!updating)
+                RecalculateShape();
 
             return p;
         }
@@ -80,6 +112,9 @@ namespace VectorView
             e.End = end;
 
             edges.Add(e);
+
+            if (!updating)
+                RecalculateShape();
         }
 
         VectorPoint startPath = null;
@@ -89,6 +124,8 @@ namespace VectorView
         {
             points.Clear();
             edges.Clear();
+
+            BeginUpdate();
 
             startPath = AddPoint(x, y);
         }
@@ -100,7 +137,7 @@ namespace VectorView
 
         public void LineTo(float x, float y)
         {
-            VectorEdge e = new VectorEdge(Document);
+            VectorEdge e = new VectorEdge(Document, this);
 
             VectorPoint start = curPoint;
             VectorPoint end = AddPoint(x, y);
@@ -108,14 +145,19 @@ namespace VectorView
             AddEdge(start, end, e);
         }
 
-        public void ClosePath()
+        public void EndPath(bool close = true)
         {
-            VectorEdge e = new VectorEdge(Document);
+            if (close)
+            {
+                VectorEdge e = new VectorEdge(Document, this);
 
-            VectorPoint start = curPoint;
-            VectorPoint end = startPath;
+                VectorPoint start = curPoint;
+                VectorPoint end = startPath;
 
-            AddEdge(start, end, e);
+                AddEdge(start, end, e);
+            }
+
+            EndUpdate();
         }
 
         public PointF GetAbsolutePoint(float x, float y)
