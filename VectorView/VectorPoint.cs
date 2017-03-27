@@ -11,11 +11,13 @@ namespace VectorView
 
     public class VectorPoint: VectorObject
     {
+        VectorShape shape = null;
         VectorPointType type = VectorPointType.Normal;
         float x, y;
 
-        public VectorPoint(VectorDocument doc) : base(doc)
+        public VectorPoint(VectorDocument doc, VectorShape shape) : base(doc)
         {
+            this.shape = shape;
         }
 
         public PointF ToPoint()
