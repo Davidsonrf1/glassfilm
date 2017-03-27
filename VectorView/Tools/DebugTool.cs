@@ -6,9 +6,9 @@ using System.Text;
 
 namespace VectorView.Tools
 {
-    public class VectorToolDebug: VectorTool
+    public class DebugTool: VectorTool
     {
-        public VectorToolDebug(VectorDocument doc): base(doc)
+        public DebugTool(VectorDocument doc): base(doc)
         {
 
         }

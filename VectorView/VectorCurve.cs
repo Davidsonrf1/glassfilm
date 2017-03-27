@@ -9,6 +9,10 @@ namespace VectorView
 {
     public class VectorCurve : VectorObject
     {
+        public VectorCurve(VectorDocument doc) : base(doc)
+        {
+        }
+
         public override RectangleF GetBoundBox()
         {
             throw new NotImplementedException();

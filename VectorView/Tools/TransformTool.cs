@@ -5,9 +5,9 @@ using System.Text;
 
 namespace VectorView.Tools
 {
-    public class VectorToolRotate : VectorTool
+    public class TransformTool : VectorTool
     {
-        public VectorToolRotate(VectorDocument doc) : base(doc)
+        public TransformTool(VectorDocument doc) : base(doc)
         {
         }
     }

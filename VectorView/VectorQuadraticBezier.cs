@@ -6,7 +6,10 @@ using System.Threading.Tasks;
 
 namespace VectorView
 {
-    public class VectorQuadraticBezier: VectorEdge
+    public class VectorQuadraticBezier : VectorEdge
     {
+        public VectorQuadraticBezier(VectorDocument doc) : base(doc)
+        {
+        }
     }
 }

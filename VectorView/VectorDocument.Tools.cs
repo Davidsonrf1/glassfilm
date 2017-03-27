@@ -12,7 +12,9 @@ namespace VectorView
 
         void RegisterTools()
         {
-            tools.Add("DebugTool", new VectorToolDebug(this));            
+            tools.Add("DebugTool", new DebugTool(this));
+            tools.Add("SelectionTool", new SelectionTool(this));
+            tools.Add("RotateTool", new TransformTool(this));
         }
 
 

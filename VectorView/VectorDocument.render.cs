@@ -110,6 +110,16 @@ namespace VectorView
             {
                 s.Render(g);
             }
+
+            if (mouseHitShape != null)
+            {
+                g.DrawString("Dentro", new Font("Arial", 10), Brushes.Red, new Point(50, 50));
+            }
+
+            if (mouseHitPoint!= null)
+            {
+                g.FillRectangle(Brushes.Black, mouseHitPoint.X - 3, mouseHitPoint.Y - 3, 6, 6);
+            }
         }
 
         public void RenderDocument(Graphics g)
@@ -118,6 +128,7 @@ namespace VectorView
 
             g.ResetTransform();
             RenderTools(g);
+            DrawDebugPoints(g);
         }
     }
 }

@@ -42,11 +42,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Tools\VectorToolRotate.cs" />
-    <Compile Include="Tools\VectorToolSelection.cs" />
+    <Compile Include="Tools\TransformTool.cs" />
+    <Compile Include="Tools\SelectionTool.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />
     <Compile Include="VectorDocument.cs" />
+    <Compile Include="VectorDocument.Debug.cs" />
     <Compile Include="VectorDocument.Events.cs" />
     <Compile Include="VectorDocument.IO.cs" />
     <Compile Include="VectorDocument.Render.cs" />
@@ -60,7 +61,7 @@
     <Compile Include="VectorSelection.cs" />
     <Compile Include="VectorShape.cs" />
     <Compile Include="Tools\VectorTool.cs" />
-    <Compile Include="Tools\VectorToolDebug.cs" />
+    <Compile Include="Tools\DebugTool.cs" />
     <Compile Include="VectorViewCtr.cs">
       <SubType>UserControl</SubType>
     </Compile>

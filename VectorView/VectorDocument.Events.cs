@@ -17,7 +17,48 @@ namespace VectorView
         PointF mouseViewUpPos = new PointF();
         PointF mouseViewPos = new PointF();
 
+        VectorShape mouseHitShape = null;
+        VectorEdge mouseHitEdge = null;
+        VectorPoint mouseHitPoint = null;
 
+        void UpdateHitObjects()
+        {
+            debugPoints.Clear();
+
+            mouseHitShape = null;
+            mouseHitEdge = null;
+            mouseHitPoint = null;
+
+            foreach (VectorShape s in shapes)
+            {
+                if(s.HitTest(mousePos.X, mousePos.Y))
+                {
+                    mouseHitShape = s;
+                }
+
+                foreach (VectorEdge e in s.Edges())
+                {
+                    List<PointF> pts = new List<PointF>();
+                       
+                    if(e.CrossPointCount(mousePos.Y, pts) > 0)
+                    {
+                        foreach (PointF p in pts)
+                        {
+                            if (Math.Abs(p.X - mousePos.X) <= 4)
+                                mouseHitEdge = e;
+                        }
+                    }
+                }
+
+                foreach (VectorPoint p in s.Points())
+                {
+                    if (mousePos.X >= p.X - 3 && mousePos.X <= p.X + 3)
+                        if (mousePos.Y >= p.Y - 3 && mousePos.Y <= p.Y + 3)
+                            mouseHitPoint = p;
+                }
+            }
+
+        }
 
         public PointF MouseDownPos
         {
@@ -40,6 +81,14 @@ namespace VectorView
             get
             {
                 return mousePos;
+            }
+        }
+
+        public VectorEdge MouseHitEdge
+        {
+            get
+            {
+                return mouseHitEdge;
             }
         }
 
@@ -87,6 +136,8 @@ namespace VectorView
             mousePos.Y = p.Y;
 
             mouseViewPos = DocumentToViewPoint(x, y);
+
+            UpdateHitObjects();
         }
     }
 }

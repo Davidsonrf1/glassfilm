@@ -14,6 +14,15 @@ namespace VectorView
         VectorPointType type = VectorPointType.Normal;
         float x, y;
 
+        public VectorPoint(VectorDocument doc) : base(doc)
+        {
+        }
+
+        public PointF ToPoint()
+        {
+            return new PointF(x, y);
+        }
+
         public VectorPointType Type
         {
             get
