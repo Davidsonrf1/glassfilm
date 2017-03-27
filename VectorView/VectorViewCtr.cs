@@ -45,12 +45,37 @@ namespace VectorView
             }
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (document != null)
+            {
+                document.MouseDown(e.X, e.Y);
+            }
+
+            Invalidate();
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (document != null)
+            {
+                document.MouseUp(e.X, e.Y);
+            }
+
+            Invalidate();
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
             if (document != null)
             {
+                document.MouseMove(e.X, e.Y);
             }
 
             Invalidate();

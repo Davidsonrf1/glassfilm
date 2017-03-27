@@ -115,6 +115,9 @@ namespace VectorView
         public void RenderDocument(Graphics g)
         {
             Render(g);
+
+            g.ResetTransform();
+            RenderTools(g);
         }
     }
 }

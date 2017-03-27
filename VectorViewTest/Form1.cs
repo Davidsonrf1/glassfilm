@@ -32,9 +32,9 @@ namespace VectorViewTest
             r.LineTo(10, 200);
             r.ClosePath();
 
-            //doc.Scale = 0.04f;
-
-            doc.OffsetX = -100;
+            //doc.Scale = .14f;
+            //doc.OffsetX = -100;
+            //doc.OffsetY = 100;
 
             vectorViewCtr1.Document = doc;            
         }

@@ -11,7 +11,6 @@ namespace VectorView
         class PathCommand
         {
             char cmd = 'm';
-            bool isRelative = false;
             float originX=0, originY=0;
 
             int curValueIndex = 0;
@@ -38,7 +37,6 @@ namespace VectorView
 
                 if (char.IsUpper(c))
                 {
-                    isRelative = true;
                 }
             }
 
@@ -96,7 +94,6 @@ namespace VectorView
             public void Parse (char[] d)
             {
                 PathCommand curCmd = null;
-                PathCommand lastCmd = null;
 
                 for (int i = 0; i < d.Length; i++)
                 {
@@ -169,10 +166,6 @@ namespace VectorView
 
             foreach (PathCommand c in parser.Commands)
             {
-                float sx, sy;
-
-                sx = 0;
-                sy = 0;
 
                 if (c.Cmd == 'm' || c.Cmd == 'M')
                 {

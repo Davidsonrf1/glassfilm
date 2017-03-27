@@ -39,15 +39,19 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Tools\VectorToolRotate.cs" />
+    <Compile Include="Tools\VectorToolSelection.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />
+    <Compile Include="VectorDocument.cs" />
+    <Compile Include="VectorDocument.Events.cs" />
     <Compile Include="VectorDocument.IO.cs" />
-    <Compile Include="VectorDocument.render.cs" />
+    <Compile Include="VectorDocument.Render.cs" />
     <Compile Include="VectorDocument.SVG.cs" />
+    <Compile Include="VectorDocument.Tools.cs" />
     <Compile Include="VectorEdge.cs" />
     <Compile Include="VectorObject.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -55,6 +59,8 @@
     <Compile Include="VectorQuadraticBezier.cs" />
     <Compile Include="VectorSelection.cs" />
     <Compile Include="VectorShape.cs" />
+    <Compile Include="Tools\VectorTool.cs" />
+    <Compile Include="Tools\VectorToolDebug.cs" />
     <Compile Include="VectorViewCtr.cs">
       <SubType>UserControl</SubType>
     </Compile>
