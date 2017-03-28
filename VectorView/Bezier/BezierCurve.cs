@@ -87,11 +87,6 @@ namespace VectorView.Bezier
             }
         }
 
-        public PointF InterpolateLine(PointF p1, PointF p2, float ratio)
-        {
-            return new PointF(p1.X + ((p2.X - p1.X) * ratio), p1.Y + ((p2.Y - p1.Y) * ratio));
-        }
-
         public IEnumerable<PointF> GetPoints()
         {
             if (points != null)

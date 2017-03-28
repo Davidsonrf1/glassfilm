@@ -21,10 +21,10 @@ namespace VectorView.Bezier
 
         protected override void InternalCalcPoint(float ratio, out PointF point)
         {
-            PointF m1 = InterpolateLine(StartPoint, control, ratio);
-            PointF m2 = InterpolateLine(control, EndPoint, ratio);
+            PointF m1 = VectorMath.InterpolateLine(StartPoint, control, ratio);
+            PointF m2 = VectorMath.InterpolateLine(control, EndPoint, ratio);
 
-            point = InterpolateLine(m1, m2, ratio);
+            point = VectorMath.InterpolateLine(m1, m2, ratio);
         }
     }
 }
