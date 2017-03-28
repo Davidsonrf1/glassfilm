@@ -9,14 +9,20 @@ namespace VectorView
     public partial class VectorDocument
     {
         Dictionary<string, VectorTool> tools = new Dictionary<string, VectorTool>();
+        List<VectorTool> toolsOrder = new List<VectorTool>();
 
         void RegisterTools()
         {
-            tools.Add("DebugTool", new DebugTool(this));
-            tools.Add("SelectionTool", new SelectionTool(this));
-            tools.Add("RotateTool", new TransformTool(this));
+            RegsiterTool("DebugTool", new DebugTool("DebugTool", this));
+            RegsiterTool("SelectionTool", new SelectionTool("DebugTool", this));
+            RegsiterTool("RotateTool", new TransformTool("DebugTool", this));
         }
 
+        void RegsiterTool(string name, VectorTool tool)
+        {
+            tools.Add(name, tool);
+            toolsOrder.Add(tool);
+        }
 
         public void RenderTools (Graphics g)
         {

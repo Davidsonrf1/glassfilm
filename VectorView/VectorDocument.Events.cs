@@ -4,6 +4,7 @@ using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
 using System.Windows.Forms;
+using VectorView.Tools;
 
 namespace VectorView
 {
@@ -62,6 +63,30 @@ namespace VectorView
             }
         }
 
+        public MouseState MouseState
+        {
+            get
+            {
+                return mouseState;
+            }
+        }
+
+        public VectorPoint MouseHitPoint
+        {
+            get
+            {
+                return mouseHitPoint;
+            }
+        }
+
+        public VectorShape MouseHitShape
+        {
+            get
+            {
+                return mouseHitShape;
+            }
+        }
+
         public PointF ViewToDocumentPoint(float posx, float posy)
         {
             posx *= 1 / scale;
@@ -97,6 +122,11 @@ namespace VectorView
             }
 
             mouseState.MouseUp(p.X, p.Y, bts);
+
+            foreach (VectorTool t in toolsOrder)
+            {
+                t.MouseUp(bts);
+            }
         }
         
         public virtual void MouseDown(float x, float y, MouseButtons bt)
@@ -118,6 +148,11 @@ namespace VectorView
             }
 
             mouseState.MouseDown(p.X, p.Y, bts);
+
+            foreach (VectorTool t in toolsOrder)
+            {
+                t.MouseDown(bts);
+            }
         }
 
         public virtual void MouseMove(float x, float y)
@@ -126,6 +161,11 @@ namespace VectorView
             mouseState.MouseMove(p.X, p.Y);
 
             UpdateHitObjects();
+
+            foreach (VectorTool t in toolsOrder)
+            {
+                t.MouseMove();
+            }
         }
     }
 }

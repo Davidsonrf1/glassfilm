@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
+using System.Windows;
 using System.Text;
+using System.Windows.Forms;
 
 namespace VectorView.Tools
 {
@@ -9,15 +10,33 @@ namespace VectorView.Tools
     {
         List<VectorObject> selection = new List<VectorObject>();
         
-        public SelectionTool(VectorDocument doc) : base(doc)
+        public SelectionTool(string name, VectorDocument doc) : base(name, doc)
         {
         }
 
         public override void MouseMove()
         {
             base.MouseMove();
-            
-            
+        }
+
+        public override void MouseDown(MouseButton bt)
+        {
+            base.MouseDown(bt);
+
+            VectorObject selObj = null;
+
+            if (Doc.MouseHitPoint != null)
+            {
+                selObj = Doc.MouseHitPoint;
+            }
+            else if (Doc.MouseHitEdge != null)
+            {
+                selObj = Doc.MouseHitEdge;
+            }
+            else if (Doc.MouseHitShape != null)
+            {
+                selObj = Doc.MouseHitShape;
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ namespace VectorView.Tools
 {
     public class TransformTool : VectorTool
     {
-        public TransformTool(VectorDocument doc) : base(doc)
+        public TransformTool(string name, VectorDocument doc) : base(name, doc)
         {
         }
     }

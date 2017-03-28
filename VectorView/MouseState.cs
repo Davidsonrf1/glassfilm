@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Text;
+using System.Windows.Forms;
 
 namespace VectorView
 {
@@ -8,6 +9,8 @@ namespace VectorView
 
     public class MouseState
     {
+        Keys modifierKeys;
+
         bool isLeftDown = false;
         bool isMiddleDown = false;
         bool isRightDown = false;
@@ -138,7 +141,15 @@ namespace VectorView
             }
         }
 
-        public void MouseMove(float x, float y)
+        public Keys ModifierKeys
+        {
+            get
+            {
+                return modifierKeys;
+            }
+        }
+
+        public void MouseMove(float x, float y, Keys modKeys)
         {
             mousePos.X = x;
             mousePos.Y = y;
@@ -146,10 +157,13 @@ namespace VectorView
             angleLeft = Angle(leftDownPos, mousePos);
             angleMiddle = Angle(middleDownPos, mousePos);
             angleRight = Angle(rightDownPos, mousePos);
+
+            modifierKeys = modKeys;
         }
 
-        public void MouseUp(float x, float y, MouseButton button)
+        public void MouseUp(float x, float y, MouseButton button, Keys modKeys)
         {
+            modifierKeys = modKeys;
             switch (button)
             {
                 case MouseButton.Left:
@@ -170,8 +184,9 @@ namespace VectorView
             }
         }
 
-        public void MouseDown(float x, float y, MouseButton button)
+        public void MouseDown(float x, float y, MouseButton button, Keys modKeys)
         {
+            modifierKeys = modKeys;
             switch (button)
             {
                 case MouseButton.Left:

@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VectorView
@@ -51,7 +44,7 @@ namespace VectorView
 
             if (document != null)
             {
-                document.MouseDown(e.X, e.Y);
+                document.MouseDown(e.X, e.Y, e.Button);
             }
 
             Invalidate();
@@ -63,7 +56,7 @@ namespace VectorView
 
             if (document != null)
             {
-                document.MouseUp(e.X, e.Y);
+                document.MouseUp(e.X, e.Y, e.Button);
             }
 
             Invalidate();

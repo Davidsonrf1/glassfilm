@@ -11,6 +11,11 @@ namespace VectorView
 
         public void ClearSelection()
         {
+            foreach (VectorObject o in selection)
+            {
+                o.IsSelected = false;
+            }
+
             selection.Clear();
         }
 
@@ -24,7 +29,18 @@ namespace VectorView
 
         public void SelectObject(VectorObject obj)
         {
+            if (obj.Document != this)
+                return;
 
+            obj.IsSelected = true;
+
+            foreach (VectorObject o in selection)
+            {
+                if (obj == o)
+                    return;
+            }
+
+            selection.Add(obj);
         }
 
         public VectorDocument(): base(null)

@@ -23,6 +23,8 @@ namespace VectorView
 
         }
 
+        bool isSelect = false;
+
         bool isHit = false;
         public bool IsHit
         {
@@ -37,6 +39,22 @@ namespace VectorView
             get
             {
                 return document;
+            }
+        }
+
+        public bool IsSelected
+        {
+            get
+            {
+                return isSelect;
+            }
+
+            internal set
+            {
+                isSelect = value;
+
+                if (document != null)
+                    document.SelectObject(this);
             }
         }
 
