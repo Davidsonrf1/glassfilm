@@ -32,7 +32,7 @@ namespace VectorViewTest
             r.LineTo(10, 200);
             r.EndPath();
 
-            doc.Scale = 6.14f;
+            doc.Scale = 1f;
             //doc.OffsetX = -100;
             //doc.OffsetY = 100;
 

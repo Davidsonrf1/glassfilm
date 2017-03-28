@@ -91,7 +91,7 @@ namespace VectorView
         {
             Pen p = new Pen(lineColor, lineWidth * (1 / Document.Scale));
 
-            p.LineJoin = System.Drawing.Drawing2D.LineJoin.Round;
+            p.LineJoin = System.Drawing.Drawing2D.LineJoin.Miter;
 
             if (this == Document.MouseHitEdge)
             {
@@ -135,7 +135,7 @@ namespace VectorView
             return 1;
         }
 
-        public virtual Recalculate()
+        public virtual void Recalculate()
         {
 
         }

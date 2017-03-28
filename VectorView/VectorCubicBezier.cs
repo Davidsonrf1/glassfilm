@@ -21,7 +21,7 @@ namespace VectorView
 
         public VectorCubicBezier(VectorDocument doc, VectorShape shape) : base(doc, shape)
         {
-            start = shape.AddPoint()
+            //start = shape.AddPoint()
 
         }
     }
