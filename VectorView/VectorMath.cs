@@ -53,10 +53,14 @@ namespace VectorView
                     return true;
                 }
 
-                float dx = (x2 - x1) / (maxy - miny);
+                float dx = (maxx - minx) / (maxy - miny);
 
                 point.Y = hline;
-                point.X = x1 + (hline - miny) * dx;
+
+                //if (y2 - y1 >= 0)
+                    point.X = maxx - (hline - miny) * dx;
+                //else
+                  //  point.X = maxx - (hline - miny) * dx;
 
                 return true;
             }

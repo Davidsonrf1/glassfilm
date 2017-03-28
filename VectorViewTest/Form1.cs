@@ -16,8 +16,8 @@ namespace VectorViewTest
     {
         VectorDocument doc = new VectorDocument();
 
-        //float x1 = 600, y1 = 10, x2 = 10, y2 = 300;
-        float x1 = 10, y1 = 600, x2 = 600, y2 = 10;
+        float x1 = 600, y1 = 10, x2 = 10, y2 = 300;
+        //float x1 = 130, y1 = 60, x2 = 10, y2 = 60;
         float mx, my;
 
         protected override void OnPaint(PaintEventArgs e)
@@ -53,7 +53,7 @@ namespace VectorViewTest
             InitializeComponent();
             DoubleBuffered = true;
 
-            vectorViewCtr1.Visible = false;
+            //vectorViewCtr1.Visible = false;
 
             //doc.LoadFromFile("G:\\teste.svg");
 
@@ -71,7 +71,7 @@ namespace VectorViewTest
             //doc.OffsetX = -100;
             //doc.OffsetY = 100;
 
-            vectorViewCtr1.Document = doc;            
+            vectorViewCtr1.Document = doc;
         }
     }
 }

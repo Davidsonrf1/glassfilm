@@ -9,13 +9,7 @@ namespace VectorView
 {
     public partial class VectorDocument
     {
-        PointF mouseDownPos = new PointF();
-        PointF mouseUpPos = new PointF();
-        PointF mousePos = new PointF();
-
-        PointF mouseViewDownPos = new PointF();
-        PointF mouseViewUpPos = new PointF();
-        PointF mouseViewPos = new PointF();
+        MouseState mouseState = new MouseState();
 
         VectorShape mouseHitShape = null;
         VectorEdge mouseHitEdge = null;
@@ -31,7 +25,7 @@ namespace VectorView
 
             foreach (VectorShape s in shapes)
             {
-                if(s.HitTest(mousePos.X, mousePos.Y))
+                if(s.HitTest(mouseState.MousePos.X, mouseState.MousePos.Y))
                 {
                     mouseHitShape = s;
                 }
@@ -40,11 +34,11 @@ namespace VectorView
                 {
                     List<PointF> pts = new List<PointF>();
                        
-                    if(e.CrossPointCount(mousePos.Y, pts) > 0)
+                    if(e.CrossPointCount(mouseState.MousePos.Y, pts) > 0)
                     {
                         foreach (PointF p in pts)
                         {
-                            if (Math.Abs(p.X - mousePos.X) <= 4)
+                            if (Math.Abs(p.X - mouseState.MousePos.X) <= 4)
                                 mouseHitEdge = e;
                         }
                     }
@@ -52,36 +46,12 @@ namespace VectorView
 
                 foreach (VectorPoint p in s.Points())
                 {
-                    if (mousePos.X >= p.X - 3 && mousePos.X <= p.X + 3)
-                        if (mousePos.Y >= p.Y - 3 && mousePos.Y <= p.Y + 3)
+                    if (mouseState.MousePos.X >= p.X - 3 && mouseState.MousePos.X <= p.X + 3)
+                        if (mouseState.MousePos.Y >= p.Y - 3 && mouseState.MousePos.Y <= p.Y + 3)
                             mouseHitPoint = p;
                 }
             }
 
-        }
-
-        public PointF MouseDownPos
-        {
-            get
-            {
-                return mouseDownPos;
-            }
-        }
-
-        public PointF MouseUpPos
-        {
-            get
-            {
-                return mouseUpPos;
-            }
-        }
-
-        public PointF MousePos
-        {
-            get
-            {
-                return mousePos;
-            }
         }
 
         public VectorEdge MouseHitEdge
@@ -108,34 +78,52 @@ namespace VectorView
             return new PointF(posx, posy);
         }
 
-        public virtual void MouseUp(float x, float y)
+        public virtual void MouseUp(float x, float y, MouseButtons bt)
         {
             PointF p = ViewToDocumentPoint(x, y);
+            MouseButton bts = MouseButton.Left;
 
-            mouseUpPos.X = p.X;
-            mouseUpPos.Y = p.Y;
+            switch (bt)
+            {
+                case MouseButtons.Left:
+                    bts = MouseButton.Left;
+                    break;
+                case MouseButtons.Right:
+                    bts = MouseButton.Right;
+                    break;
+                case MouseButtons.Middle:
+                    bts = MouseButton.Middle;
+                    break;
+            }
 
-            mouseViewUpPos = DocumentToViewPoint(x, y);
+            mouseState.MouseUp(p.X, p.Y, bts);
         }
         
-        public virtual void MouseDown(float x, float y)
+        public virtual void MouseDown(float x, float y, MouseButtons bt)
         {
             PointF p = ViewToDocumentPoint(x, y);
+            MouseButton bts = MouseButton.Left;
 
-            mouseDownPos.X = p.X;
-            mouseDownPos.Y = p.Y;
+            switch (bt)
+            {
+                case MouseButtons.Left:
+                    bts = MouseButton.Left;
+                    break;
+                case MouseButtons.Right:
+                    bts = MouseButton.Right;
+                    break;
+                case MouseButtons.Middle:
+                    bts = MouseButton.Middle;
+                    break;
+            }
 
-            mouseViewDownPos = DocumentToViewPoint(x, y);
+            mouseState.MouseDown(p.X, p.Y, bts);
         }
 
         public virtual void MouseMove(float x, float y)
         {
             PointF p = ViewToDocumentPoint(x, y);
-
-            mousePos.X = p.X;
-            mousePos.Y = p.Y;
-
-            mouseViewPos = DocumentToViewPoint(x, y);
+            mouseState.MouseMove(p.X, p.Y);
 
             UpdateHitObjects();
         }

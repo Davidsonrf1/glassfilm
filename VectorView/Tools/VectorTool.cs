@@ -8,6 +8,7 @@ namespace VectorView.Tools
     public abstract class VectorTool
     {
         VectorDocument doc = null;
+        string name = null;
 
         bool active = true;
 
@@ -37,12 +38,36 @@ namespace VectorView.Tools
             }
         }
 
-        public VectorTool(VectorDocument doc)
+        public string Name
+        {
+            get
+            {
+                return name;
+            }
+        }
+
+        public virtual void Apply()
+        {
+
+        }
+
+        public VectorTool(string name, VectorDocument doc)
         {
             this.doc = doc;
+            this.name = name;
         }
 
         public virtual void MouseMove()
+        {
+
+        }
+
+        public virtual void MouseDown(MouseButton bt)
+        {
+
+        }
+
+        public virtual void MouseUp(MouseButton bt)
         {
 
         }
