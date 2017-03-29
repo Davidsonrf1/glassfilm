@@ -121,7 +121,7 @@ namespace VectorView
                     break;
             }
 
-            mouseState.MouseUp(p.X, p.Y, bts);
+            mouseState.MouseUp(p.X, p.Y, bts, Keys.Modifiers);
 
             foreach (VectorTool t in toolsOrder)
             {
@@ -147,7 +147,7 @@ namespace VectorView
                     break;
             }
 
-            mouseState.MouseDown(p.X, p.Y, bts);
+            mouseState.MouseDown(p.X, p.Y, bts, Keys.Modifiers);
 
             foreach (VectorTool t in toolsOrder)
             {
@@ -158,7 +158,7 @@ namespace VectorView
         public virtual void MouseMove(float x, float y)
         {
             PointF p = ViewToDocumentPoint(x, y);
-            mouseState.MouseMove(p.X, p.Y);
+            mouseState.MouseMove(p.X, p.Y, Keys.Modifiers);
 
             UpdateHitObjects();
 

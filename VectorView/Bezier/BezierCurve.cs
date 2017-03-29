@@ -19,7 +19,7 @@ namespace VectorView.Bezier
 
             set
             {
-                startPoint = value; CalculatePoints();
+                startPoint = value;
             }
         }
 
@@ -32,7 +32,7 @@ namespace VectorView.Bezier
 
             set
             {
-                endPoint = value; CalculatePoints();
+                endPoint = value;
             }
         }
 
@@ -45,7 +45,7 @@ namespace VectorView.Bezier
 
             set
             {
-                resolution = value; CalculatePoints();
+                resolution = value;
             }
         }
 
@@ -97,5 +97,7 @@ namespace VectorView.Bezier
                 }
             }
         }
+
+
     }
 }

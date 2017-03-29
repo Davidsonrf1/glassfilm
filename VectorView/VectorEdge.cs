@@ -1,9 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace VectorView
 {
@@ -57,7 +54,12 @@ namespace VectorView
 
             set
             {
+                if (start != null) start.UnlinkEdge(this);
                 start = value;
+                if (start != null) start.LinkEdge(this);
+
+                Recalculate();
+                PointChangeNotify(start);
             }
         }
 
@@ -70,7 +72,20 @@ namespace VectorView
 
             set
             {
+                if (end != null) end.UnlinkEdge(this);
                 end = value;
+                if (end != null) end.LinkEdge(this);
+
+                Recalculate();
+                PointChangeNotify(end);
+            }
+        }
+
+        public VectorShape Shape
+        {
+            get
+            {
+                return shape;
             }
         }
 
@@ -87,19 +102,9 @@ namespace VectorView
             return new RectangleF(minx, miny, maxx - minx, maxy - miny);
         }
 
-        internal override void Render(Graphics g)
+        internal override void Render()
         {
-            Pen p = new Pen(lineColor, lineWidth * (1 / Document.Scale));
-
-            p.LineJoin = System.Drawing.Drawing2D.LineJoin.Miter;
-
-            if (this == Document.MouseHitEdge)
-            {
-                p.Color = Color.Black;
-                p.Width *= 2;
-            }
-
-            g.DrawLine(p, start.X, start.Y, end.X, end.Y);
+            Document.DrawLine(start.X, start.Y, end.X, end.Y, IsHit);
         }
 
         public virtual int CrossPointCount(float hline, List<PointF> crossPoints = null)
@@ -133,6 +138,14 @@ namespace VectorView
             }
 
             return 1;
+        }
+
+        public virtual void PointChangeNotify(VectorPoint p)
+        {
+            Recalculate();
+
+            if (Shape != null)
+                Shape.EdgeChangeNotify(this);
         }
 
         public virtual void Recalculate()

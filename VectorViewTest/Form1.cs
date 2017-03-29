@@ -62,14 +62,14 @@ namespace VectorViewTest
             r.BeginPath(10, 10);
             r.LineTo(200, 10);
             r.LineTo(200, 400);
+           // r.QCurveTo(600, 300, 15, 400);
             r.LineTo(600, 145);
             r.LineTo(12, 40);
             r.LineTo(10, 200);
-            r.EndPath();
 
-            doc.Scale = 1f;
-            //doc.OffsetX = -100;
-            //doc.OffsetY = 100;
+           // r.CurveTo(3, 400, 300, 400, 300, 450);
+
+            r.EndPath();
 
             vectorViewCtr1.Document = doc;
         }

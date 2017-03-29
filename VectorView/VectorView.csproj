@@ -63,7 +63,6 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorPoint.cs" />
     <Compile Include="VectorQuadraticBezier.cs" />
-    <Compile Include="VectorSelection.cs" />
     <Compile Include="VectorShape.cs" />
     <Compile Include="Tools\VectorTool.cs" />
     <Compile Include="Tools\DebugTool.cs" />

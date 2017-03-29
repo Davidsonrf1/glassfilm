@@ -12,6 +12,12 @@ namespace VectorView
 
         RectangleF boundingBox = new RectangleF();
 
+        public void ClearShadow()
+        {
+            foreach (VectorPoint p in points)
+                p.ClearShadow();
+        }
+
         public IEnumerable<VectorEdge> Edges()
         {
             foreach (VectorEdge e in edges)
@@ -93,11 +99,29 @@ namespace VectorView
         public VectorPoint AddPoint(float x, float y)
         {
             VectorPoint p = new VectorPoint(Document, this);
-
+            
             p.X = x;
             p.Y = y;
 
+            p.ClearShadow();
+
             curPoint = p;
+            points.Add(p);
+
+            if (!updating)
+                RecalculateShape();
+
+            return p;
+        }
+
+        public VectorPoint AddControlPoint(float x, float y)
+        {
+            VectorPoint p = new VectorPoint(Document, this);
+
+            p.X = x;
+            p.Y = y;
+            p.Type = VectorPointType.Control;
+
             points.Add(p);
 
             if (!updating)
@@ -143,6 +167,35 @@ namespace VectorView
             VectorPoint end = AddPoint(x, y);
 
             AddEdge(start, end, e);
+        }
+
+        public void CurveTo(float c1x, float c1y, float c2x, float c2y, float x, float y)
+        {
+            VectorCubicBezier e = new VectorCubicBezier(Document, this);
+
+            VectorPoint start = curPoint;
+            VectorPoint end = AddPoint(x, y);
+
+            AddEdge(start, end, e);
+
+            e.Control1.X = c1x;
+            e.Control1.Y = c1y;
+
+            e.Control2.X = c2x;
+            e.Control2.Y = c2y;
+        }
+
+        public void QCurveTo(float cx, float cy, float x, float y)
+        {
+            VectorQuadraticBezier e = new VectorQuadraticBezier(Document, this);
+
+            VectorPoint start = curPoint;
+            VectorPoint end = AddPoint(x, y);
+
+            AddEdge(start, end, e);
+
+            e.Control.X = cx;
+            e.Control.Y = cy;
         }
 
         public void EndPath(bool close = true)
@@ -203,29 +256,29 @@ namespace VectorView
             return null;   
         }
 
-        internal override void Render(Graphics g)
+        internal override void Render()
         {
             foreach (VectorEdge e in edges)
             {
-                e.Render(g);
+                e.Render();
             }
 
             if (IsHit)
             {
-                RenderPoints(g);
+                RenderPoints();
             }
         }
 
         float pointSize = 6f;
 
-        protected void RenderPoints(Graphics g)
+        protected void RenderPoints()
         {
             Brush b = new SolidBrush(Color.Black);
 
             float w = pointSize * (1 / Document.Scale); 
 
             foreach (VectorPoint p in points)
-                g.FillRectangle(b, p.X - w / 2, p.Y - w / 2, w, w);
+                Document.Graphics.FillRectangle(b, p.X - w / 2, p.Y - w / 2, w, w);
 
             b.Dispose();
         }
@@ -276,6 +329,12 @@ namespace VectorView
             }
 
             return cross % 2 == 0 ? false : true;
+        }
+
+        internal virtual void EdgeChangeNotify(VectorEdge edge)
+        {
+            if (Document != null)
+                Document.ShapeChangeNotify(this);
         }
     }
 }

@@ -18,7 +18,7 @@ namespace VectorView
 
         public abstract RectangleF GetBoundBox();
 
-        internal virtual void Render(Graphics g)
+        internal virtual void Render()
         {
 
         }
@@ -65,7 +65,10 @@ namespace VectorView
 
         public bool HitTest(float x, float y)
         {
-            return isHit = InternalHitTest(x, y);
+            isHit = InternalHitTest(x, y);
+
+
+            return isHit;
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -10,10 +11,31 @@ namespace VectorView
     public class VectorCurve : VectorEdge
     {
         int resolution = 128;
+        PointF[] calcPoints = null;
+
+        void UpdateCalcPoints()
+        {
+            if (calcPoints == null || calcPoints.Length != resolution)
+            {
+                if (resolution == 0)
+                {
+                    calcPoints = null;
+                }
+
+                calcPoints = new PointF[resolution];
+
+                for (int i = 0; i < resolution; i++)
+                {
+                    calcPoints[i] = new PointF();
+                }
+
+                Recalculate();
+            }
+        }
 
         public VectorCurve(VectorDocument doc, VectorShape shape) : base(doc, shape)
         {
-
+            UpdateCalcPoints();
         }
 
         public int Resolution
@@ -26,12 +48,95 @@ namespace VectorView
             set
             {
                 resolution = value;
+                UpdateCalcPoints();
+            }
+        }
+
+        public void SetPoint(int index, float x, float y)
+        {
+            if (index < 0 || index >= resolution)
+            {
+                if (Debugger.IsAttached)
+                {
+                    throw new IndexOutOfRangeException("Tentativa de alterar um ponto inválido na curva");
+                }
+                else
+                {
+                    return;
+                }
+            }
+
+            if (calcPoints[index] == null)
+            {
+                calcPoints[index] = new PointF();
+            }
+
+            calcPoints[index].X = x;
+            calcPoints[index].Y = y;
+        }
+
+        protected PointF[] CalcPoints
+        {
+            get
+            {
+                return calcPoints;
             }
         }
 
         public override RectangleF GetBoundBox()
         {
             throw new NotImplementedException();
+        }
+
+        internal override void Render()
+        {
+            if (Shape == null)
+                return;
+
+            PointF s = Start.Point;
+            for (int i = 0; i < calcPoints.Length; i++)
+            {
+                Document.DrawLine(s.X, s.Y, calcPoints[i].X, calcPoints[i].Y, IsHit);
+                s = calcPoints[i];
+            }
+
+            Document.DrawLine(s.X, s.Y, End.Point.X, End.Point.Y, IsHit);
+        }
+
+        public override int CrossPointCount(float hline, List<PointF> crossPoints = null)
+        {
+            int count = 0;
+
+            if (Shape == null)
+                return count;
+
+            PointF cp;
+            PointF s = Start.Point;
+            for (int i = 0; i < calcPoints.Length; i++)
+            {
+                if (VectorMath.HorizontalCrossPoint(s.X, s.Y, calcPoints[i].X, calcPoints[i].Y, hline, out cp))
+                {
+                    if (crossPoints != null)
+                        crossPoints.Add(cp);
+
+                    count++;
+                }
+
+                s = calcPoints[i];
+            }
+
+            if (VectorMath.HorizontalCrossPoint(s.X, s.Y, End.Point.X, End.Point.Y, hline, out cp))
+            {
+                if (crossPoints != null)
+                    crossPoints.Add(cp);
+
+                count++;
+            }
+
+            if (count == 0)
+                return 0; // Só para colocar um break point abaixo;
+
+            return count;
         }
     }
 }

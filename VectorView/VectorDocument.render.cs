@@ -8,13 +8,120 @@ using System.Threading.Tasks;
 
 namespace VectorView
 {
+    internal class RenderParams
+    {
+        VectorDocument doc = null;
+        internal RenderParams(VectorDocument doc)
+        {
+            this.doc = doc;
+        }
+
+        Pen normalLinePen = new Pen(Color.DarkGray);
+        Pen shadowLinePen = new Pen(Color.Red);
+        Pen hilightLinePen = new Pen(Color.LightSalmon);
+
+        Color normalLineColor = Color.DarkGray;
+        Color shadowLineColor = Color.Red;
+        Color hilightLineColor = Color.Blue;
+
+        LineJoin lineJoinType = LineJoin.Miter;
+
+        public Color NormalLineColor
+        {
+            get
+            {
+                return normalLineColor;
+            }
+
+            set
+            {
+                normalLineColor = value;
+            }
+        }
+
+        public Color ShadowLineColor
+        {
+            get
+            {
+                return shadowLineColor;
+            }
+
+            set
+            {
+                shadowLineColor = value;
+            }
+        }
+
+        public Color HilightLineColor
+        {
+            get
+            {
+                return hilightLineColor;
+            }
+
+            set
+            {
+                hilightLineColor = value;
+            }
+        }
+
+        public Pen HilightLinePen
+        {
+            get
+            {
+                hilightLinePen.Width = 1 / doc.Scale;
+                hilightLinePen.Color = hilightLineColor;
+                hilightLinePen.LineJoin = lineJoinType;
+
+                return hilightLinePen;
+            }
+        }
+
+        public Pen ShadowLinePen
+        {
+            get
+            {
+                shadowLinePen.Width = 1 / doc.Scale;
+                shadowLinePen.Color = shadowLineColor;
+                shadowLinePen.LineJoin = lineJoinType;
+
+                return shadowLinePen;
+            }
+        }
+
+        public Pen NormalLinePen
+        {
+            get
+            {
+                normalLinePen.Width = 1 / doc.Scale;
+                normalLinePen.Color = normalLineColor;
+                normalLinePen.LineJoin = lineJoinType;
+
+                return normalLinePen;
+            }
+        }
+
+        public LineJoin LineJoinType
+        {
+            get
+            {
+                return lineJoinType;
+            }
+        }
+    }
+
     public partial class VectorDocument: VectorObject
     {
         List<VectorShape> shapes = new List<VectorShape>();
 
+        RenderParams renderParams = null;
+
+
         float scale = 1;
         float offsetX = 0;
         float offsetY = 0;
+
+        bool needRedraw = true;
 
         float width=80, height=120;
         public float Width
@@ -81,6 +188,35 @@ namespace VectorView
             }
         }
 
+        public bool NeedRedraw
+        {
+            get
+            {
+                return needRedraw;
+            }
+        }
+
+        internal RenderParams RenderParams
+        {
+            get
+            {
+                return renderParams;
+            }
+        }
+
+        public Graphics Graphics
+        {
+            get
+            {
+                return curGraphic;
+            }
+
+            set
+            {
+                curGraphic = value;
+            }
+        }
+
         public override RectangleF GetBoundBox()
         {
             return new RectangleF(0, 0, width, height);
@@ -95,40 +231,66 @@ namespace VectorView
             return s;
         }
 
-        internal override void Render(Graphics g)
+        internal override void Render()
         {
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            g.InterpolationMode = InterpolationMode.HighQualityBilinear;
-            g.TextRenderingHint = TextRenderingHint.AntiAlias;
+            curGraphic.SmoothingMode = SmoothingMode.HighQuality;
+            curGraphic.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            curGraphic.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-            g.ResetTransform();
+            curGraphic.ResetTransform();
 
-            g.ScaleTransform(scale, scale);
-            g.TranslateTransform(offsetX, offsetY);
+            curGraphic.ScaleTransform(scale, scale);
+            curGraphic.TranslateTransform(offsetX, offsetY);
 
             foreach (VectorShape s in shapes)
             {
-                s.Render(g);
+                s.Render();
             }
 
             if (mouseHitShape != null)
             {
-                g.DrawString("Dentro", new Font("Arial", 10), Brushes.Red, new Point(50, 50));
+                curGraphic.DrawString("Dentro", new Font("Arial", 10), Brushes.Red, new Point(50, 50));
             }
 
             if (mouseHitPoint!= null)
             {
-                g.FillRectangle(Brushes.Black, mouseHitPoint.X - 3, mouseHitPoint.Y - 3, 6, 6);
+                curGraphic.FillRectangle(Brushes.Black, mouseHitPoint.X - 3, mouseHitPoint.Y - 3, 6, 6);
             }
+
+            needRedraw = false;
         }
 
         public void RenderDocument(Graphics g)
         {
-            Render(g);
+            VectorPoint.UseShadowPoint = true;
+
+            curGraphic = g;
+            Render();
 
             g.ResetTransform();
             RenderTools(g);
             DrawDebugPoints(g);
+        }
+
+        Graphics curGraphic = null;
+
+        internal void DrawLine(float x1, float y1, float x2, float y2, bool hilight)
+        {
+            if (curGraphic == null)
+                return;
+
+            Pen p = renderParams.NormalLinePen;
+
+            if (VectorPoint.UseShadowPoint)
+            {
+                p = renderParams.ShadowLinePen;
+            }
+            else if(hilight)
+            {
+                p = renderParams.HilightLinePen;
+            }
+
+            curGraphic.DrawLine(p, x1, y1, x2, y2);
         }
     }
 }

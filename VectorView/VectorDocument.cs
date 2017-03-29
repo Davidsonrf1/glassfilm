@@ -17,6 +17,8 @@ namespace VectorView
             }
 
             selection.Clear();
+
+            needRedraw = true;
         }
 
         public IEnumerable<VectorObject> SelectedObjects()
@@ -41,11 +43,21 @@ namespace VectorView
             }
 
             selection.Add(obj);
+
+            needRedraw = true;
         }
 
         public VectorDocument(): base(null)
         {
+            renderParams = new RenderParams(this);
+
             RegisterTools();
         }
+
+        internal void ShapeChangeNotify(VectorShape shape)
+        {
+            needRedraw = true;
+        }
+
     }
 }

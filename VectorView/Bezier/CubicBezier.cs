@@ -16,7 +16,7 @@ namespace VectorView.Bezier
 
             set
             {
-                control1 = value; CalculatePoints();
+                control1 = value;
             }
         }
 
@@ -29,7 +29,7 @@ namespace VectorView.Bezier
 
             set
             {
-                control2 = value; CalculatePoints();
+                control2 = value;
             }
         }
 
