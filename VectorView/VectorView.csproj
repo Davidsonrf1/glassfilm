@@ -48,6 +48,7 @@
     <Compile Include="MouseState.cs" />
     <Compile Include="Tools\TransformTool.cs" />
     <Compile Include="Tools\SelectionTool.cs" />
+    <Compile Include="VectorCloneData.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />
     <Compile Include="VectorDocument.cs" />

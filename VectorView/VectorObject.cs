@@ -10,12 +10,27 @@ namespace VectorView
     public abstract class VectorObject
     {
         VectorDocument document = null;
+        int id = 0;
 
+        static int curID = 0;
         public VectorObject(VectorDocument doc)
         {
+            id = ++curID;
             document = doc;
         }
 
+        protected VectorObject(VectorObject obj)
+        {
+            document = obj.document;
+            id = obj.Id;
+        }
+
+        public virtual VectorObject GetClone()
+        {
+            return null;
+        }
+
+        public abstract void RestoreClone(VectorObject clone);
         public abstract RectangleF GetBoundBox();
 
         internal virtual void Render()
@@ -55,6 +70,14 @@ namespace VectorView
 
                 if (document != null)
                     document.SelectObject(this);
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return id;
             }
         }
 

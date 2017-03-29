@@ -7,20 +7,14 @@ namespace VectorView
 {
     public class VectorShape : VectorObject
     {
-        List<VectorPoint> points = new List<VectorPoint>();
-        List<VectorEdge> edges = new List<VectorEdge>();
+        Dictionary<int, VectorPoint> points = new Dictionary<int, VectorPoint>();
+        Dictionary<int, VectorEdge> edges = new Dictionary<int, VectorEdge>();
 
         RectangleF boundingBox = new RectangleF();
 
-        public void ClearShadow()
-        {
-            foreach (VectorPoint p in points)
-                p.ClearShadow();
-        }
-
         public IEnumerable<VectorEdge> Edges()
         {
-            foreach (VectorEdge e in edges)
+            foreach (VectorEdge e in edges.Values)
             {
                 yield return e;
             }
@@ -28,7 +22,7 @@ namespace VectorView
 
         public IEnumerable<VectorPoint> Points()
         {
-            foreach (VectorPoint p in points)
+            foreach (VectorPoint p in points.Values)
             {
                 yield return p;
             }
@@ -82,7 +76,7 @@ namespace VectorView
 
         public void RecalculateShape()
         {
-            foreach (VectorEdge e in edges)
+            foreach (VectorEdge e in edges.Values)
             {
                 e.Recalculate();
             }
@@ -103,10 +97,8 @@ namespace VectorView
             p.X = x;
             p.Y = y;
 
-            p.ClearShadow();
-
             curPoint = p;
-            points.Add(p);
+            points.Add(p.Id, p);
 
             if (!updating)
                 RecalculateShape();
@@ -122,7 +114,7 @@ namespace VectorView
             p.Y = y;
             p.Type = VectorPointType.Control;
 
-            points.Add(p);
+            points.Add(p.Id, p);
 
             if (!updating)
                 RecalculateShape();
@@ -135,7 +127,7 @@ namespace VectorView
             e.Start = start;
             e.End = end;
 
-            edges.Add(e);
+            edges.Add(e.Id, e);
 
             if (!updating)
                 RecalculateShape();
@@ -230,22 +222,32 @@ namespace VectorView
 
         public override RectangleF GetBoundBox()
         {
-            if (points.Count == 0)
+            if (edges.Count == 0)
             {
                 return new RectangleF();
             }
-
-            float minx = points[0].X;
-            float miny = points[0].Y;
-            float maxx = points[0].X;
-            float maxy = points[0].Y;
-
-            foreach (VectorPoint p in points)
+            VectorObject first = null;
+            foreach (VectorObject t in edges.Values)
             {
-                minx = Math.Min(p.X, minx);
-                miny = Math.Min(p.Y, miny);
-                maxx = Math.Max(p.X, maxx);
-                maxy = Math.Max(p.Y, maxy);
+                first = t;
+                break;
+            }
+
+            RectangleF r = first.GetBoundBox();
+
+            float minx = r.Left;
+            float miny = r.Top;
+            float maxx = r.Right;
+            float maxy = r.Bottom;
+
+            foreach (VectorEdge e in edges.Values)
+            {
+                r = e.GetBoundBox();
+
+                minx = Math.Min(r.Left, minx);
+                miny = Math.Min(r.Top, miny);
+                maxx = Math.Min(r.Right, maxx);
+                maxy = Math.Min(r.Bottom, maxy);
             }
 
             return new RectangleF(minx, miny, maxx - minx, maxy - miny);
@@ -258,7 +260,7 @@ namespace VectorView
 
         internal override void Render()
         {
-            foreach (VectorEdge e in edges)
+            foreach (VectorEdge e in edges.Values)
             {
                 e.Render();
             }
@@ -277,7 +279,7 @@ namespace VectorView
 
             float w = pointSize * (1 / Document.Scale); 
 
-            foreach (VectorPoint p in points)
+            foreach (VectorPoint p in points.Values)
                 Document.Graphics.FillRectangle(b, p.X - w / 2, p.Y - w / 2, w, w);
 
             b.Dispose();
@@ -312,7 +314,7 @@ namespace VectorView
             if (!IsClosedShape())
                 return false;
 
-            foreach (VectorEdge e in edges)
+            foreach (VectorEdge e in edges.Values)
             {
                 List<PointF> pts = new List<PointF>();
 
@@ -335,6 +337,27 @@ namespace VectorView
         {
             if (Document != null)
                 Document.ShapeChangeNotify(this);
+        }
+
+        public override void RestoreClone(VectorObject clone)
+        {
+            VectorShape s = (VectorShape)clone;
+
+            foreach (VectorPoint p in s.points.Values)
+            {
+                VectorPoint cp = null;
+
+                if (points.TryGetValue(p.Id, out cp))
+                    cp.RestoreClone(s);
+            }
+
+            foreach (VectorEdge e in s.edges.Values)
+            {
+                VectorPoint ce = null;
+
+                if (points.TryGetValue(e.Id, out ce))
+                    ce.RestoreClone(e);
+            }
         }
     }
 }

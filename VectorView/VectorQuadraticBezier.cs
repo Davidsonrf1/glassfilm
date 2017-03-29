@@ -63,5 +63,17 @@ namespace VectorView
 
             base.Recalculate();
         }
+
+        public override void RestoreClone(VectorObject clone)
+        {
+            base.RestoreClone(clone);
+
+            VectorQuadraticBezier e = (VectorQuadraticBezier)clone;
+
+            Control.X = e.Control.X;
+            Control.Y = e.Control.Y;
+
+            Recalculate();
+        }
     }
 }

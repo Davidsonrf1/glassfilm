@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Windows;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 namespace VectorView.Tools
 {
@@ -12,6 +13,11 @@ namespace VectorView.Tools
         
         public SelectionTool(string name, VectorDocument doc) : base(name, doc)
         {
+        }
+
+        public override void Render(Graphics g)
+        {
+            base.Render(g);
         }
 
         public override void MouseMove()
@@ -25,17 +31,50 @@ namespace VectorView.Tools
 
             VectorObject selObj = null;
 
-            if (Doc.MouseHitPoint != null)
+            if (Document.MouseHitPoint != null)
             {
-                selObj = Doc.MouseHitPoint;
+                selObj = Document.MouseHitPoint;
             }
-            else if (Doc.MouseHitEdge != null)
+            else if (Document.MouseHitEdge != null)
             {
-                selObj = Doc.MouseHitEdge;
+                selObj = Document.MouseHitEdge;
             }
-            else if (Doc.MouseHitShape != null)
+            else if (Document.MouseHitShape != null)
             {
-                selObj = Doc.MouseHitShape;
+                selObj = Document.MouseHitShape;
+            }
+
+            if (selObj is VectorPoint)
+            {
+                if (selection.Count > 0 && selection[0] is VectorEdge)
+                    selObj = selection[0];
+            }
+
+            if (selObj is VectorEdge)
+            {
+                if (selection.Count > 0 && selection[0] is VectorShape)
+                    selObj = selection[0];
+            }
+
+            if (selObj != null)
+            {
+                if (selObj.IsSelected)
+                {
+                    Document.UnselectObject(selObj);
+                }
+                else
+                {
+                    if (Document.MouseState.ModifierKeys != Keys.Shift)
+                    {
+                        Document.ClearSelection();
+                    }
+
+                    Document.SelectObject(selObj);
+                }
+            }
+            else
+            {
+                Document.ClearSelection();
             }
         }
     }

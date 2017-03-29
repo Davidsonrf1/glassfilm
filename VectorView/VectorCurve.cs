@@ -83,15 +83,12 @@ namespace VectorView
             }
         }
 
-        public override RectangleF GetBoundBox()
-        {
-            throw new NotImplementedException();
-        }
-
         internal override void Render()
         {
             if (Shape == null)
                 return;
+
+            Recalculate();
 
             PointF s = Start.Point;
             for (int i = 0; i < calcPoints.Length; i++)
@@ -137,6 +134,28 @@ namespace VectorView
                 return 0; // Só para colocar um break point abaixo;
 
             return count;
+        }
+
+        public override RectangleF GetBoundBox()
+        {
+            float minx, miny, maxx, maxy;
+
+            minx = Math.Min(Start.X, End.X);
+            miny = Math.Min(Start.Y, End.Y);
+
+            maxx = Math.Max(Start.X, End.X);
+            maxy = Math.Max(Start.Y, End.Y);
+
+            for (int i = 0; i < calcPoints.Length; i++)
+            {
+                minx = Math.Min(minx, calcPoints[i].X);
+                miny = Math.Min(miny, calcPoints[i].Y);
+
+                maxx = Math.Max(maxx, calcPoints[i].X);
+                maxy = Math.Max(maxy, calcPoints[i].Y);
+            }
+
+            return new RectangleF(minx, miny, maxx - minx, maxy - miny);
         }
     }
 }

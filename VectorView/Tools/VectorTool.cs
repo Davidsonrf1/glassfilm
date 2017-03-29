@@ -25,7 +25,7 @@ namespace VectorView.Tools
             }
         }
 
-        public VectorDocument Doc
+        public VectorDocument Document
         {
             get
             {

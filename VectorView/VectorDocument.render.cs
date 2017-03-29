@@ -257,13 +257,18 @@ namespace VectorView
                 curGraphic.FillRectangle(Brushes.Black, mouseHitPoint.X - 3, mouseHitPoint.Y - 3, 6, 6);
             }
 
+            if (selection.Count > 0)
+            {
+                CalculateBoudingBox();
+
+                curGraphic.DrawRectangle(Pens.AliceBlue, selectionBoundingBox.X, selectionBoundingBox.Y, selectionBoundingBox.Width, selectionBoundingBox.Height);
+            }
+
             needRedraw = false;
         }
 
         public void RenderDocument(Graphics g)
         {
-            VectorPoint.UseShadowPoint = true;
-
             curGraphic = g;
             Render();
 
@@ -281,14 +286,7 @@ namespace VectorView
 
             Pen p = renderParams.NormalLinePen;
 
-            if (VectorPoint.UseShadowPoint)
-            {
-                p = renderParams.ShadowLinePen;
-            }
-            else if(hilight)
-            {
-                p = renderParams.HilightLinePen;
-            }
+            p = renderParams.HilightLinePen;           
 
             curGraphic.DrawLine(p, x1, y1, x2, y2);
         }

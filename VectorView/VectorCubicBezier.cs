@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Drawing;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Drawing;
 using VectorView.Bezier;
 
 namespace VectorView
@@ -79,6 +75,20 @@ namespace VectorView
                 SetPoint(i, bezier.Points[i].X, bezier.Points[i].Y);
 
             base.Recalculate();
+        }
+
+        public override void RestoreClone(VectorObject clone)
+        {
+            base.RestoreClone(clone);
+
+            VectorCubicBezier e = (VectorCubicBezier)clone;
+
+            Control1.X = e.Control1.X;
+            Control1.Y = e.Control1.Y;
+            Control2.X = e.Control2.X;
+            Control2.Y = e.Control2.Y;
+
+            Recalculate();
         }
     }
 }

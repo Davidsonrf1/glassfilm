@@ -54,7 +54,6 @@ namespace VectorViewTest
             DoubleBuffered = true;
 
             //vectorViewCtr1.Visible = false;
-
             //doc.LoadFromFile("G:\\teste.svg");
 
             VectorShape r = doc.CreateShape();
@@ -62,12 +61,12 @@ namespace VectorViewTest
             r.BeginPath(10, 10);
             r.LineTo(200, 10);
             r.LineTo(200, 400);
-           // r.QCurveTo(600, 300, 15, 400);
+            r.QCurveTo(600, 300, 15, 400);
             r.LineTo(600, 145);
             r.LineTo(12, 40);
             r.LineTo(10, 200);
 
-           // r.CurveTo(3, 400, 300, 400, 300, 450);
+            r.CurveTo(3, 400, 300, 400, 300, 450);
 
             r.EndPath();
 

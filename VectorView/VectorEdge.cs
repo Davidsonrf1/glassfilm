@@ -152,5 +152,15 @@ namespace VectorView
         {
 
         }
+
+        public override void RestoreClone(VectorObject clone)
+        {
+            VectorEdge e = (VectorEdge)clone;
+
+            Start.X = e.Start.X;
+            Start.Y = e.Start.Y;
+            End.X = e.End.X;
+            End.Y = e.End.Y;
+        }
     }
 }
