@@ -110,7 +110,7 @@ namespace VectorView
         }
     
 
-        public void SelectObject(VectorObject obj)
+        public void SelectObject(VectorObject obj) 
         {
             if (obj.Document != this)
                 return;
