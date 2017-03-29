@@ -74,7 +74,7 @@ namespace VectorView
 
         RectangleF selectionBoundingBox = new RectangleF();
 
-        void CalculateBoudingBox()
+        void CalculateSelectionBoudingBox()
         {
             if (selection.Count == 0)
             {
@@ -106,7 +106,7 @@ namespace VectorView
             selectionBoundingBox.Width = maxx - minx;
             selectionBoundingBox.Height = maxy - miny;
 
-            selectionBoundingBox.Inflate(4 * (1 / Document.Scale), 4 * (1 / Document.Scale));
+            selectionBoundingBox.Inflate(4 * (1 / Scale), 4 * (1 / Scale));
         }
     
 
@@ -125,7 +125,7 @@ namespace VectorView
 
             needRedraw = true;
 
-            CalculateBoudingBox();
+            CalculateSelectionBoudingBox();
         }
 
         public void UnselectObject(VectorObject obj)
@@ -144,7 +144,7 @@ namespace VectorView
 
             needRedraw = true;
 
-            CalculateBoudingBox();
+            CalculateSelectionBoudingBox();
         }
 
         public VectorDocument(): base(null)

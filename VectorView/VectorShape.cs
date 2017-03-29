@@ -246,8 +246,8 @@ namespace VectorView
 
                 minx = Math.Min(r.Left, minx);
                 miny = Math.Min(r.Top, miny);
-                maxx = Math.Min(r.Right, maxx);
-                maxy = Math.Min(r.Bottom, maxy);
+                maxx = Math.Max(r.Right, maxx);
+                maxy = Math.Max(r.Bottom, maxy);
             }
 
             return new RectangleF(minx, miny, maxx - minx, maxy - miny);

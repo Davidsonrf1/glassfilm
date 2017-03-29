@@ -259,9 +259,12 @@ namespace VectorView
 
             if (selection.Count > 0)
             {
-                CalculateBoudingBox();
+                CalculateSelectionBoudingBox();
 
-                curGraphic.DrawRectangle(Pens.AliceBlue, selectionBoundingBox.X, selectionBoundingBox.Y, selectionBoundingBox.Width, selectionBoundingBox.Height);
+                Pen p = new Pen(Color.Blue, 1);
+                p.DashStyle = DashStyle.DashDotDot;
+
+                curGraphic.DrawRectangle(p, selectionBoundingBox.X, selectionBoundingBox.Y, selectionBoundingBox.Width, selectionBoundingBox.Height);
             }
 
             needRedraw = false;
