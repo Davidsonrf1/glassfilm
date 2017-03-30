@@ -133,7 +133,7 @@ namespace VectorView
             }
         }
 
-        public PointF MousePos
+        public PointF Pos
         {
             get
             {

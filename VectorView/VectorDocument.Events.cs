@@ -26,7 +26,7 @@ namespace VectorView
 
             foreach (VectorShape s in shapes)
             {
-                if(s.HitTest(mouseState.MousePos.X, mouseState.MousePos.Y))
+                if(s.HitTest(mouseState.Pos.X, mouseState.Pos.Y))
                 {
                     mouseHitShape = s;
                 }
@@ -35,11 +35,11 @@ namespace VectorView
                 {
                     List<PointF> pts = new List<PointF>();
                        
-                    if(e.CrossPointCount(mouseState.MousePos.Y, pts) > 0)
+                    if(e.CrossPointCount(mouseState.Pos.Y, pts) > 0)
                     {
                         foreach (PointF p in pts)
                         {
-                            if (Math.Abs(p.X - mouseState.MousePos.X) <= 4)
+                            if (Math.Abs(p.X - mouseState.Pos.X) <= 4)
                                 mouseHitEdge = e;
                         }
                     }
@@ -47,8 +47,8 @@ namespace VectorView
 
                 foreach (VectorPoint p in s.Points())
                 {
-                    if (mouseState.MousePos.X >= p.X - 3 && mouseState.MousePos.X <= p.X + 3)
-                        if (mouseState.MousePos.Y >= p.Y - 3 && mouseState.MousePos.Y <= p.Y + 3)
+                    if (mouseState.Pos.X >= p.X - 3 && mouseState.Pos.X <= p.X + 3)
+                        if (mouseState.Pos.Y >= p.Y - 3 && mouseState.Pos.Y <= p.Y + 3)
                             mouseHitPoint = p;
                 }
             }

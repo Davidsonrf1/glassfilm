@@ -72,7 +72,7 @@ namespace VectorView.Tools
 
         }
 
-        public virtual void Render(Graphics g)
+        public virtual void Render()
         {
 
         }

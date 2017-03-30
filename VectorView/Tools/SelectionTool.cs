@@ -4,20 +4,32 @@ using System.Windows;
 using System.Text;
 using System.Windows.Forms;
 using System.Drawing;
+using System.Drawing.Drawing2D;
 
 namespace VectorView.Tools
 {
     public class SelectionTool : VectorTool
-    {
-        List<VectorObject> selection = new List<VectorObject>();
-        
+    {      
         public SelectionTool(string name, VectorDocument doc) : base(name, doc)
         {
         }
 
-        public override void Render(Graphics g)
+        public override void Render()
         {
-            base.Render(g);
+            base.Render();
+
+            if (Document.SelectionCount > 0)
+            {
+                //CalculateSelectionBoudingBox();
+
+                Pen p = new Pen(Color.Blue, 1);
+                p.DashStyle = DashStyle.Custom;
+                p.DashPattern = new float[] { 1.0f, 4.0f };
+
+                RectangleF r = Document.SelectionBoundingBox;
+
+                Document.Graphics.DrawRectangle(p, r.X, r.Y, r.Width, r.Height);
+            }
         }
 
         public override void MouseMove()
@@ -44,23 +56,32 @@ namespace VectorView.Tools
                 selObj = Document.MouseHitShape;
             }
 
+            
             if (selObj is VectorPoint)
             {
-                if (selection.Count > 0 && selection[0] is VectorEdge)
-                    selObj = selection[0];
+                //if (selection.Count > 0 && selection[0] is VectorEdge)
+                //    selObj = selection[0];
+                
+
+                if(((VectorPoint)selObj).Type != VectorPointType.Normal)
+                {
+                   // return;
+                }
             }
 
             if (selObj is VectorEdge)
             {
-                if (selection.Count > 0 && selection[0] is VectorShape)
-                    selObj = selection[0];
+                //if (selection.Count > 0 && selection[0] is VectorShape)
+                //    selObj = selection[0];
             }
-
+  
             if (selObj != null)
             {
+
+                Document.UnselectObject(selObj);
                 if (selObj.IsSelected)
                 {
-                    Document.UnselectObject(selObj);
+                    
                 }
                 else
                 {

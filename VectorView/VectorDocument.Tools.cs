@@ -30,7 +30,7 @@ namespace VectorView
             {
                 if (t.Active)
                 {
-                    t.Render(g);
+                    t.Render();
                 }
             }
         }

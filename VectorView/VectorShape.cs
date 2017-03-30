@@ -264,26 +264,9 @@ namespace VectorView
             {
                 e.Render();
             }
-
-            if (IsHit)
-            {
-                RenderPoints();
-            }
         }
 
         float pointSize = 6f;
-
-        protected void RenderPoints()
-        {
-            Brush b = new SolidBrush(Color.Black);
-
-            float w = pointSize * (1 / Document.Scale); 
-
-            foreach (VectorPoint p in points.Values)
-                Document.Graphics.FillRectangle(b, p.X - w / 2, p.Y - w / 2, w, w);
-
-            b.Dispose();
-        }
 
         protected override bool InternalHitTest(float x, float y)
         {

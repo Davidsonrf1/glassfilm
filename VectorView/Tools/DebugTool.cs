@@ -13,7 +13,7 @@ namespace VectorView.Tools
 
         }
 
-        public override void Render(Graphics g)
+        public override void Render()
         {
             /*
             PointF mousePos = Doc.DocumentToViewPoint(Doc.MouseState.MousePos.X, Doc.MouseState.MousePos.Y);

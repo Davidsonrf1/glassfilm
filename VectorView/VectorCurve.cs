@@ -93,11 +93,17 @@ namespace VectorView
             PointF s = Start.Point;
             for (int i = 0; i < calcPoints.Length; i++)
             {
-                Document.DrawLine(s.X, s.Y, calcPoints[i].X, calcPoints[i].Y, IsHit);
+                Document.DrawLine(s.X, s.Y, calcPoints[i].X, calcPoints[i].Y);
                 s = calcPoints[i];
             }
 
-            Document.DrawLine(s.X, s.Y, End.Point.X, End.Point.Y, IsHit);
+            Document.DrawLine(s.X, s.Y, End.Point.X, End.Point.Y);
+
+            if (IsSelected || Shape.IsSelected)
+            {
+                Document.DrawPoint(Start.X, Start.Y);
+                Document.DrawPoint(End.X, End.Y);
+            }
         }
 
         public override int CrossPointCount(float hline, List<PointF> crossPoints = null)

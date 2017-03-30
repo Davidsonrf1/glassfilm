@@ -104,7 +104,21 @@ namespace VectorView
 
         internal override void Render()
         {
-            Document.DrawLine(start.X, start.Y, end.X, end.Y, IsHit);
+            Document.DrawLine(start.X, start.Y, end.X, end.Y);
+
+            if (IsSelected || Shape.IsSelected)
+            {
+                Document.DrawPoint(start.X, start.Y);
+                Document.DrawPoint(end.X, end.Y);
+            }
+            else
+            {
+                if (start.IsSelected)
+                    start.Render();
+
+                if (end.IsSelected)
+                    end.Render();
+            }
         }
 
         public virtual int CrossPointCount(float hline, List<PointF> crossPoints = null)

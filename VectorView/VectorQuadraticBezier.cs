@@ -75,5 +75,18 @@ namespace VectorView
 
             Recalculate();
         }
+
+        internal override void Render()
+        {
+            
+            if (IsSelected)
+            {
+                Document.DrawControlLine(Start.X, Start.Y, Control.X, Control.Y);
+                Document.DrawControlLine(End.X, End.Y, Control.X, Control.Y);
+
+                Document.DrawControlPoint(Control.X, Control.Y);
+            }
+            base.Render();
+        }
     }
 }

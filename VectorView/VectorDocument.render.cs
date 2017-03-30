@@ -8,6 +8,8 @@ using System.Threading.Tasks;
 
 namespace VectorView
 {
+
+    internal enum LineType { Normal, SelectionLine, ControlLine }
     internal class RenderParams
     {
         VectorDocument doc = null;
@@ -19,12 +21,19 @@ namespace VectorView
         Pen normalLinePen = new Pen(Color.DarkGray);
         Pen shadowLinePen = new Pen(Color.Red);
         Pen hilightLinePen = new Pen(Color.LightSalmon);
+        Pen controlPointPen = new Pen(Color.DarkGoldenrod);
+        SolidBrush normalPointBrush = new SolidBrush(Color.Black);
+        SolidBrush controlPointBrush = new SolidBrush(Color.Black);
 
         Color normalLineColor = Color.DarkGray;
         Color shadowLineColor = Color.Red;
         Color hilightLineColor = Color.Blue;
+        Color controlPointColor = Color.Brown;
+        Color normalPointColor = Color.Black;
 
         LineJoin lineJoinType = LineJoin.Miter;
+
+        float pointSize = 6f;
 
         public Color NormalLineColor
         {
@@ -107,6 +116,78 @@ namespace VectorView
             {
                 return lineJoinType;
             }
+        }
+
+        public Pen ControlPointPen
+        {
+            get
+            {
+                controlPointPen.Width = 1 / doc.Scale;
+                controlPointPen.Color = normalLineColor;
+                controlPointPen.LineJoin = lineJoinType;
+
+                return controlPointPen;
+            }
+            
+        }
+
+        public Color ControlPointColor
+        {
+            get
+            {
+                return controlPointColor;
+            }
+
+            set
+            {
+                controlPointColor = value;
+            }
+        }
+
+        public SolidBrush NormalPointBrush
+        {
+            get
+            {
+                normalPointBrush.Color = normalPointColor;
+
+                return normalPointBrush;
+            }
+        }
+
+        public Color NormalPointColor
+        {
+            get
+            {
+                return normalPointColor;
+            }
+
+            set
+            {
+                normalPointColor = value;
+            }
+        }
+
+        public float PointSize
+        {
+            get
+            {
+                return pointSize;
+            }
+
+            set
+            {
+                pointSize = value;
+            }
+        }
+
+        public SolidBrush ControlPointBrush
+        {
+            get
+            {
+                controlPointBrush.Color = controlPointColor;
+                return controlPointBrush;
+            }
+            
         }
     }
 
@@ -208,12 +289,12 @@ namespace VectorView
         {
             get
             {
-                return curGraphic;
+                return graphics;
             }
 
             set
             {
-                curGraphic = value;
+                graphics = value;
             }
         }
 
@@ -233,38 +314,18 @@ namespace VectorView
 
         internal override void Render()
         {
-            curGraphic.SmoothingMode = SmoothingMode.HighQuality;
-            curGraphic.InterpolationMode = InterpolationMode.HighQualityBilinear;
-            curGraphic.TextRenderingHint = TextRenderingHint.AntiAlias;
+            graphics.SmoothingMode = SmoothingMode.HighQuality;
+            graphics.InterpolationMode = InterpolationMode.HighQualityBilinear;
+            graphics.TextRenderingHint = TextRenderingHint.AntiAlias;
 
-            curGraphic.ResetTransform();
+            graphics.ResetTransform();
 
-            curGraphic.ScaleTransform(scale, scale);
-            curGraphic.TranslateTransform(offsetX, offsetY);
+            graphics.ScaleTransform(scale, scale);
+            graphics.TranslateTransform(offsetX, offsetY);
 
             foreach (VectorShape s in shapes)
             {
                 s.Render();
-            }
-
-            if (mouseHitShape != null)
-            {
-                curGraphic.DrawString("Dentro", new Font("Arial", 10), Brushes.Red, new Point(50, 50));
-            }
-
-            if (mouseHitPoint!= null)
-            {
-                curGraphic.FillRectangle(Brushes.Black, mouseHitPoint.X - 3, mouseHitPoint.Y - 3, 6, 6);
-            }
-
-            if (selection.Count > 0)
-            {
-                CalculateSelectionBoudingBox();
-
-                Pen p = new Pen(Color.Blue, 1);
-                p.DashStyle = DashStyle.DashDotDot;
-
-                curGraphic.DrawRectangle(p, selectionBoundingBox.X, selectionBoundingBox.Y, selectionBoundingBox.Width, selectionBoundingBox.Height);
             }
 
             needRedraw = false;
@@ -272,26 +333,48 @@ namespace VectorView
 
         public void RenderDocument(Graphics g)
         {
-            curGraphic = g;
-            Render();
+            graphics = g;
 
-            g.ResetTransform();
+            Render();
             RenderTools(g);
-            DrawDebugPoints(g);
         }
 
-        Graphics curGraphic = null;
+        Graphics graphics = null;
 
-        internal void DrawLine(float x1, float y1, float x2, float y2, bool hilight)
+        internal void DrawLine(float x1, float y1, float x2, float y2)
         {
-            if (curGraphic == null)
+            if (graphics == null)
                 return;
 
-            Pen p = renderParams.NormalLinePen;
+            graphics.DrawLine(renderParams.HilightLinePen, x1, y1, x2, y2);
+        }
 
-            p = renderParams.HilightLinePen;           
+        internal void DrawControlLine(float x1, float y1, float x2, float y2)
+        {
+            if (graphics == null)
+                return;
 
-            curGraphic.DrawLine(p, x1, y1, x2, y2);
+            graphics.DrawLine(renderParams.ControlPointPen, x1, y1, x2, y2);
+        }
+
+        internal void DrawPoint(float x, float y)
+        {
+            if (graphics == null)
+                return;
+
+            float size = renderParams.PointSize * (1 / Scale);
+
+            graphics.FillRectangle(renderParams.NormalPointBrush, x - size / 2, y - size / 2, size, size);
+        }
+
+        internal void DrawControlPoint(float x, float y)
+        {
+            if (graphics == null)
+                return;
+
+            float size = renderParams.PointSize * (1 / Scale);
+
+            graphics.FillRectangle(renderParams.ControlPointBrush, x - size / 2, y - size / 2, size, size);
         }
     }
 }

@@ -16,6 +16,22 @@ namespace VectorView
         
         }
 
+        public int SelectionCount
+        {
+            get
+            {
+                return selection.Count;
+            }
+        }
+
+        internal Type GetSelectionType()
+        {
+            foreach (VectorObject o in selection)
+                return o.GetType();
+
+            return null;
+        }
+
         public void RestoreCloneData(VectorCloneData data)
         {
             foreach (VectorObject o in data.Objects())
@@ -74,6 +90,14 @@ namespace VectorView
 
         RectangleF selectionBoundingBox = new RectangleF();
 
+        public RectangleF SelectionBoundingBox
+        {
+            get
+            {
+                return selectionBoundingBox;
+            }
+        }
+
         void CalculateSelectionBoudingBox()
         {
             if (selection.Count == 0)
@@ -82,6 +106,8 @@ namespace VectorView
                 selectionBoundingBox.Y = 0;
                 selectionBoundingBox.Width = 0;
                 selectionBoundingBox.Height = 0;
+
+                return;
             }
 
             RectangleF r = selection[0].GetBoundBox();
@@ -121,6 +147,7 @@ namespace VectorView
                     return;
             }
 
+            obj.IsSelected = true;
             selection.Add(obj);
 
             needRedraw = true;
@@ -137,6 +164,7 @@ namespace VectorView
             {
                 if (obj == o)
                 {
+                    obj.IsSelected = false;
                     selection.Remove(o);
                     break;
                 }

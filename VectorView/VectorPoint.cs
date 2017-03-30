@@ -129,5 +129,19 @@ namespace VectorView
             X = p.X;
             Y = p.Y;
         }
+
+        internal override void Render()
+        {
+            base.Render();
+
+            if (IsSelected)
+            {
+                if (type == VectorPointType.Control)
+                    Document.DrawControlPoint(x, y);
+
+                if (type == VectorPointType.Normal)
+                    Document.DrawPoint(x, y);
+            }
+        }
     }
 }

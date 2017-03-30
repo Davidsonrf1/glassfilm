@@ -67,9 +67,6 @@ namespace VectorView
             internal set
             {
                 isSelect = value;
-
-                if (document != null)
-                    document.SelectObject(this);
             }
         }
 
