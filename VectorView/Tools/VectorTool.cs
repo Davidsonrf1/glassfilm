@@ -57,6 +57,11 @@ namespace VectorView.Tools
             this.name = name;
         }
 
+        public virtual void MouseWeel(float delta, float x, float y)
+        {
+
+        }
+
         public virtual void MouseMove()
         {
 

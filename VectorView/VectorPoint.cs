@@ -88,6 +88,14 @@ namespace VectorView
             }
         }
 
+        public List<VectorEdge> LinkedEdges
+        {
+            get
+            {
+                return linkedEdges;
+            }
+        }
+
         public override RectangleF GetBoundBox()
         {
             return new RectangleF(x - 4, y - 4, 8, 8);
@@ -95,7 +103,7 @@ namespace VectorView
 
         void NotifyEdges()
         {
-            foreach (VectorEdge e in linkedEdges)
+            foreach (VectorEdge e in LinkedEdges)
             {
                 e.PointChangeNotify(this);
             }
@@ -103,22 +111,22 @@ namespace VectorView
 
         public void LinkEdge(VectorEdge e)
         {
-            foreach (VectorEdge le in linkedEdges)
+            foreach (VectorEdge le in LinkedEdges)
             {
                 if (le == e) 
                     return;
             }
 
-            linkedEdges.Add(e);
+            LinkedEdges.Add(e);
             e.PointChangeNotify(this);
         }
 
         public void UnlinkEdge(VectorEdge e)
         {
-            if (linkedEdges.Contains(e))
+            if (LinkedEdges.Contains(e))
             {
                 e.PointChangeNotify(this);
-                linkedEdges.Remove(e);
+                LinkedEdges.Remove(e);
             }
         }
 

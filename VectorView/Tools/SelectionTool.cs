@@ -59,29 +59,33 @@ namespace VectorView.Tools
             
             if (selObj is VectorPoint)
             {
-                //if (selection.Count > 0 && selection[0] is VectorEdge)
-                //    selObj = selection[0];
-                
+                VectorPoint p = (VectorPoint)selObj;
 
-                if(((VectorPoint)selObj).Type != VectorPointType.Normal)
+                foreach (VectorEdge e in p.LinkedEdges)
                 {
-                   // return;
+                    if (e.IsSelected || e.Shape.IsSelected)
+                        return;
+                }
+
+                if (p.Type == VectorPointType.Control)
+                {
+                   return;
                 }
             }
 
             if (selObj is VectorEdge)
             {
-                //if (selection.Count > 0 && selection[0] is VectorShape)
-                //    selObj = selection[0];
+                VectorEdge e = (VectorEdge)selObj;
+
+                if (e.Shape.IsSelected)
+                    return;
             }
   
             if (selObj != null)
-            {
-
-                Document.UnselectObject(selObj);
+            {                
                 if (selObj.IsSelected)
                 {
-                    
+                    Document.UnselectObject(selObj);
                 }
                 else
                 {

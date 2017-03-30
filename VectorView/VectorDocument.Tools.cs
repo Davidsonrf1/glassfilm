@@ -16,6 +16,7 @@ namespace VectorView
             RegsiterTool("DebugTool", new DebugTool("DebugTool", this));
             RegsiterTool("SelectionTool", new SelectionTool("DebugTool", this));
             RegsiterTool("RotateTool", new TransformTool("DebugTool", this));
+            RegsiterTool("ZoomTool", new ZoomTool("ZoomTool", this));
         }
 
         void RegsiterTool(string name, VectorTool tool)

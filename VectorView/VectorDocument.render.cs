@@ -230,6 +230,14 @@ namespace VectorView
             }
         }
 
+        public float InverseScale
+        {
+            get
+            {
+                return 1 / scale;
+            }
+        }
+
         public float Scale
         {
             get

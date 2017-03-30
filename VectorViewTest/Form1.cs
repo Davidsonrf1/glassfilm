@@ -65,8 +65,19 @@ namespace VectorViewTest
             r.LineTo(600, 145);
             r.LineTo(12, 40);
             r.LineTo(10, 200);
-
             r.CurveTo(300, 400, -300, 400, 300, 450);
+            r.EndPath();
+
+            r = doc.CreateShape();
+
+            r.BeginPath(800+10, 10);
+            r.LineTo(800 + 200, 10);
+            r.LineTo(800 + 200, 400);
+            r.QCurveTo(800 + 600, 300, 800 + 15, 400);
+            r.LineTo(800 + 600, 145);
+            r.LineTo(800 + 12, 40);
+            r.LineTo(800 + 10, 200);
+            r.CurveTo(800 + 300, 400, -300 + 800, 400, 800 + 300, 450);
 
             r.EndPath();
 

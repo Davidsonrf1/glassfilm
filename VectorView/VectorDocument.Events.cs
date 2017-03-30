@@ -155,6 +155,27 @@ namespace VectorView
             }
         }
 
+        public virtual void MouseWheel(float delta, float x, float y)
+        {
+            PointF p = ViewToDocumentPoint(x, y);
+
+            foreach (VectorTool t in toolsOrder)
+            {
+                t.MouseWeel(delta, p.X, p.Y);
+            }
+        }
+
+        public bool HasHitObject
+        {
+            get
+            {
+                if (mouseHitEdge != null || MouseHitPoint != null || mouseHitShape != null)
+                    return true;
+
+                return false;
+            }
+        }
+
         public virtual void MouseMove(float x, float y)
         {
             PointF p = ViewToDocumentPoint(x, y);

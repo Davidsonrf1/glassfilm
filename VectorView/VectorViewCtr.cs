@@ -45,9 +45,7 @@ namespace VectorView
             if (document != null)
             {
                 document.MouseDown(e.X, e.Y, e.Button);
-
-                //if (document.NeedRedraw)
-                    Invalidate();
+                Invalidate();
             }            
         }
 
@@ -58,8 +56,7 @@ namespace VectorView
             if (document != null)
             {
                 document.MouseUp(e.X, e.Y, e.Button);
-                //if (document.NeedRedraw)
-                    Invalidate();
+                Invalidate();
             }
         }
 
@@ -70,8 +67,18 @@ namespace VectorView
             if (document != null)
             {
                 document.MouseMove(e.X, e.Y);
-                //if (document.NeedRedraw)
-                    Invalidate();
+                Invalidate();
+            }
+        }
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            if (document != null)
+            {
+                document.MouseWheel(e.Delta, e.X, e.Y);
+                Invalidate();
             }
         }
 
