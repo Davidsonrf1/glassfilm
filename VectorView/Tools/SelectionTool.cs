@@ -161,9 +161,9 @@ namespace VectorView.Tools
 
             if (isTransformingSelection && isRotating)
             {
-                Document.DrawControlLine(r.X + r.Width / 2, r.Y + r.Height / 2, Document.MouseState.Pos.X, Document.MouseState.Pos.Y);
+                Document.DrawControlLine(startX, startY, Document.MouseState.Pos.X, Document.MouseState.Pos.Y);
 
-                Document.Graphics.DrawString(angle.ToString(), new Font("Arial",12, FontStyle.Regular), Brushes.DarkKhaki, r.X + r.Width / 2, r.Y + r.Height / 2);
+                Document.Graphics.DrawString(angle.ToString(), new Font("Arial",12, FontStyle.Regular), Brushes.DarkKhaki, startX, startY);
             }
         }
 
@@ -179,8 +179,8 @@ namespace VectorView.Tools
                 RectangleF r = Document.SelectionBoundingBox;
                 float ox, oy, mx, my;
 
-                ox = r.X + r.Width / 2;
-                oy = r.Y + r.Height / 2;
+                ox = startX;
+                oy = startY;
                 mx = Document.MouseState.Pos.X;
                 my = Document.MouseState.Pos.Y;
 
@@ -408,6 +408,12 @@ namespace VectorView.Tools
             if (hitCorner != SelectionHitCorner.None)
             {
                 isTransformingSelection = true;
+
+                RectangleF r = Document.SelectionBoundingBox;
+
+                startX = r.X + r.Width / 2;
+                startY = r.Y + r.Height / 2;
+
                 return;
             }
 

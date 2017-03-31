@@ -11,7 +11,22 @@ namespace VectorView
 
         public static float PointAngle(float x1, float y1, float x2, float y2)
         {
-            return -(float)(Math.Atan2(y1 - y2, x1 - x2) * Rad2Deg);
+            float dx = x1 - x2;
+            float dy = y1 - y2;
+            float angle = 0;
+
+            if (dx != 0)
+            {
+                if (dx != 0)
+                    angle = (float)(Math.Atan(dy / dx) * 180 / Math.PI);
+                else
+                    angle = 0;
+
+                if (dx < 0)
+                    angle = angle + 180;
+            }
+
+            return angle;
         }
 
         public static PointF InterpolateLine(PointF p1, PointF p2, float ratio)
