@@ -16,6 +16,8 @@ namespace VectorView
         VectorEdge mouseHitEdge = null;
         VectorPoint mouseHitPoint = null;
 
+        float hitTolerance = 3;
+
         void UpdateHitObjects()
         {
             debugPoints.Clear();
@@ -26,33 +28,34 @@ namespace VectorView
 
             foreach (VectorShape s in shapes)
             {
-                if(s.HitTest(mouseState.Pos.X, mouseState.Pos.Y))
+                float x, y;
+
+                x = mouseState.Pos.X;
+                y = mouseState.Pos.Y;
+
+                if (s.HitTest(x, y))
                 {
                     mouseHitShape = s;
                 }
 
                 foreach (VectorEdge e in s.Edges())
                 {
-                    List<PointF> pts = new List<PointF>();
-                       
-                    if(e.CrossPointCount(mouseState.Pos.Y, pts) > 0)
+                    if (e.HitTest(x, y))
                     {
-                        foreach (PointF p in pts)
-                        {
-                            if (Math.Abs(p.X - mouseState.Pos.X) <= 4)
-                                mouseHitEdge = e;
-                        }
+                        mouseHitEdge = e;
+                        break;
                     }
                 }
 
                 foreach (VectorPoint p in s.Points())
                 {
-                    if (mouseState.Pos.X >= p.X - 3 && mouseState.Pos.X <= p.X + 3)
-                        if (mouseState.Pos.Y >= p.Y - 3 && mouseState.Pos.Y <= p.Y + 3)
-                            mouseHitPoint = p;
+                    if (p.HitTest(x, y))
+                    {
+                        mouseHitPoint = p;
+                        break;
+                    }
                 }
             }
-
         }
 
         public VectorEdge MouseHitEdge
@@ -173,6 +176,19 @@ namespace VectorView
                     return true;
 
                 return false;
+            }
+        }
+
+        public float HitTolerance
+        {
+            get
+            {
+                return hitTolerance * InverseScale;
+            }
+
+            set
+            {
+                hitTolerance = value;
             }
         }
 

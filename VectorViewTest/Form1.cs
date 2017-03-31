@@ -81,8 +81,8 @@ namespace VectorViewTest
 
             r.EndPath();
 
-            doc.OffsetX = 500;
-            doc.OffsetY = 100;
+            //doc.OffsetX = 500;
+            //doc.OffsetY = 100;
             //doc.Scale = 4;
 
             vectorViewCtr1.Document = doc;

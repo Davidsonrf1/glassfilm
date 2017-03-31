@@ -91,8 +91,6 @@ namespace VectorView
         public bool HitTest(float x, float y)
         {
             isHit = InternalHitTest(x, y);
-
-
             return isHit;
         }
     }

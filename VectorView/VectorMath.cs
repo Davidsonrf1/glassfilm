@@ -24,6 +24,53 @@ namespace VectorView
             return new PointF(x1 + ((x2 - x1) * ratio), y1 + ((y2 - y1) * ratio));
         }
 
+        public static float PointDistance(PointF p1, PointF p2)
+        {
+            float d1 = p1.X - p2.X;
+            float d2 = p1.Y - p2.Y;
+
+            return (float)Math.Sqrt(d1 * d1 + d2 * d2);
+        }
+
+        public static float PointDistance(float x1, float y1, float x2, float y2)
+        {
+            float d1 = x1 - x2;
+            float d2 = y1 - y2;
+
+            return (float)Math.Sqrt(d1 * d1 + d2 * d2);
+        }
+
+        public static float PointToLineDistance(PointF point, PointF start, PointF end)
+        {
+            return PointToLineDistance(point.X, point.Y, start.X, start.Y, end.X, end.Y);
+        }
+
+        public static float PointToLineDistance(float px, float py, float x1, float y1, float x2, float y2)
+        {
+            /*if (y1 == y2)
+            {
+                if (px >= Math.Min(x1, x2) && px <= Math.Max(x1, x2))
+                    return Math.Abs(py - y2);
+                else
+                    return float.MaxValue;
+            }
+
+            if (x1 == x2)
+            {
+                if (py >= Math.Min(y1, y2) && px <= Math.Max(y1, y2))
+                    return Math.Abs(px - x2);
+                else
+                    return float.MaxValue;
+            }*/
+
+            float q = (float)Math.Sqrt(((y2 - y1) * (y2 - y1)) + ((x2 - x1) * (x2 - x1)));
+
+            if (q != 0)
+                return (float)Math.Abs((y2 - y1) * px - (x2 - x1) * py + x2 * y1 - y2 * x1) / q;
+
+            return float.MaxValue;
+        }
+
         public static bool HorizontalCrossPoint(float x1, float y1, float x2, float y2, float hline, out PointF point)
         {
             point = new PointF();

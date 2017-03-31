@@ -163,5 +163,27 @@ namespace VectorView
 
             return new RectangleF(minx, miny, maxx - minx, maxy - miny);
         }
+
+        protected override bool InternalHitTest(float x, float y)
+        {
+            float mind = float.MaxValue;
+
+            if (calcPoints.Length <= 0)
+                return base.InternalHitTest(x, y);
+
+            PointF p = new PointF(x, y);
+
+            mind = Math.Min(VectorMath.PointToLineDistance(p, Start.Point, calcPoints[0]), mind);
+
+            int i = 1;
+            for (; i < calcPoints.Length; i++)
+            {
+                mind = Math.Min(VectorMath.PointToLineDistance(p, calcPoints[i - 1], calcPoints[i]), mind);
+            }
+
+            mind = Math.Min(VectorMath.PointToLineDistance(p, calcPoints[i - 1], End.Point), mind);
+
+            return mind < Document.HitTolerance;
+        }
     }
 }

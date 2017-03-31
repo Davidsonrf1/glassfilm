@@ -121,6 +121,11 @@ namespace VectorView
             }
         }
 
+        public float PointDistance(float x, float y)
+        {
+            return VectorMath.PointToLineDistance(x, y, start.X, start.Y, end.X, end.Y);
+        }
+
         public virtual int CrossPointCount(float hline, List<PointF> crossPoints = null)
         {
             float x1, y1, x2, y2;
@@ -186,6 +191,12 @@ namespace VectorView
 
             if (end != null)
                 ol.Add(end.GetOrigin());
+        }
+
+        protected override bool InternalHitTest(float x, float y)
+        {
+            float d = PointDistance(x, y);
+            return d < Document.HitTolerance;
         }
     }
 }

@@ -381,8 +381,7 @@ namespace VectorView
                 return;
 
             float size = renderParams.PointSize * (1 / Scale);
-
-            graphics.FillRectangle(renderParams.ControlPointBrush, x - size / 2, y - size / 2, size, size);
+            graphics.FillEllipse(renderParams.ControlPointBrush, x - size / 2, y - size / 2, size, size);
         }
     }
 }

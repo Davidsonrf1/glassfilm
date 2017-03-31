@@ -16,8 +16,8 @@ namespace VectorView
         float x, y;
 
         List<VectorEdge> linkedEdges = new List<VectorEdge>();
-
         VectorPoint controledPoint = null;
+        List<VectorPoint> controllers = new List<VectorPoint>();
 
         public VectorPoint(VectorDocument doc, VectorShape shape) : base(doc)
         {
@@ -29,6 +29,11 @@ namespace VectorView
             this.shape = shape;
             this.controledPoint = controledPoint;
             type = VectorPointType.Control;
+
+            if (controledPoint != null)
+            {
+                controledPoint.controllers.Add(this);
+            }
         }
 
         public VectorPointType Type
@@ -114,7 +119,13 @@ namespace VectorView
 
             set
             {
+                if (controledPoint != null)
+                    controledPoint.controllers.Remove(this);
+
                 controledPoint = value;
+
+                if (controledPoint != null)
+                    controledPoint.controllers.Add(this);
             }
         }
 
@@ -164,13 +175,32 @@ namespace VectorView
         {
             base.Render();
 
-            if (IsSelected)
+            bool isSel = IsSelected;
+
+            if (!isSel)
+            {
+                foreach (VectorEdge e in linkedEdges)
+                {
+                    if (e.IsSelected)
+                    {
+                        isSel = true;
+                        break;
+                    }
+                }
+            }            
+
+            if (isSel)
             {
                 if (type == VectorPointType.Control)
                     Document.DrawControlPoint(x, y);
 
                 if (type == VectorPointType.Normal)
                     Document.DrawPoint(x, y);
+
+                foreach (VectorPoint p in controllers)
+                {
+                    Document.DrawControlPoint(p.X, p.Y);
+                }
             }
         }
 
@@ -183,6 +213,11 @@ namespace VectorView
         {
             base.FillOriginList(ol);
             ol.Add(GetOrigin());
+        }
+
+        protected override bool InternalHitTest(float x, float y)
+        {
+            return VectorMath.PointDistance(this.x, this.y, x, y) < Document.HitTolerance;
         }
     }
 }
