@@ -1,4 +1,5 @@
-﻿using System.Drawing;
+﻿using System.Collections.Generic;
+using System.Drawing;
 using VectorView.Bezier;
 
 namespace VectorView
@@ -40,7 +41,7 @@ namespace VectorView
                 if (Start != null && End != null && Shape != null)
                 {
                     PointF cp = VectorMath.InterpolateLine(Start.Point, End.Point, 0.3f);
-                    control1 = Shape.AddControlPoint(cp.X, cp.Y);
+                    control1 = Shape.AddControlPoint(cp.X, cp.Y, Start);
 
                     Recalculate();
                 }
@@ -51,7 +52,7 @@ namespace VectorView
                 if (Start != null && End != null && Shape != null)
                 {
                     PointF cp = VectorMath.InterpolateLine(Start.Point, End.Point, 0.6f);
-                    control2 = Shape.AddControlPoint(cp.X, cp.Y);
+                    control2 = Shape.AddControlPoint(cp.X, cp.Y, End);
 
                     Recalculate();
                 }
@@ -103,6 +104,17 @@ namespace VectorView
             }
 
             base.Render();
+        }
+
+        public override void FillOriginList(List<PointOrigin> ol)
+        {
+            base.FillOriginList(ol);
+
+            if (control1 != null)
+                ol.Add(control1.GetOrigin());
+
+            if (control1 != null)
+                ol.Add(control2.GetOrigin());
         }
     }
 }

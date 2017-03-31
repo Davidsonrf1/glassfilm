@@ -39,7 +39,7 @@ namespace VectorView
                 if (Start != null && End != null && Shape != null)
                 {
                     PointF cp = VectorMath.InterpolateLine(Start.Point, End.Point, 0.3f);
-                    control = Shape.AddControlPoint(cp.X, cp.Y);
+                    control = Shape.AddControlPoint(cp.X, cp.Y, Start);
 
                     Recalculate();
                 }
@@ -87,6 +87,14 @@ namespace VectorView
                 Document.DrawControlPoint(Control.X, Control.Y);
             }
             base.Render();
+        }
+
+        public override void FillOriginList(List<PointOrigin> ol)
+        {
+            base.FillOriginList(ol);
+
+            if (control != null)
+                ol.Add(control.GetOrigin());
         }
     }
 }

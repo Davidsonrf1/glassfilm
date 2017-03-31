@@ -17,9 +17,18 @@ namespace VectorView
 
         List<VectorEdge> linkedEdges = new List<VectorEdge>();
 
+        VectorPoint controledPoint = null;
+
         public VectorPoint(VectorDocument doc, VectorShape shape) : base(doc)
         {
             this.shape = shape;
+        }
+
+        public VectorPoint(VectorDocument doc, VectorShape shape, VectorPoint controledPoint) : base(doc)
+        {
+            this.shape = shape;
+            this.controledPoint = controledPoint;
+            type = VectorPointType.Control;
         }
 
         public VectorPointType Type
@@ -96,6 +105,19 @@ namespace VectorView
             }
         }
 
+        public VectorPoint ControledPoint
+        {
+            get
+            {
+                return controledPoint;
+            }
+
+            set
+            {
+                controledPoint = value;
+            }
+        }
+
         public override RectangleF GetBoundBox()
         {
             return new RectangleF(x - 4, y - 4, 8, 8);
@@ -150,6 +172,17 @@ namespace VectorView
                 if (type == VectorPointType.Normal)
                     Document.DrawPoint(x, y);
             }
+        }
+
+        public PointOrigin GetOrigin()
+        {
+            return new PointOrigin(this);
+        }
+
+        public override void FillOriginList(List<PointOrigin> ol)
+        {
+            base.FillOriginList(ol);
+            ol.Add(GetOrigin());
         }
     }
 }

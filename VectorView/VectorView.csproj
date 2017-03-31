@@ -46,6 +46,7 @@
     <Compile Include="Bezier\CubicBezier.cs" />
     <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="MouseState.cs" />
+    <Compile Include="PointOrigin.cs" />
     <Compile Include="Tools\TransformTool.cs" />
     <Compile Include="Tools\SelectionTool.cs" />
     <Compile Include="Tools\ZoomTool.cs" />

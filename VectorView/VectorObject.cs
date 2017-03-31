@@ -83,6 +83,11 @@ namespace VectorView
             return false;
         }
 
+        public virtual void FillOriginList(List<PointOrigin> ol)
+        {
+
+        }
+
         public bool HitTest(float x, float y)
         {
             isHit = InternalHitTest(x, y);

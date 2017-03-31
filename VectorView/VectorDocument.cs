@@ -63,6 +63,46 @@ namespace VectorView
             return cd;
         }
 
+        public void SetPoint(int id, float x, float y)
+        {
+            VectorObject obj = null;
+
+            if (objects.TryGetValue(id, out obj))
+            {
+                if (obj is VectorPoint)
+                {
+                    VectorPoint p = (VectorPoint)obj;
+
+                    p.X = x;
+                    p.Y = y;
+                }
+            }
+        }
+
+        public List<PointOrigin> GetSelectionOrigin()
+        {
+            if (SelectionCount == 0)
+                return null;
+
+            List<PointOrigin> oList = new List<VectorView.PointOrigin>();
+
+            foreach (VectorObject o in selection)
+            {
+                if (o is VectorPoint)
+                {
+                    VectorPoint p = (VectorPoint)o;
+                    oList.Add(p.GetOrigin());
+                }
+                else
+                {
+                    o.FillOriginList(oList);
+                }
+            }
+
+
+            return oList;
+        }
+
         internal void AddObject(VectorObject obj)
         {
             objects.Add(obj.Id, obj);
@@ -98,7 +138,7 @@ namespace VectorView
             }
         }
 
-        void CalculateSelectionBoudingBox()
+        public void CalculateSelectionBoudingBox()
         {
             if (selection.Count == 0)
             {

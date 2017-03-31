@@ -106,9 +106,9 @@ namespace VectorView
             return p;
         }
 
-        public VectorPoint AddControlPoint(float x, float y)
+        public VectorPoint AddControlPoint(float x, float y, VectorPoint controled)
         {
-            VectorPoint p = new VectorPoint(Document, this);
+            VectorPoint p = new VectorPoint(Document, this, controled);
 
             p.X = x;
             p.Y = y;
@@ -340,6 +340,16 @@ namespace VectorView
 
                 if (points.TryGetValue(e.Id, out ce))
                     ce.RestoreClone(e);
+            }
+        }
+
+        public override void FillOriginList(List<PointOrigin> ol)
+        {
+            base.FillOriginList(ol);
+
+            foreach (VectorPoint p in points.Values)
+            {
+                ol.Add(p.GetOrigin());
             }
         }
     }

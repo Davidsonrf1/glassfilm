@@ -106,7 +106,7 @@ namespace VectorView
         {
             Document.DrawLine(start.X, start.Y, end.X, end.Y);
 
-            if (IsSelected || Shape.IsSelected)
+            if (IsSelected || Shape.IsSelected || IsHit)
             {
                 Document.DrawPoint(start.X, start.Y);
                 Document.DrawPoint(end.X, end.Y);
@@ -175,6 +175,17 @@ namespace VectorView
             Start.Y = e.Start.Y;
             End.X = e.End.X;
             End.Y = e.End.Y;
+        }
+
+        public override void FillOriginList(List<PointOrigin> ol)
+        {
+            base.FillOriginList(ol);
+
+            if (start != null)
+                ol.Add(start.GetOrigin());
+
+            if (end != null)
+                ol.Add(end.GetOrigin());
         }
     }
 }

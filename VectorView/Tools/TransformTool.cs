@@ -217,33 +217,18 @@ namespace VectorView.Tools
         {
             base.MouseDown(bt);
 
-            bool shift = GetKeyState(VirtualKeyStates.VK_LSHIFT) < 0 ? true : false;
 
-            if ((!Document.HasHitObject && Document.MouseState.IsLeftDown) || (Document.MouseState.IsLeftDown && shift))
-            {
-                isMovingDocument = true;
-            }
         }
 
         public override void MouseUp(MouseButton bt)
         {
             base.MouseUp(bt);
 
-            if (isMovingDocument)
-            {
-                isMovingDocument = false;
-            }
         }
 
         public override void MouseMove()
         {
-            base.MouseMove();
 
-            if (isMovingDocument)
-            {
-                Document.OffsetX -= Document.MouseState.LeftDownPos.X - Document.MouseState.Pos.X;
-                Document.OffsetY -= Document.MouseState.LeftDownPos.Y - Document.MouseState.Pos.Y;
-            }
         }
     }
 }
