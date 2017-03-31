@@ -10,6 +10,14 @@ namespace VectorView
         VectorPoint point = null;
         PointF origin;
 
+        public PointF Origin
+        {
+            get
+            {
+                return origin;
+            }
+        }
+
         internal PointOrigin(VectorPoint p)
         {
             point = p;

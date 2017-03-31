@@ -47,28 +47,7 @@ namespace VectorView
 
         public static float PointToLineDistance(float px, float py, float x1, float y1, float x2, float y2)
         {
-            /*if (y1 == y2)
-            {
-                if (px >= Math.Min(x1, x2) && px <= Math.Max(x1, x2))
-                    return Math.Abs(py - y2);
-                else
-                    return float.MaxValue;
-            }
-
-            if (x1 == x2)
-            {
-                if (py >= Math.Min(y1, y2) && px <= Math.Max(y1, y2))
-                    return Math.Abs(px - x2);
-                else
-                    return float.MaxValue;
-            }*/
-
-            float q = (float)Math.Sqrt(((y2 - y1) * (y2 - y1)) + ((x2 - x1) * (x2 - x1)));
-
-            if (q != 0)
-                return (float)Math.Abs((y2 - y1) * px - (x2 - x1) * py + x2 * y1 - y2 * x1) / q;
-
-            return float.MaxValue;
+            return PointDistance(px, py, x2, y2) + PointDistance(px, py, x1, y1) - PointDistance(x1, y1, x2, y2);
         }
 
         public static bool HorizontalCrossPoint(float x1, float y1, float x2, float y2, float hline, out PointF point)

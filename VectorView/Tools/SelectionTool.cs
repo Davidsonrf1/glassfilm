@@ -19,6 +19,8 @@ namespace VectorView.Tools
             isRotating = !isRotating;
         }
 
+        float angle = 0;
+
         public SelectionTool(string name, VectorDocument doc) : base(name, doc)
         {
         }
@@ -160,6 +162,8 @@ namespace VectorView.Tools
             if (isTransformingSelection && isRotating)
             {
                 Document.DrawControlLine(r.X + r.Width / 2, r.Y + r.Height / 2, Document.MouseState.Pos.X, Document.MouseState.Pos.Y);
+
+                Document.Graphics.DrawString(angle.ToString(), new Font("Arial",12, FontStyle.Regular), Brushes.DarkKhaki, r.X + r.Width / 2, r.Y + r.Height / 2);
             }
         }
 
@@ -169,6 +173,45 @@ namespace VectorView.Tools
 
             if (Document.SelectionCount > 0)
                 UpdateHitCorner();
+
+            if (isTransformingSelection)
+            {
+                RectangleF r = Document.SelectionBoundingBox;
+                float ox, oy, mx, my;
+
+                ox = r.X + r.Width / 2;
+                oy = r.Y + r.Height / 2;
+                mx = Document.MouseState.Pos.X;
+                my = Document.MouseState.Pos.Y;
+
+                if (isRotating)
+                {
+                    angle = VectorMath.PointAngle(ox, oy, mx, my);
+
+                    Matrix mt = new Matrix();
+                    mt.RotateAt(100+angle, new PointF(ox, oy));
+                    PointF[] pts = new PointF[1];
+                    pts[0] = new PointF();
+
+                    if (oList == null)
+                        oList = Document.GetSelectionOrigin();
+
+                    if (oList != null)
+                    {
+                        foreach (PointOrigin p in oList)
+                        {
+                            pts[0].X = p.Origin.X;
+                            pts[0].Y = p.Origin.Y;
+
+                            mt.TransformPoints(pts);
+
+                            p.SetPoint(pts[0].X, pts[0].Y);
+                        }
+                    }
+
+                    Document.CalculateSelectionBoudingBox();
+                }
+            }
 
             if (isMovingDocument)
             {
