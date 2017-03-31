@@ -16,7 +16,7 @@ namespace VectorView
             
         }
 
-        public VectorPoint Control1
+        public VectorPoint Control1 
         {
             get
             {
