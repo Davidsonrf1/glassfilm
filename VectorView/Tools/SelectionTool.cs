@@ -6,6 +6,7 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 
+
 namespace VectorView.Tools
 {
     public enum SelectionHitCorner { None, TopLeft, Top, TopRight, Right, BottomRight, Bottom, BottomLeft, Left }
@@ -44,7 +45,7 @@ namespace VectorView.Tools
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.Top:
-                    cr.X = r.X + (r.Width/2) - t * 2;
+                    cr.X = r.X + (r.Width/2) - t;
                     cr.Y = r.Y - t * 2;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
@@ -57,7 +58,7 @@ namespace VectorView.Tools
                     break;
                 case SelectionHitCorner.Right:
                     cr.X = r.Right;
-                    cr.Y = r.Y + (r.Height / 2) - t * 2;
+                    cr.Y = r.Y + (r.Height / 2) - t;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
@@ -68,7 +69,7 @@ namespace VectorView.Tools
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.Bottom:
-                    cr.X = r.X + (r.Width / 2) - t * 2;
+                    cr.X = r.X + (r.Width / 2) - t;
                     cr.Y = r.Bottom;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
@@ -81,7 +82,7 @@ namespace VectorView.Tools
                     break;
                 case SelectionHitCorner.Left:
                     cr.X = r.X - t * 2;
-                    cr.Y = r.Y + (r.Height / 2) - t * 2;
+                    cr.Y = r.Y + ((float)r.Height / 2) - t;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
@@ -148,25 +149,32 @@ namespace VectorView.Tools
 
                 Document.Graphics.DrawRectangle(p, r.X, r.Y, r.Width, r.Height);
 
-                DrawCornerRect(SelectionHitCorner.TopLeft, r);
-                if (!isRotating) DrawCornerRect(SelectionHitCorner.Top, r);
-                DrawCornerRect(SelectionHitCorner.TopRight, r);
-                if (!isRotating) DrawCornerRect(SelectionHitCorner.Right, r);
-                DrawCornerRect(SelectionHitCorner.BottomRight, r);
-                if (!isRotating) DrawCornerRect(SelectionHitCorner.Bottom, r);
-                DrawCornerRect(SelectionHitCorner.BottomLeft, r);
-                if (!isRotating) DrawCornerRect(SelectionHitCorner.Left, r);
-                
+                if (Document.GetSelectionType() != typeof(VectorPoint))
+                {
+                    DrawCornerRect(SelectionHitCorner.TopLeft, r);
+                    if (!isRotating) DrawCornerRect(SelectionHitCorner.Top, r);
+                    DrawCornerRect(SelectionHitCorner.TopRight, r);
+                    if (!isRotating) DrawCornerRect(SelectionHitCorner.Right, r);
+                    DrawCornerRect(SelectionHitCorner.BottomRight, r);
+                    if (!isRotating) DrawCornerRect(SelectionHitCorner.Bottom, r);
+                    DrawCornerRect(SelectionHitCorner.BottomLeft, r);
+                    if (!isRotating) DrawCornerRect(SelectionHitCorner.Left, r);
+                }                
             }
 
             if (isTransformingSelection && isRotating)
             {
-                Document.DrawControlLine(startX, startY, Document.MouseState.Pos.X, Document.MouseState.Pos.Y);
+                Document.DrawControlLine(originX, originY, startX, startY);
+                Document.DrawControlLine(originX, originY, Document.MouseState.Pos.X, Document.MouseState.Pos.Y);
+                float sa = VectorMath.PointAngle(originX, originY, originX + 100, originY, startX, startY);
 
-                Document.Graphics.DrawString(angle.ToString(), new Font("Arial",12, FontStyle.Regular), Brushes.DarkKhaki, startX, startY);
+                Document.Graphics.DrawArc(Pens.Red, originX - 90, originY - 90, 180, 180, sa, angle);               
+                Document.Graphics.DrawString(angle.ToString("00.00°"), new Font("Arial", 12, FontStyle.Regular), Brushes.DarkKhaki, originX + 10, originY);
             }
         }
 
+
+        float ta = 0;
         public override void MouseMove()
         {
             base.MouseMove();
@@ -177,40 +185,132 @@ namespace VectorView.Tools
             if (isTransformingSelection)
             {
                 RectangleF r = Document.SelectionBoundingBox;
-                float ox, oy, mx, my;
+                float mx, my;
+                float ox, oy;
 
-                ox = startX;
-                oy = startY;
                 mx = Document.MouseState.Pos.X;
                 my = Document.MouseState.Pos.Y;
 
                 if (isRotating)
                 {
-                    angle = VectorMath.PointAngle(ox, oy, mx, my);
+                    ox = startBoundingBox.X + startBoundingBox.Width / 2;
+                    oy = startBoundingBox.Y + startBoundingBox.Height / 2;
 
-                    Matrix mt = new Matrix();
-                    mt.RotateAt(100+angle, new PointF(ox, oy));
-                    PointF[] pts = new PointF[1];
-                    pts[0] = new PointF();
+                    angle = VectorMath.PointAngle(ox, oy, startX, startY, mx, my);
 
                     if (oList == null)
                         oList = Document.GetSelectionOrigin();
 
+                    PointF[] pts = null;
+
                     if (oList != null)
                     {
+                        pts = new PointF[oList.Count];
+                        int i = 0;
+
                         foreach (PointOrigin p in oList)
                         {
-                            pts[0].X = p.Origin.X;
-                            pts[0].Y = p.Origin.Y;
+                            pts[i] = p.Origin;
 
-                            mt.TransformPoints(pts);
+                            pts[i].X -= ox;
+                            pts[i].Y -= oy;
 
-                            p.SetPoint(pts[0].X, pts[0].Y);
+                            i++;
+                        }
+
+                        Matrix mt = new Matrix();
+                        mt.Rotate(angle);
+                        mt.TransformPoints(pts);
+
+                        i = 0;
+                        foreach (PointOrigin p in oList)
+                        {
+                            p.SetPoint(pts[i].X + ox, pts[i].Y + oy);
+                            i++;
                         }
                     }
-
-                    Document.CalculateSelectionBoudingBox();
                 }
+                else
+                {
+                    float dx, dy;                    
+
+                    ox = startBoundingBox.X + startBoundingBox.Width / 2;
+                    oy = startBoundingBox.Y + startBoundingBox.Height / 2;
+
+                    if (oList == null)
+                        oList = Document.GetSelectionOrigin();
+
+                    PointF[] pts = null;
+
+                    if (oList != null)
+                    {
+                        pts = new PointF[oList.Count];
+                        int i = 0;
+
+                        foreach (PointOrigin p in oList)
+                        {
+                            pts[i] = p.Origin;
+
+                            pts[i].X -= ox;
+                            pts[i].Y -= oy;
+
+                            i++;
+                        }
+
+                        dx = ((mx - ox) / (startX - ox));
+                        dy = ((my - oy) / (startY - oy));
+
+                        if (Control.ModifierKeys != Keys.Control)
+                        {
+                            dx = (dx - 1) / 2 + 1;
+                            dy = (dy - 1) / 2 + 1;
+                        }
+
+                        if (Control.ModifierKeys == Keys.Shift)
+                        {
+                            dx = Math.Min(dx, dy);
+                            dy = dx;
+
+                            if (startCorner == SelectionHitCorner.Left || startCorner == SelectionHitCorner.Right || startCorner == SelectionHitCorner.Top || startCorner == SelectionHitCorner.Bottom)
+                            {
+                                dy = dx = 1;
+                            }
+                        }
+
+                        if (startCorner == SelectionHitCorner.Left || startCorner == SelectionHitCorner.Right)
+                            dy = 1;
+
+                        if (startCorner == SelectionHitCorner.Top || startCorner == SelectionHitCorner.Bottom)
+                            dx = 1;
+
+                        Matrix mt = new Matrix();
+                        mt.Scale(dx, dy);
+                        mt.TransformPoints(pts);
+
+                        dx = startBoundingBox.Width / 2f * dx - startBoundingBox.Width / 2;
+                        if (startCorner == SelectionHitCorner.Left || startCorner == SelectionHitCorner.BottomLeft || startCorner == SelectionHitCorner.TopLeft)
+                            dx = -dx;
+
+                        dy = startBoundingBox.Height / 2f * dy - startBoundingBox.Height / 2;
+                        if (startCorner == SelectionHitCorner.Top || startCorner == SelectionHitCorner.TopLeft || startCorner == SelectionHitCorner.TopRight)
+                            dy = -dy;
+
+                        if (Control.ModifierKeys == Keys.Control)
+                        {
+                            dx = 0;
+                            dy = 0;
+                        }
+
+                        i = 0;
+                        foreach (PointOrigin p in oList)
+                        {
+                            p.SetPoint(pts[i].X + ox + dx, pts[i].Y + oy + dy);
+                            i++;
+                        }
+                    }
+                }
+
+                Document.CalculateSelectionBoudingBox();
             }
 
             if (isMovingDocument)
@@ -244,6 +344,14 @@ namespace VectorView.Tools
 
         float startX = 0;
         float startY = 0;
+
+        float originX = 0;
+        float originY = 0;
+
+        float startAngle = 0;
+
+        RectangleF startBoundingBox;
+        SelectionHitCorner startCorner = SelectionHitCorner.None;
         
         VectorObject GetHitObject()
         {
@@ -288,6 +396,8 @@ namespace VectorView.Tools
             if (isTransformingSelection)
             {
                 isTransformingSelection = false;
+                oList.Clear();
+                oList = null;
                 return;
             }
 
@@ -348,7 +458,6 @@ namespace VectorView.Tools
             {
                 if (selObj.IsSelected)
                 {
-                    //Document.UnselectObject(selObj);
                     ToggleRotation();
                 }
                 else
@@ -407,14 +516,26 @@ namespace VectorView.Tools
 
             if (hitCorner != SelectionHitCorner.None)
             {
-                isTransformingSelection = true;
+                oList = Document.GetSelectionOrigin();
 
-                RectangleF r = Document.SelectionBoundingBox;
+                if (oList != null && oList.Count > 0)
+                {
+                    isTransformingSelection = true;
 
-                startX = r.X + r.Width / 2;
-                startY = r.Y + r.Height / 2;
+                    startCorner = hitCorner;
 
-                return;
+                    startBoundingBox = Document.SelectionBoundingBox;
+
+                    originX = startBoundingBox.X + startBoundingBox.Width / 2;
+                    originY = startBoundingBox.Y + startBoundingBox.Height / 2;
+
+                    startX = Document.MouseState.Pos.X;
+                    startY = Document.MouseState.Pos.Y;
+
+                    startAngle = VectorMath.PointAngle(originX, originY, originX + 200, originY, startX, startY);
+
+                    return;
+                }
             }
 
             if (Document.HasHitObject)

@@ -35,8 +35,9 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.Name = "VectorViewCtr";
-            this.Size = new System.Drawing.Size(607, 440);
+            this.Size = new System.Drawing.Size(603, 436);
             this.Load += new System.EventHandler(this.VectorViewCtr_Load);
             this.ResumeLayout(false);
 

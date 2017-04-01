@@ -40,6 +40,7 @@
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Bezier\BezierCurve.cs" />
@@ -47,8 +48,8 @@
     <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="MouseState.cs" />
     <Compile Include="PointOrigin.cs" />
-    <Compile Include="Tools\TransformTool.cs" />
     <Compile Include="Tools\SelectionTool.cs" />
+    <Compile Include="Tools\VectorTool.cs" />
     <Compile Include="Tools\ZoomTool.cs" />
     <Compile Include="VectorCloneData.cs" />
     <Compile Include="VectorCubicBezier.cs" />
@@ -67,7 +68,6 @@
     <Compile Include="VectorPoint.cs" />
     <Compile Include="VectorQuadraticBezier.cs" />
     <Compile Include="VectorShape.cs" />
-    <Compile Include="Tools\VectorTool.cs" />
     <Compile Include="Tools\DebugTool.cs" />
     <Compile Include="VectorViewCtr.cs">
       <SubType>UserControl</SubType>

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Windows;
 
 namespace VectorView
 {
@@ -9,24 +10,9 @@ namespace VectorView
         const float Rad2Deg = (float)(180.0 / Math.PI);
         const float Deg2Rad = (float)(Math.PI / 180.0);
 
-        public static float PointAngle(float x1, float y1, float x2, float y2)
+        public static float PointAngle(float ox, float oy, float x1, float y1, float x2, float y2)
         {
-            float dx = x1 - x2;
-            float dy = y1 - y2;
-            float angle = 0;
-
-            if (dx != 0)
-            {
-                if (dx != 0)
-                    angle = (float)(Math.Atan(dy / dx) * 180 / Math.PI);
-                else
-                    angle = 0;
-
-                if (dx < 0)
-                    angle = angle + 180;
-            }
-
-            return angle;
+            return (float)Vector.AngleBetween(new Vector(x1 - ox, y1 - oy), new Vector(x2 - ox, y2 - oy)) ;
         }
 
         public static PointF InterpolateLine(PointF p1, PointF p2, float ratio)

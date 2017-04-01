@@ -172,7 +172,7 @@ namespace VectorView
             selectionBoundingBox.Width = maxx - minx;
             selectionBoundingBox.Height = maxy - miny;
 
-            selectionBoundingBox.Inflate(4 * (1 / Scale), 4 * (1 / Scale));
+            //selectionBoundingBox.Inflate(4 * (1 / Scale), 4 * (1 / Scale));
         }
     
 
