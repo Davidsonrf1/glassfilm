@@ -34,54 +34,56 @@ namespace VectorView.Tools
 
             float t = Document.HitTolerance + 2;
 
+            float cornerDistance = 3;
+
             switch (corner)
             {
                 case SelectionHitCorner.None:
                     break;
                 case SelectionHitCorner.TopLeft:
-                    cr.X = r.X - t * 2;
-                    cr.Y = r.Y - t * 2;
+                    cr.X = r.X - t * 2 - cornerDistance;
+                    cr.Y = r.Y - t * 2 - cornerDistance;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.Top:
-                    cr.X = r.X + (r.Width/2) - t;
-                    cr.Y = r.Y - t * 2;
+                    cr.X = r.X + (r.Width / 2) - t;
+                    cr.Y = r.Y - t * 2 - cornerDistance;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.TopRight:
-                    cr.X = r.Right;
-                    cr.Y = r.Y - t * 2;
+                    cr.X = r.Right + cornerDistance;
+                    cr.Y = r.Y - t * 2 - cornerDistance;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.Right:
-                    cr.X = r.Right;
+                    cr.X = r.Right + cornerDistance;
                     cr.Y = r.Y + (r.Height / 2) - t;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.BottomRight:
-                    cr.X = r.Right;
-                    cr.Y = r.Y + r.Height;
+                    cr.X = r.Right + cornerDistance;
+                    cr.Y = r.Y + r.Height + cornerDistance;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.Bottom:
                     cr.X = r.X + (r.Width / 2) - t;
-                    cr.Y = r.Bottom;
+                    cr.Y = r.Bottom + cornerDistance;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.BottomLeft:
-                    cr.X = r.X - t * 2;
-                    cr.Y = r.Bottom;
+                    cr.X = r.X - t * 2 - cornerDistance;
+                    cr.Y = r.Bottom + cornerDistance;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
                     break;
                 case SelectionHitCorner.Left:
-                    cr.X = r.X - t * 2;
+                    cr.X = r.X - t * 2 - cornerDistance;
                     cr.Y = r.Y + ((float)r.Height / 2) - t;
                     cr.Width = t * 2;
                     cr.Height = t * 2;
@@ -145,7 +147,8 @@ namespace VectorView.Tools
             {
                 Pen p = new Pen(Color.Blue, 1);
                 p.DashStyle = DashStyle.Custom;
-                p.DashPattern = new float[] { 1.0f, 4.0f };
+                p.DashPattern = new float[] { 2.0f, 4.0f };
+                p.Width = 1 / Document.InverseScale;
 
                 Document.Graphics.DrawRectangle(p, r.X, r.Y, r.Width, r.Height);
 
@@ -162,15 +165,19 @@ namespace VectorView.Tools
                 }                
             }
 
+            /*
             if (isTransformingSelection && isRotating)
             {
+
+                float sa = VectorMath.PointAngle(originX, originY, originX + 100, originY, startX, startY);
+
                 Document.DrawControlLine(originX, originY, startX, startY);
                 Document.DrawControlLine(originX, originY, Document.MouseState.Pos.X, Document.MouseState.Pos.Y);
-                float sa = VectorMath.PointAngle(originX, originY, originX + 100, originY, startX, startY);
 
                 Document.Graphics.DrawArc(Pens.Red, originX - 90, originY - 90, 180, 180, sa, angle);               
                 Document.Graphics.DrawString(angle.ToString("00.00°"), new Font("Arial", 12, FontStyle.Regular), Brushes.DarkKhaki, originX + 10, originY);
             }
+            */
         }
 
 
