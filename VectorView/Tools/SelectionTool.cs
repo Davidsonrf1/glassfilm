@@ -10,7 +10,7 @@ using System.Drawing.Drawing2D;
 namespace VectorView.Tools
 {
     public enum SelectionHitCorner { None, TopLeft, Top, TopRight, Right, BottomRight, Bottom, BottomLeft, Left }
-
+    
     public class SelectionTool : VectorTool
     {
         bool isRotating = false;
@@ -472,6 +472,7 @@ namespace VectorView.Tools
                     if (Document.MouseState.ModifierKeys != Keys.Shift)
                     {
                         Document.ClearSelection();
+                        isRotating = false;
                     }
 
                     Document.SelectObject(selObj);
@@ -480,6 +481,7 @@ namespace VectorView.Tools
             else
             {
                 Document.ClearSelection();
+                isRotating = false;
             }
         }
 
@@ -567,6 +569,7 @@ namespace VectorView.Tools
                         if (!hitObj.IsSelected && NeedClearSelection(hitObj))
                         {
                             Document.ClearSelection();
+                            isRotating = false;
 
                             oList = new List<VectorView.PointOrigin>();
                             hitObj.FillOriginList(oList);
