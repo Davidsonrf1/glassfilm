@@ -331,6 +331,9 @@ namespace VectorView
             graphics.ScaleTransform(scale, scale);
             graphics.TranslateTransform(offsetX, offsetY);
 
+            graphics.DrawLine(Pens.Black, new PointF(0, -100000f), new PointF(0, 100000));
+            graphics.DrawLine(Pens.Black, new PointF(-100000f, 0), new PointF(100000, 0));
+
             foreach (VectorShape s in shapes)
             {
                 s.Render();

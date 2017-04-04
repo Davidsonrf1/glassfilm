@@ -2,208 +2,191 @@
 using System.Collections.Generic;
 using System.Xml;
 using System.Text;
-using System.Threading.Tasks;
+using System.IO;
+using VectorView.SVG;
+using System.Drawing;
 
 namespace VectorView
 {
     public partial class VectorDocument
     {
-        class PathCommand
+        void ParseNode(XmlNode node)
         {
-            char cmd = 'm';
-            float originX=0, originY=0;
-
-            int curValueIndex = 0;
-
-            public override string ToString()
+            if (node.Name.ToLower() == "path")
             {
-                return cmd.ToString();
-            }
-
-            List<float> values = new List<float>();
-
-            public bool ExtractValues(float[] vList)
-            {
-                int i = 0;
-                for (; i < vList.Length && curValueIndex < values.Count; i++)
-                    vList[i] = values[curValueIndex++];
-
-                return i == vList.Length ? true : false; 
-            }
-
-            public PathCommand(char c)
-            {
-                cmd = c;
-
-                if (char.IsUpper(c))
+                foreach (XmlAttribute a in node.Attributes)
                 {
-                }
-            }
-
-            public char Cmd
-            {
-                get
-                {
-                    return cmd;
-                }
-            }
-
-            public float OriginX
-            {
-                get
-                {
-                    return originX;
-                }
-            }
-
-            public float OriginY
-            {
-                get
-                {
-                    return originY;
-                }
-            }
-
-            public List<float> Values
-            {
-                get
-                {
-                    return values;
-                }
-            }
-        }
-
-        class PathParser
-        {
-            List<PathCommand> cmds = new List<PathCommand>();
-
-            public List<PathCommand> Commands
-            {
-                get
-                {
-                    return cmds;
-                }
-                
-            }
-
-            public void Clear()
-            {
-                cmds.Clear();
-            }           
-
-            public void Parse (char[] d)
-            {
-                PathCommand curCmd = null;
-
-                for (int i = 0; i < d.Length; i++)
-                {
-                    while (char.IsWhiteSpace(d[i]) && i < d.Length)
-                        i++;
-
-                    char c = d[i];
-
-                    if (char.IsLetter(c))
+                    if (a.Name == "d")
                     {
-                        char cc = char.ToLower(c);
+                        VectorShape shape = CreateShape();
+                        SVGPathData data = new SVGPathData(a.Value);
 
-                        if (cc == 'm' || cc == 'z' || cc == 'l' || cc == 'h' || cc == 'v' || cc == 'c' || cc == 's' || cc == 'q' || cc == 't' || cc == 'a')
+                        shape.BeginPath(0, 0);
+
+                        bool firstCmd = true;
+                        float ox=0, oy=0;
+
+                        foreach (SVGPathCommand cc in data.Cmds)
                         {
-                            curCmd = new PathCommand(c);
-                            cmds.Add(curCmd);
-                        }
-                        else
-                            throw new InvalidCastException("Comando inválido no Path: " + c);
-                    }
-                    else if(c == '-' || char.IsDigit(c) || c == '.')
-                    {
-                        bool negative = c == '-' ? true : false;
-                        if (negative)
-                            i++;
+                            bool relative = false;
 
-                        bool hasDot = c == '.' ? true : false;
-                        if (hasDot)
-                            i++;
+                            if (char.IsLower(cc.Cmd))
+                                relative = true;                            
 
-                        while (char.IsWhiteSpace(c) && i < d.Length)
-                            i++;
+                            char c = char.ToLower(cc.Cmd);
 
-                        StringBuilder sb = new StringBuilder();
+                            float x = 0, y = 0;
 
-                        c = d[i];
-
-                        while ((char.IsDigit(c) || c == '.') && i < d.Length)
-                        {
-                            if (c == '.')
+                            bool firstPoint = true;
+                            if (c == 'm')
                             {
-                                if(hasDot)
+                                if (firstCmd)
                                 {
-                                    i--;
-                                    break;
+                                    ox = 0;
+                                    oy = 0;
                                 }
 
-                                hasDot = true;
+                                while (cc.NextPoint(out x, out y))
+                                {
+                                    if (relative)
+                                    {
+                                        x += ox;
+                                        y += oy;
+                                    }
+
+                                    if (firstPoint)
+                                    {
+                                        shape.BeginPath(x, y);
+                                    }
+                                    else
+                                    {
+                                        shape.LineTo(x, y);
+                                    }
+
+                                    firstPoint = false;
+                                }
+
+                                ox = x;
+                                oy = y;
                             }
 
-                            sb.Append(c);
-                            i++;
+                            if (c == 'c')
+                            {
+                                float x1, x2, y1, y2;
+                                x1 = x2 = y1 = y2 = 0;
 
-                            if (i < d.Length)
-                                c = d[i];
+                                int count = 0;
+                                while (cc.NextPoint(out x, out y))
+                                {
+                                    if (relative)
+                                    {
+                                        x += ox;
+                                        y += oy;
+                                    }
+
+                                    switch (count)
+                                    {
+                                        case 0:
+                                            x1 = x;
+                                            y1 = y;
+                                            count++;
+                                            break;
+                                        case 1:
+                                            x2 = x;
+                                            y2 = y;
+                                            count++;
+                                            break;
+                                        default:
+                                            ox = x;
+                                            ox = y;
+                                            shape.CurveTo(x1, y1, x2, y2, x, y);
+                                            count = 0;
+                                            break;
+                                    }
+
+                                }
+                            }
+
+                            if (c == 'l')
+                            {
+                                while (cc.NextPoint(out x, out y))
+                                {
+                                    if (relative)
+                                    {
+                                        x += ox;
+                                        y += oy;
+                                    }
+
+                                    shape.LineTo(x, y);
+                                    ox = x;
+                                    oy = y;
+                                }
+                            }
+
+                            if (c == 'h' || c == 'v')
+                            {
+                                float to = 0;
+                                while (cc.NextValue(out to))
+                                {
+                                    if (relative)
+                                    {
+                                        if (c == 'h') 
+                                            x += ox;
+                                        else
+                                            x += oy;
+                                    }
+
+                                    if (c == 'h')
+                                    {
+                                        x = to;
+                                        y = oy;
+                                    }
+                                    else
+                                    {
+                                        x = ox;
+                                        y = to;
+                                    }
+
+                                    ox = x;
+                                    oy = y;
+
+                                    shape.LineTo(x, y);
+                                }
+                            }
+
+                            if (c == 'z')
+                            {
+                                shape.EndPath();
+                            }
+
+                            firstCmd = false;
                         }
-
-                        float valor = 0;
-                        if (float.TryParse(sb.ToString(), out valor))
-                            curCmd.Values.Add(valor * (negative ? -1 : 1));
                     }
                 }
             }
-        }
 
-        void ParsePathData(string data, VectorShape s)
-        {
-            PathParser parser = new PathParser();
-            parser.Parse(data.ToCharArray());
-
-            foreach (PathCommand c in parser.Commands)
+            foreach (XmlNode n in node.ChildNodes)
             {
-
-                if (c.Cmd == 'm' || c.Cmd == 'M')
-                {
-                    float[] mPoints = new float[2];
-
-                    while(c.ExtractValues(mPoints))
-                    {
-
-                    }
-                }
+                ParseNode(n);
             }
         }
 
-        void ParseSVGPath(XmlNode path)
+        public void LoadSVGFromFile(string file)
         {
-            VectorShape p = CreateShape();
-
-            foreach (XmlAttribute a in path.Attributes)
-            {
-                if (a.Name.ToLower() == "d")
-                {
-                    ParsePathData(a.Value, p);
-                }
-            }
+            string svg = File.ReadAllText(file, Encoding.UTF8);
+            LoadSVG(svg);
         }
 
-        bool ParseSVGElement(XmlNode node)
+        public void LoadSVG(string svg)
         {
-            string nname = node.Name.ToLower();
+            XmlDocument xdoc = new XmlDocument();
 
-            switch (nname)
+            xdoc.LoadXml(svg);
+
+            foreach (XmlNode n in xdoc.ChildNodes)
             {
-                case "path": ParseSVGPath(node); return true;
+                ParseNode(n);
             }
-
-            return false;
         }
-
-
     }
 }

@@ -48,12 +48,9 @@
     <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="MouseState.cs" />
     <Compile Include="PointOrigin.cs" />
-    <Compile Include="SVG\SVGElement.cs" />
-    <Compile Include="SVG\SVGDocument.cs" />
-    <Compile Include="SVG\SVGDocument.Reader.cs" />
-    <Compile Include="SVG\SVGDocument.Writer.cs" />
-    <Compile Include="SVG\SVGGroupElement.cs" />
-    <Compile Include="SVG\SVGPathElement.cs" />
+    <Compile Include="SVG\SVGPathCommand.cs" />
+    <Compile Include="SVG\SVGSequenceParser.cs" />
+    <Compile Include="SVG\SVGPathData.cs" />
     <Compile Include="Tools\SelectionTool.cs" />
     <Compile Include="Tools\VectorTool.cs" />
     <Compile Include="Tools\ZoomTool.cs" />
