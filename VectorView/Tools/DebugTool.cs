@@ -10,7 +10,7 @@ namespace VectorView.Tools
     {
         public DebugTool(string name, VectorDocument doc): base(name, doc)
         {
-
+             
         }
 
         public override void Render()
