@@ -1,11 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace VectorView
@@ -45,15 +38,48 @@ namespace VectorView
             }
         }
 
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+
+            if (document != null)
+            {
+                document.MouseDown(e.X, e.Y, e.Button);
+                Invalidate();
+            }            
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+
+            if (document != null)
+            {
+                document.MouseUp(e.X, e.Y, e.Button);
+                Invalidate();
+            }
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
             if (document != null)
             {
+                document.MouseMove(e.X, e.Y);
+                Invalidate();
             }
+        }
 
-            Invalidate();
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+            if (document != null)
+            {
+                document.MouseWheel(e.Delta, e.X, e.Y);
+                Invalidate();
+            }
         }
 
         private void VectorViewCtr_Load(object sender, EventArgs e)
