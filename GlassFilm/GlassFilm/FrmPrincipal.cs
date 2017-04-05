@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Data.SQLite;
 
 namespace GlassFilm
 {
@@ -22,7 +23,7 @@ namespace GlassFilm
             {
                 if (ctrl is MdiClient)
                 {
-                    ctrl.BackColor = ColorTranslator.FromHtml("#eaeaea");
+                    ctrl.BackColor = ColorTranslator.FromHtml("#f7f6f6");
                 }
             }
 
@@ -32,7 +33,8 @@ namespace GlassFilm
             if (frm.autorizado)
             {
                 pnlFiltroInfo.Visible = true;
-                pnlprincipal.Visible = true;                
+                pnlprincipal.Visible = true;
+                pnlMapa.Visible = true;
             }
         }
     }
