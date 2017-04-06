@@ -87,7 +87,7 @@ namespace VectorViewTest
             r.EndPath();
             */
                                  
-            doc.LoadSVGFromFile(@"D:\tmp\PALIO-4-PORTAS-ANO-2011-A-20162.svg");
+            doc.LoadSVGFromFile(@"D:\tmp\PALIO-4-PORTAS-ANO-2011-A-2016.svg");
         }
     }
 }
