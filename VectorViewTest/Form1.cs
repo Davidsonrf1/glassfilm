@@ -53,8 +53,18 @@ namespace VectorViewTest
             InitializeComponent();
             DoubleBuffered = true;
 
-            vectorViewCtr1.Document = doc;             
-            doc.LoadSVGFromFile(@"PALIO-4-PORTAS-ANO-2011-A-2016.svg");
+            vectorViewCtr1.Document = doc;
+
+            OpenFileDialog opf = new OpenFileDialog();
+            opf.DefaultExt = ".svg";
+            opf.InitialDirectory = Environment.CurrentDirectory;
+
+            if (opf.ShowDialog() == DialogResult.OK)
+            {
+                doc.LoadSVGFromFile(opf.FileName);
+            }
+
+            doc.Scale = 0.05f;
         }
     }
 }
