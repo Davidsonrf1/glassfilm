@@ -173,8 +173,8 @@ namespace VectorView
 
         public void LoadSVGFromFile(string file)
         {
-            string svg = File.ReadAllText(file, Encoding.UTF8);
-            LoadSVG(svg);
+            //string svg = File.ReadAllText(file, Encoding.UTF8);
+            //LoadSVG(svg);
         }
 
         public void LoadSVG(string svg)
