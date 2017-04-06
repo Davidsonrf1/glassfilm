@@ -65,7 +65,6 @@ namespace VectorView
         {
             XmlDocument xdoc = new XmlDocument();
             xdoc.LoadXml(svg);
-
             SvgDocument doc = SvgDocument.Open(xdoc);
 
             foreach (SvgElement e in doc.Children)
