@@ -53,41 +53,18 @@ namespace VectorViewTest
             InitializeComponent();
             DoubleBuffered = true;
 
-            //vectorViewCtr1.Visible = false;
-            //doc.LoadFromFile("G:\\teste.svg");
-            
-
-            //doc.OffsetX = 500;
-            //doc.OffsetY = 100;
-            //doc.Scale = 4;
-
             vectorViewCtr1.Document = doc;
 
-            VectorShape r = doc.CreateShape();
-            /*
-            r.BeginPath(10, 10);
-            r.MoveTo(10, 10);
-            r.LineTo(200, 10);
-            r.LineTo(200, 200);
-            r.LineTo(10, 200);
-            r.EndPath();
-           
+            OpenFileDialog opf = new OpenFileDialog();
+            opf.DefaultExt = ".svg";
+            opf.InitialDirectory = Environment.CurrentDirectory;
 
-            r = doc.CreateShape();
+            if (opf.ShowDialog() == DialogResult.OK)
+            {
+                doc.LoadSVGFromFile(opf.FileName);
+            }
 
-            r.BeginPath(800 + 10, 10);
-            r.LineTo(800 + 200, 10);
-            r.LineTo(800 + 200, 400);
-            r.QCurveTo(800 + 600, 300, 800 + 15, 400);
-            r.LineTo(800 + 600, 145);
-            r.LineTo(800 + 12, 40);
-            r.LineTo(800 + 10, 200);
-            r.CurveTo(800 + 300, 400, -300 + 800, 400, 800 + 300, 450);
-
-            r.EndPath();
-            */
-                                 
-            doc.LoadSVGFromFile(@"D:\tmp\PALIO-4-PORTAS-ANO-2011-A-20162.svg");
+            doc.Scale = 0.05f;
         }
     }
 }
