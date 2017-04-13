@@ -175,7 +175,6 @@ namespace VectorView
             //selectionBoundingBox.Inflate(4 * (1 / Scale), 4 * (1 / Scale));
         }
     
-
         public void SelectObject(VectorObject obj) 
         {
             if (obj.Document != this)
