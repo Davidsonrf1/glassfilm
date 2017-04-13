@@ -34,7 +34,9 @@
             // vectorViewCtr1
             // 
             this.vectorViewCtr1.BackColor = System.Drawing.Color.White;
+            this.vectorViewCtr1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vectorViewCtr1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vectorViewCtr1.Document = null;
             this.vectorViewCtr1.Location = new System.Drawing.Point(0, 0);
             this.vectorViewCtr1.Name = "vectorViewCtr1";
             this.vectorViewCtr1.Size = new System.Drawing.Size(898, 511);
@@ -48,6 +50,7 @@
             this.Controls.Add(this.vectorViewCtr1);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
