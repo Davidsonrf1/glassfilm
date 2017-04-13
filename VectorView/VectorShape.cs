@@ -400,9 +400,8 @@ namespace VectorView
             StringBuilder sb = new StringBuilder();
 
             bool first = true;
+            bool firstPoint = true;
             Point p = new Point();
-
-            //sb.Append("IN;\nIP;\nSP1;");
 
             List<PointF> polyline = GetPolyline();
 
@@ -414,11 +413,20 @@ namespace VectorView
                     p = GetHPGLPoint(pl);
                     sb.Append(string.Format("PU{0},{1};", p.X, p.Y));
 
+                    sb.Append("PD");
+
                     continue;
                 }
 
+                if (!firstPoint)
+                {
+                    sb.Append(',');
+                }
+
+                firstPoint = false;
+
                 p = GetHPGLPoint(pl);
-                sb.Append(string.Format("PD{0},{1};", p.X, p.Y));
+                sb.Append(string.Format("{0},{1}", p.X, p.Y));
             }
 
             return sb.ToString();
