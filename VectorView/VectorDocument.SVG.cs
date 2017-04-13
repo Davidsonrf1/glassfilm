@@ -18,6 +18,7 @@ namespace VectorView
                 SvgPath p = (SvgPath)el;
 
                 VectorShape s = null;
+                bool isEnd = false;
 
                 foreach (SvgPathSegment seg in p.PathData)
                 {
@@ -25,28 +26,47 @@ namespace VectorView
                     {
                         s = CreateShape();
                         s.BeginPath(seg.End.X, seg.End.Y);
+
+                        continue;
                     }
 
                     if (seg is SvgLineSegment)
                     {
                         s.LineTo(seg.End.X, seg.End.Y);
                     }
-
-                    if (seg is SvgCubicCurveSegment)
+                    else if (seg is SvgCubicCurveSegment)
                     {
                         SvgCubicCurveSegment q = (SvgCubicCurveSegment)seg;
                         s.CurveTo(q.FirstControlPoint.X, q.FirstControlPoint.Y, q.SecondControlPoint.X, q.SecondControlPoint.Y, q.End.X, q.End.Y);
                     }
-
-                    if (seg is SvgQuadraticCurveSegment)
+                    else if (seg is SvgQuadraticCurveSegment)
                     {
                         SvgQuadraticCurveSegment q = (SvgQuadraticCurveSegment)seg;
                         s.QCurveTo(q.ControlPoint.X, q.ControlPoint.Y, q.End.X, q.End.Y);
                     }
+                    else if (seg is SvgClosePathSegment)
+                    {
+                        isEnd = true;
+                        s.EndPath(true);
+                    }
+                    else if (seg is SvgMoveToSegment)
+                    {
+                        s.MoveTo(seg.End.X, seg.End.Y);
+                    }
+                    else
+                    {
+
+                    }
                 }
 
-                if (s != null)
-                    s.EndPath();
+                if (s != null && !isEnd)
+                {
+                    s.EndPath(false);
+                }
+            }
+            else
+            {
+
             }
 
             foreach (SvgElement n in el.Children)

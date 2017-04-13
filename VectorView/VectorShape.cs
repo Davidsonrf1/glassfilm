@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Drawing;
 using System.Xml;
+using System.Text;
 
 namespace VectorView
 {
@@ -9,6 +10,8 @@ namespace VectorView
     {
         Dictionary<int, VectorPoint> points = new Dictionary<int, VectorPoint>();
         Dictionary<int, VectorEdge> edges = new Dictionary<int, VectorEdge>();
+        List<VectorEdge> edgeOrder = new List<VectorEdge>();
+
 
         RectangleF boundingBox = new RectangleF();
 
@@ -47,6 +50,7 @@ namespace VectorView
         {
             points.Clear();
             edges.Clear();
+            edgeOrder.Clear();
         }
 
         VectorPoint lastPoint = null;
@@ -126,6 +130,8 @@ namespace VectorView
         {
             e.Start = start;
             e.End = end;
+
+            edgeOrder.Add(e);
 
             edges.Add(e.Id, e);
 
@@ -351,6 +357,44 @@ namespace VectorView
             {
                 ol.Add(p.GetOrigin());
             }
+        }
+
+        const int HPGL_UNIT = 40; // 0.025 mm
+
+        Point GetHPGLPoint(VectorPoint p)
+        {
+            Point ret = new Point();
+
+            ret.X = (int)Math.Round(p.X * HPGL_UNIT);
+            ret.Y = (int)Math.Round(p.Y * HPGL_UNIT);
+
+            return ret;
+        }
+
+        public string ToHPGL()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            bool first = true;
+            Point p = new Point();
+
+            sb.Append("IN;\nIP;\nSP1;");
+
+            foreach (VectorEdge e in edgeOrder)
+            {
+                if (first)
+                {
+                    first = false;
+                    p = GetHPGLPoint(e.Start);
+
+                    sb.Append(string.Format("PU{0}{1}", p.X, p.Y));
+                }
+
+                p = GetHPGLPoint(e.End);
+                sb.Append(string.Format("PD{0}{1}", p.X, p.Y));
+            }
+
+            return sb.ToString();
         }
     }
 }

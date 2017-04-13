@@ -11,7 +11,7 @@ namespace VectorView
 
         public void AddClone(VectorObject obj)
         {
-            if (!objects.ContainsKey(obj.Id))
+            if (!objects.ContainsKey(obj.Id)) 
                 objects.Add(obj.Id, obj);
         }
 
