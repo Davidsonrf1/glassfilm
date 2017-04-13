@@ -412,13 +412,13 @@ namespace VectorView
                 {
                     first = false;
                     p = GetHPGLPoint(pl);
-                    sb.Append(string.Format("PU{0},{1}", p.X, p.Y));
+                    sb.Append(string.Format("PU{0},{1};", p.X, p.Y));
 
                     continue;
                 }
 
                 p = GetHPGLPoint(pl);
-                sb.Append(string.Format("PD{0},{1}", p.X, p.Y));
+                sb.Append(string.Format("PD{0},{1};", p.X, p.Y));
             }
 
             return sb.ToString();
