@@ -371,6 +371,30 @@ namespace VectorView
             return ret;
         }
 
+        Point GetHPGLPoint(PointF p)
+        {
+            Point ret = new Point();
+
+            ret.X = (int)Math.Round(p.X * HPGL_UNIT);
+            ret.Y = (int)Math.Round(p.Y * HPGL_UNIT);
+
+            return ret;
+        }
+
+        public virtual List<PointF> GetPolyline()
+        {
+            List<PointF> pl = new List<PointF>();
+
+            pl.Add(new PointF(edgeOrder[0].Start.X, edgeOrder[0].Start.Y));
+
+            foreach (VectorEdge e in edgeOrder)
+            {
+                e.FillPolyline(pl);
+            }
+
+            return pl;
+        }
+
         public string ToHPGL()
         {
             StringBuilder sb = new StringBuilder();
@@ -378,20 +402,23 @@ namespace VectorView
             bool first = true;
             Point p = new Point();
 
-            sb.Append("IN;\nIP;\nSP1;");
+            //sb.Append("IN;\nIP;\nSP1;");
 
-            foreach (VectorEdge e in edgeOrder)
+            List<PointF> polyline = GetPolyline();
+
+            foreach (PointF pl in polyline)
             {
                 if (first)
                 {
                     first = false;
-                    p = GetHPGLPoint(e.Start);
+                    p = GetHPGLPoint(pl);
+                    sb.Append(string.Format("PU{0},{1}", p.X, p.Y));
 
-                    sb.Append(string.Format("PU{0}{1}", p.X, p.Y));
+                    continue;
                 }
 
-                p = GetHPGLPoint(e.End);
-                sb.Append(string.Format("PD{0}{1}", p.X, p.Y));
+                p = GetHPGLPoint(pl);
+                sb.Append(string.Format("PD{0},{1}", p.X, p.Y));
             }
 
             return sb.ToString();

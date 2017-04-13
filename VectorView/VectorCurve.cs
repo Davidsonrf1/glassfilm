@@ -185,5 +185,15 @@ namespace VectorView
 
             return mind < Document.HitTolerance;
         }
+
+        public override void FillPolyline(List<PointF> polyline)
+        {
+            foreach (PointF p in calcPoints)
+            {
+                polyline.Add(p);
+            }
+
+            polyline.Add(new PointF(End.X, End.Y));
+        }
     }
 }

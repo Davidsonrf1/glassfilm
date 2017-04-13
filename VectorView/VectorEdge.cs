@@ -198,5 +198,10 @@ namespace VectorView
             float d = PointDistance(x, y);
             return d < Document.HitTolerance;
         }
+
+        public virtual void FillPolyline(List<PointF> polyline)
+        {
+            polyline.Add(new PointF(End.X, End.Y));
+        }
     }
 }

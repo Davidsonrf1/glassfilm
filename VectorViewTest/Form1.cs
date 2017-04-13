@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -55,16 +55,25 @@ namespace VectorViewTest
 
             vectorViewCtr1.Document = doc;
 
-            OpenFileDialog opf = new OpenFileDialog();
-            opf.DefaultExt = ".svg";
-            opf.InitialDirectory = Environment.CurrentDirectory;
-
-            if (opf.ShowDialog() == DialogResult.OK)
+            if (!File.Exists("Tech.svg"))
             {
-                doc.LoadSVGFromFile(opf.FileName);
+                OpenFileDialog opf = new OpenFileDialog();
+                opf.DefaultExt = ".svg";
+                opf.InitialDirectory = Environment.CurrentDirectory;
+
+                if (opf.ShowDialog() == DialogResult.OK)
+                {
+                    doc.LoadSVGFromFile(opf.FileName);
+                }
+            }
+            else
+            {
+                doc.LoadSVGFromFile("Tech.svg");
             }
 
-            doc.Scale = 0.05f;
+            //doc.Scale = 0.05f;
+            string s = doc.ToHPGL();
+            File.WriteAllText("D:\\teste.hpgl", s);
         }
     }
 }
