@@ -199,14 +199,9 @@ namespace VectorView
             return d < Document.HitTolerance;
         }
 
-        public virtual List<PointF> GetPoints()
+        public virtual void FillPolyline(List<PointF> polyline)
         {
-            List<PointF> pl = new List<PointF>();
-
-            pl.Add(new PointF(Start.X, Start.Y));
-            pl.Add(new PointF(End.X, End.Y));
-
-            return pl;
+            polyline.Add(new PointF(End.X, End.Y));
         }
     }
 }

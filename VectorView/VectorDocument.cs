@@ -226,5 +226,33 @@ namespace VectorView
             needRedraw = true;
         }
 
+        public string ToHPGL()
+        {
+            return ToHPGL(null, null);
+        }
+
+        public string ToHPGL(string sendBefore, string sendAfter)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("IN;\nIP;\nSP1;\nPA;\n");
+
+            if(sendBefore != null)
+                sb.Append(sendBefore);
+
+            foreach (VectorShape s in shapes)
+            {
+                sb.Append(s.ToHPGL());
+                sb.Append("\n");
+            }
+
+            if (sendAfter != null)
+                sb.Append(sendAfter);
+
+            sb.Append("PU0,0\nSP;");
+
+            return sb.ToString();
+        }
+
     }
 }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
-using System.Linq;
+using System.IO;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
@@ -19,11 +19,6 @@ namespace VectorViewTest
         float x1 = 600, y1 = 10, x2 = 10, y2 = 300;
         //float x1 = 130, y1 = 60, x2 = 10, y2 = 60;
         float mx, my;
-
-        private void Form1_Load(object sender, EventArgs e)
-        {
-
-        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -60,19 +55,25 @@ namespace VectorViewTest
 
             vectorViewCtr1.Document = doc;
 
-            /*
-            OpenFileDialog opf = new OpenFileDialog();
-            opf.DefaultExt = ".svg";
-            opf.InitialDirectory = Environment.CurrentDirectory;
-
-            if (opf.ShowDialog() == DialogResult.OK)
+            if (!File.Exists("Tech.svg"))
             {
-                doc.LoadSVGFromFile(opf.FileName);
-            }
-            */
+                OpenFileDialog opf = new OpenFileDialog();
+                opf.DefaultExt = ".svg";
+                opf.InitialDirectory = Environment.CurrentDirectory;
 
-            doc.LoadSVGFromFile("PALIO 4 PORTAS  ANO  2011 A  2016.svg");
-            doc.Scale = 0.05f;
+                if (opf.ShowDialog() == DialogResult.OK)
+                {
+                    doc.LoadSVGFromFile(opf.FileName);
+                }
+            }
+            else
+            {
+                doc.LoadSVGFromFile("Tech.svg");
+            }
+
+            //doc.Scale = 0.05f;
+            string s = doc.ToHPGL();
+            File.WriteAllText("D:\\teste.hpgl", s);
         }
     }
 }
