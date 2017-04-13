@@ -198,5 +198,15 @@ namespace VectorView
             float d = PointDistance(x, y);
             return d < Document.HitTolerance;
         }
+
+        public virtual List<PointF> GetPoints()
+        {
+            List<PointF> pl = new List<PointF>();
+
+            pl.Add(new PointF(Start.X, Start.Y));
+            pl.Add(new PointF(End.X, End.Y));
+
+            return pl;
+        }
     }
 }
