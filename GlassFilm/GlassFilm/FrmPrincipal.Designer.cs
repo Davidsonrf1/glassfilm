@@ -76,6 +76,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
+            this.pnlMapa = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.vectorViewCtr1 = new VectorView.VectorViewCtr();
             this.vectorViewCtr2 = new VectorView.VectorViewCtr();
@@ -90,6 +91,7 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
+            this.pnlMapa.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
@@ -588,10 +590,20 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Tipo:";
             // 
+            // pnlMapa
+            // 
+            this.pnlMapa.Controls.Add(this.splitContainer1);
+            this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pnlMapa.Location = new System.Drawing.Point(0, 189);
+            this.pnlMapa.Name = "pnlMapa";
+            this.pnlMapa.Size = new System.Drawing.Size(1434, 498);
+            this.pnlMapa.TabIndex = 10;
+            this.pnlMapa.Visible = false;
+            // 
             // splitContainer1
             // 
             this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 189);
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
@@ -604,7 +616,7 @@
             this.splitContainer1.Panel2.Controls.Add(this.vectorViewCtr2);
             this.splitContainer1.Size = new System.Drawing.Size(1434, 498);
             this.splitContainer1.SplitterDistance = 241;
-            this.splitContainer1.TabIndex = 10;
+            this.splitContainer1.TabIndex = 11;
             // 
             // vectorViewCtr1
             // 
@@ -635,7 +647,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1434, 709);
-            this.Controls.Add(this.splitContainer1);
+            this.Controls.Add(this.pnlMapa);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
             this.Controls.Add(this.statusStrip1);
@@ -664,6 +676,7 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
+            this.pnlMapa.ResumeLayout(false);
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
@@ -722,6 +735,7 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel8;
+        private System.Windows.Forms.Panel pnlMapa;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private VectorView.VectorViewCtr vectorViewCtr1;
         private VectorView.VectorViewCtr vectorViewCtr2;
