@@ -20,6 +20,11 @@ namespace VectorViewTest
         //float x1 = 130, y1 = 60, x2 = 10, y2 = 60;
         float mx, my;
 
+        private void Form1_Load(object sender, EventArgs e)
+        {
+
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -55,6 +60,7 @@ namespace VectorViewTest
 
             vectorViewCtr1.Document = doc;
 
+            /*
             OpenFileDialog opf = new OpenFileDialog();
             opf.DefaultExt = ".svg";
             opf.InitialDirectory = Environment.CurrentDirectory;
@@ -63,7 +69,9 @@ namespace VectorViewTest
             {
                 doc.LoadSVGFromFile(opf.FileName);
             }
+            */
 
+            doc.LoadSVGFromFile("PALIO 4 PORTAS  ANO  2011 A  2016.svg");
             doc.Scale = 0.05f;
         }
     }

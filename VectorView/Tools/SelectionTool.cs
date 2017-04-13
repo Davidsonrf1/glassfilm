@@ -32,7 +32,7 @@ namespace VectorView.Tools
         {
             RectangleF cr = new RectangleF();
 
-            float t = Document.HitTolerance + 2;
+            float t = (Document.HitTolerance + 2);
 
             float cornerDistance = 3;
 
@@ -148,7 +148,7 @@ namespace VectorView.Tools
                 Pen p = new Pen(Color.Blue, 1);
                 p.DashStyle = DashStyle.Custom;
                 p.DashPattern = new float[] { 2.0f, 4.0f };
-                p.Width = 1 / Document.InverseScale;
+                p.Width = 1/ Document.Scale;
 
                 Document.Graphics.DrawRectangle(p, r.X, r.Y, r.Width, r.Height);
 
