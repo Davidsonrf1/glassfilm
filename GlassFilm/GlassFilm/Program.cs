@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
+using GlassFilm.Class;
+
 
 namespace GlassFilm
 {
@@ -13,6 +15,8 @@ namespace GlassFilm
         [STAThread]
         static void Main()
         {
+            DBManager.InitDB();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmPrincipal());

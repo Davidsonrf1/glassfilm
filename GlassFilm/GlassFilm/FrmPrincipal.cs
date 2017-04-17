@@ -37,5 +37,15 @@ namespace GlassFilm
                 pnlMapa.Visible = true;
             }
         }
+
+        private void cortadoraToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmConfigPlotter conf = new FrmConfigPlotter();
+
+            if (conf.ShowDialog() == DialogResult.OK)
+            {
+
+            }
+        }
     }
 }
