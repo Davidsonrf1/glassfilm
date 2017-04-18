@@ -47,5 +47,11 @@ namespace GlassFilm
 
             }
         }
+
+        private void cadastrarDesenhoToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            FrmCadastroDesenho cad = new GlassFilm.FrmCadastroDesenho();
+            cad.ShowDialog();
+        }
     }
 }

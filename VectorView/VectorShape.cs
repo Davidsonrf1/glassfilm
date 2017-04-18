@@ -431,5 +431,88 @@ namespace VectorView
 
             return sb.ToString();
         }
+
+        void WriteEdgeList(StringBuilder sb, List<VectorEdge> list)
+        {
+            bool wroteCmd = false;
+
+            if (list.Count == 0)
+                return;
+
+            foreach (VectorObject ob in list)
+            {
+                if (ob.GetType().Equals(typeof(VectorEdge)))
+                {
+                    if (!wroteCmd)
+                    {
+                        sb.Append(" L");
+                        wroteCmd = true;
+                    }
+
+                    VectorEdge ve = (VectorEdge)ob;
+
+                    sb.AppendFormat(" {0},{1}", (int)Math.Round(ve.End.X), (int)Math.Round(ve.End.Y));
+                }
+
+                if (ob.GetType().Equals(typeof(VectorCubicBezier)))
+                {
+                    if (!wroteCmd)
+                    {
+                        sb.Append(" C");
+                        wroteCmd = true;
+                    }
+
+                    VectorCubicBezier vc = (VectorCubicBezier)ob;
+
+                    sb.AppendFormat(" {0},{1} {2},{3} {4},{5}", (int)Math.Round(vc.Control1.X), (int)Math.Round(vc.Control1.Y), (int)Math.Round(vc.Control2.X), (int)Math.Round(vc.Control2.Y), (int)Math.Round(vc.End.X), (int)Math.Round(vc.End.Y));
+                }
+
+                if (ob.GetType().Equals(typeof(VectorQuadraticBezier)))
+                {
+                    if (!wroteCmd)
+                    {
+                        sb.Append(" Q");
+                        wroteCmd = true;
+                    }
+
+                    VectorQuadraticBezier vq = (VectorQuadraticBezier)ob;
+
+                    sb.AppendFormat(" {0},{1} {2},{3}", (int)Math.Round(vq.Control.X), (int)Math.Round(vq.Control.Y), (int)Math.Round(vq.End.X), (int)Math.Round(vq.End.Y));
+                }
+            }
+        }
+
+        public string ToSVGPath()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("<path style=\"fill: none; stroke:#e30016;stroke-width:0.56690001;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none\" d=\"");
+            sb.AppendFormat("M{0},{1}", (int)Math.Round(edgeOrder[0].Start.X), (int)Math.Round(edgeOrder[0].Start.Y));
+
+            Type last = typeof(VectorEdge);
+
+            List<VectorEdge> list = new List<VectorEdge>();
+
+            foreach (VectorEdge e in edgeOrder)
+            {
+                if (last.Equals(e.GetType()))
+                {
+                    list.Add(e);
+                }
+                else
+                {
+                    WriteEdgeList(sb, list);
+
+                    list.Clear();
+                    list.Add(e);
+                    last = e.GetType();
+                }
+            }
+
+            WriteEdgeList(sb, list);
+            sb.Append(" Z\" />");
+ 
+            return sb.ToString();
+        }
     }
 }

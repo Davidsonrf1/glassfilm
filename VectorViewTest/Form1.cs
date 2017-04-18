@@ -54,6 +54,7 @@ namespace VectorViewTest
             DoubleBuffered = true;
 
             vectorViewCtr1.Document = doc;
+            vectorViewCtr1.ShowRuller = true;
 
             if (!File.Exists("Tech.svg"))
             {
@@ -72,8 +73,8 @@ namespace VectorViewTest
             }
 
             //doc.Scale = 0.05f;
-            string s = doc.ToHPGL();
-            File.WriteAllText("D:\\teste.hpgl", s);
+            string s = doc.ToSVG();
+            File.WriteAllText("D:\\teste.svg", s);
         }
     }
 }

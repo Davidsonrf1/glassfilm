@@ -253,5 +253,53 @@ namespace VectorView
             return sb.ToString();
         }
 
+        public int ShapeCount
+        {
+            get
+            {
+                return shapes.Count;
+            }
+        }
+
+        public RectangleF GetDocSize()
+        {
+            RectangleF ret = new RectangleF(0, 0, 0, 0);
+
+            float maxx = ret.Right;
+            float maxy = ret.Bottom;
+
+            foreach (VectorShape s in shapes)
+            {
+                RectangleF r = s.GetBoundBox();
+
+                maxx = Math.Max(r.Right, maxx);
+                maxy = Math.Max(r.Bottom, maxy);
+            }
+
+            ret.Width = maxx;
+            ret.Height = maxy;
+
+            return ret;
+        }
+
+        public string ToSVG()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int id = 1;
+            
+            RectangleF r = Rectangle.Round(GetDocSize());
+            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{0} {1} {2} {3}\" height=\"{3}\" width=\"{2}\" version=\"1.1\">\n", r.X,r.Y, r.Width, r.Height);
+
+            foreach (VectorShape s in shapes)
+            {
+                sb.Append("   " + s.ToSVGPath());
+                sb.Append("\n");
+            }
+
+            sb.Append("</svg>");
+            return sb.ToString();
+        }
+
     }
 }

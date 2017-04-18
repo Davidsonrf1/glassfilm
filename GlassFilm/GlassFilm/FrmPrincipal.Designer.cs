@@ -36,6 +36,7 @@
             this.recortarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.transformarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.configuraçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cortadoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ajudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pnlprincipal = new System.Windows.Forms.Panel();
@@ -80,7 +81,7 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.vectorViewCtr1 = new VectorView.VectorViewCtr();
             this.vectorViewCtr2 = new VectorView.VectorViewCtr();
-            this.cortadoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cadastrarDesenhoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -120,6 +121,8 @@
             // 
             // arquivoToolStripMenuItem
             // 
+            this.arquivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cadastrarDesenhoToolStripMenuItem});
             this.arquivoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
             this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
@@ -161,6 +164,13 @@
             this.configuraçãoToolStripMenuItem.Name = "configuraçãoToolStripMenuItem";
             this.configuraçãoToolStripMenuItem.Size = new System.Drawing.Size(106, 20);
             this.configuraçãoToolStripMenuItem.Text = "Configuração";
+            // 
+            // cortadoraToolStripMenuItem
+            // 
+            this.cortadoraToolStripMenuItem.Name = "cortadoraToolStripMenuItem";
+            this.cortadoraToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
+            this.cortadoraToolStripMenuItem.Text = "Cortadora";
+            this.cortadoraToolStripMenuItem.Click += new System.EventHandler(this.cortadoraToolStripMenuItem_Click);
             // 
             // ajudaToolStripMenuItem
             // 
@@ -618,7 +628,7 @@
             // 
             this.splitContainer1.Panel2.Controls.Add(this.vectorViewCtr2);
             this.splitContainer1.Size = new System.Drawing.Size(1434, 498);
-            this.splitContainer1.SplitterDistance = 240;
+            this.splitContainer1.SplitterDistance = 239;
             this.splitContainer1.TabIndex = 11;
             // 
             // vectorViewCtr1
@@ -629,7 +639,8 @@
             this.vectorViewCtr1.Document = null;
             this.vectorViewCtr1.Location = new System.Drawing.Point(0, 0);
             this.vectorViewCtr1.Name = "vectorViewCtr1";
-            this.vectorViewCtr1.Size = new System.Drawing.Size(1434, 240);
+            this.vectorViewCtr1.ShowRuller = false;
+            this.vectorViewCtr1.Size = new System.Drawing.Size(1434, 239);
             this.vectorViewCtr1.TabIndex = 0;
             // 
             // vectorViewCtr2
@@ -640,15 +651,16 @@
             this.vectorViewCtr2.Document = null;
             this.vectorViewCtr2.Location = new System.Drawing.Point(0, 0);
             this.vectorViewCtr2.Name = "vectorViewCtr2";
-            this.vectorViewCtr2.Size = new System.Drawing.Size(1434, 254);
+            this.vectorViewCtr2.ShowRuller = false;
+            this.vectorViewCtr2.Size = new System.Drawing.Size(1434, 255);
             this.vectorViewCtr2.TabIndex = 0;
             // 
-            // cortadoraToolStripMenuItem
+            // cadastrarDesenhoToolStripMenuItem
             // 
-            this.cortadoraToolStripMenuItem.Name = "cortadoraToolStripMenuItem";
-            this.cortadoraToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
-            this.cortadoraToolStripMenuItem.Text = "Cortadora";
-            this.cortadoraToolStripMenuItem.Click += new System.EventHandler(this.cortadoraToolStripMenuItem_Click);
+            this.cadastrarDesenhoToolStripMenuItem.Name = "cadastrarDesenhoToolStripMenuItem";
+            this.cadastrarDesenhoToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.cadastrarDesenhoToolStripMenuItem.Text = "Cadastrar Desenho";
+            this.cadastrarDesenhoToolStripMenuItem.Click += new System.EventHandler(this.cadastrarDesenhoToolStripMenuItem_Click);
             // 
             // FrmPrincipal
             // 
@@ -750,5 +762,6 @@
         private VectorView.VectorViewCtr vectorViewCtr1;
         private VectorView.VectorViewCtr vectorViewCtr2;
         private System.Windows.Forms.ToolStripMenuItem cortadoraToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
     }
 }
