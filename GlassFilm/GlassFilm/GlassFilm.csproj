@@ -59,17 +59,36 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Class\Carregamentos.cs" />
+    <Compile Include="Class\Comandos.cs" />
+    <Compile Include="Class\Controles.cs" />
     <Compile Include="Class\CriaBanco.cs" />
     <Compile Include="Class\DBManager.cs" />
+    <Compile Include="Class\Logs.cs" />
     <Compile Include="Class\Marca.cs" />
+    <Compile Include="Class\Mensagens.cs" />
     <Compile Include="Class\Modelo.cs" />
     <Compile Include="Class\SeletorVeiculo.cs" />
     <Compile Include="Class\Veiculo.cs" />
+    <Compile Include="Controller\Marca.cs" />
+    <Compile Include="Controller\Modelo.cs" />
     <Compile Include="FrmCadastroDesenho.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="FrmCadastroDesenho.Designer.cs">
       <DependentUpon>FrmCadastroDesenho.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCadMarca.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCadMarca.Designer.cs">
+      <DependentUpon>FrmCadMarca.cs</DependentUpon>
+    </Compile>
+    <Compile Include="FrmCadModelo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCadModelo.Designer.cs">
+      <DependentUpon>FrmCadModelo.cs</DependentUpon>
     </Compile>
     <Compile Include="FrmConfigPlotter.cs">
       <SubType>Form</SubType>
@@ -95,6 +114,12 @@
     <Compile Include="Validacoes\ValidaInternet.cs" />
     <EmbeddedResource Include="FrmCadastroDesenho.resx">
       <DependentUpon>FrmCadastroDesenho.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCadMarca.resx">
+      <DependentUpon>FrmCadMarca.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCadModelo.resx">
+      <DependentUpon>FrmCadModelo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmConfigPlotter.resx">
       <DependentUpon>FrmConfigPlotter.cs</DependentUpon>
@@ -167,6 +192,27 @@
       <Project>{23a4ceac-fb30-4ac2-ad58-394ad43c20fa}</Project>
       <Name>VectorView</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right-arrow-circular-button.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\right-arrow-circular-button1.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\t.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\search %281%29.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\import.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\magnifying-glass-search-button.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.0\build\net40\System.Data.SQLite.Core.targets')" />
