@@ -37,6 +37,8 @@
             this.label2 = new System.Windows.Forms.Label();
             this.comboBox3 = new System.Windows.Forms.ComboBox();
             this.label3 = new System.Windows.Forms.Label();
+            this.comboBox4 = new System.Windows.Forms.ComboBox();
+            this.label4 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +48,7 @@
             this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.btnEntrar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 122);
+            this.panel1.Location = new System.Drawing.Point(0, 143);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(423, 51);
             this.panel1.TabIndex = 8;
@@ -81,9 +83,9 @@
             this.label1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.label1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.label1.ForeColor = System.Drawing.Color.Black;
-            this.label1.Location = new System.Drawing.Point(12, 55);
+            this.label1.Location = new System.Drawing.Point(11, 55);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 20);
+            this.label1.Size = new System.Drawing.Size(94, 21);
             this.label1.TabIndex = 10;
             this.label1.Text = "Interface";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -141,17 +143,43 @@
             this.label3.ForeColor = System.Drawing.Color.Black;
             this.label3.Location = new System.Drawing.Point(11, 82);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(94, 20);
+            this.label3.Size = new System.Drawing.Size(95, 20);
             this.label3.TabIndex = 14;
             this.label3.Text = "Porta";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
+            // comboBox4
+            // 
+            this.comboBox4.FormattingEnabled = true;
+            this.comboBox4.Items.AddRange(new object[] {
+            "PRINTER",
+            "SERIAL",
+            "USB"});
+            this.comboBox4.Location = new System.Drawing.Point(112, 109);
+            this.comboBox4.Name = "comboBox4";
+            this.comboBox4.Size = new System.Drawing.Size(299, 21);
+            this.comboBox4.TabIndex = 17;
+            // 
+            // label4
+            // 
+            this.label4.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label4.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label4.ForeColor = System.Drawing.Color.Black;
+            this.label4.Location = new System.Drawing.Point(11, 109);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(95, 21);
+            this.label4.TabIndex = 16;
+            this.label4.Text = "Comandos";
+            this.label4.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
             // FrmConfigPlotter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(423, 173);
+            this.ClientSize = new System.Drawing.Size(423, 194);
+            this.Controls.Add(this.comboBox4);
+            this.Controls.Add(this.label4);
             this.Controls.Add(this.comboBox3);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.comboBox2);
@@ -180,5 +208,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.ComboBox comboBox3;
         private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBox4;
+        private System.Windows.Forms.Label label4;
     }
 }
