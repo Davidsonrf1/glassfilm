@@ -82,8 +82,8 @@
             this.label7 = new System.Windows.Forms.Label();
             this.pnlMapa = new System.Windows.Forms.Panel();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.vectorViewCtr1 = new VectorView.VectorViewCtr();
-            this.vectorViewCtr2 = new VectorView.VectorViewCtr();
+            this.vvModelo = new VectorView.VectorViewCtr();
+            this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -637,48 +637,48 @@
             this.pnlMapa.Size = new System.Drawing.Size(1434, 498);
             this.pnlMapa.TabIndex = 10;
             this.pnlMapa.Visible = false;
+            this.pnlMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMapa_Paint);
             // 
             // splitContainer1
             // 
-            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Location = new System.Drawing.Point(150, 50);
             this.splitContainer1.Name = "splitContainer1";
             this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
             // splitContainer1.Panel1
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.vectorViewCtr1);
+            this.splitContainer1.Panel1.Controls.Add(this.vvModelo);
             // 
             // splitContainer1.Panel2
             // 
-            this.splitContainer1.Panel2.Controls.Add(this.vectorViewCtr2);
-            this.splitContainer1.Size = new System.Drawing.Size(1434, 498);
-            this.splitContainer1.SplitterDistance = 239;
+            this.splitContainer1.Panel2.Controls.Add(this.vvCorte);
+            this.splitContainer1.Size = new System.Drawing.Size(721, 178);
+            this.splitContainer1.SplitterDistance = 85;
             this.splitContainer1.TabIndex = 11;
             // 
-            // vectorViewCtr1
+            // vvModelo
             // 
-            this.vectorViewCtr1.BackColor = System.Drawing.Color.White;
-            this.vectorViewCtr1.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.vectorViewCtr1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vectorViewCtr1.Document = null;
-            this.vectorViewCtr1.Location = new System.Drawing.Point(0, 0);
-            this.vectorViewCtr1.Name = "vectorViewCtr1";
-            this.vectorViewCtr1.ShowRuller = false;
-            this.vectorViewCtr1.Size = new System.Drawing.Size(1434, 239);
-            this.vectorViewCtr1.TabIndex = 0;
+            this.vvModelo.BackColor = System.Drawing.Color.White;
+            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvModelo.Document = null;
+            this.vvModelo.Location = new System.Drawing.Point(0, 0);
+            this.vvModelo.Name = "vvModelo";
+            this.vvModelo.ShowRuller = false;
+            this.vvModelo.Size = new System.Drawing.Size(721, 85);
+            this.vvModelo.TabIndex = 0;
             // 
-            // vectorViewCtr2
+            // vvCorte
             // 
-            this.vectorViewCtr2.BackColor = System.Drawing.Color.White;
-            this.vectorViewCtr2.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.vectorViewCtr2.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vectorViewCtr2.Document = null;
-            this.vectorViewCtr2.Location = new System.Drawing.Point(0, 0);
-            this.vectorViewCtr2.Name = "vectorViewCtr2";
-            this.vectorViewCtr2.ShowRuller = false;
-            this.vectorViewCtr2.Size = new System.Drawing.Size(1434, 255);
-            this.vectorViewCtr2.TabIndex = 0;
+            this.vvCorte.BackColor = System.Drawing.Color.White;
+            this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
+            this.vvCorte.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvCorte.Document = null;
+            this.vvCorte.Location = new System.Drawing.Point(0, 0);
+            this.vvCorte.Name = "vvCorte";
+            this.vvCorte.ShowRuller = false;
+            this.vvCorte.Size = new System.Drawing.Size(721, 89);
+            this.vvCorte.TabIndex = 0;
             // 
             // FrmPrincipal
             // 
@@ -777,8 +777,8 @@
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.Panel pnlMapa;
         private System.Windows.Forms.SplitContainer splitContainer1;
-        private VectorView.VectorViewCtr vectorViewCtr1;
-        private VectorView.VectorViewCtr vectorViewCtr2;
+        private VectorView.VectorViewCtr vvModelo;
+        private VectorView.VectorViewCtr vvCorte;
         private System.Windows.Forms.ToolStripMenuItem cortadoraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;

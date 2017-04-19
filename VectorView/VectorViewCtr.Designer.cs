@@ -39,6 +39,7 @@
             this.Name = "VectorViewCtr";
             this.Size = new System.Drawing.Size(603, 436);
             this.Load += new System.EventHandler(this.VectorViewCtr_Load);
+            this.Resize += new System.EventHandler(this.VectorViewCtr_Resize);
             this.ResumeLayout(false);
 
         }

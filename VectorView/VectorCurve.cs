@@ -101,8 +101,8 @@ namespace VectorView
 
             if (IsSelected || Shape.IsSelected)
             {
-                Document.DrawPoint(Start.X, Start.Y);
-                Document.DrawPoint(End.X, End.Y);
+                //Document.DrawPoint(Start.X, Start.Y);
+                //Document.DrawPoint(End.X, End.Y);
             }
         }
 

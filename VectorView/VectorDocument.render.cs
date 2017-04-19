@@ -18,16 +18,18 @@ namespace VectorView
             this.doc = doc;
         }
 
-        Pen normalLinePen = new Pen(Color.DarkGray);
+        bool useHilightPen = false;
+
+        Pen normalLinePen = new Pen(Color.Blue);
         Pen shadowLinePen = new Pen(Color.Red);
         Pen hilightLinePen = new Pen(Color.LightSalmon);
         Pen controlPointPen = new Pen(Color.DarkGoldenrod);
         SolidBrush normalPointBrush = new SolidBrush(Color.Black);
         SolidBrush controlPointBrush = new SolidBrush(Color.Black);
 
-        Color normalLineColor = Color.DarkGray;
+        Color normalLineColor = Color.Black;
         Color shadowLineColor = Color.Red;
-        Color hilightLineColor = Color.Blue;
+        Color hilightLineColor = Color.Red;
         Color controlPointColor = Color.Brown;
         Color normalPointColor = Color.Black;
 
@@ -83,6 +85,17 @@ namespace VectorView
                 hilightLinePen.LineJoin = lineJoinType;
 
                 return hilightLinePen;
+            }
+        }
+
+        public Pen LinePen
+        {
+            get
+            {
+                if (useHilightPen)
+                    return HilightLinePen;
+                else
+                    return NormalLinePen;
             }
         }
 
@@ -189,6 +202,19 @@ namespace VectorView
             }
             
         }
+
+        public bool UseHilightPen
+        {
+            get
+            {
+                return useHilightPen;
+            }
+
+            set
+            {
+                useHilightPen = value;
+            }
+        }
     }
 
     public partial class VectorDocument: VectorObject
@@ -196,7 +222,6 @@ namespace VectorView
         List<VectorShape> shapes = new List<VectorShape>();
 
         RenderParams renderParams = null;
-
 
         float scale = 1;
         float offsetX = 0;
@@ -331,8 +356,8 @@ namespace VectorView
             graphics.ScaleTransform(scale, scale);
             graphics.TranslateTransform(offsetX, offsetY);
 
-            graphics.DrawLine(Pens.Black, new PointF(0, -100000f), new PointF(0, 100000));
-            graphics.DrawLine(Pens.Black, new PointF(-100000f, 0), new PointF(100000, 0));
+            //graphics.DrawLine(Pens.Black, new PointF(0, -100000f), new PointF(0, 100000));
+            //graphics.DrawLine(Pens.Black, new PointF(-100000f, 0), new PointF(100000, 0));
 
             foreach (VectorShape s in shapes)
             {
@@ -357,7 +382,7 @@ namespace VectorView
             if (graphics == null)
                 return;
 
-            graphics.DrawLine(renderParams.HilightLinePen, x1, y1, x2, y2);
+            graphics.DrawLine(renderParams.LinePen, x1, y1, x2, y2);
         }
 
         internal void DrawControlLine(float x1, float y1, float x2, float y2)

@@ -30,6 +30,7 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCadastroDesenho));
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
+            this.btImportar = new System.Windows.Forms.Button();
             this.panel1 = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
             this.cbModelo = new System.Windows.Forms.ComboBox();
@@ -38,16 +39,15 @@
             this.label9 = new System.Windows.Forms.Label();
             this.cbAno = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.vectorView = new VectorView.VectorViewCtr();
             this.toolPrincipal = new System.Windows.Forms.ToolStrip();
+            this.btnSalvar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSair = new System.Windows.Forms.ToolStripButton();
             this.toolStatus = new System.Windows.Forms.ToolStripLabel();
             this.toolBar = new System.Windows.Forms.StatusStrip();
-            this.btImportar = new System.Windows.Forms.Button();
-            this.btnSalvar = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.btnSair = new System.Windows.Forms.ToolStripButton();
+            this.vectorView = new VectorView.VectorViewCtr();
             this.pnlFiltroInfo.SuspendLayout();
             this.toolPrincipal.SuspendLayout();
             this.SuspendLayout();
@@ -69,6 +69,21 @@
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
             this.pnlFiltroInfo.Size = new System.Drawing.Size(847, 55);
             this.pnlFiltroInfo.TabIndex = 6;
+            // 
+            // btImportar
+            // 
+            this.btImportar.BackColor = System.Drawing.Color.Gainsboro;
+            this.btImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btImportar.Image = global::GlassFilm.Properties.Resources.import;
+            this.btImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btImportar.Location = new System.Drawing.Point(676, 25);
+            this.btImportar.Name = "btImportar";
+            this.btImportar.Size = new System.Drawing.Size(101, 23);
+            this.btImportar.TabIndex = 3;
+            this.btImportar.Text = "Importar      ";
+            this.btImportar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btImportar.UseVisualStyleBackColor = false;
+            this.btImportar.Click += new System.EventHandler(this.btImportar_Click);
             // 
             // panel1
             // 
@@ -149,20 +164,6 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "Ano:";
             // 
-            // vectorView
-            // 
-            this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.vectorView.BackColor = System.Drawing.Color.White;
-            this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vectorView.Document = null;
-            this.vectorView.Location = new System.Drawing.Point(5, 83);
-            this.vectorView.Name = "vectorView";
-            this.vectorView.ShowRuller = false;
-            this.vectorView.Size = new System.Drawing.Size(836, 447);
-            this.vectorView.TabIndex = 7;
-            // 
             // toolPrincipal
             // 
             this.toolPrincipal.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden;
@@ -179,15 +180,50 @@
             this.toolPrincipal.TabIndex = 11;
             this.toolPrincipal.Text = "toolStrip1";
             // 
+            // btnSalvar
+            // 
+            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSalvar.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSalvar.Image = ((System.Drawing.Image)(resources.GetObject("btnSalvar.Image")));
+            this.btnSalvar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSalvar.Name = "btnSalvar";
+            this.btnSalvar.Size = new System.Drawing.Size(58, 22);
+            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.Click += new System.EventHandler(this.btnEntrar_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripButton1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(73, 22);
+            this.toolStripButton1.Text = "Cancelar";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnSair
+            // 
+            this.btnSair.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnSair.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
+            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSair.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSair.Name = "btnSair";
+            this.btnSair.Size = new System.Drawing.Size(46, 22);
+            this.btnSair.Text = "Sair";
+            this.btnSair.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
             // toolStatus
             // 
@@ -204,55 +240,20 @@
             this.toolBar.Size = new System.Drawing.Size(847, 22);
             this.toolBar.TabIndex = 14;
             // 
-            // btImportar
+            // vectorView
             // 
-            this.btImportar.BackColor = System.Drawing.Color.Gainsboro;
-            this.btImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btImportar.Image = global::GlassFilm.Properties.Resources.import;
-            this.btImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btImportar.Location = new System.Drawing.Point(676, 25);
-            this.btImportar.Name = "btImportar";
-            this.btImportar.Size = new System.Drawing.Size(101, 23);
-            this.btImportar.TabIndex = 3;
-            this.btImportar.Text = "Importar      ";
-            this.btImportar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btImportar.UseVisualStyleBackColor = false;
-            this.btImportar.Click += new System.EventHandler(this.btImportar_Click);
-            // 
-            // btnSalvar
-            // 
-            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalvar.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSalvar.Image = ((System.Drawing.Image)(resources.GetObject("btnSalvar.Image")));
-            this.btnSalvar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(58, 22);
-            this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.Click += new System.EventHandler(this.btnEntrar_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripButton1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(73, 22);
-            this.toolStripButton1.Text = "Cancelar";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // btnSair
-            // 
-            this.btnSair.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btnSair.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
-            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSair.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(46, 22);
-            this.btnSair.Text = "Sair";
-            this.btnSair.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
+            this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.vectorView.BackColor = System.Drawing.Color.White;
+            this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vectorView.Document = null;
+            this.vectorView.FitStyle = VectorView.VectorViewFitStyle.Both;
+            this.vectorView.Location = new System.Drawing.Point(5, 83);
+            this.vectorView.Name = "vectorView";
+            this.vectorView.ShowRuller = false;
+            this.vectorView.Size = new System.Drawing.Size(836, 447);
+            this.vectorView.TabIndex = 7;
             // 
             // FrmCadastroDesenho
             // 
@@ -264,10 +265,12 @@
             this.Controls.Add(this.vectorView);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.toolPrincipal);
+            this.MinimizeBox = false;
             this.Name = "FrmCadastroDesenho";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastro de Desenhos";
             this.Load += new System.EventHandler(this.FrmCadastroDesenho_Load);
+            this.Resize += new System.EventHandler(this.FrmCadastroDesenho_Resize);
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.toolPrincipal.ResumeLayout(false);

@@ -15,6 +15,9 @@ namespace VectorView.Tools
     {
         bool isRotating = false;
 
+        bool allowTransforms = true;
+        bool allowMove = true;
+
         public void ToggleRotation()
         {
             isRotating = !isRotating;
@@ -119,6 +122,9 @@ namespace VectorView.Tools
 
         SelectionHitCorner UpdateHitCorner ()
         {
+            if (!allowTransforms)
+                return SelectionHitCorner.None;
+
             RectangleF r = Document.SelectionBoundingBox;
 
             float x = Document.MouseState.Pos.X;
@@ -148,11 +154,11 @@ namespace VectorView.Tools
                 Pen p = new Pen(Color.Blue, 1);
                 p.DashStyle = DashStyle.Custom;
                 p.DashPattern = new float[] { 2.0f, 4.0f };
-                p.Width = 1/ Document.Scale;
+                p.Width = 1 / Document.Scale;
 
                 Document.Graphics.DrawRectangle(p, r.X, r.Y, r.Width, r.Height);
 
-                if (Document.GetSelectionType() != typeof(VectorPoint))
+                if (Document.GetSelectionType() != typeof(VectorPoint) && allowTransforms)
                 {
                     DrawCornerRect(SelectionHitCorner.TopLeft, r);
                     if (!isRotating) DrawCornerRect(SelectionHitCorner.Top, r);
@@ -320,13 +326,13 @@ namespace VectorView.Tools
                 Document.CalculateSelectionBoudingBox();
             }
 
-            if (isMovingDocument)
+            if (isMovingDocument && allowMove)
             {
                 Document.OffsetX -= Document.MouseState.RightDownPos.X - Document.MouseState.Pos.X;
                 Document.OffsetY -= Document.MouseState.RightDownPos.Y - Document.MouseState.Pos.Y;
             }
 
-            if (isMovingSelection)
+            if (isMovingSelection && allowMove)
             {
                 hasMove = true;
 
@@ -393,6 +399,32 @@ namespace VectorView.Tools
             set
             {
                 isRotating = value;
+            }
+        }
+
+        public bool AllowTransforms
+        {
+            get
+            {
+                return allowTransforms;
+            }
+
+            set
+            {
+                allowTransforms = value;
+            }
+        }
+
+        public bool AllowMove
+        {
+            get
+            {
+                return allowMove;
+            }
+
+            set
+            {
+                allowMove = value;
             }
         }
 
@@ -517,7 +549,7 @@ namespace VectorView.Tools
         {
             base.MouseDown(bt);
 
-            if (bt == MouseButton.Right)
+            if (bt == MouseButton.Right && allowMove)
             {
                 isMovingDocument = true;
                 return;
@@ -527,7 +559,7 @@ namespace VectorView.Tools
             {
                 oList = Document.GetSelectionOrigin();
 
-                if (oList != null && oList.Count > 0)
+                if (oList != null && oList.Count > 0 && allowTransforms)
                 {
                     isTransformingSelection = true;
 
@@ -549,6 +581,9 @@ namespace VectorView.Tools
 
             if (Document.HasHitObject)
             {
+                if (!allowMove)
+                    return;
+
                 hasMove = false;
 
                 startX = Document.MouseState.LeftDownPos.X;
@@ -559,7 +594,8 @@ namespace VectorView.Tools
 
                 if (hitObj != null)
                 {
-                    if (hitObj is VectorPoint /*&& ((VectorPoint)hitObj).Type == VectorPointType.Control*/)
+
+                    if (hitObj is VectorPoint/*&& ((VectorPoint)hitObj).Type == VectorPointType.Control*/)
                     {
                         oList = new List<VectorView.PointOrigin>();
                         hitObj.FillOriginList(oList);

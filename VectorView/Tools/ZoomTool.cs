@@ -8,14 +8,31 @@ namespace VectorView.Tools
 {
     public class ZoomTool : VectorTool
     {
+        bool allowZoom = true;
+
+
         public ZoomTool(string name, VectorDocument doc) : base(name, doc)
         {
+        }
+
+        public bool AllowZoom
+        {
+            get
+            {
+                return allowZoom;
+            }
+
+            set
+            {
+                allowZoom = value;
+            }
         }
 
         public override void MouseWeel(float delta, float x, float y)
         {
             base.MouseWeel(delta, x, y);
-            if (delta == 0)
+
+            if (delta == 0 || !allowZoom)
                 return;
 
             float ds = (delta / Math.Abs(delta));

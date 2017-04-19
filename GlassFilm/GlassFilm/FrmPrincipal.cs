@@ -92,5 +92,10 @@ namespace GlassFilm
                 frm.ShowDialog();
             }     
         }
+
+        private void pnlMapa_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

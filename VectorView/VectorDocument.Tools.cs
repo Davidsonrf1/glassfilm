@@ -11,6 +11,58 @@ namespace VectorView
         Dictionary<string, VectorTool> tools = new Dictionary<string, VectorTool>();
         List<VectorTool> toolsOrder = new List<VectorTool>();
 
+        bool allowTransforms = true;
+        bool allowMove = true;
+        bool allowZoom = true;
+
+        public bool AllowMove
+        {
+            get
+            {
+                return allowMove;
+            }
+
+            set
+            {
+                allowMove = value;
+
+                SelectionTool st = (SelectionTool)tools["SelectionTool"];
+                st.AllowMove = allowMove;
+            }
+        }
+
+        public bool AllowTransforms
+        {
+            get
+            {
+                return allowTransforms;
+            }
+
+            set
+            {
+                allowTransforms = value;
+
+                SelectionTool st = (SelectionTool)tools["SelectionTool"];
+                st.AllowTransforms = allowTransforms;
+            }
+        }
+
+        public bool AllowZoom
+        {
+            get
+            {
+                return allowZoom;
+            }
+
+            set
+            {
+                allowZoom = value;
+                
+                ZoomTool st = (ZoomTool)tools["ZoomTool"];
+                st.AllowZoom = allowZoom;
+            }
+        }
+
         void RegisterTools()
         {
             RegsiterTool("DebugTool", new DebugTool("DebugTool", this));

@@ -31,6 +31,10 @@ namespace GlassFilm
             vectorView.Document = new VectorView.VectorDocument();
             vectorView.ShowRuller = false;
 
+            vectorView.Document.AllowTransforms = false;
+            vectorView.Document.AllowMove = false;
+            vectorView.Document.AllowZoom = false;
+
             OpenFileDialog opf = new OpenFileDialog();
             opf.DefaultExt = ".svg";
             opf.InitialDirectory = Environment.CurrentDirectory;
@@ -38,6 +42,7 @@ namespace GlassFilm
             if (opf.ShowDialog() == DialogResult.OK)
             {
                 vectorView.Document.LoadSVGFromFile(opf.FileName);
+                vectorView.AutoFit(VectorView.VectorViewFitStyle.Both);
             }
         }
 
@@ -62,6 +67,15 @@ namespace GlassFilm
         {
             sel.AtualizaMarcas();
             cbMarca.Focus();
+            // Impelmentação do Autofit, permitir bloquear transformações.
+            /*
+            vectorView.Document = new VectorView.VectorDocument();
+            vectorView.Document.AllowTransforms = false;
+            vectorView.Document.AllowMove = false;
+            vectorView.Document.AllowZoom = false;
+            vectorView.Document.LoadSVGFromFile(@"D:\tmp\PALIO-4-PORTAS-ANO-2011-A-2016.svg");
+            vectorView.AutoFit(VectorView.VectorViewFitStyle.Vertical);
+            */
         }
 
         private void cbAno_SelectedIndexChanged(object sender, EventArgs e)
@@ -76,7 +90,14 @@ namespace GlassFilm
                 if (svg != null)
                 {
                     vectorView.Document = new VectorView.VectorDocument();
+
+                    vectorView.Document.AllowTransforms = false;
+                    vectorView.Document.AllowMove = false;
+                    vectorView.Document.AllowZoom = false;
+
                     vectorView.Document.LoadSVG(svg);
+
+                    vectorView.AutoFit(VectorView.VectorViewFitStyle.Both);
                 }
             }
         }
@@ -102,6 +123,11 @@ namespace GlassFilm
             cbModelo.SelectedIndex = -1;
             cbMarca.SelectedIndex = -1;
             vectorView.Refresh();
+        }
+
+        private void FrmCadastroDesenho_Resize(object sender, EventArgs e)
+        {
+            vectorView.AutoFit(VectorView.VectorViewFitStyle.Both);
         }
     }
 }

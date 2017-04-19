@@ -108,8 +108,8 @@ namespace VectorView
 
             if (IsSelected || Shape.IsSelected || IsHit)
             {
-                Document.DrawPoint(start.X, start.Y);
-                Document.DrawPoint(end.X, end.Y);
+                //Document.DrawPoint(start.X, start.Y);
+                //Document.DrawPoint(end.X, end.Y);
             }
             else
             {

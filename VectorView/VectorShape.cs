@@ -11,9 +11,9 @@ namespace VectorView
         Dictionary<int, VectorPoint> points = new Dictionary<int, VectorPoint>();
         Dictionary<int, VectorEdge> edges = new Dictionary<int, VectorEdge>();
         List<VectorEdge> edgeOrder = new List<VectorEdge>();
-
-
+        
         RectangleF boundingBox = new RectangleF();
+        bool isCheck = false;
 
         public IEnumerable<VectorEdge> Edges()
         {
@@ -266,10 +266,17 @@ namespace VectorView
 
         internal override void Render()
         {
+            bool old = Document.RenderParams.UseHilightPen;
+
+            if (IsSelected)
+                Document.RenderParams.UseHilightPen = true;
+
             foreach (VectorEdge e in edges.Values)
             {
                 e.Render();
             }
+
+            Document.RenderParams.UseHilightPen = old;
         }
 
         float pointSize = 6f;

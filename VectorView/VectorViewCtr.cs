@@ -13,6 +13,8 @@ namespace VectorView
 
         bool showRuller = false;
 
+        VectorViewFitStyle fitStyle = VectorViewFitStyle.None;
+
         public VectorViewCtr()
         {
             InitializeComponent();
@@ -44,6 +46,19 @@ namespace VectorView
             set
             {
                 showRuller = value;
+            }
+        }
+
+        public VectorViewFitStyle FitStyle
+        {
+            get
+            {
+                return fitStyle;
+            }
+
+            set
+            {
+                fitStyle = value; AutoFit();
             }
         }
 
@@ -147,7 +162,7 @@ namespace VectorView
             //g.DrawLine(p, x - w / 2, y, x + w/2, y);
             //g.DrawLine(p, x, y - w / 2, x, y + w/2);
 
-            g.FillRectangle(Brushes.White, r);
+            //g.FillRectangle(Brushes.White, r);
 
             b.Dispose();
         }
@@ -217,5 +232,53 @@ namespace VectorView
         {
 
         }
+
+        public void AutoFit(VectorViewFitStyle style=VectorViewFitStyle.Both)
+        {
+            float scale = 1;
+            fitStyle = style;
+
+            if (Document == null)
+                return;
+
+            RectangleF r = Document.GetDocSize();
+            r.Inflate(100, 100);
+
+            switch (fitStyle)
+            {
+                case VectorViewFitStyle.None:
+                    return;
+                case VectorViewFitStyle.Vertical:
+                    scale = Height / r.Height;
+                    break;
+                case VectorViewFitStyle.Horizontal:
+                    scale = Width / r.Width;
+                    break;
+                case VectorViewFitStyle.Both:
+
+                    if (Width < Height)
+                    {
+                        scale = Width / r.Width;
+                    }
+                    else
+                    {
+                        scale = Height / r.Height;
+                    }
+
+                    break;
+            }
+
+            Document.Scale = scale;
+
+            Document.OffsetX = ((Width / 2) - (r.Width / 2) * scale) * Document.InverseScale;
+            Document.OffsetY = ((Height / 2) - (r.Height / 2) * scale) * Document.InverseScale;
+        }
+
+        private void VectorViewCtr_Resize(object sender, EventArgs e)
+        {
+            
+        }
     }
+
+    public enum VectorViewFitStyle { None, Vertical, Horizontal, Both }
 }

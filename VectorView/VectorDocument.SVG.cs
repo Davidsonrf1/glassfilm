@@ -92,5 +92,30 @@ namespace VectorView
                 ParseSvgElement(e);
             }
         }
+
+        public string ToSVG()
+        {
+            StringBuilder sb = new StringBuilder();
+
+            int id = 1;
+
+            RectangleF r = Rectangle.Round(GetDocSize());
+            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{0} {1} {2} {3}\" height=\"{3}\" width=\"{2}\" version=\"1.1\">\n", r.X, r.Y, r.Width, r.Height);
+
+            foreach (VectorShape s in shapes)
+            {
+                sb.Append("   " + s.ToSVGPath());
+                sb.Append("\n");
+            }
+
+            sb.Append("</svg>");
+            return sb.ToString();
+        }
+
+        public void SaveToSVGFile(string path)
+        {
+            string svg = ToSVG();
+            File.WriteAllText(path, svg);
+        }
     }
 }

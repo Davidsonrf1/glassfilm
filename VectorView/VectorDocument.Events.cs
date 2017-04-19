@@ -38,6 +38,7 @@ namespace VectorView
                     mouseHitShape = s;
                 }
 
+                /*
                 foreach (VectorEdge e in s.Edges())
                 {
                     if (e.HitTest(x, y))
@@ -46,7 +47,9 @@ namespace VectorView
                         break;
                     }
                 }
+                */
 
+                /*
                 foreach (VectorPoint p in s.Points())
                 {
                     if (p.HitTest(x, y))
@@ -55,6 +58,7 @@ namespace VectorView
                         break;
                     }
                 }
+                */
             }
         }
 

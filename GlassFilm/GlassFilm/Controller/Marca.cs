@@ -6,7 +6,6 @@ using System.Data;
 using System.Data.SqlClient;
 
 using System.Data.SQLite;
-using System.Data;
 using System.Data.Common;
 using GlassFilm.Class;
 using GlassFilm;
