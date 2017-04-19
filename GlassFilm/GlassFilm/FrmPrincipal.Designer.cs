@@ -80,8 +80,7 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.pnlMapa = new System.Windows.Forms.Panel();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.splitDesenho = new System.Windows.Forms.SplitContainer();
             this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
@@ -95,11 +94,10 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
-            this.pnlMapa.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
-            this.splitContainer1.Panel1.SuspendLayout();
-            this.splitContainer1.Panel2.SuspendLayout();
-            this.splitContainer1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).BeginInit();
+            this.splitDesenho.Panel1.SuspendLayout();
+            this.splitDesenho.Panel2.SuspendLayout();
+            this.splitDesenho.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -117,7 +115,7 @@
             this.ajudaToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1434, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(885, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
@@ -206,9 +204,9 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 687);
+            this.statusStrip1.Location = new System.Drawing.Point(0, 520);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1434, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(885, 22);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
             // 
@@ -227,7 +225,7 @@
             this.pnlprincipal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlprincipal.Location = new System.Drawing.Point(0, 24);
             this.pnlprincipal.Name = "pnlprincipal";
-            this.pnlprincipal.Size = new System.Drawing.Size(1434, 110);
+            this.pnlprincipal.Size = new System.Drawing.Size(885, 110);
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             // 
@@ -520,7 +518,7 @@
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 134);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(1434, 55);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(885, 55);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
             // 
@@ -628,33 +626,24 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Tipo:";
             // 
-            // pnlMapa
+            // splitDesenho
             // 
-            this.pnlMapa.Controls.Add(this.splitContainer1);
-            this.pnlMapa.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pnlMapa.Location = new System.Drawing.Point(0, 189);
-            this.pnlMapa.Name = "pnlMapa";
-            this.pnlMapa.Size = new System.Drawing.Size(1434, 498);
-            this.pnlMapa.TabIndex = 10;
-            this.pnlMapa.Visible = false;
-            this.pnlMapa.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlMapa_Paint);
+            this.splitDesenho.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitDesenho.Location = new System.Drawing.Point(0, 189);
+            this.splitDesenho.Name = "splitDesenho";
+            this.splitDesenho.Orientation = System.Windows.Forms.Orientation.Horizontal;
             // 
-            // splitContainer1
+            // splitDesenho.Panel1
             // 
-            this.splitContainer1.Location = new System.Drawing.Point(150, 50);
-            this.splitContainer1.Name = "splitContainer1";
-            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            this.splitDesenho.Panel1.Controls.Add(this.vvModelo);
             // 
-            // splitContainer1.Panel1
+            // splitDesenho.Panel2
             // 
-            this.splitContainer1.Panel1.Controls.Add(this.vvModelo);
-            // 
-            // splitContainer1.Panel2
-            // 
-            this.splitContainer1.Panel2.Controls.Add(this.vvCorte);
-            this.splitContainer1.Size = new System.Drawing.Size(721, 178);
-            this.splitContainer1.SplitterDistance = 85;
-            this.splitContainer1.TabIndex = 11;
+            this.splitDesenho.Panel2.Controls.Add(this.vvCorte);
+            this.splitDesenho.Size = new System.Drawing.Size(885, 331);
+            this.splitDesenho.SplitterDistance = 179;
+            this.splitDesenho.TabIndex = 13;
+            this.splitDesenho.Visible = false;
             // 
             // vvModelo
             // 
@@ -662,10 +651,11 @@
             this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vvModelo.Document = null;
+            this.vvModelo.FitStyle = VectorView.VectorViewFitStyle.Both;
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
             this.vvModelo.ShowRuller = false;
-            this.vvModelo.Size = new System.Drawing.Size(721, 85);
+            this.vvModelo.Size = new System.Drawing.Size(885, 179);
             this.vvModelo.TabIndex = 0;
             // 
             // vvCorte
@@ -674,10 +664,11 @@
             this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vvCorte.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vvCorte.Document = null;
+            this.vvCorte.FitStyle = VectorView.VectorViewFitStyle.Both;
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
             this.vvCorte.ShowRuller = false;
-            this.vvCorte.Size = new System.Drawing.Size(721, 89);
+            this.vvCorte.Size = new System.Drawing.Size(885, 148);
             this.vvCorte.TabIndex = 0;
             // 
             // FrmPrincipal
@@ -686,8 +677,8 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1434, 709);
-            this.Controls.Add(this.pnlMapa);
+            this.ClientSize = new System.Drawing.Size(885, 542);
+            this.Controls.Add(this.splitDesenho);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
             this.Controls.Add(this.statusStrip1);
@@ -716,11 +707,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
-            this.pnlMapa.ResumeLayout(false);
-            this.splitContainer1.Panel1.ResumeLayout(false);
-            this.splitContainer1.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
-            this.splitContainer1.ResumeLayout(false);
+            this.splitDesenho.Panel1.ResumeLayout(false);
+            this.splitDesenho.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).EndInit();
+            this.splitDesenho.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -775,13 +765,12 @@
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.Panel panel8;
-        private System.Windows.Forms.Panel pnlMapa;
-        private System.Windows.Forms.SplitContainer splitContainer1;
-        private VectorView.VectorViewCtr vvModelo;
-        private VectorView.VectorViewCtr vvCorte;
         private System.Windows.Forms.ToolStripMenuItem cortadoraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastroModeloToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitDesenho;
+        private VectorView.VectorViewCtr vvModelo;
+        private VectorView.VectorViewCtr vvCorte;
     }
 }

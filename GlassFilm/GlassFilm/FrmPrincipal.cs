@@ -34,7 +34,8 @@ namespace GlassFilm
             {
                 pnlFiltroInfo.Visible = true;
                 pnlprincipal.Visible = true;
-                pnlMapa.Visible = true;
+                //pnlMapa.Visible = true;
+                splitDesenho.Visible = true;
             }
         }
 
