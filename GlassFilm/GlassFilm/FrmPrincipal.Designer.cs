@@ -31,6 +31,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPrincipal));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cadastrarMarcaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cadastroModeloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cadastrarDesenhoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.organizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.recortarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,7 +84,6 @@
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.vectorViewCtr1 = new VectorView.VectorViewCtr();
             this.vectorViewCtr2 = new VectorView.VectorViewCtr();
-            this.cadastrarDesenhoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -122,11 +124,34 @@
             // arquivoToolStripMenuItem
             // 
             this.arquivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.cadastrarMarcaToolStripMenuItem,
+            this.cadastroModeloToolStripMenuItem,
             this.cadastrarDesenhoToolStripMenuItem});
             this.arquivoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
             this.arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
             this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
             this.arquivoToolStripMenuItem.Text = "Arquivo";
+            // 
+            // cadastrarMarcaToolStripMenuItem
+            // 
+            this.cadastrarMarcaToolStripMenuItem.Name = "cadastrarMarcaToolStripMenuItem";
+            this.cadastrarMarcaToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.cadastrarMarcaToolStripMenuItem.Text = "Cadastrar Marca";
+            this.cadastrarMarcaToolStripMenuItem.Click += new System.EventHandler(this.cadastrarMarcaToolStripMenuItem_Click);
+            // 
+            // cadastroModeloToolStripMenuItem
+            // 
+            this.cadastroModeloToolStripMenuItem.Name = "cadastroModeloToolStripMenuItem";
+            this.cadastroModeloToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.cadastroModeloToolStripMenuItem.Text = "Cadastrar Modelo";
+            this.cadastroModeloToolStripMenuItem.Click += new System.EventHandler(this.cadastroModeloToolStripMenuItem_Click);
+            // 
+            // cadastrarDesenhoToolStripMenuItem
+            // 
+            this.cadastrarDesenhoToolStripMenuItem.Name = "cadastrarDesenhoToolStripMenuItem";
+            this.cadastrarDesenhoToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.cadastrarDesenhoToolStripMenuItem.Text = "Cadastrar Desenho";
+            this.cadastrarDesenhoToolStripMenuItem.Click += new System.EventHandler(this.cadastrarDesenhoToolStripMenuItem_Click);
             // 
             // editarToolStripMenuItem
             // 
@@ -655,13 +680,6 @@
             this.vectorViewCtr2.Size = new System.Drawing.Size(1434, 255);
             this.vectorViewCtr2.TabIndex = 0;
             // 
-            // cadastrarDesenhoToolStripMenuItem
-            // 
-            this.cadastrarDesenhoToolStripMenuItem.Name = "cadastrarDesenhoToolStripMenuItem";
-            this.cadastrarDesenhoToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
-            this.cadastrarDesenhoToolStripMenuItem.Text = "Cadastrar Desenho";
-            this.cadastrarDesenhoToolStripMenuItem.Click += new System.EventHandler(this.cadastrarDesenhoToolStripMenuItem_Click);
-            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -763,5 +781,7 @@
         private VectorView.VectorViewCtr vectorViewCtr2;
         private System.Windows.Forms.ToolStripMenuItem cortadoraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem cadastroModeloToolStripMenuItem;
     }
 }

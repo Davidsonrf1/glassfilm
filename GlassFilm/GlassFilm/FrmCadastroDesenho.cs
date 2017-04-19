@@ -61,6 +61,7 @@ namespace GlassFilm
         private void FrmCadastroDesenho_Load(object sender, EventArgs e)
         {
             sel.AtualizaMarcas();
+            cbMarca.Focus();
         }
 
         private void cbAno_SelectedIndexChanged(object sender, EventArgs e)
@@ -88,6 +89,19 @@ namespace GlassFilm
         private void cbModelo_SelectedIndexChanged(object sender, EventArgs e)
         {
             vectorView.Document = null;
+        }
+
+        private void btnSair_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            cbAno.SelectedIndex = -1;
+            cbModelo.SelectedIndex = -1;
+            cbMarca.SelectedIndex = -1;
+            vectorView.Refresh();
         }
     }
 }

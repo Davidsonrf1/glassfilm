@@ -11,18 +11,23 @@ namespace GlassFilm.Class
 {
     public static class DBManager
     {
-        static SQLiteConnection _mainConnection = null;
-        static SQLiteConnection _modelConnection = null;
-        static string _mainDbName = "GlassFilm.db";
-        static string _modelDbname = "Modelos.db";
+        public static SQLiteConnection _mainConnection = null;
+        public static SQLiteConnection _modelConnection = null;
+        public static string _mainDbName = string.Format("Data Source={0};Version=3", "GlassFilm.db");
+        public static string _modelDbname = string.Format("Data Source={0};Version=3", "Modelos.db");
 
         public static void InitDB()
         {
-            _mainConnection = new SQLiteConnection(string.Format("Data Source={0};Version=3", _mainDbName));
+            _mainConnection = new SQLiteConnection(_mainDbName);
             _mainConnection.Open();
 
-            _modelConnection = new SQLiteConnection(string.Format("Data Source={0};Version=3", _modelDbname));
+            _modelConnection = new SQLiteConnection(_modelDbname);
             _modelConnection.Open();
+        }
+
+        public static bool conectado()
+        {
+            return _mainConnection != null && _mainConnection.State == ConnectionState.Open;
         }
         
         public static List<Marca> CarregarMarcas(bool todas=false)
