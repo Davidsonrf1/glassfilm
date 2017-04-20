@@ -29,7 +29,6 @@ namespace GlassFilm
         private void btImportar_Click(object sender, EventArgs e)
         {
             vectorView.Document = new VectorView.VectorDocument();
-            vectorView.ShowRuller = false;
 
             vectorView.Document.AllowTransforms = false;
             vectorView.Document.AllowMove = false;

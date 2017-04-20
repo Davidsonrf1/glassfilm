@@ -252,7 +252,7 @@
             this.vectorView.ForeColor = System.Drawing.Color.Black;
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
-            this.vectorView.ShowRuller = false;
+
             this.vectorView.Size = new System.Drawing.Size(836, 447);
             this.vectorView.TabIndex = 7;
             // 

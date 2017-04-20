@@ -671,7 +671,7 @@
             this.vvModelo.FitStyle = VectorView.VectorViewFitStyle.Both;
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
-            this.vvModelo.ShowRuller = false;
+
             this.vvModelo.Size = new System.Drawing.Size(1346, 266);
             this.vvModelo.TabIndex = 0;
             this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
@@ -686,7 +686,7 @@
             this.vvCorte.FitStyle = VectorView.VectorViewFitStyle.Both;
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
-            this.vvCorte.ShowRuller = false;
+
             this.vvCorte.Size = new System.Drawing.Size(1346, 222);
             this.vvCorte.TabIndex = 0;
             // 

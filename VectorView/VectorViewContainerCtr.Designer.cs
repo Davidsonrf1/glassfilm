@@ -1,6 +1,6 @@
 ﻿namespace VectorView
 {
-    partial class VectorViewCtr
+    partial class VectorViewContainerCtr
     {
         /// <summary> 
         /// Required designer variable.
@@ -28,22 +28,34 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.view = new VectorView.VectorViewCtr();
             this.SuspendLayout();
             // 
-            // VectorViewCtr
+            // view
+            // 
+            this.view.BackColor = System.Drawing.Color.White;
+            this.view.Document = null;
+            this.view.FitStyle = VectorView.VectorViewFitStyle.Both;
+            this.view.Location = new System.Drawing.Point(125, 28);
+            this.view.Name = "view";
+            this.view.Size = new System.Drawing.Size(332, 281);
+            this.view.TabIndex = 0;
+            // 
+            // VectorViewContainerCtr
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.Name = "VectorViewCtr";
-            this.Size = new System.Drawing.Size(607, 440);
-            this.Load += new System.EventHandler(this.VectorViewCtr_Load);
-            this.SizeChanged += new System.EventHandler(this.VectorViewCtr_SizeChanged);
-            this.Resize += new System.EventHandler(this.VectorViewCtr_Resize);
+            this.BackColor = System.Drawing.Color.WhiteSmoke;
+            this.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.Controls.Add(this.view);
+            this.Name = "VectorViewContainerCtr";
+            this.Size = new System.Drawing.Size(485, 322);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
+        private VectorViewCtr view;
     }
 }

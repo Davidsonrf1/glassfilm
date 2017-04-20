@@ -72,6 +72,12 @@
     <Compile Include="VectorQuadraticBezier.cs" />
     <Compile Include="VectorShape.cs" />
     <Compile Include="Tools\DebugTool.cs" />
+    <Compile Include="VectorViewContainerCtr.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="VectorViewContainerCtr.Designer.cs">
+      <DependentUpon>VectorViewContainerCtr.cs</DependentUpon>
+    </Compile>
     <Compile Include="VectorViewCtr.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -80,6 +86,9 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="VectorViewContainerCtr.resx">
+      <DependentUpon>VectorViewContainerCtr.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="VectorViewCtr.resx">
       <DependentUpon>VectorViewCtr.cs</DependentUpon>
     </EmbeddedResource>

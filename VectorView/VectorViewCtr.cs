@@ -7,12 +7,6 @@ namespace VectorView
     public partial class VectorViewCtr : UserControl
     {
         VectorDocument document = null;
-        int rullerWidth = 22;
-        Color rullerLineColor = Color.DarkRed;
-        Color rullerColor = Color.White;
-
-        bool showRuller = false;
-
         VectorViewFitStyle fitStyle = VectorViewFitStyle.None;
 
         public VectorViewCtr()
@@ -36,19 +30,6 @@ namespace VectorView
             }
         }
 
-        public bool ShowRuller
-        {
-            get
-            {
-                return showRuller;
-            }
-
-            set
-            {
-                showRuller = value;
-            }
-        }
-
         public VectorViewFitStyle FitStyle
         {
             get
@@ -62,6 +43,7 @@ namespace VectorView
             }
         }
 
+        /*
         void DrawRuller(Graphics g, bool vertical, int len, float scale)
         {
             Rectangle r = new Rectangle(-1, -1, rullerWidth, rullerWidth);
@@ -125,47 +107,7 @@ namespace VectorView
                 g.DrawLine(p, x1, y1, x2, y2);
             }
         }
-
-        void DrawHRuller(Graphics g)
-        {
-            DrawRuller(g, false, Width, Document.Scale);
-        }
-
-        void DrawVRuller(Graphics g)
-        {
-            DrawRuller(g, true, Height, Document.Scale);
-        }
-
-        void DrawRullers(Graphics g)
-        {
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighSpeed;
-
-            if (showRuller)
-            {
-                DrawVRuller(g);
-                DrawHRuller(g);
-            }
-
-            Rectangle r = new Rectangle(-1, -1, rullerWidth, rullerWidth);
-            SolidBrush b = new SolidBrush(rullerLineColor);
-            Pen p = new Pen(rullerLineColor);
-            p.Width = 0.5f;
-
-            float x, y, w;
-
-            x = r.X + r.Width / 2f;
-            y = r.Y + r.Height / 2f;
-            w = r.Width / 2f;
-
-            //g.FillEllipse(b, x - 2, y - 2, 4f, 4f);
-
-            //g.DrawLine(p, x - w / 2, y, x + w/2, y);
-            //g.DrawLine(p, x, y - w / 2, x, y + w/2);
-
-            //g.FillRectangle(Brushes.White, r);
-
-            b.Dispose();
-        }
+        */
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -178,10 +120,7 @@ namespace VectorView
             {
                 document.RenderDocument(g);
             }
-            
-            g.ResetTransform();
 
-            DrawRullers(g);
         }
 
         protected override void OnMouseDown(MouseEventArgs e)
@@ -284,6 +223,12 @@ namespace VectorView
         {
             Invalidate();
             Update();
+        }
+
+        
+        private void panel1_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 

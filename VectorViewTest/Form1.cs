@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
 using System.IO;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 using VectorView;
 
@@ -16,26 +10,11 @@ namespace VectorViewTest
     {
         VectorDocument doc = new VectorDocument();
 
-        float x1 = 600, y1 = 10, x2 = 10, y2 = 300;
-        //float x1 = 130, y1 = 60, x2 = 10, y2 = 60;
         float mx, my;
 
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
-
-            e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            e.Graphics.DrawLine(Pens.OrangeRed, x1, y1, x2, y2);
-
-            PointF cross;
-
-            if (VectorMath.HorizontalCrossPoint(x1, y1, x2, y2, my, out cross))
-            {
-                e.Graphics.FillEllipse(Brushes.Black, cross.X - 3, cross.Y - 3, 6, 6);
-                e.Graphics.DrawString(cross.ToString(), Font, Brushes.Red, 10, 10);
-
-                e.Graphics.DrawLine(Pens.Gray, 0, my, Width, my);
-            }
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -46,6 +25,21 @@ namespace VectorViewTest
             my = e.Y;
 
             Invalidate();
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if (vectorViewCtr1.Document != null)
+            {
+                PrintDialog pd = new PrintDialog();
+                if (pd.ShowDialog() == DialogResult.OK)
+                {
+                    string cmds = vectorViewCtr1.Document.ToHPGL();
+                    RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, cmds);
+
+                    File.WriteAllText("teste.plt", cmds);
+                }
+            }
         }
 
         public Form1()
@@ -72,7 +66,7 @@ namespace VectorViewTest
                 doc.LoadSVGFromFile("Tech.svg");
             }
 
-            //doc.Scale = 0.05f;
+            doc.Scale = 0.5f;
             string s = doc.ToSVG();
             File.WriteAllText("D:\\teste.svg", s);
         }
