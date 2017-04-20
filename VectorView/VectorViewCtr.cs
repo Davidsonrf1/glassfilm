@@ -242,7 +242,7 @@ namespace VectorView
                 return;
 
             RectangleF r = Document.GetDocSize();
-            r.Inflate(100, 100);
+            r.Inflate(2, 2);
 
             switch (fitStyle)
             {
@@ -268,7 +268,7 @@ namespace VectorView
                     break;
             }
 
-            Document.Scale = scale;
+            Document.Scale = scale * 0.96f;
 
             Document.OffsetX = ((Width / 2) - (r.Width / 2) * scale) * Document.InverseScale;
             Document.OffsetY = ((Height / 2) - (r.Height / 2) * scale) * Document.InverseScale;
@@ -276,7 +276,14 @@ namespace VectorView
 
         private void VectorViewCtr_Resize(object sender, EventArgs e)
         {
-            
+            Invalidate();
+            Update();
+        }
+
+        private void VectorViewCtr_SizeChanged(object sender, EventArgs e)
+        {
+            Invalidate();
+            Update();
         }
     }
 

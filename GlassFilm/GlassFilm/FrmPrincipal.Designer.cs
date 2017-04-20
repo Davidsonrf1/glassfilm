@@ -43,8 +43,12 @@
             this.ajudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.pnlprincipal = new System.Windows.Forms.Panel();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
             this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
             this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.label6 = new System.Windows.Forms.Label();
@@ -54,14 +58,17 @@
             this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.numericUpDown1 = new System.Windows.Forms.NumericUpDown();
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.label3 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.cbModelo = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
@@ -76,28 +83,21 @@
             this.splitDesenho = new System.Windows.Forms.SplitContainer();
             this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).BeginInit();
             this.splitDesenho.Panel1.SuspendLayout();
             this.splitDesenho.Panel2.SuspendLayout();
             this.splitDesenho.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -229,6 +229,48 @@
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(128)))), ((int)(((byte)(44)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
+            this.button4.Location = new System.Drawing.Point(1247, 18);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 80);
+            this.button4.TabIndex = 10;
+            this.button4.Text = "Recortar";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button4.UseVisualStyleBackColor = false;
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(253)))), ((int)(((byte)(2)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
+            this.button3.Location = new System.Drawing.Point(1166, 18);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 80);
+            this.button3.TabIndex = 9;
+            this.button3.Text = "Auto Ajuste";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button3.UseVisualStyleBackColor = false;
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(152)))), ((int)(((byte)(248)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.Black;
+            this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
+            this.button2.Location = new System.Drawing.Point(1085, 18);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 80);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Limpar";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button2.UseVisualStyleBackColor = false;
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
@@ -253,6 +295,16 @@
             this.groupBox3.TabIndex = 5;
             this.groupBox3.TabStop = false;
             this.groupBox3.Text = "Outros";
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackgroundImage = global::GlassFilm.Properties.Resources.heigth;
+            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox3.Location = new System.Drawing.Point(224, 50);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(20, 23);
+            this.pictureBox3.TabIndex = 7;
+            this.pictureBox3.TabStop = false;
             // 
             // numericUpDown2
             // 
@@ -364,6 +416,15 @@
             0,
             0});
             // 
+            // pictureBox2
+            // 
+            this.pictureBox2.Image = global::GlassFilm.Properties.Resources.locked;
+            this.pictureBox2.Location = new System.Drawing.Point(152, 43);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(25, 28);
+            this.pictureBox2.TabIndex = 4;
+            this.pictureBox2.TabStop = false;
+            // 
             // label3
             // 
             this.label3.AutoSize = true;
@@ -421,6 +482,17 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "16.51inX27.76in -- TO";
             // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources._1;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(177, 110);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // panel2
             // 
             this.panel2.Dock = System.Windows.Forms.DockStyle.Left;
@@ -450,6 +522,15 @@
             this.pnlFiltroInfo.Size = new System.Drawing.Size(1347, 65);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.LightGray;
+            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.panel4.Location = new System.Drawing.Point(0, 60);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1347, 5);
+            this.panel4.TabIndex = 14;
             // 
             // panel7
             // 
@@ -593,6 +674,7 @@
             this.vvModelo.ShowRuller = false;
             this.vvModelo.Size = new System.Drawing.Size(1346, 266);
             this.vvModelo.TabIndex = 0;
+            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
             // 
             // vvCorte
             // 
@@ -607,87 +689,6 @@
             this.vvCorte.ShowRuller = false;
             this.vvCorte.Size = new System.Drawing.Size(1346, 222);
             this.vvCorte.TabIndex = 0;
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(128)))), ((int)(((byte)(44)))));
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
-            this.button4.Location = new System.Drawing.Point(1247, 18);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 80);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "Recortar";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.UseVisualStyleBackColor = false;
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(253)))), ((int)(((byte)(2)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
-            this.button3.Location = new System.Drawing.Point(1166, 18);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 80);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Auto Ajuste";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.UseVisualStyleBackColor = false;
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(152)))), ((int)(((byte)(248)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
-            this.button2.Location = new System.Drawing.Point(1085, 18);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 80);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Limpar";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button2.UseVisualStyleBackColor = false;
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImage = global::GlassFilm.Properties.Resources.heigth;
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(224, 50);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(20, 23);
-            this.pictureBox3.TabIndex = 7;
-            this.pictureBox3.TabStop = false;
-            // 
-            // pictureBox2
-            // 
-            this.pictureBox2.Image = global::GlassFilm.Properties.Resources.locked;
-            this.pictureBox2.Location = new System.Drawing.Point(152, 43);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(25, 28);
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources._1;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(177, 110);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
-            // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.LightGray;
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 60);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1347, 5);
-            this.panel4.TabIndex = 14;
             // 
             // FrmPrincipal
             // 
@@ -714,21 +715,21 @@
             this.pnlprincipal.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numericUpDown1)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.splitDesenho.Panel1.ResumeLayout(false);
             this.splitDesenho.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).EndInit();
             this.splitDesenho.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

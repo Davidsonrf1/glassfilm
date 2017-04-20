@@ -20,7 +20,7 @@ namespace GlassFilm
             InitializeComponent();
 
             sel = new SeletorVeiculo();
-            sel.ListaTodas = true;
+            sel.ListaTodas = false;
 
             sel.CbMarcas = cbMarca;
             sel.CbModelos = cbModelo;
@@ -129,6 +129,12 @@ namespace GlassFilm
                     vvModelo.AutoFit(VectorView.VectorViewFitStyle.Both);
                 }
             }
+        }
+
+        private void vvModelo_Resize(object sender, EventArgs e)
+        {
+            vvModelo.AutoFit(VectorView.VectorViewFitStyle.Both);
+            Invalidate();
         }
     }
 }
