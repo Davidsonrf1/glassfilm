@@ -539,29 +539,27 @@ namespace VectorView
 
         public void CloneShape(VectorShape shape)
         {
+            BeginPath(shape.edgeOrder[0].Start.X, shape.edgeOrder[0].Start.Y);
+
             foreach (VectorEdge e in shape.edgeOrder)
             {
-                VectorEdge clone = null;
-
                 if (e is VectorQuadraticBezier)
                 {
-                    clone = new VectorQuadraticBezier(Document, this);
+                    VectorQuadraticBezier q = (VectorQuadraticBezier)e;
+                    QCurveTo(q.Control.X, q.Control.Y, q.End.X, q.End.Y);
                 }
                 else if (e is VectorCubicBezier)
                 {
-                    clone = new VectorCubicBezier(Document, this);
+                    VectorCubicBezier c = (VectorCubicBezier)e;
+                    CurveTo(c.Control1.X, c.Control1.Y, c.Control2.X, c.Control2.Y, e.End.X, e.End.Y);
                 }
                 else
                 {
-                    clone = new VectorEdge(Document, this);
+                    LineTo(e.End.X, e.End.Y);
                 }
-
-                VectorPoint start = AddPoint(0, 0);
-                VectorPoint end = AddPoint(0, 0);
-
-                AddEdge(start, end, clone);
-                clone.CloneEdge(e);
             }
+
+            EndPath(true);
         }
     }
 }

@@ -236,7 +236,7 @@ namespace VectorView
             {
                 if (Document.MouseHitShape != null)
                 {
-                    MessageBox.Show(Document.MouseHitShape.Id.ToString());
+                    
                 }
             }
         }

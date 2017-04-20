@@ -42,6 +42,8 @@ namespace GlassFilm
                 if (vs != null && vvCorte.Document != null)
                 {
                     vvCorte.Document.ImportShape(vs);
+                    vvCorte.AutoFit(VectorViewFitStyle.Both);
+                    vvCorte.Invalidate();
                 }
             }
         }
@@ -101,7 +103,6 @@ namespace GlassFilm
             if (Application.OpenForms.OfType<FrmCadMarca>().Count() > 0)
             {
                 Mensagens.Atencao("Rotina já está aberta!");
-
             }
             else
             {
@@ -116,7 +117,6 @@ namespace GlassFilm
             if (Application.OpenForms.OfType<FrmCadModelo>().Count() > 0)
             {
                 Mensagens.Atencao("Rotina já está aberta!");
-
             }
             else
             {

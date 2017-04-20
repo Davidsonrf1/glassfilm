@@ -309,23 +309,8 @@ namespace VectorView
         {
             if (shape.Document != this)
             {
-                float x=0;
-
-                if (shapes.Count > 0)
-                {
-                    RectangleF r = GetDocSize();
-                    x = r.Right;                    
-                }
-
                 VectorShape s = CreateShape(shape.ShapeID);
                 s.CloneShape(shape);
-
-                RectangleF bb = s.GetBoundBox();
-
-                foreach (VectorEdge e in s.Edges())
-                {
-                    e.MoveTo(bb.Right, bb.Top);
-                }
             }
         }
     }
