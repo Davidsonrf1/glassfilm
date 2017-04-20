@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
 using GlassFilm.Class;
+using System.IO;
 
 namespace GlassFilm
 {
@@ -135,6 +136,21 @@ namespace GlassFilm
         {
             vvModelo.AutoFit(VectorView.VectorViewFitStyle.Both);
             Invalidate();
+        }
+
+        private void button4_Click(object sender, EventArgs e)
+        {
+            if (vvModelo.Document != null)
+            {
+                PrintDialog pd = new PrintDialog();
+                if (pd.ShowDialog() == DialogResult.OK)
+                {
+                    string cmds = vvModelo.Document.ToHPGL();
+                    RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, cmds);
+
+                    File.WriteAllText("teste.plt", cmds);
+                }
+            }
         }
     }
 }

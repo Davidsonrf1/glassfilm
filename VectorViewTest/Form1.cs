@@ -49,8 +49,9 @@ namespace VectorViewTest
 
             vectorViewCtr1.Document = doc;
             vectorViewCtr1.ShowRuller = true;
-
-            if (!File.Exists("Tech.svg"))
+            
+            //if (!File.Exists("Tech.svg"))
+            if (!File.Exists("NOVO-PALIO.svg"))
             {
                 OpenFileDialog opf = new OpenFileDialog();
                 opf.DefaultExt = ".svg";
@@ -63,7 +64,7 @@ namespace VectorViewTest
             }
             else
             {
-                doc.LoadSVGFromFile("Tech.svg");
+                doc.LoadSVGFromFile("NOVO-PALIO.svg");
             }
 
             doc.Scale = 0.5f;
