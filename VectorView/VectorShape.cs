@@ -11,9 +11,11 @@ namespace VectorView
         Dictionary<int, VectorPoint> points = new Dictionary<int, VectorPoint>();
         Dictionary<int, VectorEdge> edges = new Dictionary<int, VectorEdge>();
         List<VectorEdge> edgeOrder = new List<VectorEdge>();
-        
+
         RectangleF boundingBox = new RectangleF();
         bool isCheck = false;
+
+        private int shapeID = 0;
 
         public IEnumerable<VectorEdge> Edges()
         {
@@ -66,6 +68,19 @@ namespace VectorView
             }
         }
 
+        public int ShapeID
+        {
+            get
+            {
+                return shapeID;
+            }
+
+            internal set
+            {
+                shapeID = value;
+            }
+        }
+
         bool updating = false;
         public void BeginUpdate()
         {
@@ -97,7 +112,7 @@ namespace VectorView
         public VectorPoint AddPoint(float x, float y)
         {
             VectorPoint p = new VectorPoint(Document, this);
-            
+
             p.X = x;
             p.Y = y;
 
@@ -221,7 +236,7 @@ namespace VectorView
             return p;
         }
 
-        public VectorShape(VectorDocument doc): base(doc)
+        public VectorShape(VectorDocument doc) : base(doc)
         {
 
         }
@@ -261,7 +276,7 @@ namespace VectorView
 
         public static VectorShape CreateRectangle(VectorDocument doc, float x, float y, float w, float h)
         {
-            return null;   
+            return null;
         }
 
         internal override void Render()
@@ -314,7 +329,7 @@ namespace VectorView
             {
                 List<PointF> pts = new List<PointF>();
 
-                if(e.CrossPointCount(pt.Y, pts) > 0)
+                if (e.CrossPointCount(pt.Y, pts) > 0)
                 {
                     foreach (PointF p in pts)
                     {
@@ -518,8 +533,35 @@ namespace VectorView
 
             WriteEdgeList(sb, list);
             sb.Append(" Z\" />");
- 
+
             return sb.ToString();
+        }
+
+        public void CloneShape(VectorShape shape)
+        {
+            foreach (VectorEdge e in shape.edgeOrder)
+            {
+                VectorEdge clone = null;
+
+                if (e is VectorQuadraticBezier)
+                {
+                    clone = new VectorQuadraticBezier(Document, this);
+                }
+                else if (e is VectorCubicBezier)
+                {
+                    clone = new VectorCubicBezier(Document, this);
+                }
+                else
+                {
+                    clone = new VectorEdge(Document, this);
+                }
+
+                VectorPoint start = AddPoint(0, 0);
+                VectorPoint end = AddPoint(0, 0);
+
+                AddEdge(start, end, clone);
+                clone.CloneEdge(e);
+            }
         }
     }
 }

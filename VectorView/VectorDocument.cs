@@ -110,6 +110,14 @@ namespace VectorView
             objects.Add(obj.Id, obj);
         }
 
+        internal void RemoveObject(VectorObject obj)
+        {
+            if(objects.ContainsKey(obj.Id) && obj.Document == this)
+            {
+                objects.Remove(obj.Id);
+            }
+        }
+
         public void ClearSelection()
         {
             foreach (VectorObject o in selection)
@@ -297,7 +305,28 @@ namespace VectorView
             return ret;
         }
 
+        public void ImportShape(VectorShape shape)
+        {
+            if (shape.Document != this)
+            {
+                float x=0;
 
+                if (shapes.Count > 0)
+                {
+                    RectangleF r = GetDocSize();
+                    x = r.Right;                    
+                }
 
+                VectorShape s = CreateShape(shape.ShapeID);
+                s.CloneShape(shape);
+
+                RectangleF bb = s.GetBoundBox();
+
+                foreach (VectorEdge e in s.Edges())
+                {
+                    e.MoveTo(bb.Right, bb.Top);
+                }
+            }
+        }
     }
 }

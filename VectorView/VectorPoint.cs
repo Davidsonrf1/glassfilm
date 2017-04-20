@@ -219,5 +219,10 @@ namespace VectorView
         {
             return VectorMath.PointDistance(this.x, this.y, x, y) < Document.HitTolerance;
         }
+
+        public void ClonePoint(VectorPoint point)
+        {
+            
+        }
     }
 }

@@ -93,5 +93,23 @@ namespace VectorView
             isHit = InternalHitTest(x, y);
             return isHit;
         }
+
+        public void MoveTo(float x, float y)
+        {
+            List<PointOrigin> oList = new List<VectorView.PointOrigin>();
+            FillOriginList(oList);
+
+            RectangleF r = GetBoundBox();
+
+            float dx, dy;
+
+            dx = x - r.X;
+            dy = y - r.Y;
+
+            foreach (PointOrigin p in oList)
+            {
+                p.SetDistance(dx, dy);
+            }
+        }
     }
 }

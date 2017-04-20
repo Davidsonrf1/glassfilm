@@ -203,5 +203,14 @@ namespace VectorView
         {
             polyline.Add(new PointF(End.X, End.Y));
         }
+
+        public virtual void CloneEdge(VectorEdge edge)
+        {
+            Start.X = edge.Start.X;
+            Start.Y = edge.Start.Y;
+
+            End.X = edge.End.X;
+            End.Y = edge.End.Y;
+        }
     }
 }

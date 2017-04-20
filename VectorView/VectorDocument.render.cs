@@ -336,13 +336,40 @@ namespace VectorView
             return new RectangleF(0, 0, width, height);
         }
 
-        public VectorShape CreateShape()
+        int curShapeID = 1;
+        Dictionary<int, VectorShape> shapesByID = new Dictionary<int, VectorShape>();
+
+        public VectorShape CreateShape(int shapeID = -1)
         {
             VectorShape s = new VectorShape(this);
 
+            int id = shapeID;
+            if (id == -1)
+            {
+                id = curShapeID++;
+            }
+
+            if(shapesByID.ContainsKey(id))
+            {
+                RemoveShape(id);
+            }
+
+            s.ShapeID = id;
             shapes.Add(s);
+            shapesByID.Add(s.ShapeID, s);
 
             return s;
+        }
+
+        public void RemoveShape(int id)
+        {
+            VectorShape s = null;
+
+            if(shapesByID.TryGetValue(id, out s))
+            {
+                shapesByID.Remove(id);
+                shapes.Remove(s);
+            }
         }
 
         internal override void Render()

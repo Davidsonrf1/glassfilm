@@ -39,6 +39,7 @@
             this.Size = new System.Drawing.Size(607, 440);
             this.Load += new System.EventHandler(this.VectorViewCtr_Load);
             this.SizeChanged += new System.EventHandler(this.VectorViewCtr_SizeChanged);
+            this.DoubleClick += new System.EventHandler(this.VectorViewCtr_DoubleClick);
             this.Resize += new System.EventHandler(this.VectorViewCtr_Resize);
             this.ResumeLayout(false);
 

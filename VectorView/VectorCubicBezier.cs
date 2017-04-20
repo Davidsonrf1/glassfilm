@@ -116,5 +116,21 @@ namespace VectorView
             if (control1 != null)
                 ol.Add(control2.GetOrigin());
         }
+
+        public override void CloneEdge(VectorEdge edge)
+        {
+            base.CloneEdge(edge);
+
+            if (edge is VectorCubicBezier)
+            {
+                VectorCubicBezier e = (VectorCubicBezier)edge;
+
+                Control1.X = e.Control1.X;
+                Control1.Y = e.Control1.Y;
+
+                Control2.X = e.Control2.X;
+                Control2.Y = e.Control2.Y;
+            }
+        }
     }
 }

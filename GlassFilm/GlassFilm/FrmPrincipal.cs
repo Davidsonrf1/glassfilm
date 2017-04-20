@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using System.Data.SQLite;
 using GlassFilm.Class;
 using System.IO;
+using VectorView;
 
 namespace GlassFilm
 {
@@ -26,6 +27,23 @@ namespace GlassFilm
             sel.CbMarcas = cbMarca;
             sel.CbModelos = cbModelo;
             sel.CbVeiculos = cbAno;
+
+            vvCorte.Document = new VectorDocument();
+
+            vvModelo.DoubleClick += VvModelo_DoubleClick;
+        }
+
+        private void VvModelo_DoubleClick(object sender, EventArgs e)
+        {
+            if (vvModelo.Document != null)
+            {
+                VectorShape vs = vvModelo.Document.MouseHitShape;
+
+                if (vs != null && vvCorte.Document != null)
+                {
+                    vvCorte.Document.ImportShape(vs);
+                }
+            }
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)

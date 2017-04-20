@@ -51,7 +51,6 @@ namespace VectorViewTest
             vectorViewCtr1.ShowRuller = true;
             
             if (!File.Exists("Tech.svg"))
-            //if (!File.Exists("NOVO-PALIO.svg"))
             {
                 OpenFileDialog opf = new OpenFileDialog();
                 opf.DefaultExt = ".svg";

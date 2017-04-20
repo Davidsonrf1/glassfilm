@@ -224,11 +224,21 @@ namespace VectorView
             Invalidate();
             Update();
         }
-
         
         private void panel1_Paint(object sender, PaintEventArgs e)
         {
 
+        }
+
+        private void VectorViewCtr_DoubleClick(object sender, EventArgs e)
+        {
+            if (Document != null)
+            {
+                if (Document.MouseHitShape != null)
+                {
+                    MessageBox.Show(Document.MouseHitShape.Id.ToString());
+                }
+            }
         }
     }
 
