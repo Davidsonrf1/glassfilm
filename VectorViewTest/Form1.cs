@@ -67,8 +67,6 @@ namespace VectorViewTest
             }
 
             doc.Scale = 0.5f;
-            string s = doc.ToSVG();
-            File.WriteAllText("D:\\teste.svg", s);
         }
     }
 }
