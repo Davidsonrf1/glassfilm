@@ -28,9 +28,20 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.vectorViewCtr1 = new VectorView.VectorViewContainerCtr();
             this.button1 = new System.Windows.Forms.Button();
+            this.vectorViewCtr1 = new VectorView.VectorViewContainerCtr();
             this.SuspendLayout();
+            // 
+            // button1
+            // 
+            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
+            this.button1.Location = new System.Drawing.Point(0, 478);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(898, 33);
+            this.button1.TabIndex = 1;
+            this.button1.Text = "Enviar para a Plotter";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // vectorViewCtr1
             // 
@@ -44,17 +55,6 @@
             this.vectorViewCtr1.ShowRuller = true;
             this.vectorViewCtr1.Size = new System.Drawing.Size(898, 511);
             this.vectorViewCtr1.TabIndex = 0;
-            // 
-            // button1
-            // 
-            this.button1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.button1.Location = new System.Drawing.Point(0, 478);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(898, 33);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // Form1
             // 
