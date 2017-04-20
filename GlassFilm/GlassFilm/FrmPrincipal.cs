@@ -7,18 +7,28 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Data.SQLite;
+using GlassFilm.Class;
 
 namespace GlassFilm
 {
     public partial class FrmPrincipal : Form
     {
+        SeletorVeiculo sel = null;
+
         public FrmPrincipal()
         {
             InitializeComponent();
+
+            sel = new SeletorVeiculo();
+            sel.ListaTodas = true;
+
+            sel.CbMarcas = cbMarca;
+            sel.CbModelos = cbModelo;
+            sel.CbVeiculos = cbAno;
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
-        {
+        {           
             foreach (Control ctrl in this.Controls)
             {
                 if (ctrl is MdiClient)
@@ -37,6 +47,9 @@ namespace GlassFilm
                 //pnlMapa.Visible = true;
                 splitDesenho.Visible = true;
             }
+
+            sel.AtualizaMarcas();
+            cbMarca.Focus();
         }
 
         private void cortadoraToolStripMenuItem_Click(object sender, EventArgs e)
@@ -92,11 +105,30 @@ namespace GlassFilm
                 frm.ShowInTaskbar = false;
                 frm.ShowDialog();
             }     
-        }
+        }       
 
-        private void pnlMapa_Paint(object sender, PaintEventArgs e)
+        private void cbAno_SelectedIndexChanged(object sender, EventArgs e)
         {
+            if (cbAno.SelectedItem != null)
+            {
+                Veiculo v = (Veiculo)cbAno.SelectedItem;
 
+                vvModelo.Document = null;
+
+                string svg = DBManager.CarregarDesenho(v.Id);
+                if (svg != null)
+                {
+                    vvModelo.Document = new VectorView.VectorDocument();
+
+                    vvModelo.Document.AllowTransforms = false;
+                    vvModelo.Document.AllowMove = false;
+                    vvModelo.Document.AllowZoom = false;
+
+                    vvModelo.Document.LoadSVG(svg);
+
+                    vvModelo.AutoFit(VectorView.VectorViewFitStyle.Both);
+                }
+            }
         }
     }
 }

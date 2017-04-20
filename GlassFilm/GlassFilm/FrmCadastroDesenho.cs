@@ -59,8 +59,12 @@ namespace GlassFilm
                 {
                     string svg = doc.ToSVG();
                     DBManager.SalvarDesenho(sel.VeiculoAtual.Id, svg);
+
+                    Mensagens.Informacao("Desenho Salvo com Sucesso!");
+                    toolStripButton1_Click(sender, e);
+                    cbMarca.Focus();
                 }
-            }
+            }            
         }
 
         private void FrmCadastroDesenho_Load(object sender, EventArgs e)
