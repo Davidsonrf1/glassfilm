@@ -22,6 +22,8 @@ namespace VectorView
         {
             InitializeComponent();
             AdjustView();
+
+            DoubleBuffered = true;
         }
 
         public VectorViewCtr View
@@ -89,6 +91,8 @@ namespace VectorView
             }
         }
 
+
+
         protected override void OnSizeChanged(EventArgs e)
         {
             base.OnSizeChanged(e);
@@ -101,14 +105,76 @@ namespace VectorView
             AdjustView();
         }
 
-        protected override void OnPaint(PaintEventArgs e)
+        void DrawRuller(PointF origin, bool vertical)
         {
-            base.OnPaint(e);
-            
-            if (showRuller)
+            float o = 0;
+
+            if (!vertical)
+            {
+                o = -origin.X;
+            }
+            else
             {
 
             }
+
+        }
+
+        protected override void OnPaint(PaintEventArgs e)
+        {
+            base.OnPaint(e);
+
+            Graphics g = e.Graphics;
+
+            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+            if (Document != null)
+            {
+                if (showRuller)
+                {
+                    PointF p = Document.MouseState.Pos;
+                    p = Document.DocumentToViewPoint(p.X, p.Y);
+
+                    PointF o = new PointF(Document.OffsetX, Document.OffsetY);
+
+                    Pen pen = new Pen(Brushes.LightCoral);
+                    pen.Width = 0.1f;
+
+                    DrawRuller(o, false);
+
+                    g.DrawLine(pen, p.X + rullerWidth, 0, p.X + rullerWidth, rullerWidth);
+                    g.DrawLine(pen, 0, p.Y + rullerWidth, rullerWidth, p.Y + rullerWidth);
+
+                    pen.Color = Color.LightBlue;
+
+                    if (o.X >= 0)
+                        g.DrawLine(pen, o.X + rullerWidth, 0, o.X + rullerWidth, rullerWidth);
+
+                    if (o.Y >= 0)
+                        g.DrawLine(pen, 0, o.Y + rullerWidth, rullerWidth, o.Y + rullerWidth);
+                }
+            }
+        }
+
+        protected override void OnMouseUp(MouseEventArgs e)
+        {
+            base.OnMouseUp(e);
+            Invalidate();
+        }
+
+        private void view_MouseMove(object sender, MouseEventArgs e)
+        {
+            Invalidate();
+        }
+
+        private void view_MouseEnter(object sender, EventArgs e)
+        {
+            Invalidate();
+        }
+
+        private void view_MouseLeave(object sender, EventArgs e)
+        {
+            Invalidate();
         }
     }
 }

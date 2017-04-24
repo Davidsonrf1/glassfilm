@@ -40,6 +40,9 @@
             this.view.Name = "view";
             this.view.Size = new System.Drawing.Size(332, 281);
             this.view.TabIndex = 0;
+            this.view.MouseEnter += new System.EventHandler(this.view_MouseEnter);
+            this.view.MouseLeave += new System.EventHandler(this.view_MouseLeave);
+            this.view.MouseMove += new System.Windows.Forms.MouseEventHandler(this.view_MouseMove);
             // 
             // VectorViewContainerCtr
             // 

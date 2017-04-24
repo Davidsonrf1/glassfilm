@@ -66,7 +66,7 @@ namespace VectorViewTest
                 doc.LoadSVGFromFile("Tech.svg");
             }
 
-            doc.Scale = 0.5f;
+            doc.Scale = 1f;
         }
     }
 }
