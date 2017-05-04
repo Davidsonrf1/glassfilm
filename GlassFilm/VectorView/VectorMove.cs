@@ -12,10 +12,5 @@ namespace VectorView
         {
 
         }
-
-        internal override void Render(Graphics g)
-        {
-            //base.Render(g);
-        }
     }
 }

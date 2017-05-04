@@ -29,6 +29,8 @@ namespace VectorView
                 bezier.StartPoint = new PointF(StartX, StartY);
                 bezier.EndPoint = new PointF(EndX, EndY);
                 bezier.CalculatePoints();
+
+                InvalidatePath();
             }
         }
 
@@ -46,6 +48,8 @@ namespace VectorView
                 bezier.StartPoint = new PointF(StartX, StartY);
                 bezier.EndPoint = new PointF(EndX, EndY);
                 bezier.CalculatePoints();
+
+                InvalidatePath();
             }
         }
 
@@ -91,6 +95,17 @@ namespace VectorView
 
             Control1 = new PointF(pl[2].X, pl[2].Y);
             Control2 = new PointF(pl[3].X, pl[3].Y);
+
+            InvalidatePath();
+        }
+
+        internal override VectorEdge Clone()
+        {
+            VectorCubicBezier q = new VectorCubicBezier(Path, StartX, StartY, EndX, EndY);
+            q.Control1 = new PointF(Control1.X, Control1.Y);
+            q.Control2 = new PointF(Control2.X, Control2.Y);
+
+            return q;
         }
 
         public override void Move(float distanceX, float distanceY)
@@ -104,6 +119,8 @@ namespace VectorView
             bezier.Control2 = new PointF(bezier.Control2.X + distanceX, bezier.Control2.Y + distanceY);
 
             bezier.CalculatePoints();
+
+            InvalidatePath();
         }
 
     }

@@ -6,6 +6,7 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing.Drawing2D;
 
 namespace VectorView
 {
@@ -13,9 +14,7 @@ namespace VectorView
 
     public partial class VectorViewCtr : UserControl
     {
-        VectorDocument document = new VectorDocument();
-
-      
+        VectorDocument document = new VectorDocument();      
 
         bool isMovingSel = false;
         bool isMovingDoc = false;
@@ -23,6 +22,9 @@ namespace VectorView
         bool drawMultiSelectionBox = false;
 
         bool showScaleCorner = true;
+
+        bool isScaling = false;
+        bool isRotating = false;
 
         bool allowMoveDocument = true;
         bool allowRotatePath = true;
@@ -83,6 +85,10 @@ namespace VectorView
             return sb;
         }
 
+        float startAngle = 0;
+        PointF transformCenter = new PointF(0, 0);
+        RectangleF transformBox = new RectangleF();
+
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -96,8 +102,36 @@ namespace VectorView
             mouseDownPos.X = e.X;
             mouseDownPos.Y = e.Y;
 
-            if (hitCorner != SelectionHitCorner.None)
+            if (hitCorner != SelectionHitCorner.None && allowTransforms)
             {
+                BuildSelBox();
+
+                float cx = selBox.X + selBox.Width / 2;
+                float cy = selBox.Y + selBox.Height / 2;
+
+                transformCenter = document.DocPointToViewPoint(new PointF(cx, cy));
+
+                transformBox.X = selBox.X;
+                transformBox.Y = selBox.Y;
+                transformBox.Width = selBox.Width;
+                transformBox.Height = selBox.Height;
+
+                foreach (VectorPath pp in selection)
+                {
+                    pp.BeginTransform(selMiddle);
+                }
+
+                if (showScaleCorner)
+                {
+                    isScaling = true;
+                }
+                else
+                {
+                    isRotating = true;
+                    startAngle = VectorMath.AngleBetween(transformCenter, mouseDownPos);
+                }
+
+                Refresh();
                 return;
             }
 
@@ -176,7 +210,7 @@ namespace VectorView
                 if (document == null)
                     return;
 
-                if (isMovingSel)
+                if (isMovingSel || isRotating || isScaling)
                 {
                     foreach (VectorPath p in selection)
                     {
@@ -184,6 +218,12 @@ namespace VectorView
                     }
 
                     isMovingSel = false;
+                    isRotating = false;
+                    isScaling = false;
+
+                    Refresh();
+
+                    return;
                 }
 
                 ClearSelection();
@@ -240,6 +280,39 @@ namespace VectorView
                 }
             }
 
+            if (isScaling)
+            {
+                Matrix mt = new Matrix();
+
+                float dx = Math.Abs(transformCenter.X - mousePos.X);
+                float dy = Math.Abs(transformCenter.Y - mousePos.Y);
+
+                dx = dx / Math.Abs(mouseDownPos.X - transformCenter.X);
+                dy = dy / Math.Abs(mouseDownPos.Y - transformCenter.Y);
+
+                float scale = Math.Max(dx, dy);
+
+                mt.Scale(scale, scale);
+
+                foreach (VectorPath p in selection)
+                {
+                    p.Transform(mt, document.ViewPointToDocPoint(transformCenter));
+                }
+            }
+
+            if (isRotating)
+            {
+                Matrix mt = new Matrix();
+
+                float angle = VectorMath.AngleBetween(transformCenter, mousePos) - startAngle;
+                mt.Rotate(angle);
+
+                foreach (VectorPath p in selection)
+                {
+                    p.Transform(mt, document.ViewPointToDocPoint(transformCenter));
+                }                      
+            }
+
             Refresh();
         }
 
@@ -260,6 +333,8 @@ namespace VectorView
 
             isMovingDoc = false;
             isMovingSel = false;
+            isRotating = false;
+            isScaling = false;
 
             VectorPath p = Document.GetPathOnPoint(document.ViewPointToDocPoint(mousePos));
 
@@ -286,8 +361,6 @@ namespace VectorView
                 drawMultiSelectionBox = false;
             }
         }
-
-        bool isRotating = false;
 
         float hitCornerTolerance = 2f;
         bool allowTransforms = true;
@@ -369,6 +442,30 @@ namespace VectorView
                 g.FillRectangle(b, rc.X, rc.Y, rc.Width, rc.Height);
             else
                 g.FillEllipse(b, rc.X, rc.Y, rc.Width, rc.Height);
+        }
+
+        public void DrawAngle(Graphics g, PointF origin, float size, float angle, Color color)
+        {
+            Pen p = new Pen(color);
+            p.EndCap = LineCap.ArrowAnchor;
+            p.Width = 0.001f;
+
+            Pen a = new Pen(color);
+            a.Width = p.Width;
+            a.DashPattern = new float[] { 2f, 3f };
+
+            float dx = origin.X + (float)Math.Cos(VectorMath.DegreeToRadian(angle)) * size;
+            float dy = origin.Y + (float)Math.Sin(VectorMath.DegreeToRadian(angle)) * size;
+
+            g.DrawLine(p, origin.X, origin.Y, dx, dy);
+            g.DrawLine(p, origin, new PointF(origin.X + size, origin.Y));
+
+            g.DrawArc(a, origin.X - size / 2, origin.Y - size / 2, size, size, 0, angle);
+
+            SolidBrush sb = new SolidBrush(color);
+
+            g.DrawString(angle.ToString("0.00"), Font, sb, new PointF(origin.X + size, origin.Y));
+            g.FillEllipse(sb, origin.X - 4 / 2, origin.Y - 4 / 2, 4, 4);
         }
 
         bool TestHitCorner(float x, float y, SelectionHitCorner c, RectangleF rect)
@@ -585,7 +682,7 @@ namespace VectorView
 
             selPen.DashPattern = new float[] { 2, selDashSize, 2, selDashSize };
 
-            if (selection.Count > 0 && drawSelecionBox)
+            if ((selection.Count > 0 && drawSelecionBox) && allowTransforms && !isRotating)
             {
                 BuildSelBox();
 
@@ -598,14 +695,20 @@ namespace VectorView
                 if (allowTransforms)
                 {
                     DrawCornerRect(g, SelectionHitCorner.TopLeft, r);
-                    if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Top, r);
+                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Top, r);
                     DrawCornerRect(g, SelectionHitCorner.TopRight, r);
-                    if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Right, r);
+                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Right, r);
                     DrawCornerRect(g, SelectionHitCorner.BottomRight, r);
-                    if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Bottom, r);
+                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Bottom, r);
                     DrawCornerRect(g, SelectionHitCorner.BottomLeft, r);
-                    if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Left, r);
+                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Left, r);
                 }
+            }
+
+            if (isRotating)
+            {
+                float angle = VectorMath.AngleBetween(transformCenter, mousePos);
+                DrawAngle(g, transformCenter, 50, angle, Color.DarkGreen);
             }
 
             if (drawMultiSelectionBox && !isMovingSel)
@@ -624,6 +727,19 @@ namespace VectorView
         private void VectorViewCtr_Load(object sender, EventArgs e)
         {
 
+        }
+
+        public VectorPath ImportPath(VectorPath p)
+        {
+            VectorPath d = null;
+
+            if (document != null)
+            {
+                d = document.ImportPath(p);
+            }
+
+            Invalidate();
+            return d;
         }
 
         public void AutoFit(VectorFitStyle style, bool center, bool fitContent)

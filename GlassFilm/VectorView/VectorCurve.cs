@@ -50,6 +50,8 @@ namespace VectorView
             osy = StartY;
             oex = EndX;
             oey = EndY;
+
+            InvalidatePath();
         }
 
         public VectorCurve(VectorPath path, float startx, float starty, float endx, float endy) : base(path, startx, starty, endx, endy)
@@ -97,10 +99,13 @@ namespace VectorView
                     continue;
                 }
 
-                PointF cross;
+                PointF cross = new PointF();
+                float x, y;
 
-                if (VectorMath.CrossPoint(hline, pt, p, out cross))
+                if (VectorMath.CrossPoint(hline, pt, p, out x, out y))
                 {
+                    cross.X = x;
+                    cross.Y = y;
                     crossPoints.Add(cross);
                     count++;
                 }
@@ -111,11 +116,5 @@ namespace VectorView
             return count;
         }
 
-        internal override void Render(Graphics g)
-        {
-            //base.Render(g);
-            PointF[] pl = GetPoints().ToArray();
-            g.DrawLines(Path.LinePen, pl);
-        }
     }
 }

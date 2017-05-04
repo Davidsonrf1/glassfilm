@@ -10,11 +10,31 @@ namespace VectorView
         const float Rad2Deg = (float)(180.0 / Math.PI);
         const float Deg2Rad = (float)(Math.PI / 180.0);
 
-        
-        public static float PointAngle(float ox, float oy, float x1, float y1, float x2, float y2)
+        public static PointF GetBoxCenter(RectangleF box)
         {
-            return (float)Vector.AngleBetween(new Vector(x1 - ox, y1 - oy), new Vector(x2 - ox, y2 - oy)) ;
-        }        
+            if (box.Width == 0 || box.Height == 0)
+                return new PointF(0, 0);
+
+            return new PointF(box.X + box.Width / 2, box.Y + box.Height / 2);
+        }
+
+        public static float DegreeToRadian(double angle)
+        {
+            return (float)(Math.PI * angle / 180.0);
+        }
+
+        public static float RadianToDegree(double angle)
+        {
+            return (float)(angle * (180.0 / Math.PI));
+        }
+
+        public static float AngleBetween(PointF origin, PointF target)
+        {
+            Vector t = new Vector(target.X, target.Y);
+            Vector o = new Vector(origin.X, origin.Y);
+
+            return (float)Vector.AngleBetween(new Vector(1, 0), t - o);
+        }
 
         public static PointF InterpolateLine(PointF p1, PointF p2, float ratio)
         {
@@ -52,11 +72,10 @@ namespace VectorView
             return PointDistance(px, py, x2, y2) + PointDistance(px, py, x1, y1) - PointDistance(x1, y1, x2, y2);
         }
 
-        public static bool CrossPoint(float hline, PointF a, PointF b, out PointF cross)
+        public static bool CrossPoint(float hline, PointF a, PointF b, out float x, out float y)
         {
-            cross = new PointF(0, hline);
-
-            float x = (b.Y - a.Y);
+            y = hline;
+            x = (b.Y - a.Y);
 
             if (x == 0)
                 return false;
@@ -65,7 +84,7 @@ namespace VectorView
 
             if (r >= 0 && r < 1)
             {
-                cross.X = b.X + ((a.X - b.X) * r);
+                x = b.X + ((a.X - b.X) * r);
                 return true;
             }
 

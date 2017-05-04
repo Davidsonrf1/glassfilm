@@ -20,9 +20,7 @@ namespace VectorView
         bool fillPath = false;
         Color fillColor = Color.Lime;
 
-        bool drawMiddlePoint = true;
-
-        GraphicsPath gPath = null;
+        GraphicsPath graphicPath = null;
 
         public VectorDocument Document
         {
@@ -32,10 +30,15 @@ namespace VectorView
             }
         }
 
-        internal Pen LinePen
+        public Pen LinePen
         {
             get
             {
+                if (!isSelected)
+                    linePen = Document.NormalLinePen;
+                else
+                    linePen = Document.SelectedLinePen;
+
                 return linePen;
             }
         }
@@ -76,11 +79,12 @@ namespace VectorView
 
         VectorEdge curStart = null;
 
-        void AddEdge(VectorEdge e)
+        internal void AddEdge(VectorEdge e)
         {
             if (curStart == null)
                 curStart = e;
 
+            e.Path = this;
             edges.Add(e);
         }
 
@@ -139,7 +143,98 @@ namespace VectorView
             AddEdge(c);
         }
 
+        public void InvalidatePath()
+        {
+            if (graphicPath != null)
+            {
+                graphicPath.Dispose();
+                graphicPath = null;
+            }
+        }
+
+        void BuildPath()
+        {
+            if (graphicPath == null)
+            {
+                graphicPath = new GraphicsPath(FillMode.Alternate);
+                graphicPath.StartFigure();
+
+                foreach (VectorEdge e in edges)
+                {
+                    if (e is VectorMove)
+                    {
+                        graphicPath.CloseFigure();
+                        continue;
+                    }
+
+                    if (e is VectorCurve)
+                    {
+                        if (e is VectorCubicBezier)
+                        {
+                            VectorCubicBezier c = (VectorCubicBezier)e;
+                            graphicPath.AddBezier(c.StartX, c.StartY, c.Control1.X, c.Control1.Y, c.Control2.X, c.Control2.Y, c.EndX, c.EndY);
+                        }
+                        else
+                        {
+                            VectorQuadraticBezier c = (VectorQuadraticBezier)e;
+                            graphicPath.AddBezier(c.StartX, c.StartY, c.Control.X, c.Control.Y, c.Control.X, c.Control.Y, c.EndX, c.EndY);
+                        }
+                    }
+                    else if (e is VectorEdge)
+                    {
+                        graphicPath.AddLine(e.StartX, e.StartY, e.EndX, e.EndY);
+                    }                    
+                }
+
+                graphicPath.CloseFigure();
+            }
+        }
+        
+
+        public float ComputeArea(float precicion=1)
+        {
+            float area = 0;
+
+            if (precicion <= 0)
+                precicion = 0.1f;
+
+            RectangleF r = GetBoundRect();
+            float y = r.Y;
+
+            while(y < r.Bottom)
+            {
+                float h = precicion;
+
+                if (y+h > r.Bottom)
+                    h = r.Bottom - y;
+
+                List<PointF> pts = new List<PointF>();
+
+                int ct = CrossPointCount(y, pts);
+
+                for (int i = 0; i < pts.Count; i+=2)
+                {
+                    if (pts.Count - i >= 2)
+                        area += h * (pts[i].X - pts[i + 1].X);
+                }
+
+                y += precicion;
+            }
+
+            return area;
+        }
+
+        public GraphicsPath CopyPath()
+        {
+            if (graphicPath == null)
+                BuildPath();
+
+            GraphicsPath pathCopy = (GraphicsPath)graphicPath.Clone();
+            return pathCopy;
+        }
+
         Pen linePen = null;
+
         public void Render(Graphics g)
         {
             if (!isSelected)
@@ -147,21 +242,16 @@ namespace VectorView
             else
                 linePen = Document.SelectedLinePen;
 
-            foreach (VectorEdge e in edges)
-            {
-                if (e is VectorMove)
-                    continue;
+            BuildPath();
+            g.DrawPath(linePen, graphicPath);
 
-                e.Render(g);
-            }
-
-            if (drawMiddlePoint )
+            /*if (drawMiddlePoint)
             {
                 float w = 3 / Document.Scale;
 
                 PointF m = GetMiddlePoint();
-                g.FillEllipse(Brushes.OrangeRed, m.X - w/2, m.Y - w/2, w, w);
-            }
+                g.FillEllipse(Brushes.OrangeRed, m.X - w / 2, m.Y - w / 2, w, w);
+            }*/
         }
 
         public virtual List<PointF> GetPolyline()
@@ -174,6 +264,9 @@ namespace VectorView
 
                 foreach (VectorEdge e in edges)
                 {
+                    //if (e is VectorMove)
+                    //    continue;
+
                     e.FillPointList(pl, true);
                 }
             }
@@ -365,6 +458,47 @@ namespace VectorView
             }  
         }
 
+        public void Transform(Matrix mt, PointF origin)
+        {
+            foreach (VectorEdge e in edges)
+            {
+                List<PointF> tl = new List<PointF>();
+                List<PointF> o = origins[e];
+
+                foreach (PointF pt in o)
+                {
+                    PointF[] pa = o.ToArray();
+
+                    for (int i = 0; i < pa.Length; i++)
+                    {
+                        pa[i].X -= origin.X;
+                        pa[i].Y -= origin.Y;
+                    }
+
+                    mt.TransformPoints(pa);
+
+                    for (int i = 0; i < pa.Length; i++)
+                    {
+                        pa[i].X += origin.X;
+                        pa[i].Y += origin.Y;
+
+                        tl.Add(pa[i]);
+                    }
+                }
+
+                e.SetPoints(tl);
+            }
+        }
+
+        public void SetOrigin(PointF origin)
+        {
+            RectangleF bb = GetBoundRect();
+            PointF center = VectorMath.GetBoxCenter(bb);
+
+            BeginTransform(origin);
+            Move(origin.X - center.X, origin.Y - center.Y);
+        }
+
         public void Move(float dx, float dy)
         {
             foreach (VectorEdge e in edges)
@@ -377,7 +511,7 @@ namespace VectorView
                 e.SetPoints(tl);
             }
         }
-        
+                
         public string ToHPGL()
         {
             StringBuilder sb = new StringBuilder();

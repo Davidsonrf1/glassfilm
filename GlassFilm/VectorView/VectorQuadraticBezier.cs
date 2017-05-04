@@ -29,6 +29,8 @@ namespace VectorView
                 bezier.StartPoint = new PointF(StartX, StartY);
                 bezier.EndPoint = new PointF(EndX, EndY);
                 bezier.CalculatePoints();
+
+                InvalidatePath();
             }
         }
 
@@ -41,17 +43,15 @@ namespace VectorView
             bezier.Control = new PointF(bezier.Control.X + distanceX, bezier.Control.Y + distanceY);
 
             bezier.CalculatePoints();
+
+            InvalidatePath();
         }
 
         protected override void UpdatePoits()
         {
-            //float dx = 0, dy = 0;
-
-            //dx = Osx - StartX;
-            //dy = Osy - StartY;
-            //bezier.Control = new PointF(bezier.Control.X + dx, bezier.Control.Y + dy);
-
             base.UpdatePoits();
+
+            InvalidatePath();
         }
 
         public override void CopyPoints(List<PointF> pl)
@@ -65,6 +65,15 @@ namespace VectorView
         {
             base.SetPoints(pl);
             Control = new PointF(pl[2].X, pl[2].Y);
+
+            InvalidatePath();
+        }
+
+        internal override VectorEdge Clone()
+        {
+            VectorQuadraticBezier q = new VectorQuadraticBezier(Path, StartX, StartY, EndX, EndY);
+            q.Control = new PointF(Control.X, Control.Y);
+            return q;
         }
 
         protected override void FillCurvePoints(List<PointF> pts)

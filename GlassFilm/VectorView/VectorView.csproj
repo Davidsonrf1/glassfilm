@@ -54,7 +54,6 @@
     <Compile Include="VectorEdge.cs" />
     <Compile Include="VectorMath.cs" />
     <Compile Include="VectorMove.cs" />
-    <Compile Include="VectorObject.cs" />
     <Compile Include="VectorPath.cs" />
     <Compile Include="VectorQuadraticBezier.cs" />
     <Compile Include="VectorViewCtr.cs">

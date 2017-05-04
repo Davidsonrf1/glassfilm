@@ -8,6 +8,7 @@ using Svg.Transforms;
 using Svg.Pathing;
 using System.IO;
 using System.Xml;
+using System.Drawing.Drawing2D;
 
 namespace VectorView
 {
@@ -26,6 +27,9 @@ namespace VectorView
         Color docLimitLineColor = Color.Red;
         Color selectedLineColor = Color.OrangeRed;
 
+        Color rullerBorderColor = Color.LightGray;
+        Color rullerBackColor = Color.WhiteSmoke;
+
         bool showDocumentLimit = false;
         bool showRuller = false;
         float rullerWidth = 22f;
@@ -37,6 +41,8 @@ namespace VectorView
         float offsetY = 0;
 
         float scale = 1f;
+
+        float dpi = 96;
 
         public List<VectorPath> Paths
         {
@@ -187,6 +193,34 @@ namespace VectorView
             return p;
         }
 
+        public void DrawPath(Graphics g, Pen pen, VectorPath path, PointF location, float scale, float angle)
+        {
+            GraphicsPath p = path.CopyPath();
+            Matrix mt = new Matrix();
+
+            RectangleF r = p.GetBounds();
+            PointF center = new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
+
+            mt.Translate(-center.X, -center.Y);
+            p.Transform(mt);
+
+            mt.Reset();
+            mt.Rotate(angle);
+            p.Transform(mt);
+
+            mt.Reset();
+            mt.Scale(scale, scale);
+            p.Transform(mt);
+
+            mt.Translate(location.X, location.Y);
+            p.Transform(mt);
+
+            r = p.GetBounds();
+
+            if (r.Width >= 1 && r.Height >= 1)
+                g.DrawPath(pen, p);
+        }
+
         void BeginRender(Graphics g)
         {
             g.ResetTransform();
@@ -197,11 +231,31 @@ namespace VectorView
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
         }
 
+        void DrawRuller(Graphics g)
+        {
+            Pen rp = new Pen(rullerBorderColor, 0.1f);
+            SolidBrush rb = new SolidBrush(rullerBackColor);
+
+            g.FillRectangle(rb, 0, 0, g.ClipBounds.Right, rullerWidth);
+            g.FillRectangle(rb, 0, 0, rullerWidth, g.ClipBounds.Bottom);
+
+            g.DrawLine(rp, rullerWidth, rullerWidth, g.ClipBounds.Right, rullerWidth);
+            g.DrawLine(rp, rullerWidth, rullerWidth, rullerWidth, g.ClipBounds.Bottom);
+
+            float sx = (offsetX + rullerWidth);
+            float sy = (offsetY + rullerWidth);
+
+            float wx = g.ClipBounds.Width / scale;
+            float wy = g.ClipBounds.Height / scale;
+
+            g.DrawRectangle(Pens.Orange, sx, sy, g.ClipBounds.Width, g.ClipBounds.Height);
+        }
+
         public void Render(Graphics g)
         {
             BeginRender(g);
 
-            float ox=0, oy=0;
+            float ox = 0, oy = 0;
 
             if (showRuller)
             {
@@ -211,6 +265,9 @@ namespace VectorView
 
             ox += offsetX;
             oy += offsetY;
+
+            if (scale <= 0)
+                scale = 0.001f;
 
             g.TranslateTransform(ox, oy);
             g.ScaleTransform(scale, scale);
@@ -223,15 +280,22 @@ namespace VectorView
             {
                 p.Render(g);
             }
-
+          
             if (showDocumentLimit)
             {
                 RectangleF r = new RectangleF(-2, -2, width + 4, height + 4);
 
                 Pen bp = new Pen(docLimitLineColor, normalLinePen.Width);
-                bp.Width = 0.1f / scale;
-
                 g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
+            }
+
+            //DrawPath(g, paths[2], new PointF(1000, 1000), 0.5f);
+
+            g.ResetTransform();
+
+            if (showRuller)
+            {
+                DrawRuller(g);
             }
         }
 
@@ -332,6 +396,8 @@ namespace VectorView
             XmlDocument xdoc = new XmlDocument();
             xdoc.LoadXml(svg);
             SvgDocument doc = SvgDocument.Open(xdoc);
+
+            dpi = doc.Ppi;
 
             foreach (SvgElement e in doc.Children)
             {
@@ -471,6 +537,20 @@ namespace VectorView
             }
 
             return ret;
+        }
+
+        public VectorPath ImportPath(VectorPath p)
+        {
+            VectorPath d = CreatePath();
+
+            foreach (VectorEdge e in p.Edges)
+            {
+                VectorEdge c = e.Clone();
+
+                d.AddEdge(c);
+            }
+
+            return d;
         }
 
         public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)

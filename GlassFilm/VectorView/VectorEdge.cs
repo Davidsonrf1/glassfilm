@@ -60,7 +60,7 @@ namespace VectorView
 
             set
             {
-                ey = value; UpdatePoits();
+                ey = value; UpdatePoits(); 
             }
         }
 
@@ -71,11 +71,23 @@ namespace VectorView
                 return path;
             }
             
+            internal set
+            {
+                path = value;
+            }
+        }
+
+        public void InvalidatePath()
+        {
+            if (path != null)
+            {
+                path.InvalidatePath();
+            }
         }
 
         protected virtual void UpdatePoits()
         {
-
+            InvalidatePath();
         }
 
         public float PointDistance(float x, float y)
@@ -83,39 +95,31 @@ namespace VectorView
             return VectorMath.PointToLineDistance(x, y, sx, sy, ex, ey);
         }
 
+        internal virtual VectorEdge Clone()
+        {
+            return new VectorEdge(path, sx, sy, ex, ey);
+        }
+
         public virtual int CrossPointCount(float hline, List<PointF> crossPoints = null)
         {
-            float x1, y1, x2, y2;
+            PointF p = new PointF();
+            float x, y;
 
-            x1 = sx;
-            y1 = sy;
-            x2 = ex;
-            y2 = ey;
-
-            if ((y1 < hline && y2 < hline) || (y1 > hline && y2 > hline))
-                return 0;
-
-            float dy;
-
-            dy = y2 - y1;
-
-            if (dy == 0)
+            if (VectorMath.CrossPoint(hline, new PointF(sx, sy), new PointF(ex, ey), out x, out y))
             {
-                return 0;
+
+                p.X = x;
+                p.Y = y;
+
+                if (crossPoints != null)
+                {
+                    crossPoints.Add(p);
+                }
+
+                return 1;
             }
-
-            if (crossPoints != null)
-            {
-                crossPoints.Clear();
-
-                PointF p = new PointF();
-                p.Y = hline;
-                p.X = (hline - y1) * ((x2 - x1) / dy) + x1;
-
-                crossPoints.Add(p);
-            }
-
-            return 1;
+            
+            return 0;
         }
 
         internal VectorEdge(VectorPath path, float startx, float starty, float endx, float endy)
@@ -133,11 +137,6 @@ namespace VectorView
             this.path = path;
         }
 
-        internal virtual void Render(Graphics g)
-        {
-            g.DrawLine(path.LinePen, StartX, StartY, EndX, EndY);
-        }
-
         public virtual void FillPointList(List<PointF> pts, bool ignoreStart)
         {
             if (!ignoreStart)
@@ -152,9 +151,9 @@ namespace VectorView
             sy += distanceY;
             ex += distanceX;
             ey += distanceY;
+
+            InvalidatePath();
         }
-
-
 
         public virtual List<PointF> GetPoints()
         {
@@ -179,6 +178,8 @@ namespace VectorView
 
             EndX = pl[1].X;
             EndY = pl[1].Y;
+
+            InvalidatePath();
         }
 
         public RectangleF GetBoundRect()
