@@ -1,13 +1,13 @@
-﻿namespace VectorView
+﻿namespace VectorViewTeste
 {
-    partial class VectorViewCtr
+    partial class Form1
     {
-        /// <summary> 
+        /// <summary>
         /// Required designer variable.
         /// </summary>
         private System.ComponentModel.IContainer components = null;
 
-        /// <summary> 
+        /// <summary>
         /// Clean up any resources being used.
         /// </summary>
         /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
@@ -20,27 +20,24 @@
             base.Dispose(disposing);
         }
 
-        #region Component Designer generated code
+        #region Windows Form Designer generated code
 
-        /// <summary> 
-        /// Required method for Designer support - do not modify 
+        /// <summary>
+        /// Required method for Designer support - do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
         {
             this.SuspendLayout();
             // 
-            // VectorViewCtr
+            // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.Color.White;
-            this.Name = "VectorViewCtr";
-            this.Size = new System.Drawing.Size(607, 440);
-            this.Load += new System.EventHandler(this.VectorViewCtr_Load);
-            this.SizeChanged += new System.EventHandler(this.VectorViewCtr_SizeChanged);
-            this.DoubleClick += new System.EventHandler(this.VectorViewCtr_DoubleClick);
-            this.Resize += new System.EventHandler(this.VectorViewCtr_Resize);
+            this.ClientSize = new System.Drawing.Size(537, 385);
+            this.Name = "Form1";
+            this.Text = "Form1";
+            this.Load += new System.EventHandler(this.Form1_Load);
             this.ResumeLayout(false);
 
         }
@@ -48,3 +45,4 @@
         #endregion
     }
 }
+

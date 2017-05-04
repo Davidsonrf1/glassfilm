@@ -10,10 +10,11 @@ namespace VectorView
         const float Rad2Deg = (float)(180.0 / Math.PI);
         const float Deg2Rad = (float)(Math.PI / 180.0);
 
+        
         public static float PointAngle(float ox, float oy, float x1, float y1, float x2, float y2)
         {
             return (float)Vector.AngleBetween(new Vector(x1 - ox, y1 - oy), new Vector(x2 - ox, y2 - oy)) ;
-        }
+        }        
 
         public static PointF InterpolateLine(PointF p1, PointF p2, float ratio)
         {
@@ -51,48 +52,26 @@ namespace VectorView
             return PointDistance(px, py, x2, y2) + PointDistance(px, py, x1, y1) - PointDistance(x1, y1, x2, y2);
         }
 
-        public static bool HorizontalCrossPoint(float x1, float y1, float x2, float y2, float hline, out PointF point)
+        public static bool CrossPoint(float hline, PointF a, PointF b, out PointF cross)
         {
-            point = new PointF();
+            cross = new PointF(0, hline);
 
-            if (y1 == y2 && y2 == hline)
+            float x = (b.Y - a.Y);
+
+            if (x == 0)
+                return false;
+
+            float r = (b.Y - hline) / x;
+
+            if (r >= 0 && r < 1)
             {
-                point.X = x1;
-                point.Y = y1;
-
-                return true;
-            }
-
-            float maxy, miny, maxx, minx;
-
-            maxy = Math.Max(y1, y2);
-            miny = Math.Min(y1, y2);
-            maxx = Math.Max(x1, x2);
-            minx = Math.Min(x1, x2);
-
-            if (hline >= miny && hline <= maxy)
-            {
-                if (x1 == x2)
-                {
-                    point.X = x1;
-                    point.Y = hline;
-
-                    return true;
-                }
-
-                float dx = (maxx - minx) / (maxy - miny);
-
-                point.Y = hline;
-
-                //if (y2 - y1 >= 0)
-                    point.X = maxx - (hline - miny) * dx;
-                //else
-                  //  point.X = maxx - (hline - miny) * dx;
-
+                cross.X = b.X + ((a.X - b.X) * r);
                 return true;
             }
 
             return false;
         }
+
+
     }
 }

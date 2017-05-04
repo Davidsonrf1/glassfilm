@@ -5,11 +5,11 @@ using System.Runtime.InteropServices;
 // General Information about an assembly is controlled through the following 
 // set of attributes. Change these attribute values to modify the information
 // associated with an assembly.
-[assembly: AssemblyTitle("VectorView")]
+[assembly: AssemblyTitle("VectorViewTeste")]
 [assembly: AssemblyDescription("")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("")]
-[assembly: AssemblyProduct("VectorView")]
+[assembly: AssemblyProduct("VectorViewTeste")]
 [assembly: AssemblyCopyright("Copyright ©  2017")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
@@ -20,7 +20,7 @@ using System.Runtime.InteropServices;
 [assembly: ComVisible(false)]
 
 // The following GUID is for the ID of the typelib if this project is exposed to COM
-[assembly: Guid("23a4ceac-fb30-4ac2-ad58-394ad43c20fa")]
+[assembly: Guid("cd4b8154-ab27-4528-ba8f-6da1231b31d0")]
 
 // Version information for an assembly consists of the following four values:
 //
