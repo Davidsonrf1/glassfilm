@@ -318,6 +318,8 @@ namespace VectorView
             return true;
         }
 
+
+
         public bool IsPointInside(PointF pt)
         {
             int cross = 0;
