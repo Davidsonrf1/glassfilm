@@ -38,6 +38,14 @@ namespace VectorView
 
         float scale = 1f;
 
+        public List<VectorPath> Paths
+        {
+            get
+            {
+                return paths;
+            }
+        }
+
         public Color NormalLineColor
         {
             get

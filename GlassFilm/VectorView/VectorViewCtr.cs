@@ -29,7 +29,7 @@ namespace VectorView
         bool allowScalePath = true;
 
         List<VectorPath> selection = new List<VectorPath>();
-        
+       
         public VectorViewCtr()
         {
             InitializeComponent();

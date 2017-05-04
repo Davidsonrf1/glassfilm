@@ -248,7 +248,7 @@
             this.vectorView.BackColor = System.Drawing.Color.White;
             this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vectorView.Document = null;
-            this.vectorView.FitStyle = VectorView.VectorViewFitStyle.Both;
+
             this.vectorView.ForeColor = System.Drawing.Color.Black;
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";

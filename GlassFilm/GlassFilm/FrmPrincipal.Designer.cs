@@ -669,7 +669,6 @@
             this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vvModelo.Document = null;
-            this.vvModelo.FitStyle = VectorView.VectorViewFitStyle.Both;
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
             this.vvModelo.Size = new System.Drawing.Size(1346, 266);
@@ -683,7 +682,6 @@
             this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vvCorte.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vvCorte.Document = null;
-            this.vvCorte.FitStyle = VectorView.VectorViewFitStyle.Both;
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
             this.vvCorte.Size = new System.Drawing.Size(1346, 222);

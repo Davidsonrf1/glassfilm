@@ -30,9 +30,8 @@ namespace GlassFilm
         {
             vectorView.Document = new VectorView.VectorDocument();
 
-            vectorView.Document.AllowTransforms = false;
-            vectorView.Document.AllowMove = false;
-            vectorView.Document.AllowZoom = false;
+            vectorView.AllowTransforms = false;
+            vectorView.AllowMoveDocument = false;
 
             OpenFileDialog opf = new OpenFileDialog();
             opf.DefaultExt = ".svg";
@@ -41,7 +40,7 @@ namespace GlassFilm
             if (opf.ShowDialog() == DialogResult.OK)
             {
                 vectorView.Document.LoadSVGFromFile(opf.FileName);
-                vectorView.AutoFit(VectorView.VectorViewFitStyle.Both);
+                vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
             }
         }
 
@@ -54,7 +53,7 @@ namespace GlassFilm
 
             if (doc != null)
             {
-                if (doc.ShapeCount > 0)
+                if (doc.Paths.Count > 0)
                 {
                     string svg = doc.ToSVG();
                     DBManager.SalvarDesenho(sel.VeiculoAtual.Id, svg);
@@ -94,13 +93,11 @@ namespace GlassFilm
                 {
                     vectorView.Document = new VectorView.VectorDocument();
 
-                    vectorView.Document.AllowTransforms = false;
-                    vectorView.Document.AllowMove = false;
-                    vectorView.Document.AllowZoom = false;
+                    vectorView.AllowTransforms = false;
 
                     vectorView.Document.LoadSVG(svg);
 
-                    vectorView.AutoFit(VectorView.VectorViewFitStyle.Both);
+                    vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
                 }
             }
         }
@@ -130,7 +127,7 @@ namespace GlassFilm
 
         private void FrmCadastroDesenho_Resize(object sender, EventArgs e)
         {
-            vectorView.AutoFit(VectorView.VectorViewFitStyle.Both);
+            vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
         }
     }
 }

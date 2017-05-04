@@ -35,17 +35,7 @@ namespace GlassFilm
 
         private void VvModelo_DoubleClick(object sender, EventArgs e)
         {
-            if (vvModelo.Document != null)
-            {
-                VectorShape vs = vvModelo.Document.MouseHitShape;
 
-                if (vs != null && vvCorte.Document != null)
-                {
-                    vvCorte.Document.ImportShape(vs);
-                    vvCorte.AutoFit(VectorViewFitStyle.Both);
-                    vvCorte.Invalidate();
-                }
-            }
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
@@ -139,20 +129,18 @@ namespace GlassFilm
                 {
                     vvModelo.Document = new VectorView.VectorDocument();
 
-                    vvModelo.Document.AllowTransforms = false;
-                    vvModelo.Document.AllowMove = false;
-                    vvModelo.Document.AllowZoom = false;
+                    vvModelo.AllowTransforms = false;
 
                     vvModelo.Document.LoadSVG(svg);
 
-                    vvModelo.AutoFit(VectorView.VectorViewFitStyle.Both);
+                    vvModelo.AutoFit(VectorFitStyle.Both, true, true);
                 }
             }
         }
 
         private void vvModelo_Resize(object sender, EventArgs e)
         {
-            vvModelo.AutoFit(VectorView.VectorViewFitStyle.Both);
+            vvModelo.AutoFit(VectorFitStyle.Both, true, true);
             Invalidate();
         }
 
