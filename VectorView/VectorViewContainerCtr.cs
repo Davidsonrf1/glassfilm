@@ -117,7 +117,6 @@ namespace VectorView
             {
 
             }
-
         }
 
         protected override void OnPaint(PaintEventArgs e)

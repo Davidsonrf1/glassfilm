@@ -192,12 +192,6 @@
     <None Include="Resources\scissors.png" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\..\VectorView\VectorView.csproj">
-      <Project>{23a4ceac-fb30-4ac2-ad58-394ad43c20fa}</Project>
-      <Name>VectorView</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="Resources\right-arrow-circular-button.png" />
   </ItemGroup>
   <ItemGroup>
