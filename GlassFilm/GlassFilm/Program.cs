@@ -9,6 +9,23 @@ namespace GlassFilm
 {
     static class Program
     {
+        public static DialogResult ShowDialog(Form dialog)
+        {
+            FormCollection fc = Application.OpenForms;
+
+            foreach (Form f in fc)
+            {
+                if (f.GetType().Equals(dialog.GetType()))
+                {
+                    Mensagens.Atencao("Rotina já está aberta!");
+                    return DialogResult.None;
+                }
+            }
+            
+            dialog.ShowInTaskbar = false;
+            return dialog.ShowDialog();
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>

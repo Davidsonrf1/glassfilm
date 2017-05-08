@@ -75,45 +75,17 @@ namespace GlassFilm
 
         private void cadastrarDesenhoToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<FrmCadastroDesenho>().Count() > 0)
-            {
-                Mensagens.Atencao("Rotina já está aberta!");
-                
-            }
-            else
-            {
-                FrmCadastroDesenho frm = new FrmCadastroDesenho();
-                frm.ShowInTaskbar = false;
-                frm.ShowDialog();
-            }                        
+            Program.ShowDialog(new FrmCadastroDesenho());
         }
 
         private void cadastrarMarcaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<FrmCadMarca>().Count() > 0)
-            {
-                Mensagens.Atencao("Rotina já está aberta!");
-            }
-            else
-            {
-                FrmCadMarca frm = new FrmCadMarca();
-                frm.ShowInTaskbar = false;
-                frm.ShowDialog();
-            }     
+            Program.ShowDialog(new FrmCadMarca());  
         }
 
         private void cadastroModeloToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (Application.OpenForms.OfType<FrmCadModelo>().Count() > 0)
-            {
-                Mensagens.Atencao("Rotina já está aberta!");
-            }
-            else
-            {
-                FrmCadModelo frm = new FrmCadModelo();
-                frm.ShowInTaskbar = false;
-                frm.ShowDialog();
-            }     
+            Program.ShowDialog(new FrmCadModelo());
         }       
 
         private void cbAno_SelectedIndexChanged(object sender, EventArgs e)

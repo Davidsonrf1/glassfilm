@@ -42,7 +42,7 @@ namespace VectorViewTeste
 
             
             //d.LoadSVGFromFile("D:\\tmp\\PALIO-4-PORTAS-ANO-2011-A-2016.svg");
-            d.LoadSVGFromFile("D:\\teste.svg");
+            d.LoadSVGFromFile(@"C:\Users\Davidson\Desktop\desenhos\PEUGEOT 206 E 207  4 PORTAS ANO 2001 A  2015.svg");
 
             //VectorPath p = d.ImportPath(d.Paths[0]);
 

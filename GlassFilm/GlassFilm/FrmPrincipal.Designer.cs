@@ -42,6 +42,7 @@
             this.cortadoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ajudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlprincipal = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -84,6 +85,7 @@
             this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
+            this.statusStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -204,11 +206,23 @@
             // 
             // statusStrip1
             // 
-            this.statusStrip1.Location = new System.Drawing.Point(0, 690);
+            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripStatusLabel1});
+            this.statusStrip1.Location = new System.Drawing.Point(0, 688);
             this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1347, 22);
+            this.statusStrip1.Size = new System.Drawing.Size(1347, 24);
             this.statusStrip1.TabIndex = 3;
             this.statusStrip1.Text = "statusStrip1";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.AutoSize = false;
+            this.toolStripStatusLabel1.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(250, 19);
+            this.toolStripStatusLabel1.Text = "TESTE";
             // 
             // pnlprincipal
             // 
@@ -665,25 +679,41 @@
             // 
             // vvModelo
             // 
+            this.vvModelo.AllowMoveDocument = false;
+            this.vvModelo.AllowRotatePath = false;
+            this.vvModelo.AllowScalePath = false;
+            this.vvModelo.AllowTransforms = false;
             this.vvModelo.BackColor = System.Drawing.Color.White;
             this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vvModelo.Document = null;
+            this.vvModelo.DrawSelecionBox = true;
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
+            this.vvModelo.SelctionMargin = 6F;
+            this.vvModelo.ShowDocumentLimit = false;
+            this.vvModelo.ShowPointer = false;
             this.vvModelo.Size = new System.Drawing.Size(1346, 266);
             this.vvModelo.TabIndex = 0;
             this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
             // 
             // vvCorte
             // 
+            this.vvCorte.AllowMoveDocument = true;
+            this.vvCorte.AllowRotatePath = true;
+            this.vvCorte.AllowScalePath = true;
+            this.vvCorte.AllowTransforms = true;
             this.vvCorte.BackColor = System.Drawing.Color.White;
             this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
             this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.vvCorte.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vvCorte.Document = null;
+            this.vvCorte.DrawSelecionBox = true;
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
+            this.vvCorte.SelctionMargin = 6F;
+            this.vvCorte.ShowDocumentLimit = false;
+            this.vvCorte.ShowPointer = false;
             this.vvCorte.Size = new System.Drawing.Size(1346, 222);
             this.vvCorte.TabIndex = 0;
             // 
@@ -709,6 +739,8 @@
             this.Load += new System.EventHandler(this.FrmPrincipal_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.statusStrip1.ResumeLayout(false);
+            this.statusStrip1.PerformLayout();
             this.pnlprincipal.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -788,5 +820,6 @@
         private VectorView.VectorViewCtr vvModelo;
         private VectorView.VectorViewCtr vvCorte;
         private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }
