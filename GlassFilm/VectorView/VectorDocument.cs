@@ -228,7 +228,7 @@ namespace VectorView
             if (normalLinePen == null)
                 normalLinePen = new Pen(normalLineColor, 1);
 
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+            g.SmoothingMode = SmoothingMode.HighQuality;
         }
 
         void DrawRuller(Graphics g)
@@ -274,11 +274,16 @@ namespace VectorView
 
             if (Debugger.IsAttached)
             {
+
             }
 
             foreach (VectorPath p in paths)
             {
                 p.Render(g);
+
+                RectangleF r = p.GetMinBox();
+                Pen bp = new Pen(Color.DarkOrange, normalLinePen.Width);
+                g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
             }
           
             if (showDocumentLimit)
@@ -288,8 +293,6 @@ namespace VectorView
                 Pen bp = new Pen(docLimitLineColor, normalLinePen.Width);
                 g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
             }
-
-            //DrawPath(g, paths[2], new PointF(1000, 1000), 0.5f);
 
             g.ResetTransform();
 
@@ -404,6 +407,7 @@ namespace VectorView
                 ParseSvgElement(e);
             }
 
+            Normalize();
             AdjustSizeToContent();
         }
 
@@ -412,7 +416,7 @@ namespace VectorView
             return GetBoundRect(false);
         }
 
-        RectangleF GetBoundRect(bool selection)
+        public RectangleF GetBoundRect(bool selection)
         {
             float minx, miny, maxx, maxy;
 
@@ -553,6 +557,35 @@ namespace VectorView
             return d;
         }
 
+        public void Normalize()
+        {
+            RectangleF r = GetBoundRect();
+
+            float dx = 0, dy = 0;
+
+            if (r.X < 0)
+                dx = -r.X;
+
+            if (r.Y < 0)
+                dy = -r.Y;
+
+            if (dx > 0 || dy > 0)
+            {
+                foreach (VectorPath p in paths)
+                {
+                    p.BeginTransform(new PointF(0, 0));
+                    p.Move(dx, dy);
+                }
+            }
+
+            AdjustSizeToContent();
+        }
+
+        public void AutoNest()
+        {
+
+        }
+
         public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)
         {
             float margin = 0;
@@ -601,6 +634,9 @@ namespace VectorView
 
                     break;
             }
+
+            if (float.IsInfinity(s))
+                return;
 
             scale = s;
 

@@ -50,6 +50,16 @@ namespace VectorView
             }
 
             selection.Clear();
+
+            OnSelectionChanged();
+        }
+
+        public IEnumerable<VectorPath> Selection()
+        {
+            foreach (VectorPath s in selection)
+            {
+                yield return s;
+            }
         }
 
         RectangleF selBox = new RectangleF();
@@ -267,6 +277,8 @@ namespace VectorView
                 
                 document.OffsetX = startOffset.X - dx;
                 document.OffsetY = startOffset.Y - dy;
+
+                OnDocumentMoved();
             }
 
             if (isMovingSel)
@@ -278,6 +290,8 @@ namespace VectorView
                 {
                     p.Move(-dx, -dy);
                 }
+
+                OnSelectionMoved();
             }
 
             if (isScaling)
@@ -298,6 +312,8 @@ namespace VectorView
                 {
                     p.Transform(mt, document.ViewPointToDocPoint(transformCenter));
                 }
+
+                OnSelectionTransformed();
             }
 
             if (isRotating)
@@ -310,7 +326,9 @@ namespace VectorView
                 foreach (VectorPath p in selection)
                 {
                     p.Transform(mt, document.ViewPointToDocPoint(transformCenter));
-                }                      
+                }
+
+                OnSelectionTransformed();
             }
 
             Refresh();
@@ -322,6 +340,8 @@ namespace VectorView
 
             if (!selection.Contains(p))
                 selection.Add(p);
+
+            OnSelectionChanged();
         }            
 
         protected override void OnMouseUp(MouseEventArgs e)
@@ -442,6 +462,22 @@ namespace VectorView
                 g.FillRectangle(b, rc.X, rc.Y, rc.Width, rc.Height);
             else
                 g.FillEllipse(b, rc.X, rc.Y, rc.Width, rc.Height);
+        }
+
+        public void DrawSize(Graphics g, RectangleF r, Color color)
+        {
+            PointF pt = document.DocPointToViewPoint(new PointF(r.X, r.Y));
+            float w = r.Width * Document.Scale;
+            float h = r.Height * Document.Scale;
+
+            RectangleF b = new RectangleF(pt.X, pt.Y, w, h);
+            b.Inflate(7, 7);
+
+            Pen p = new Pen(color);
+            p.EndCap = LineCap.ArrowAnchor;
+            p.Width = 0.001f;
+
+            //g.DrawRectangle(p, b.X, b.Y, b.Width, b.Height);
         }
 
         public void DrawAngle(Graphics g, PointF origin, float size, float angle, Color color)
@@ -711,6 +747,13 @@ namespace VectorView
                 DrawAngle(g, transformCenter, 50, angle, Color.DarkGreen);
             }
 
+            if (isScaling)
+            {
+                RectangleF r = document.GetBoundRect(true);
+
+                DrawSize(g, r, Color.DarkGreen);
+            }
+
             if (drawMultiSelectionBox && !isMovingSel)
             {
                 float x = Math.Min(mousePos.X, mouseDownPos.X);
@@ -742,12 +785,95 @@ namespace VectorView
             return d;
         }
 
+        public void ImportSelection(VectorViewCtr src)
+        {
+            VectorDocument d = src.Document;
+
+            if (document == null)
+                document = new VectorDocument();
+
+            if (d != null)
+            {
+                foreach (VectorPath p in src.Selection())
+                {
+                    ImportPath(p);
+                }
+            }
+
+            document.AdjustSizeToContent();
+            Invalidate();
+        }
+
         public void AutoFit(VectorFitStyle style, bool center, bool fitContent)
         {
             if (document != null)
             {
                 document.AutoFit(new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 4, ClientRectangle.Height - 4), style, center, fitContent);
                 Refresh();
+            }
+        }
+
+        public event VectorEventHandler DocementMoved;
+        public virtual void OnDocumentMoved()
+        {
+            DocementMoved?.Invoke(this, new VectorEventArgs(document, null));
+        }
+
+        public event VectorEventHandler SelectionMoved;
+        public virtual void OnSelectionMoved()
+        {
+            SelectionMoved?.Invoke(this, new VectorEventArgs(document, null));
+        }
+
+        public event VectorEventHandler SelectionTransformed;
+        public virtual void OnSelectionTransformed()
+        {
+            SelectionTransformed?.Invoke(this, new VectorEventArgs(document, null));
+        }
+
+        public event VectorEventHandler SelectionChanged;
+        public virtual void OnSelectionChanged()
+        {
+            SelectionChanged?.Invoke(this, new VectorEventArgs(document, null));
+        }
+    }
+
+    public delegate void VectorEventHandler(object sender, VectorEventArgs e);
+
+    public class VectorEventArgs: EventArgs
+    {
+        VectorDocument document = null;
+        VectorPath path = null;
+
+        public VectorEventArgs(VectorDocument doc, VectorPath path)
+        {
+            document = doc;
+            this.path = path;
+        }
+
+        public VectorDocument Document
+        {
+            get
+            {
+                return document;
+            }
+
+            internal set
+            {
+                document = value;
+            }
+        }
+
+        public VectorPath Path
+        {
+            get
+            {
+                return path;
+            }
+
+            internal set
+            {
+                path = value;
             }
         }
     }

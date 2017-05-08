@@ -44,9 +44,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="AutoNestBox.cs" />
     <Compile Include="Bezier\BezierCurve.cs" />
     <Compile Include="Bezier\CubicBezier.cs" />
     <Compile Include="Bezier\QuadraticBezier.cs" />
+    <Compile Include="ConvexHull.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />
     <Compile Include="VectorDocument.cs" />

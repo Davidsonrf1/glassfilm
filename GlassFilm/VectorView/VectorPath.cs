@@ -19,7 +19,7 @@ namespace VectorView
         bool isSelected = false;
         bool fillPath = false;
         Color fillColor = Color.Lime;
-
+        
         GraphicsPath graphicPath = null;
 
         public VectorDocument Document
@@ -189,14 +189,60 @@ namespace VectorView
                 graphicPath.CloseFigure();
             }
         }
-        
 
-        public float ComputeArea(float precicion=1)
+        public RectangleF GetMinBox()
+        {
+            float boxAngle = 0;
+            return GetMinBox(out boxAngle);
+        }
+        
+        public RectangleF GetMinBox(out float boxAngle, float precicion = 2)
+        {
+            RectangleF ret = GetBoundRect();
+            float curAngle = 0;
+
+            if (precicion < 0)
+                precicion = 2;
+
+            PointF center = VectorMath.GetBoxCenter(ret);
+            BeginTransform(center);
+
+            Matrix mt = new Matrix();
+
+            float angle = 0;
+            while(angle <= 360)
+            {
+                mt.Rotate(angle);
+                Transform(mt, center);
+
+                //RectangleF abb = GetBoundRect();
+                RectangleF abb = new RectangleF(1, 1, 100, 100);
+
+                if (abb.Width < ret.Width)
+                {
+                    ret.X = abb.X;
+                    ret.Y = abb.Y;
+                    ret.Width = abb.Width;
+                    ret.Height = abb.Height;
+
+                    curAngle = angle;
+                }
+
+                angle += precicion;
+            }
+
+            CancelTransform();
+
+            boxAngle = curAngle;
+            return ret;
+        }
+
+        public float ComputeArea(float precicion=2)
         {
             float area = 0;
 
             if (precicion <= 0)
-                precicion = 0.1f;
+                precicion = 1f;
 
             RectangleF r = GetBoundRect();
             float y = r.Y;
@@ -429,7 +475,7 @@ namespace VectorView
 
         PointF transformOrigin = new PointF();
         Dictionary<VectorEdge, List<PointF>> origins = new Dictionary<VectorEdge, List<PointF>>();
-
+        
         public void BeginTransform(PointF origin)
         {
             origins.Clear();
@@ -497,6 +543,49 @@ namespace VectorView
 
             BeginTransform(origin);
             Move(origin.X - center.X, origin.Y - center.Y);
+        }
+
+        public void Flip(bool vertical, bool horizontal)
+        {
+            RectangleF r = GetBoundRect();
+            PointF center = new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
+
+            BeginTransform(center);
+
+            foreach (VectorEdge e in edges)
+            {
+                List<PointF> tl = new List<PointF>();
+
+                foreach (PointF pt in origins[e])
+                {
+                    float x=pt.X, y=pt.Y;
+
+                    if (horizontal)
+                        x = -(pt.X - transformOrigin.X) + transformOrigin.X;
+
+                    if (vertical)
+                        y = -(pt.Y - transformOrigin.Y) + transformOrigin.Y;
+
+                    tl.Add(new PointF(x, y));
+                }
+
+                e.SetPoints(tl);
+            }
+        }
+
+        public void Flip()
+        {
+            Flip(true, true);
+        }
+
+        public void VerticalFlip()
+        {
+            Flip(true, false);
+        }
+
+        public void HorizontalFlip()
+        {
+            Flip(false, true);
         }
 
         public void Move(float dx, float dy)

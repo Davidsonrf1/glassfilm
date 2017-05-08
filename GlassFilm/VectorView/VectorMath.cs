@@ -91,6 +91,10 @@ namespace VectorView
             return false;
         }
 
+        public static float GetArea(RectangleF r)
+        {
+            return r.Width * r.Height;
+        }
 
     }
 }
