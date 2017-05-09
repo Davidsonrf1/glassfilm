@@ -42,7 +42,9 @@ namespace VectorView
 
         float scale = 1f;
 
-        float dpi = 96;
+        float ppi = 96;
+        float ppmx = 37.7952728f;  // ppm = Pontos por milímetro
+        float ppmy = 37.7952728f;
 
         public List<VectorPath> Paths
         {
@@ -280,10 +282,6 @@ namespace VectorView
             foreach (VectorPath p in paths)
             {
                 p.Render(g);
-
-                RectangleF r = p.GetMinBox();
-                Pen bp = new Pen(Color.DarkOrange, normalLinePen.Width);
-                g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
             }
           
             if (showDocumentLimit)
@@ -335,37 +333,46 @@ namespace VectorView
             if (el is SvgPath)
             {
                 SvgPath p = (SvgPath)el;
-                VectorPath s = CreatePath();
+                VectorPath path = CreatePath();
+
+                float sx, sy, ex, ey;                
 
                 foreach (SvgPathSegment seg in p.PathData)
                 {
+                    sx = (seg.Start.X / ppmx) * loadScale;
+                    sy = (seg.Start.Y / ppmy) * loadScale;
+                    ex = (seg.End.X / ppmx) * loadScale;
+                    ey = (seg.End.Y / ppmy) * loadScale;
+
                     if (seg is SvgLineSegment)
                     {
-                        s.LineTo(seg.End.X, seg.End.Y);
+                        path.LineTo(ex, ey);
                     }
                     else if (seg is SvgCubicCurveSegment)
                     {
                         SvgCubicCurveSegment q = (SvgCubicCurveSegment)seg;
-                        s.CurveTo(q.End.X, q.End.Y, q.FirstControlPoint.X, q.FirstControlPoint.Y, q.SecondControlPoint.X, q.SecondControlPoint.Y);
+                        path.CurveTo(ex, ey, (q.FirstControlPoint.X / ppmx) * loadScale, (q.FirstControlPoint.Y / ppmy) * loadScale, (q.SecondControlPoint.X / ppmx) * loadScale, (q.SecondControlPoint.Y / ppmy) * loadScale);
                     }
                     else if (seg is SvgQuadraticCurveSegment)
                     {
                         SvgQuadraticCurveSegment q = (SvgQuadraticCurveSegment)seg;
-                        s.QCurveTo(q.End.X, q.End.Y, q.ControlPoint.X, q.ControlPoint.Y);
+                        path.QCurveTo(ex, ey, (q.ControlPoint.X / ppmx) * loadScale, (q.ControlPoint.Y / ppmy) * loadScale);
                     }
                     else if (seg is SvgClosePathSegment)
                     {
-                        s.ClosePath();
+                        path.ClosePath();
                     }
                     else if (seg is SvgMoveToSegment)
                     {
-                        s.MoveTo(seg.End.X, seg.End.Y);
+                        path.MoveTo(ex, ey);
                     }
                     else
                     {
 
                     }
                 }
+
+                path.ComputeArea();
             }
             else
             {
@@ -386,21 +393,75 @@ namespace VectorView
             height = r.Bottom;
         }
 
-        public void LoadSVGFromFile(string file)
+        public void LoadSVGFromFile(string file, float scale=1)
         {
             string svg = File.ReadAllText(file, Encoding.UTF8);
-            LoadSVG(svg);
+            LoadSVG(svg, scale);
         }
 
-        public void LoadSVG(string svg)
+        public float UnitToMilimeter(float value, SvgUnitType type)
+        {
+            float mm = 0;
+
+            switch (type)
+            {
+                case SvgUnitType.User:
+                case SvgUnitType.Pixel:
+                    float inch = value / ppi;
+                    mm = (inch * 2.54f) * 10;
+                    break;
+                case SvgUnitType.Inch:
+                    mm = (value * 2.54f) * 10;
+                    break;
+                case SvgUnitType.Centimeter:
+                    mm = value * 10;
+                    break;
+                case SvgUnitType.Millimeter:
+                    mm = value;
+                    break;
+                case SvgUnitType.None:
+                case SvgUnitType.Em:
+                case SvgUnitType.Ex:
+                case SvgUnitType.Percentage:
+                case SvgUnitType.Pica:
+                case SvgUnitType.Point:
+                    throw new ArgumentOutOfRangeException("Unidade não suportada: " + type.ToString());
+                default:
+                    throw new ArgumentOutOfRangeException("Unidade não especificada: " + type.ToString());
+            }
+
+            return mm;
+        }
+
+        float loadScale = 1;
+
+        public void Clear()
         {
             paths.Clear();
+        }
+
+        public void LoadSVG(string svg, float scale=1)
+        {
+            paths.Clear();
+
+            loadScale = scale;
 
             XmlDocument xdoc = new XmlDocument();
             xdoc.LoadXml(svg);
             SvgDocument doc = SvgDocument.Open(xdoc);
 
-            dpi = doc.Ppi;
+            ppi = doc.Ppi;
+
+            float vw = UnitToMilimeter(doc.Width.Value, doc.Width.Type);
+            float vh = UnitToMilimeter(doc.Height.Value, doc.Height.Type);
+
+            RectangleF vb = new RectangleF(doc.ViewBox.MinX, doc.ViewBox.MinY, doc.ViewBox.Width, doc.ViewBox.Height);
+
+            ppmx = vb.Width / vw;
+            ppmy = vb.Height / vh;
+
+            width = vb.Width * loadScale;
+            height = vb.Height * loadScale;
 
             foreach (SvgElement e in doc.Children)
             {
@@ -457,7 +518,7 @@ namespace VectorView
             StringBuilder sb = new StringBuilder();
 
             RectangleF r = Rectangle.Round(GetBoundRect());
-            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"{0} {1} {2} {3}\" height=\"{3}\" width=\"{2}\" version=\"1.1\">\n", r.X, r.Y, r.Width, r.Height);
+            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {2} {3}\" height=\"{3}\" width=\"{2}\" version=\"1.1\">\n", r.X, r.Y, r.Width, r.Height);
 
             foreach (VectorPath s in paths)
             {

@@ -110,17 +110,19 @@ namespace VectorViewTeste
 
         private void Form1_Load(object sender, EventArgs e)
         {
+            button1_Click(null, null);
         }
 
         private void Form1_Shown(object sender, EventArgs e)
         {
+
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            //d.LoadSVGFromFile("D:\\tmp\\PALIO-4-PORTAS-ANO-2011-A-2016.svg");
-            d.LoadSVGFromFile(@"D:\teste.svg");
+            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014.svg", 1);
+            //d.LoadSVGFromFile(@"D:\teste.svg");
             //d.AdjustSizeToContent();
             view.AutoFit(VectorFitStyle.Both, true, true);
             view.ShowDocumentLimit = true;
@@ -129,8 +131,6 @@ namespace VectorViewTeste
             corte.Document.AdjustSizeToContent();
             corte.AutoFit(VectorFitStyle.Both, true, true);
 
-            //p.SetOrigin(new PointF(30, 60));
-
             d.Width = 600;
             d.Height = 300;
             
@@ -138,7 +138,7 @@ namespace VectorViewTeste
 
             VectorPath vp = d.Paths[0];
 
-            RectangleF mb = vp.GetMinBox();
+            float area = vp.ComputeArea(1);
         }
 
         private void button2_Click(object sender, EventArgs e)

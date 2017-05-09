@@ -193,13 +193,16 @@ namespace VectorView
                         pp.BeginTransform(selMiddle);
                     }
 
-                    isMovingSel = true;
+                    isMovingSel = false;
+
+                    if (allowTransforms)
+                        isMovingSel = true;
                 }
             }
 
             if (e.Button == MouseButtons.Right)
             {
-                //if (p == null && allowMoveDocument)
+                if (p == null && allowMoveDocument)
                 {
                     isMovingDoc = true;
 
@@ -599,7 +602,7 @@ namespace VectorView
 
             set
             {
-                allowMoveDocument = value;
+                allowMoveDocument = value; 
             }
         }
 
@@ -835,6 +838,11 @@ namespace VectorView
         public virtual void OnSelectionChanged()
         {
             SelectionChanged?.Invoke(this, new VectorEventArgs(document, null));
+        }
+
+        public void Clear()
+        {
+            document = new VectorDocument();
         }
     }
 

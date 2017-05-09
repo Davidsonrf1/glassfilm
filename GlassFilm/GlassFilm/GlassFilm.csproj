@@ -96,12 +96,6 @@
     <Compile Include="FrmConfigPlotter.Designer.cs">
       <DependentUpon>FrmConfigPlotter.cs</DependentUpon>
     </Compile>
-    <Compile Include="FrmImportarDesenho.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="FrmImportarDesenho.Designer.cs">
-      <DependentUpon>FrmImportarDesenho.cs</DependentUpon>
-    </Compile>
     <Compile Include="FrmLogin.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -129,9 +123,6 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmConfigPlotter.resx">
       <DependentUpon>FrmConfigPlotter.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="FrmImportarDesenho.resx">
-      <DependentUpon>FrmImportarDesenho.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>

@@ -46,15 +46,25 @@
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
             this.btnSair = new System.Windows.Forms.ToolStripButton();
             this.toolStatus = new System.Windows.Forms.ToolStripLabel();
-            this.toolBar = new System.Windows.Forms.StatusStrip();
             this.vectorView = new VectorView.VectorViewCtr();
+            this.status = new System.Windows.Forms.StatusStrip();
+            this.docInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.selInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.numEscala = new System.Windows.Forms.NumericUpDown();
+            this.label1 = new System.Windows.Forms.Label();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo.SuspendLayout();
             this.toolPrincipal.SuspendLayout();
+            this.status.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numEscala)).BeginInit();
             this.SuspendLayout();
             // 
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(104)))), ((int)(((byte)(46)))));
+            this.pnlFiltroInfo.Controls.Add(this.panel3);
+            this.pnlFiltroInfo.Controls.Add(this.label1);
+            this.pnlFiltroInfo.Controls.Add(this.numEscala);
             this.pnlFiltroInfo.Controls.Add(this.btImportar);
             this.pnlFiltroInfo.Controls.Add(this.panel1);
             this.pnlFiltroInfo.Controls.Add(this.panel2);
@@ -67,7 +77,7 @@
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 25);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(847, 55);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(935, 55);
             this.pnlFiltroInfo.TabIndex = 6;
             // 
             // btImportar
@@ -76,7 +86,7 @@
             this.btImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btImportar.Image = global::GlassFilm.Properties.Resources.import;
             this.btImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btImportar.Location = new System.Drawing.Point(676, 25);
+            this.btImportar.Location = new System.Drawing.Point(828, 26);
             this.btImportar.Name = "btImportar";
             this.btImportar.Size = new System.Drawing.Size(101, 23);
             this.btImportar.TabIndex = 3;
@@ -148,9 +158,9 @@
             this.cbAno.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbAno.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbAno.FormattingEnabled = true;
-            this.cbAno.Location = new System.Drawing.Point(573, 26);
+            this.cbAno.Location = new System.Drawing.Point(570, 26);
             this.cbAno.Name = "cbAno";
-            this.cbAno.Size = new System.Drawing.Size(89, 21);
+            this.cbAno.Size = new System.Drawing.Size(92, 21);
             this.cbAno.TabIndex = 2;
             this.cbAno.SelectedIndexChanged += new System.EventHandler(this.cbAno_SelectedIndexChanged);
             // 
@@ -158,7 +168,7 @@
             // 
             this.label8.AutoSize = true;
             this.label8.ForeColor = System.Drawing.Color.White;
-            this.label8.Location = new System.Drawing.Point(570, 9);
+            this.label8.Location = new System.Drawing.Point(568, 9);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 13);
             this.label8.TabIndex = 2;
@@ -176,7 +186,7 @@
             this.toolStatus});
             this.toolPrincipal.Location = new System.Drawing.Point(0, 0);
             this.toolPrincipal.Name = "toolPrincipal";
-            this.toolPrincipal.Size = new System.Drawing.Size(847, 25);
+            this.toolPrincipal.Size = new System.Drawing.Size(935, 25);
             this.toolPrincipal.TabIndex = 11;
             this.toolPrincipal.Text = "toolStrip1";
             // 
@@ -232,37 +242,112 @@
             this.toolStatus.Size = new System.Drawing.Size(16, 22);
             this.toolStatus.Text = "...";
             // 
-            // toolBar
-            // 
-            this.toolBar.Location = new System.Drawing.Point(0, 533);
-            this.toolBar.Name = "toolBar";
-            this.toolBar.Padding = new System.Windows.Forms.Padding(1, 0, 16, 0);
-            this.toolBar.Size = new System.Drawing.Size(847, 22);
-            this.toolBar.TabIndex = 14;
-            // 
             // vectorView
             // 
+            this.vectorView.AllowMoveDocument = true;
+            this.vectorView.AllowRotatePath = true;
+            this.vectorView.AllowScalePath = true;
+            this.vectorView.AllowTransforms = true;
             this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vectorView.BackColor = System.Drawing.Color.White;
             this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vectorView.Document = null;
-
+            this.vectorView.DrawSelecionBox = true;
             this.vectorView.ForeColor = System.Drawing.Color.Black;
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
-
-            this.vectorView.Size = new System.Drawing.Size(836, 447);
+            this.vectorView.SelctionMargin = 6F;
+            this.vectorView.ShowDocumentLimit = false;
+            this.vectorView.ShowPointer = false;
+            this.vectorView.Size = new System.Drawing.Size(924, 447);
             this.vectorView.TabIndex = 7;
+            this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
+            // 
+            // status
+            // 
+            this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.docInfo,
+            this.selInfo});
+            this.status.Location = new System.Drawing.Point(0, 531);
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(935, 24);
+            this.status.TabIndex = 12;
+            this.status.Text = "statusStrip1";
+            // 
+            // docInfo
+            // 
+            this.docInfo.AutoSize = false;
+            this.docInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.docInfo.Name = "docInfo";
+            this.docInfo.Size = new System.Drawing.Size(350, 19);
+            // 
+            // selInfo
+            // 
+            this.selInfo.AutoSize = false;
+            this.selInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.selInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.selInfo.Name = "selInfo";
+            this.selInfo.Size = new System.Drawing.Size(450, 19);
+            // 
+            // numEscala
+            // 
+            this.numEscala.DecimalPlaces = 3;
+            this.numEscala.Increment = new decimal(new int[] {
+            2,
+            0,
+            0,
+            65536});
+            this.numEscala.Location = new System.Drawing.Point(675, 27);
+            this.numEscala.Maximum = new decimal(new int[] {
+            300,
+            0,
+            0,
+            0});
+            this.numEscala.Minimum = new decimal(new int[] {
+            10,
+            0,
+            0,
+            0});
+            this.numEscala.Name = "numEscala";
+            this.numEscala.Size = new System.Drawing.Size(147, 20);
+            this.numEscala.TabIndex = 18;
+            this.numEscala.Value = new decimal(new int[] {
+            100,
+            0,
+            0,
+            0});
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(671, 10);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(42, 13);
+            this.label1.TabIndex = 19;
+            this.label1.Text = "Escala:";
+            // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel3.Location = new System.Drawing.Point(668, 7);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1, 42);
+            this.panel3.TabIndex = 18;
             // 
             // FrmCadastroDesenho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(847, 555);
+            this.ClientSize = new System.Drawing.Size(935, 555);
             this.ControlBox = false;
-            this.Controls.Add(this.toolBar);
+            this.Controls.Add(this.status);
             this.Controls.Add(this.vectorView);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.toolPrincipal);
@@ -276,6 +361,9 @@
             this.pnlFiltroInfo.PerformLayout();
             this.toolPrincipal.ResumeLayout(false);
             this.toolPrincipal.PerformLayout();
+            this.status.ResumeLayout(false);
+            this.status.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numEscala)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -301,6 +389,11 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator5;
         private System.Windows.Forms.ToolStripButton btnSair;
         private System.Windows.Forms.ToolStripLabel toolStatus;
-        private System.Windows.Forms.StatusStrip toolBar;
+        private System.Windows.Forms.StatusStrip status;
+        private System.Windows.Forms.ToolStripStatusLabel docInfo;
+        private System.Windows.Forms.ToolStripStatusLabel selInfo;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.NumericUpDown numEscala;
     }
 }

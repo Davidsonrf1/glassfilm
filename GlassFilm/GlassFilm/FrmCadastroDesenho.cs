@@ -7,6 +7,7 @@ using System.IO;
 using System.Text;
 using System.Windows.Forms;
 using GlassFilm.Class;
+using VectorView;
 
 namespace GlassFilm
 {
@@ -26,22 +27,42 @@ namespace GlassFilm
             sel.CbVeiculos = cbAno;
         }
 
+        void EnableControls(bool enable)
+        {
+            cbAno.Enabled = enable;
+            cbMarca.Enabled = enable;
+            cbModelo.Enabled = enable;
+        }
+
         private void btImportar_Click(object sender, EventArgs e)
         {
+            if (sel.VeiculoAtual == null)
+            {
+                MessageBox.Show("Selecione o veiculo para importar o desenho.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
             vectorView.Document = new VectorView.VectorDocument();
 
             vectorView.AllowTransforms = false;
             vectorView.AllowMoveDocument = false;
+            vectorView.AllowTransforms = false;
 
             OpenFileDialog opf = new OpenFileDialog();
             opf.DefaultExt = ".svg";
-            opf.InitialDirectory = Environment.CurrentDirectory;
+            opf.RestoreDirectory = true;
 
             if (opf.ShowDialog() == DialogResult.OK)
             {
-                vectorView.Document.LoadSVGFromFile(opf.FileName);
+                float scale = (float)(100 / numEscala.Value);
+
+                vectorView.Document.LoadSVGFromFile(opf.FileName, scale);
                 vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
+
+                EnableControls(false);
             }
+
+            UpdateDocInfo();
         }
 
         private void btnEntrar_Click(object sender, EventArgs e)
@@ -57,6 +78,8 @@ namespace GlassFilm
                 {
                     string svg = doc.ToSVG();
                     DBManager.SalvarDesenho(sel.VeiculoAtual.Id, svg);
+
+                    File.WriteAllText("d:\\teste_save.svg", svg);
 
                     Mensagens.Informacao("Desenho Salvo com Sucesso!");
                     toolStripButton1_Click(sender, e);
@@ -98,6 +121,7 @@ namespace GlassFilm
                     vectorView.Document.LoadSVG(svg);
 
                     vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
+                    UpdateDocInfo();
                 }
             }
         }
@@ -115,7 +139,7 @@ namespace GlassFilm
         private void btnSair_Click(object sender, EventArgs e)
         {
             this.Close();
-        }
+        }        
 
         private void toolStripButton1_Click(object sender, EventArgs e)
         {
@@ -123,11 +147,42 @@ namespace GlassFilm
             cbModelo.SelectedIndex = -1;
             cbMarca.SelectedIndex = -1;
             vectorView.Refresh();
+
+            EnableControls(true);
+            vectorView.Clear();
         }
 
         private void FrmCadastroDesenho_Resize(object sender, EventArgs e)
         {
             vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
+        }
+
+        void UpdateDocInfo()
+        {
+            VectorDocument d = vectorView.Document;
+
+            if (d != null)
+            {
+                docInfo.Text = "";
+                selInfo.Text = "";
+                
+                docInfo.Text = string.Format("Tamanho do Desenho (mm): {3} por {4}", d.Paths.Count, d.OffsetX, d.OffsetY, d.Width, d.Height);
+                RectangleF r = d.GetBoundRect(true);
+
+                float area = 0;
+                foreach (VectorPath p in vectorView.Selection())
+                {
+                    area = p.Area;
+                }
+
+                if (!float.IsInfinity(r.Width))
+                    selInfo.Text = string.Format("Objeto - Tamanho (mm): {0:0.00} por {1:0.00} Área (em mm²): {2:0.00}", r.Width, r.Height, area);
+            }
+        }
+
+        private void vectorView_SelectionChanged(object sender, VectorView.VectorEventArgs e)
+        {
+            UpdateDocInfo();
         }
     }
 }

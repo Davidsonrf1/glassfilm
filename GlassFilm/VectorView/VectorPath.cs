@@ -14,6 +14,8 @@ namespace VectorView
             document = doc;
         }
 
+        float area = 0;
+
         List<VectorEdge> edges = new List<VectorEdge>();
         float curX, curY;
         bool isSelected = false;
@@ -74,6 +76,14 @@ namespace VectorView
             set
             {
                 fillPath = value;
+            }
+        }
+
+        public float Area
+        {
+            get
+            {
+                return area;
             }
         }
 
@@ -190,56 +200,18 @@ namespace VectorView
             }
         }
 
-        public RectangleF GetMinBox()
+        class PointComparer : IComparer<PointF>
         {
-            float boxAngle = 0;
-            return GetMinBox(out boxAngle);
-        }
-        
-        public RectangleF GetMinBox(out float boxAngle, float precicion = 2)
-        {
-            RectangleF ret = GetBoundRect();
-            float curAngle = 0;
-
-            if (precicion < 0)
-                precicion = 2;
-
-            PointF center = VectorMath.GetBoxCenter(ret);
-            BeginTransform(center);
-
-            Matrix mt = new Matrix();
-
-            float angle = 0;
-            while(angle <= 360)
+            public int Compare(PointF x, PointF y)
             {
-                mt.Rotate(angle);
-                Transform(mt, center);
-
-                //RectangleF abb = GetBoundRect();
-                RectangleF abb = new RectangleF(1, 1, 100, 100);
-
-                if (abb.Width < ret.Width)
-                {
-                    ret.X = abb.X;
-                    ret.Y = abb.Y;
-                    ret.Width = abb.Width;
-                    ret.Height = abb.Height;
-
-                    curAngle = angle;
-                }
-
-                angle += precicion;
+                return x.X < y.X ? -1 : x.X == y.X ? 0 : 1;
             }
-
-            CancelTransform();
-
-            boxAngle = curAngle;
-            return ret;
         }
+
 
         public float ComputeArea(float precicion=2)
         {
-            float area = 0;
+            area = 0;
 
             if (precicion <= 0)
                 precicion = 1f;
@@ -251,17 +223,28 @@ namespace VectorView
             {
                 float h = precicion;
 
-                if (y+h > r.Bottom)
+                if (y + h > r.Bottom)
                     h = r.Bottom - y;
 
                 List<PointF> pts = new List<PointF>();
 
                 int ct = CrossPointCount(y, pts);
 
+                pts.Sort(new PointComparer());
+
                 for (int i = 0; i < pts.Count; i+=2)
                 {
                     if (pts.Count - i >= 2)
-                        area += h * (pts[i].X - pts[i + 1].X);
+                    {            
+                        float va = (pts[i + 1].X - pts[i].X);
+
+                        if (va < 0)
+                        {
+
+                        }
+
+                        area += h * va;
+                    }
                 }
 
                 y += precicion;
@@ -288,8 +271,32 @@ namespace VectorView
             else
                 linePen = Document.SelectedLinePen;
 
-            BuildPath();
-            g.DrawPath(linePen, graphicPath);
+            foreach (VectorEdge e in edges)
+            {
+                if (e is VectorMove)
+                {
+                    continue;
+                }
+
+                if (e is VectorCurve)
+                {
+                    if (e is VectorCubicBezier)
+                    {
+                        VectorCubicBezier c = (VectorCubicBezier)e;
+                        g.DrawBezier(linePen, c.StartX, c.StartY, c.Control1.X, c.Control1.Y, c.Control2.X, c.Control2.Y, c.EndX, c.EndY);
+                    }
+                    else
+                    {
+                        VectorQuadraticBezier c = (VectorQuadraticBezier)e;
+                        List<PointF> pts = c.GetPoints();
+                        g.DrawLines(linePen, pts.ToArray());
+                    }
+                }
+                else if (e is VectorEdge)
+                {
+                    g.DrawLine(linePen, e.StartX, e.StartY, e.EndX, e.EndY);
+                }
+            }
 
             /*if (drawMiddlePoint)
             {
@@ -327,6 +334,9 @@ namespace VectorView
 
             ret.X = (int)Math.Round(p.X * HPGL_UNIT);
             ret.Y = (int)Math.Round(p.Y * HPGL_UNIT);
+
+            Matrix mt = new Matrix();
+            mt.Rotate(10);
 
             return ret;
         }
@@ -402,6 +412,17 @@ namespace VectorView
 
             foreach (VectorEdge ob in list)
             {
+                if (ob.GetType().Equals(typeof(VectorMove)))
+                {
+                    if (!wroteCmd)
+                    {
+                        sb.Append(" M");
+                        wroteCmd = true;
+                    }
+
+                    sb.AppendFormat(" {0},{1}", (int)Math.Round(ob.EndX), (int)Math.Round(ob.EndY));
+                }
+
                 if (ob.GetType().Equals(typeof(VectorEdge)))
                 {
                     if (!wroteCmd)
@@ -441,19 +462,57 @@ namespace VectorView
             }
         }
 
+        int ExtractEdgeList(VectorEdge[] src, List<VectorEdge> dst, int startIndex)
+        {
+            int i = startIndex;
+            dst.Clear();
+
+            VectorEdge first = src[i++];
+            dst.Add(first);
+
+            while(i < src.Length)
+            {
+                VectorEdge e = src[i];
+
+                if (e is VectorMove)
+                    break;
+
+                if (!e.GetType().Equals(first.GetType()))
+                {
+                    if (!(first is VectorMove || e is VectorEdge))
+                        break;
+                }
+
+                dst.Add(e);
+                i++;
+            }
+
+            return i;
+        }
+
         public string ToSVGPath()
         {
             StringBuilder sb = new StringBuilder();
 
             sb.Append("<path style=\"fill: none; stroke:#e30016;stroke-width:0.56690001;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none\" d=\"");
-            sb.AppendFormat("M{0},{1}", (int)Math.Round(edges[0].StartX), (int)Math.Round(edges[0].StartY));
+            //sb.AppendFormat("M{0},{1}", (int)Math.Round(edges[0].StartX), (int)Math.Round(edges[0].StartY));
 
             Type last = typeof(VectorEdge);
             List<VectorEdge> list = new List<VectorEdge>();
 
+            VectorEdge[] eList = edges.ToArray();
+
+            int i = 0;
+            while (i < eList.Length)
+            {
+                i = ExtractEdgeList(eList, list, i);
+                WriteEdgeList(sb, list);
+            }
+
+            /*
             foreach (VectorEdge e in edges)
             {
-                if (last.Equals(e.GetType()))
+                if (last.Equals(e.GetType()) || (list.Count == 1 && last.Equals(typeof(VectorMove)) && (e.GetType().Equals(typeof(VectorEdge)))))
                 {
                     list.Add(e);
                 }
@@ -466,8 +525,8 @@ namespace VectorView
                     last = e.GetType();
                 }
             }
-
-            WriteEdgeList(sb, list);
+            */
+            //WriteEdgeList(sb, list);
             sb.Append(" Z\" />");
 
             return sb.ToString();
@@ -534,6 +593,8 @@ namespace VectorView
 
                 e.SetPoints(tl);
             }
+
+            ComputeArea();
         }
 
         public void SetOrigin(PointF origin)
