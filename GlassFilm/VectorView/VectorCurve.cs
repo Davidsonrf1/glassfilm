@@ -73,10 +73,10 @@ namespace VectorView
             pts.Add(new PointF(EndX, EndY));
         }
 
-        public override List<PointF> GetPoints()
+        public override List<PointF> GetPoints(bool includeFirst)
         {
             List<PointF> pts = new List<PointF>();
-            FillPointList(pts, false);
+            FillPointList(pts, !includeFirst);
             return pts;
         }
 
@@ -84,7 +84,7 @@ namespace VectorView
         {
             int count = 0;
 
-            List<PointF> pts = GetPoints();
+            List<PointF> pts = GetPoints(true);
 
             PointF pt = new PointF();
 

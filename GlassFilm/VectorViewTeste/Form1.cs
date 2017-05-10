@@ -91,8 +91,6 @@ namespace VectorViewTeste
             base.OnPaint(e);
 
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            if (view.Document.Paths.Count > 0)
-                view.Document.DrawPath(e.Graphics, Pens.Red, view.Document.Paths[0], new PointF(300, 300), .2f, 0);
         }
 
         protected override void OnResize(EventArgs e)

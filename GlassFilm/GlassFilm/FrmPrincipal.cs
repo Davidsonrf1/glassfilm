@@ -118,15 +118,21 @@ namespace GlassFilm
 
         private void button4_Click(object sender, EventArgs e)
         {
-            if (vvModelo.Document != null)
+            if (vvCorte.Document != null)
             {
+                if (vvCorte.Document.Paths.Count == 0)
+                {
+                    MessageBox.Show("Nenhum desenho na área de corte.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+
                 PrintDialog pd = new PrintDialog();
                 if (pd.ShowDialog() == DialogResult.OK)
                 {
-                    string cmds = vvModelo.Document.ToHPGL();
+                    string cmds = vvCorte.Document.ToHPGL();
                     RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, cmds);
 
-                    File.WriteAllText("teste.plt", cmds);
+                    File.WriteAllText("D:\\teste_CORTE.plt", cmds);
                 }
             }
         }
@@ -135,6 +141,26 @@ namespace GlassFilm
         {
             vvCorte.ImportSelection(vvModelo);
             vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
+            vvCorte.Refresh();
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            vvCorte.Clear();
+            vvCorte.Refresh();
+        }
+
+        private void vvCorte_KeyPress(object sender, KeyPressEventArgs e)
+        {
+                
+        }
+
+        private void vvCorte_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Delete)
+            {
+                vvCorte.DeleteSelection();
+            }
         }
     }
 }

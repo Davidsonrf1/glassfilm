@@ -11,5 +11,10 @@ namespace VectorView
         {
             Type = VectorEdgeType.Close;
         }
+
+        internal override VectorEdge Clone()
+        {
+            return new VectorClose(Path, StartX, StartY, EndX, EndY);
+        }
     }
 }

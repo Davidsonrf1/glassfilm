@@ -211,34 +211,6 @@ namespace VectorView
             return p;
         }
 
-        public void DrawPath(Graphics g, Pen pen, VectorPath path, PointF location, float scale, float angle)
-        {
-            GraphicsPath p = path.CopyPath();
-            Matrix mt = new Matrix();
-
-            RectangleF r = p.GetBounds();
-            PointF center = new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
-
-            mt.Translate(-center.X, -center.Y);
-            p.Transform(mt);
-
-            mt.Reset();
-            mt.Rotate(angle);
-            p.Transform(mt);
-
-            mt.Reset();
-            mt.Scale(scale, scale);
-            p.Transform(mt);
-
-            mt.Translate(location.X, location.Y);
-            p.Transform(mt);
-
-            r = p.GetBounds();
-
-            if (r.Width >= 1 && r.Height >= 1)
-                g.DrawPath(pen, p);
-        }
-
         void BeginRender(Graphics g)
         {
             g.ResetTransform();

@@ -12,5 +12,10 @@ namespace VectorView
         {
             Type = VectorEdgeType.Move;
         }
+
+        internal override VectorEdge Clone()
+        {
+            return new VectorMove(Path, StartX, StartY, EndX, EndY);
+        }
     }
 }

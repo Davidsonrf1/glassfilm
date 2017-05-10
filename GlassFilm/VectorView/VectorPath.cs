@@ -27,8 +27,6 @@ namespace VectorView
         string tag = "";
         VectorPathSide side = VectorPathSide.None;
 
-        GraphicsPath graphicPath = null;
-
         public VectorDocument Document
         {
             get
@@ -188,52 +186,6 @@ namespace VectorView
             AddEdge(c);
         }
 
-        public void InvalidatePath()
-        {
-            if (graphicPath != null)
-            {
-                graphicPath.Dispose();
-                graphicPath = null;
-            }
-        }
-
-        void BuildPath()
-        {
-            if (graphicPath == null)
-            {
-                graphicPath = new GraphicsPath(FillMode.Alternate);
-                graphicPath.StartFigure();
-
-                foreach (VectorEdge e in edges)
-                {
-                    if (e is VectorMove)
-                    {
-                        graphicPath.CloseFigure();
-                        continue;
-                    }
-
-                    if (e is VectorCurve)
-                    {
-                        if (e is VectorCubicBezier)
-                        {
-                            VectorCubicBezier c = (VectorCubicBezier)e;
-                            graphicPath.AddBezier(c.StartX, c.StartY, c.Control1.X, c.Control1.Y, c.Control2.X, c.Control2.Y, c.EndX, c.EndY);
-                        }
-                        else
-                        {
-                            VectorQuadraticBezier c = (VectorQuadraticBezier)e;
-                            graphicPath.AddBezier(c.StartX, c.StartY, c.Control.X, c.Control.Y, c.Control.X, c.Control.Y, c.EndX, c.EndY);
-                        }
-                    }
-                    else if (e is VectorEdge)
-                    {
-                        graphicPath.AddLine(e.StartX, e.StartY, e.EndX, e.EndY);
-                    }                    
-                }
-
-                graphicPath.CloseFigure();
-            }
-        }
 
         class PointComparer : IComparer<PointF>
         {
@@ -286,15 +238,6 @@ namespace VectorView
             }
 
             return area;
-        }
-
-        public GraphicsPath CopyPath()
-        {
-            if (graphicPath == null)
-                BuildPath();
-
-            GraphicsPath pathCopy = (GraphicsPath)graphicPath.Clone();
-            return pathCopy;
         }
 
         Pen linePen = null;
@@ -390,7 +333,8 @@ namespace VectorView
                     pl = new List<PointF>();
                 }
 
-                pl.AddRange(e.GetPoints());
+                List<PointF> tp = e.GetPoints(false);
+                pl.AddRange(tp);
 
                 if (e is VectorClose)
                 {
@@ -734,11 +678,47 @@ namespace VectorView
 
             poligons = null;
         }
-                
+        
+
         public string ToHPGL()
         {
             StringBuilder sb = new StringBuilder();
+            bool first = true;
+            bool firstPoint = true;
+            PointF hp;
 
+            List<PointF[]> polyList = BuildPolygons();
+
+            foreach (PointF[] polyline in polyList)
+            {
+                first = true;
+                firstPoint = true;
+
+                foreach (PointF p in polyline)
+                {
+                    if (first)
+                    {
+                        first = false;
+                        hp = GetHPGLPoint(p);
+                        sb.Append(string.Format("PU{0},{1};", hp.X, hp.Y));
+
+                        sb.Append("PD");
+                        continue;
+                    }
+
+                    if (!firstPoint)
+                    {
+                        sb.Append(',');
+                    }
+
+                    firstPoint = false;
+
+                    hp = GetHPGLPoint(p);
+                    sb.Append(string.Format("{0},{1}", hp.X, hp.Y));
+                }
+            }
+                        
+            /*
             bool first = true;
             bool firstPoint = true;
             Point p = new Point();
@@ -768,6 +748,8 @@ namespace VectorView
                 p = GetHPGLPoint(pl);
                 sb.Append(string.Format("{0},{1}", p.X, p.Y));
             }
+            */
+
 
             return sb.ToString();
         }

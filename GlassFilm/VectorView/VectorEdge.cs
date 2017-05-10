@@ -98,7 +98,7 @@ namespace VectorView
         {
             if (path != null)
             {
-                path.InvalidatePath();
+                
             }
         }
 
@@ -172,11 +172,13 @@ namespace VectorView
             InvalidatePath();
         }
 
-        public virtual List<PointF> GetPoints()
+        public virtual List<PointF> GetPoints(bool includeFirst)
         {
             List<PointF> points = new List<PointF>();
 
-            points.Add(new PointF(sx, sy));
+            if (includeFirst)
+                points.Add(new PointF(sx, sy));
+
             points.Add(new PointF(ex, ey));
 
             return points;
@@ -208,7 +210,7 @@ namespace VectorView
             maxx = float.MinValue;
             maxy = float.MinValue;
 
-            List<PointF> pts = GetPoints();
+            List<PointF> pts = GetPoints(true);
 
             foreach (PointF p in pts)
             {

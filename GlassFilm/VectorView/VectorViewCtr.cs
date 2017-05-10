@@ -923,9 +923,22 @@ namespace VectorView
             SelectionChanged?.Invoke(this, new VectorEventArgs(document, null));
         }
 
+        public void DeleteSelection()
+        {
+            foreach (VectorPath p in selection)
+            {
+                document.Paths.Remove(p);
+            }
+
+            ClearSelection();
+            Invalidate();
+        }
+
         public void Clear()
         {
             document = new VectorDocument();
+            ClearSelection();
+            Invalidate();
         }
     }
 
