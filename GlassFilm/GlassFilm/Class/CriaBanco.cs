@@ -6,6 +6,6 @@ using System.Text;
 namespace GlassFilm.Class
 {
     class CriaBanco
-    {
+    { 
     }
 }
