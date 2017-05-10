@@ -670,10 +670,54 @@ namespace VectorView
                 allowTransforms = value;
             }
         }
-        
+
+        public int GridSize
+        {
+            get
+            {
+                return gridSize;
+            }
+
+            set
+            {
+                gridSize = value; Invalidate();
+            }
+        }
+
+        public Color GridColor
+        {
+            get
+            {
+                return gridColor;
+            }
+
+            set
+            {
+                gridColor = value; Invalidate();
+            }
+        }
+
         bool drawSelecionBox = true;
         float selectionMargin =6f;
         float selDashSize = 3f;
+
+        int gridSize = 60;
+        Color gridColor = Color.Green;
+
+        void DrawGrid(Graphics g)
+        {
+            Pen p = new Pen(Color.FromArgb(15, gridColor));
+
+            for (int i = 0; i < Width; i+=gridSize)
+            {
+                g.DrawLine(p, i, 0, i, Height);
+            }
+
+            for (int i = 0; i < Height; i += gridSize)
+            {
+                g.DrawLine(p, 0, i, Width, i);
+            }
+        }
 
         protected override void OnPaint(PaintEventArgs e)
         {
@@ -681,8 +725,11 @@ namespace VectorView
             e.Graphics.Clear(BackColor);
 
             Graphics g = e.Graphics;
+
             g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
             g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+
+            DrawGrid(g);
 
             if (document == null)
             {

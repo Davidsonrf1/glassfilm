@@ -128,14 +128,12 @@ namespace VectorViewTeste
             view.ShowDocumentLimit = true;
 
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
-            corte.Document.AdjustSizeToContent();
+
             corte.AutoFit(VectorFitStyle.Both, true, true);
 
             d.Width = 600;
             d.Height = 300;
             
-            view.Document.AdjustSizeToContent();
-
             VectorPath vp = d.Paths[0];
 
             float area = vp.ComputeArea(1);

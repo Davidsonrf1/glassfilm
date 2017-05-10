@@ -134,7 +134,7 @@ namespace GlassFilm
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             vvCorte.ImportSelection(vvModelo);
-
+            vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
         }
     }
 }

@@ -6,6 +6,8 @@ using System.Text;
 
 namespace VectorView
 {
+    public enum VectorPathSide { None, Left, Right }
+
     public class VectorPath
     {
         VectorDocument document = null;
@@ -21,7 +23,10 @@ namespace VectorView
         bool isSelected = false;
         bool fillPath = false;
         Color fillColor = Color.Lime;
-        
+
+        string tag = "";
+        VectorPathSide side = VectorPathSide.None;
+
         GraphicsPath graphicPath = null;
 
         public VectorDocument Document
