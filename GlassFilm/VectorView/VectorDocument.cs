@@ -9,6 +9,7 @@ using Svg.Pathing;
 using System.IO;
 using System.Xml;
 using System.Drawing.Drawing2D;
+using System.Globalization;
 
 namespace VectorView
 {
@@ -33,6 +34,8 @@ namespace VectorView
         bool showDocumentLimit = false;
         bool showRuller = false;
         float rullerWidth = 22f;
+
+        string observacao = "";
 
         float width = 0;
         float height = 0;
@@ -188,6 +191,19 @@ namespace VectorView
             }
         }
 
+        public string Observacao
+        {
+            get
+            {
+                return observacao;
+            }
+
+            set
+            {
+                observacao = value;
+            }
+        }
+
         public VectorPath CreatePath()
         {
             VectorPath p = new VectorPath(this);
@@ -255,6 +271,9 @@ namespace VectorView
 
         public void Render(Graphics g)
         {
+            if (scale == float.NaN)
+                return;
+
             BeginRender(g);
 
             float ox = 0, oy = 0;
@@ -334,6 +353,25 @@ namespace VectorView
             {
                 SvgPath p = (SvgPath)el;
                 VectorPath path = CreatePath();
+
+                string tag, side;
+
+                tag = "";
+                side = "";
+
+                path.Side = VectorPathSide.None;
+
+                if (p.TryGetAttribute("gf-tag", out tag))
+                  path.Tag = Encoding.UTF8.GetString(Convert.FromBase64String(tag));
+
+                if (p.TryGetAttribute("gf-side", out side))
+                {
+                    if (side == "left")
+                        path.Side = VectorPathSide.Left;
+
+                    if (side == "right")
+                        path.Side = VectorPathSide.Right;
+                }
 
                 float sx, sy, ex, ey;                
 
@@ -511,7 +549,11 @@ namespace VectorView
             StringBuilder sb = new StringBuilder();
 
             RectangleF r = Rectangle.Round(GetBoundRect());
-            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {0} {1}\" width=\"{2}mm\" height=\"{3}mm\" version=\"1.1\">\n", viewBox.Width, viewBox.Height, width, height);
+
+            NumberFormatInfo ni = new NumberFormatInfo();
+            ni.NumberDecimalSeparator = ".";
+
+            sb.AppendFormat(ni, "<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {0:0.0000} {1:0.0000}\" width=\"{2:0.0000}mm\" height=\"{3:0.0000}mm\" version=\"1.1\">\n", viewBox.Width, viewBox.Height, width, height);
 
             foreach (VectorPath s in paths)
             {
@@ -604,9 +646,11 @@ namespace VectorView
             foreach (VectorEdge e in p.Edges)
             {
                 VectorEdge c = e.Clone();
-
                 d.AddEdge(c);
             }
+
+            d.Tag = p.Tag;
+            d.Side = p.Side;
 
             return d;
         }
@@ -619,10 +663,10 @@ namespace VectorView
 
             float dx = 0, dy = 0;
 
-            if (r.X < 0)
+            //if (r.X < 0)
                 dx = -r.X;
 
-            if (r.Y < 0)
+            //if (r.Y < 0)
                 dy = -r.Y;
 
             if (dx > 0 || dy > 0)

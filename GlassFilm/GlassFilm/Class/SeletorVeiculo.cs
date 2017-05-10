@@ -106,6 +106,14 @@ namespace GlassFilm.Class
             }
         }
 
+        public Modelo ModeloAtual
+        {
+            get
+            {
+                return modeloAtual;
+            }
+        }
+
         void PreencheCbModelos()
         {
             if (cbModelos != null)
@@ -143,6 +151,9 @@ namespace GlassFilm.Class
 
         void PreencheCbVeiculos()
         {
+            if (cbVeiculos == null)
+                return;
+
             cbVeiculos.SelectedIndexChanged += CbVeiculos_SelectedIndexChanged;
 
             if (cbVeiculos != null)

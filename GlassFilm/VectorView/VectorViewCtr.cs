@@ -38,6 +38,14 @@ namespace VectorView
             DoubleBuffered = true;
         }
 
+        public int SelecionCount
+        {
+            get
+            {
+                return selection.Count;
+            }
+        }
+
         PointF mousePos = new PointF();
         PointF mouseDownPos = new PointF();
         PointF startOffset = new PointF();
@@ -719,6 +727,8 @@ namespace VectorView
             }
         }
 
+        bool showPathTags = true;
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
@@ -800,7 +810,6 @@ namespace VectorView
             if (isScaling)
             {
                 RectangleF r = document.GetBoundRect(true);
-
                 DrawSize(g, r, Color.DarkGreen);
             }
 
@@ -815,6 +824,34 @@ namespace VectorView
                 g.DrawRectangle(selPen, x, y, w, h);
             }
 
+            if (showPathTags)
+            {
+                foreach (VectorPath p in document.Paths)
+                {
+                    if (!string.IsNullOrEmpty(p.Tag))
+                    {
+                        RectangleF r = p.GetBoundRect();
+
+                        PointF pt = document.DocPointToViewPoint(r.Location);
+                        float w, h;
+                        PointF pt2 = document.DocPointToViewPoint(new PointF(r.Right, r.Bottom));
+
+                        w = pt2.X - pt.X;
+                        h = pt2.Y - pt.Y;
+
+                        r.X = pt.X;
+                        r.Y = pt.Y;
+                        r.Width = w;
+                        r.Height = h;
+
+                        StringFormat sf = new StringFormat();
+                        sf.Alignment = StringAlignment.Center;
+                        sf.LineAlignment = StringAlignment.Center;
+                        
+                        g.DrawString(p.Tag, Font, Brushes.Black, r, sf);
+                    }
+                }   
+            }
         }
 
         private void VectorViewCtr_Load(object sender, EventArgs e)

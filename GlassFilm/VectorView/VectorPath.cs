@@ -92,6 +92,32 @@ namespace VectorView
             }
         }
 
+        public string Tag
+        {
+            get
+            {
+                return tag;
+            }
+
+            set
+            {
+                tag = value;
+            }
+        }
+
+        public VectorPathSide Side
+        {
+            get
+            {
+                return side;
+            }
+
+            set
+            {
+                side = value;
+            }
+        }
+
         VectorEdge curStart = null;
 
         internal void AddEdge(VectorEdge e)
@@ -273,13 +299,43 @@ namespace VectorView
 
         Pen linePen = null;
 
+        SolidBrush rSide = null;
+        SolidBrush lSide = null;
+
         public void Render(Graphics g)
         {
+            if (rSide == null)
+            {
+                rSide = new SolidBrush(Color.FromArgb(45, Color.LightBlue));
+                lSide = new SolidBrush(Color.FromArgb(45, Color.LightGreen));
+            }
+
             if (!isSelected)
                 linePen = Document.NormalLinePen;
             else
                 linePen = Document.SelectedLinePen;
 
+            if (poligons == null)
+                BuildPolygons();
+
+            foreach (PointF[] poly in poligons)
+            {
+                if (Side != VectorPathSide.None)
+                {
+                    SolidBrush sb = null;
+
+                    if (Side == VectorPathSide.Left)
+                        sb = lSide;
+                    else
+                        sb = rSide;
+
+                    g.FillPolygon(sb, poly);
+                }
+
+                g.DrawPolygon(linePen, poly);
+            }
+                
+            /*
             foreach (VectorEdge e in edges)
             {
                 if (e is VectorMove)
@@ -306,7 +362,7 @@ namespace VectorView
                     g.DrawLine(linePen, e.StartX, e.StartY, e.EndX, e.EndY);
                 }
             }
-
+            */
             /*if (drawMiddlePoint)
             {
                 float w = 3 / Document.Scale;
@@ -314,6 +370,39 @@ namespace VectorView
                 PointF m = GetMiddlePoint();
                 g.FillEllipse(Brushes.OrangeRed, m.X - w / 2, m.Y - w / 2, w, w);
             }*/
+        }
+
+        List<PointF[]> poligons = null;
+
+        public virtual List<PointF[]> BuildPolygons()
+        {
+            if (poligons != null)
+                return poligons;
+
+            poligons = new List<PointF[]>();
+
+            List<PointF> pl = null;
+
+            foreach (VectorEdge e in edges)
+            {
+                if (pl == null)
+                {
+                    pl = new List<PointF>();
+                }
+
+                pl.AddRange(e.GetPoints());
+
+                if (e is VectorClose)
+                {
+                    poligons.Add(pl.ToArray());
+                    pl = null;
+                }
+            }
+
+            if (pl != null)
+                poligons.Add(pl.ToArray());
+
+            return poligons;
         }
 
         public virtual List<PointF> GetPolyline()
@@ -361,6 +450,9 @@ namespace VectorView
 
             foreach (VectorEdge e in edges)
             {
+                if (e is VectorMove)
+                    continue;
+
                 RectangleF r = e.GetBoundRect();
 
                 minx = Math.Min(minx, r.X);
@@ -487,11 +579,16 @@ namespace VectorView
             lastEdge = edge;
         }
 
+
+
         public string ToSVGPath(float ppmx, float ppmy)
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("<path style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"");
+            byte[] bytes = Encoding.UTF8.GetBytes(tag);
+            string b64Tag = Convert.ToBase64String(bytes);
+
+            sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag);
 
             foreach (VectorEdge e in edges)
             {
@@ -531,7 +628,9 @@ namespace VectorView
                 }
 
                 origins.Clear();
-            }  
+            }
+
+            poligons = null;
         }
 
         public void Transform(Matrix mt, PointF origin)
@@ -566,6 +665,7 @@ namespace VectorView
             }
 
             ComputeArea();
+            poligons = null;
         }
 
         public void SetOrigin(PointF origin)
@@ -631,6 +731,8 @@ namespace VectorView
 
                 e.SetPoints(tl);
             }
+
+            poligons = null;
         }
                 
         public string ToHPGL()
