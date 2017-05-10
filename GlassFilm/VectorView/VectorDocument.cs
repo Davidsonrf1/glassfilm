@@ -385,14 +385,6 @@ namespace VectorView
             }
         }
 
-        public void AdjustSizeToContent()
-        {
-            RectangleF r = GetBoundRect();
-
-            width = r.Right;
-            height = r.Bottom;
-        }
-
         public void LoadSVGFromFile(string file, float scale=1)
         {
             string svg = File.ReadAllText(file, Encoding.UTF8);
@@ -439,7 +431,7 @@ namespace VectorView
         {
             paths.Clear();
         }
-
+        
         public void LoadSVG(string svg, float scale=1)
         {
             paths.Clear();
@@ -460,8 +452,8 @@ namespace VectorView
             ppmx = vb.Width / vw;
             ppmy = vb.Height / vh;
 
-            width = vb.Width * loadScale;
-            height = vb.Height * loadScale;
+            width = vb.Width;
+            height = vb.Height;
 
             foreach (SvgElement e in doc.Children)
             {
@@ -469,7 +461,6 @@ namespace VectorView
             }
 
             Normalize();
-            AdjustSizeToContent();
         }
 
         public RectangleF GetBoundRect()
@@ -515,14 +506,16 @@ namespace VectorView
 
         public string ToSVG()
         {
+            Normalize();
+
             StringBuilder sb = new StringBuilder();
 
             RectangleF r = Rectangle.Round(GetBoundRect());
-            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {2} {3}\" height=\"{3}\" width=\"{2}\" version=\"1.1\">\n", r.X, r.Y, r.Width, r.Height);
+            sb.AppendFormat("<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {0} {1}\" width=\"{2}mm\" height=\"{3}mm\" version=\"1.1\">\n", viewBox.Width, viewBox.Height, width, height);
 
             foreach (VectorPath s in paths)
             {
-                sb.Append("   " + s.ToSVGPath());
+                sb.Append("   " + s.ToSVGPath(ppmx, ppmy));
                 sb.Append("\n");
             }
 
@@ -618,6 +611,8 @@ namespace VectorView
             return d;
         }
 
+        RectangleF viewBox = new RectangleF();
+
         public void Normalize()
         {
             RectangleF r = GetBoundRect();
@@ -639,7 +634,24 @@ namespace VectorView
                 }
             }
 
-            AdjustSizeToContent();
+            r = GetBoundRect();
+
+            if (r.X > 0)
+            {
+                r.Width += r.X;
+                r.X = 0;
+            }
+
+            if (r.Y > 0)
+            {
+                r.Height += r.Y;
+                r.Y = 0;
+            }
+
+            viewBox = new RectangleF(0, 0, r.Width * ppmx, r.Height * ppmy);
+
+            width = r.Width;
+            height = r.Height;
         }
 
         public void AutoNest()

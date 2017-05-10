@@ -102,7 +102,11 @@ namespace VectorView
         {
             if(curStart != null)
             {
-                LineTo(curStart.StartX, curStart.StartY);
+                VectorClose e = new VectorClose(this, curX, curY, curStart.StartX, curStart.StartY);
+                curX = curStart.StartX;
+                curY = curStart.StartY;
+
+                AddEdge(e);
                 curStart = null;
             }
 
@@ -403,131 +407,93 @@ namespace VectorView
             return new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
         }
 
-        void WriteEdgeList(StringBuilder sb, List<VectorEdge> list)
+        VectorEdge lastEdge = null;
+
+        bool IsSamAsLast(VectorEdge edge)
         {
-            bool wroteCmd = false;
+            if (lastEdge == null)
+                return false;
 
-            if (list.Count == 0)
-                return;
+            if (lastEdge.Type == VectorEdgeType.Move && edge.Type == VectorEdgeType.Line)
+                return true;
 
-            foreach (VectorEdge ob in list)
-            {
-                if (ob.GetType().Equals(typeof(VectorMove)))
-                {
-                    if (!wroteCmd)
-                    {
-                        sb.Append(" M");
-                        wroteCmd = true;
-                    }
-
-                    sb.AppendFormat(" {0},{1}", (int)Math.Round(ob.EndX), (int)Math.Round(ob.EndY));
-                }
-
-                if (ob.GetType().Equals(typeof(VectorEdge)))
-                {
-                    if (!wroteCmd)
-                    {
-                        sb.Append(" L");
-                        wroteCmd = true;
-                    }
-
-                    sb.AppendFormat(" {0},{1}", (int)Math.Round(ob.EndX), (int)Math.Round(ob.EndY));
-                }
-
-                if (ob.GetType().Equals(typeof(VectorCubicBezier)))
-                {
-                    if (!wroteCmd)
-                    {
-                        sb.Append(" C");
-                        wroteCmd = true;
-                    }
-
-                    VectorCubicBezier vc = (VectorCubicBezier)ob;
-
-                    sb.AppendFormat(" {0},{1} {2},{3} {4},{5}", (int)Math.Round(vc.Control1.X), (int)Math.Round(vc.Control1.Y), (int)Math.Round(vc.Control2.X), (int)Math.Round(vc.Control2.Y), (int)Math.Round(vc.EndX), (int)Math.Round(vc.EndY));
-                }
-
-                if (ob.GetType().Equals(typeof(VectorQuadraticBezier)))
-                {
-                    if (!wroteCmd)
-                    {
-                        sb.Append(" Q");
-                        wroteCmd = true;
-                    }
-
-                    VectorQuadraticBezier vq = (VectorQuadraticBezier)ob;
-
-                    sb.AppendFormat(" {0},{1} {2},{3}", (int)Math.Round(vq.Control.X), (int)Math.Round(vq.Control.Y), (int)Math.Round(vq.EndX), (int)Math.Round(vq.EndY));
-                }
-            }
+            return lastEdge.Type == edge.Type;
         }
 
-        int ExtractEdgeList(VectorEdge[] src, List<VectorEdge> dst, int startIndex)
+        void WriteEdge(StringBuilder sb, VectorEdge edge, float ppmx, float ppmy)
         {
-            int i = startIndex;
-            dst.Clear();
+            int sx, sy, ex, ey;
 
-            VectorEdge first = src[i++];
-            dst.Add(first);
+            sx = (int)Math.Round(edge.StartX * ppmx);
+            sy = (int)Math.Round(edge.StartY * ppmy);
+            ex = (int)Math.Round(edge.EndX * ppmx);
+            ey = (int)Math.Round(edge.EndY * ppmy);
 
-            while(i < src.Length)
+            switch (edge.Type)
             {
-                VectorEdge e = src[i];
-
-                if (e is VectorMove)
+                case VectorEdgeType.Move:
+                    sb.Append(" M");
+                    sb.AppendFormat("{0},{1}", ex, ey);
                     break;
+                case VectorEdgeType.Line:
+                    if (!IsSamAsLast(edge))
+                        sb.Append(" L");
+                    else
+                        sb.Append(" ");
 
-                if (!e.GetType().Equals(first.GetType()))
-                {
-                    if (!(first is VectorMove || e is VectorEdge))
-                        break;
-                }
+                    sb.AppendFormat("{0},{1}", ex, ey);
+                    break;
+                case VectorEdgeType.Curve:
+                    if (!IsSamAsLast(edge))
+                        sb.Append(" C");
+                    else
+                        sb.Append(" ");
 
-                dst.Add(e);
-                i++;
+                    VectorCubicBezier vc = (VectorCubicBezier)edge;
+                    int c1x, c1y, c2x, c2y;
+
+                    c1x = (int)Math.Round(vc.Control1.X * ppmx);
+                    c1y = (int)Math.Round(vc.Control1.Y * ppmy);
+                    c2x = (int)Math.Round(vc.Control2.X * ppmx);
+                    c2y = (int)Math.Round(vc.Control2.Y * ppmy);
+
+                    sb.AppendFormat("{0},{1} {2},{3} {4},{5}", c1x, c1y, c2x, c2y, ex, ey);
+
+                    break;
+                case VectorEdgeType.QCurve:
+                    if (!IsSamAsLast(edge))
+                        sb.Append(" Q");
+                    else
+                        sb.Append(" ");
+
+                    VectorQuadraticBezier qc = (VectorQuadraticBezier)edge;
+                    int cx, cy;
+
+                    cx = (int)Math.Round(qc.Control.X * ppmx);
+                    cy = (int)Math.Round(qc.Control.Y * ppmy);
+
+                    sb.AppendFormat("{0},{1} {2},{3}", cx, cy, ex, ey);
+                    break;
+                case VectorEdgeType.Close:
+                    sb.Append(" Z");
+                    break;
             }
 
-            return i;
+            lastEdge = edge;
         }
 
-        public string ToSVGPath()
+        public string ToSVGPath(float ppmx, float ppmy)
         {
             StringBuilder sb = new StringBuilder();
 
-            sb.Append("<path style=\"fill: none; stroke:#e30016;stroke-width:0.56690001;stroke-linecap:butt;stroke-linejoin:miter;stroke-dasharray:none\" d=\"");
-            //sb.AppendFormat("M{0},{1}", (int)Math.Round(edges[0].StartX), (int)Math.Round(edges[0].StartY));
+            sb.Append("<path style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"");
 
-            Type last = typeof(VectorEdge);
-            List<VectorEdge> list = new List<VectorEdge>();
-
-            VectorEdge[] eList = edges.ToArray();
-
-            int i = 0;
-            while (i < eList.Length)
-            {
-                i = ExtractEdgeList(eList, list, i);
-                WriteEdgeList(sb, list);
-            }
-
-            /*
             foreach (VectorEdge e in edges)
             {
-                if (last.Equals(e.GetType()) || (list.Count == 1 && last.Equals(typeof(VectorMove)) && (e.GetType().Equals(typeof(VectorEdge)))))
-                {
-                    list.Add(e);
-                }
-                else
-                {
-                    WriteEdgeList(sb, list);
-
-                    list.Clear();
-                    list.Add(e);
-                    last = e.GetType();
-                }
+                WriteEdge(sb, e, ppmx, ppmy);
             }
-            */
-            //WriteEdgeList(sb, list);
-            sb.Append(" Z\" />");
+
+            sb.Append("\" \n\t/>");
 
             return sb.ToString();
         }

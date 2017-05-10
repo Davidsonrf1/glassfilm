@@ -12,7 +12,7 @@ namespace VectorView
 
         public VectorQuadraticBezier(VectorPath path, float startx, float starty, float endx, float endy) : base(path, startx, starty, endx, endy)
         {
-
+            Type = VectorEdgeType.QCurve;
         }
 
         public PointF Control

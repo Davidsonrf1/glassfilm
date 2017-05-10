@@ -10,7 +10,7 @@ namespace VectorView
     {
         public VectorMove(VectorPath path, float startx, float starty, float endx, float endy) : base(path, endx, endy, endx, endy)
         {
-
+            Type = VectorEdgeType.Move;
         }
     }
 }

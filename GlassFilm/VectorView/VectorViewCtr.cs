@@ -803,7 +803,6 @@ namespace VectorView
                 }
             }
 
-            document.AdjustSizeToContent();
             Invalidate();
         }
 

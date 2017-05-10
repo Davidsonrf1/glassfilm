@@ -13,6 +13,7 @@ namespace VectorView
         public VectorCubicBezier(VectorPath path, float startx, float starty, float endx, float endy) : base(path, startx, starty, endx, endy)
         {
             bezier.Resolution = 100;
+            Type = VectorEdgeType.Curve;
         }
 
         public PointF Control1

@@ -49,6 +49,7 @@
     <Compile Include="Bezier\CubicBezier.cs" />
     <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="ConvexHull.cs" />
+    <Compile Include="VectorClose.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />
     <Compile Include="VectorDocument.cs" />

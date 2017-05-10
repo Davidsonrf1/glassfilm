@@ -6,11 +6,15 @@ using System.Text;
 
 namespace VectorView
 {
+    public enum VectorEdgeType {  None, Move, Line, Curve, QCurve, Close }
+
     public class VectorEdge
     {
         VectorPath path = null;
         float sx = 0, sy = 0;
         float ex = 0, ey = 0;
+
+        VectorEdgeType type = VectorEdgeType.Line;
 
         public float StartX
         {
@@ -74,6 +78,19 @@ namespace VectorView
             internal set
             {
                 path = value;
+            }
+        }
+
+        public VectorEdgeType Type
+        {
+            get
+            {
+                return type;
+            }
+
+            protected set
+            {
+                type = value;
             }
         }
 
