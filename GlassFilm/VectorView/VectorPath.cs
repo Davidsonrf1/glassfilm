@@ -608,7 +608,7 @@ namespace VectorView
                 e.SetPoints(tl);
             }
 
-            ComputeArea();
+            //ComputeArea();
             poligons = null;
         }
 
@@ -679,7 +679,6 @@ namespace VectorView
             poligons = null;
         }
         
-
         public string ToHPGL()
         {
             StringBuilder sb = new StringBuilder();
@@ -689,10 +688,17 @@ namespace VectorView
 
             List<PointF[]> polyList = BuildPolygons();
 
+            Matrix mt = new Matrix();
+
+            mt.Rotate(90);
+            mt.Translate(0, -document.Height);            
+
             foreach (PointF[] polyline in polyList)
             {
                 first = true;
                 firstPoint = true;
+
+                mt.TransformPoints(polyline);
 
                 foreach (PointF p in polyline)
                 {

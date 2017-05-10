@@ -241,6 +241,11 @@ namespace VectorView
             g.DrawRectangle(Pens.Orange, sx, sy, g.ClipBounds.Width, g.ClipBounds.Height);
         }
 
+        public void AdjustWidthToContent()
+        {
+
+        }
+
         public void Render(Graphics g)
         {
             if (scale == float.NaN)
@@ -277,7 +282,7 @@ namespace VectorView
           
             if (showDocumentLimit)
             {
-                RectangleF r = new RectangleF(-2, -2, width + 4, height + 4);
+                RectangleF r = new RectangleF(0, 0, width, height);
 
                 Pen bp = new Pen(docLimitLineColor, normalLinePen.Width);
                 g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
@@ -296,6 +301,22 @@ namespace VectorView
             return ToHPGL(null, null);
         }
 
+        class PathComparerX : IComparer<VectorPath>
+        {
+            public int Compare(VectorPath x, VectorPath y)
+            {
+                PointF p1 = x.GetMiddlePoint();
+                PointF p2 = y.GetMiddlePoint();
+
+                return p1.X < p2.X ? -1 : p1.X == p2.X ? 0 : 1;                
+            }
+        }
+
+        void SortPaths()
+        {
+            paths.Sort(new PathComparerX());
+        }
+
         public string ToHPGL(string sendBefore, string sendAfter)
         {
             StringBuilder sb = new StringBuilder();
@@ -304,6 +325,8 @@ namespace VectorView
 
             if (sendBefore != null)
                 sb.Append(sendBefore);
+
+            SortPaths();
 
             foreach (VectorPath s in paths)
             {

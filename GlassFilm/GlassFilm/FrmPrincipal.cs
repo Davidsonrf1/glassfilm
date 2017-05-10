@@ -29,6 +29,7 @@ namespace GlassFilm
             sel.CbVeiculos = cbAno;
 
             vvCorte.Document = new VectorDocument();
+            vvCorte.ShowDocumentLimit = true;
 
             vvModelo.DoubleClick += VvModelo_DoubleClick;
         }
@@ -161,6 +162,46 @@ namespace GlassFilm
             {
                 vvCorte.DeleteSelection();
             }
+        }
+
+
+        void UpdateDocInfo()
+        {
+            VectorDocument d = vvCorte.Document;
+
+            if (d != null)
+            {
+                docInfo.Text = "";
+                selInfo.Text = "";
+
+                docInfo.Text = string.Format("Tamanho do Desenho (mm): {3} por {4}", d.Paths.Count, d.OffsetX, d.OffsetY, d.Width, d.Height);
+                RectangleF r = d.GetBoundRect(true);
+
+                float area = 0;
+                foreach (VectorPath p in vvCorte.Selection())
+                {
+                    area = p.Area;
+                }
+
+                if (!float.IsInfinity(r.Width))
+                    selInfo.Text = string.Format("Objeto - Tamanho (mm): {0:0.00} por {1:0.00} Área (em mm²): {2:0.00}", r.Width, r.Height, area);
+            }
+        }
+
+        private void vvCorte_SelectionChanged(object sender, VectorEventArgs e)
+        {
+            UpdateDocInfo();
+        }
+
+        private void vvCorte_SelectionTransformed(object sender, VectorEventArgs e)
+        {
+            UpdateDocInfo();
+            Application.DoEvents();
+        }
+
+        private void button3_Click(object sender, EventArgs e)
+        {
+            MessageBox.Show("Função ainda não implementada");
         }
     }
 }

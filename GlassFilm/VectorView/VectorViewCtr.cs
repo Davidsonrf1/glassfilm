@@ -149,7 +149,7 @@ namespace VectorView
                     startAngle = VectorMath.AngleBetween(transformCenter, mouseDownPos);
                 }
 
-                Refresh();
+                Invalidate();
                 return;
             }
 
@@ -219,7 +219,7 @@ namespace VectorView
                 }
             }
 
-            Refresh();
+            Invalidate();
         }
 
         protected override void OnKeyDown(KeyEventArgs e)
@@ -242,7 +242,7 @@ namespace VectorView
                     isRotating = false;
                     isScaling = false;
 
-                    Refresh();
+                    Invalidate();
 
                     return;
                 }
@@ -258,7 +258,7 @@ namespace VectorView
                 }
             }
 
-            Refresh();
+            Invalidate();
         }
 
         protected override void OnKeyPress(KeyPressEventArgs e)
@@ -342,7 +342,7 @@ namespace VectorView
                 OnSelectionTransformed();
             }
 
-            Refresh();
+            Invalidate();
         }
 
         void SelectPath(VectorPath p)
@@ -584,7 +584,7 @@ namespace VectorView
                     document.ShowDocumentLimit = value;
                 }
 
-                Refresh();
+                Invalidate();
             }
         }
 
@@ -597,7 +597,7 @@ namespace VectorView
 
             set
             {
-                showPointer = value; Refresh();
+                showPointer = value; Invalidate();
             }
         }
 
@@ -736,8 +736,8 @@ namespace VectorView
 
             Graphics g = e.Graphics;
 
-            g.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
-            g.InterpolationMode = System.Drawing.Drawing2D.InterpolationMode.HighQualityBicubic;
+            g.SmoothingMode = SmoothingMode.HighQuality;
+            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
             DrawGrid(g);
 
@@ -761,11 +761,6 @@ namespace VectorView
             {
                 PointF p = document.ViewPointToDocPoint(mousePos);
                 document.DrawPoint(e.Graphics, p);
-            }
-
-            if (isMovingSel)
-            {
-
             }
 
             g.ResetTransform();
@@ -800,6 +795,24 @@ namespace VectorView
                     //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Left, r);
                 }
             }
+            
+            /*
+            if (selection.Count > 0)
+            {
+                RectangleF r = document.DocRectToViewRect(selBox);
+
+                Pen p = new Pen(Color.Green);
+                p.DashStyle = DashStyle.DashDot;
+                p.EndCap = LineCap.ArrowAnchor;
+
+                p.Width = 0.01f;
+
+                float metricsMargin = 10;
+
+                g.DrawLine(Pens.Red, r.X - metricsMargin, r.Y, r.X - metricsMargin, r.Bottom + metricsMargin);
+                g.DrawLine(Pens.Green, r.X - metricsMargin, r.Bottom + metricsMargin, r.Right, r.Bottom + metricsMargin);
+            }
+            */
 
             if (isRotating)
             {
@@ -895,7 +908,7 @@ namespace VectorView
             if (document != null)
             {
                 document.AutoFit(new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 4, ClientRectangle.Height - 4), style, center, fitContent);
-                Refresh();
+                Invalidate();
             }
         }
 

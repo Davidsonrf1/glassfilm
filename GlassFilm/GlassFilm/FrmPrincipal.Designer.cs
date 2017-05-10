@@ -41,8 +41,6 @@
             this.configuraçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cortadoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.ajudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.statusStrip1 = new System.Windows.Forms.StatusStrip();
-            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.pnlprincipal = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -80,10 +78,12 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.splitDesenho = new System.Windows.Forms.SplitContainer();
+            this.status = new System.Windows.Forms.StatusStrip();
+            this.docInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.selInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
-            this.statusStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -97,6 +97,7 @@
             this.splitDesenho.Panel1.SuspendLayout();
             this.splitDesenho.Panel2.SuspendLayout();
             this.splitDesenho.SuspendLayout();
+            this.status.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -201,26 +202,6 @@
             this.ajudaToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
             this.ajudaToolStripMenuItem.Text = "Ajuda";
             // 
-            // statusStrip1
-            // 
-            this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripStatusLabel1});
-            this.statusStrip1.Location = new System.Drawing.Point(0, 688);
-            this.statusStrip1.Name = "statusStrip1";
-            this.statusStrip1.Size = new System.Drawing.Size(1347, 24);
-            this.statusStrip1.TabIndex = 3;
-            this.statusStrip1.Text = "statusStrip1";
-            // 
-            // toolStripStatusLabel1
-            // 
-            this.toolStripStatusLabel1.AutoSize = false;
-            this.toolStripStatusLabel1.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
-            this.toolStripStatusLabel1.Size = new System.Drawing.Size(250, 19);
-            this.toolStripStatusLabel1.Text = "TESTE";
-            // 
             // pnlprincipal
             // 
             this.pnlprincipal.Controls.Add(this.button4);
@@ -268,6 +249,7 @@
             this.button3.Text = "Auto Ajuste";
             this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
             // 
             // button2
             // 
@@ -646,6 +628,36 @@
             this.splitDesenho.TabIndex = 13;
             this.splitDesenho.Visible = false;
             // 
+            // status
+            // 
+            this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.docInfo,
+            this.selInfo});
+            this.status.Location = new System.Drawing.Point(0, 688);
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(1347, 24);
+            this.status.TabIndex = 15;
+            this.status.Text = "statusStrip1";
+            // 
+            // docInfo
+            // 
+            this.docInfo.AutoSize = false;
+            this.docInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.docInfo.Name = "docInfo";
+            this.docInfo.Size = new System.Drawing.Size(350, 19);
+            // 
+            // selInfo
+            // 
+            this.selInfo.AutoSize = false;
+            this.selInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.selInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.selInfo.Name = "selInfo";
+            this.selInfo.Size = new System.Drawing.Size(550, 19);
+            // 
             // vvModelo
             // 
             this.vvModelo.AllowMoveDocument = false;
@@ -691,6 +703,8 @@
             this.vvCorte.ShowPointer = false;
             this.vvCorte.Size = new System.Drawing.Size(1346, 222);
             this.vvCorte.TabIndex = 0;
+            this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed);
+            this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
             this.vvCorte.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vvCorte_KeyDown);
             this.vvCorte.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vvCorte_KeyPress);
             // 
@@ -701,10 +715,10 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1347, 712);
+            this.Controls.Add(this.status);
             this.Controls.Add(this.splitDesenho);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
-            this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.menuStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
@@ -716,8 +730,6 @@
             this.Load += new System.EventHandler(this.FrmPrincipal_Load);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
-            this.statusStrip1.ResumeLayout(false);
-            this.statusStrip1.PerformLayout();
             this.pnlprincipal.ResumeLayout(false);
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
@@ -735,6 +747,8 @@
             this.splitDesenho.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).EndInit();
             this.splitDesenho.ResumeLayout(false);
+            this.status.ResumeLayout(false);
+            this.status.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -750,7 +764,6 @@
         private System.Windows.Forms.ToolStripMenuItem transformarToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem configuraçãoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem ajudaToolStripMenuItem;
-        private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.Panel pnlprincipal;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel2;
@@ -794,6 +807,8 @@
         private VectorView.VectorViewCtr vvModelo;
         private VectorView.VectorViewCtr vvCorte;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
+        private System.Windows.Forms.StatusStrip status;
+        private System.Windows.Forms.ToolStripStatusLabel docInfo;
+        private System.Windows.Forms.ToolStripStatusLabel selInfo;
     }
 }
