@@ -915,25 +915,29 @@ namespace VectorView
         public event VectorEventHandler DocementMoved;
         public virtual void OnDocumentMoved()
         {
-            DocementMoved?.Invoke(this, new VectorEventArgs(document, null));
+            if (DocementMoved != null)
+                DocementMoved(this, new VectorEventArgs(document, null));
         }
 
         public event VectorEventHandler SelectionMoved;
         public virtual void OnSelectionMoved()
         {
-            SelectionMoved?.Invoke(this, new VectorEventArgs(document, null));
+            if (SelectionMoved != null)
+                SelectionMoved(this, new VectorEventArgs(document, null));
         }
 
         public event VectorEventHandler SelectionTransformed;
         public virtual void OnSelectionTransformed()
         {
-            SelectionTransformed?.Invoke(this, new VectorEventArgs(document, null));
+            if (SelectionTransformed != null)
+                SelectionTransformed(this, new VectorEventArgs(document, null));
         }
 
         public event VectorEventHandler SelectionChanged;
         public virtual void OnSelectionChanged()
         {
-            SelectionChanged?.Invoke(this, new VectorEventArgs(document, null));
+            if (SelectionChanged != null)
+                SelectionChanged(this, new VectorEventArgs(document, null));
         }
 
         public void DeleteSelection()
