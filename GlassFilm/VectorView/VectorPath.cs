@@ -249,8 +249,8 @@ namespace VectorView
         {
             if (rSide == null)
             {
-                rSide = new SolidBrush(Color.FromArgb(45, Color.LightBlue));
-                lSide = new SolidBrush(Color.FromArgb(45, Color.LightGreen));
+                rSide = new SolidBrush(Color.FromArgb(85, Color.Blue));
+                lSide = new SolidBrush(Color.FromArgb(85, Color.Green));
             }
 
             if (!isSelected)

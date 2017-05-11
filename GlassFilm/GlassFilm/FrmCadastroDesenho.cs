@@ -102,7 +102,7 @@ namespace GlassFilm
                         Application.DoEvents();
                     }
 
-                    File.WriteAllText("d:\\teste_save.svg", svg);
+                   // File.WriteAllText("d:\\teste_save.svg", svg);
 
                     Mensagens.Informacao("Desenho Salvo com Sucesso!");
                     pbDesenho.Visible = false;

@@ -74,19 +74,29 @@ namespace GlassFilm
             }
         }
 
+        void AtualizaCombos()
+        {
+            sel.Limpar();
+            sel.AtualizaMarcas();
+            vvModelo.Clear();
+        }
+
         private void cadastrarDesenhoToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.ShowDialog(new FrmCadastroDesenho());
+            AtualizaCombos();
         }
 
         private void cadastrarMarcaToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Program.ShowDialog(new FrmCadMarca());  
+            Program.ShowDialog(new FrmCadMarca());
+            AtualizaCombos();
         }
 
         private void cadastroModeloToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.ShowDialog(new FrmCadModelo());
+            AtualizaCombos();
         }       
 
         private void cbAno_SelectedIndexChanged(object sender, EventArgs e)
@@ -133,7 +143,7 @@ namespace GlassFilm
                     string cmds = vvCorte.Document.ToHPGL();
                     RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, cmds);
 
-                    File.WriteAllText("D:\\teste_CORTE.plt", cmds);
+                    //File.WriteAllText("teste_CORTE.plt", cmds);
                 }
             }
         }
