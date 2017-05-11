@@ -30,17 +30,11 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmPrincipal));
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.arquivoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolArquivo = new System.Windows.Forms.ToolStripMenuItem();
             this.cadastrarMarcaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cadastroModeloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cadastrarDesenhoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.editarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.organizarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.recortarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.transformarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.configuraçãoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.cortadoraToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.ajudaToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.cadastroRoloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlprincipal = new System.Windows.Forms.Panel();
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
@@ -78,11 +72,11 @@
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.splitDesenho = new System.Windows.Forms.SplitContainer();
+            this.vvModelo = new VectorView.VectorViewCtr();
+            this.vvCorte = new VectorView.VectorViewCtr();
             this.status = new System.Windows.Forms.StatusStrip();
             this.docInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.selInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.vvModelo = new VectorView.VectorViewCtr();
-            this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -106,29 +100,25 @@
             this.menuStrip1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.menuStrip1.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.arquivoToolStripMenuItem,
-            this.editarToolStripMenuItem,
-            this.organizarToolStripMenuItem,
-            this.recortarToolStripMenuItem,
-            this.transformarToolStripMenuItem,
-            this.configuraçãoToolStripMenuItem,
-            this.ajudaToolStripMenuItem});
+            this.toolArquivo});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1347, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
-            // arquivoToolStripMenuItem
+            // toolArquivo
             // 
-            this.arquivoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolArquivo.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.cadastrarMarcaToolStripMenuItem,
             this.cadastroModeloToolStripMenuItem,
-            this.cadastrarDesenhoToolStripMenuItem});
-            this.arquivoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.arquivoToolStripMenuItem.Name = "arquivoToolStripMenuItem";
-            this.arquivoToolStripMenuItem.Size = new System.Drawing.Size(69, 20);
-            this.arquivoToolStripMenuItem.Text = "Arquivo";
+            this.cadastrarDesenhoToolStripMenuItem,
+            this.cadastroRoloToolStripMenuItem});
+            this.toolArquivo.ForeColor = System.Drawing.Color.White;
+            this.toolArquivo.Name = "toolArquivo";
+            this.toolArquivo.Size = new System.Drawing.Size(69, 20);
+            this.toolArquivo.Text = "Arquivo";
+            this.toolArquivo.Visible = false;
             // 
             // cadastrarMarcaToolStripMenuItem
             // 
@@ -151,56 +141,12 @@
             this.cadastrarDesenhoToolStripMenuItem.Text = "Cadastrar Desenho";
             this.cadastrarDesenhoToolStripMenuItem.Click += new System.EventHandler(this.cadastrarDesenhoToolStripMenuItem_Click);
             // 
-            // editarToolStripMenuItem
+            // cadastroRoloToolStripMenuItem
             // 
-            this.editarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.editarToolStripMenuItem.Name = "editarToolStripMenuItem";
-            this.editarToolStripMenuItem.Size = new System.Drawing.Size(58, 20);
-            this.editarToolStripMenuItem.Text = "Editar";
-            // 
-            // organizarToolStripMenuItem
-            // 
-            this.organizarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.organizarToolStripMenuItem.Name = "organizarToolStripMenuItem";
-            this.organizarToolStripMenuItem.Size = new System.Drawing.Size(82, 20);
-            this.organizarToolStripMenuItem.Text = "Organizar";
-            // 
-            // recortarToolStripMenuItem
-            // 
-            this.recortarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.recortarToolStripMenuItem.Name = "recortarToolStripMenuItem";
-            this.recortarToolStripMenuItem.Size = new System.Drawing.Size(76, 20);
-            this.recortarToolStripMenuItem.Text = "Recortar";
-            // 
-            // transformarToolStripMenuItem
-            // 
-            this.transformarToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.transformarToolStripMenuItem.Name = "transformarToolStripMenuItem";
-            this.transformarToolStripMenuItem.Size = new System.Drawing.Size(98, 20);
-            this.transformarToolStripMenuItem.Text = "Transformar";
-            // 
-            // configuraçãoToolStripMenuItem
-            // 
-            this.configuraçãoToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.cortadoraToolStripMenuItem});
-            this.configuraçãoToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.configuraçãoToolStripMenuItem.Name = "configuraçãoToolStripMenuItem";
-            this.configuraçãoToolStripMenuItem.Size = new System.Drawing.Size(106, 20);
-            this.configuraçãoToolStripMenuItem.Text = "Configuração";
-            // 
-            // cortadoraToolStripMenuItem
-            // 
-            this.cortadoraToolStripMenuItem.Name = "cortadoraToolStripMenuItem";
-            this.cortadoraToolStripMenuItem.Size = new System.Drawing.Size(141, 22);
-            this.cortadoraToolStripMenuItem.Text = "Cortadora";
-            this.cortadoraToolStripMenuItem.Click += new System.EventHandler(this.cortadoraToolStripMenuItem_Click);
-            // 
-            // ajudaToolStripMenuItem
-            // 
-            this.ajudaToolStripMenuItem.ForeColor = System.Drawing.Color.White;
-            this.ajudaToolStripMenuItem.Name = "ajudaToolStripMenuItem";
-            this.ajudaToolStripMenuItem.Size = new System.Drawing.Size(57, 20);
-            this.ajudaToolStripMenuItem.Text = "Ajuda";
+            this.cadastroRoloToolStripMenuItem.Name = "cadastroRoloToolStripMenuItem";
+            this.cadastroRoloToolStripMenuItem.Size = new System.Drawing.Size(201, 22);
+            this.cadastroRoloToolStripMenuItem.Text = "Cadastro Rolo";
+            this.cadastroRoloToolStripMenuItem.Click += new System.EventHandler(this.cadastroRoloToolStripMenuItem_Click);
             // 
             // pnlprincipal
             // 
@@ -628,36 +574,6 @@
             this.splitDesenho.TabIndex = 13;
             this.splitDesenho.Visible = false;
             // 
-            // status
-            // 
-            this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.docInfo,
-            this.selInfo});
-            this.status.Location = new System.Drawing.Point(0, 688);
-            this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(1347, 24);
-            this.status.TabIndex = 15;
-            this.status.Text = "statusStrip1";
-            // 
-            // docInfo
-            // 
-            this.docInfo.AutoSize = false;
-            this.docInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.docInfo.Name = "docInfo";
-            this.docInfo.Size = new System.Drawing.Size(350, 19);
-            // 
-            // selInfo
-            // 
-            this.selInfo.AutoSize = false;
-            this.selInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.selInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.selInfo.Name = "selInfo";
-            this.selInfo.Size = new System.Drawing.Size(550, 19);
-            // 
             // vvModelo
             // 
             this.vvModelo.AllowMoveDocument = false;
@@ -708,6 +624,36 @@
             this.vvCorte.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vvCorte_KeyDown);
             this.vvCorte.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vvCorte_KeyPress);
             // 
+            // status
+            // 
+            this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.docInfo,
+            this.selInfo});
+            this.status.Location = new System.Drawing.Point(0, 688);
+            this.status.Name = "status";
+            this.status.Size = new System.Drawing.Size(1347, 24);
+            this.status.TabIndex = 15;
+            this.status.Text = "statusStrip1";
+            // 
+            // docInfo
+            // 
+            this.docInfo.AutoSize = false;
+            this.docInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.docInfo.Name = "docInfo";
+            this.docInfo.Size = new System.Drawing.Size(350, 19);
+            // 
+            // selInfo
+            // 
+            this.selInfo.AutoSize = false;
+            this.selInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
+            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
+            this.selInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
+            this.selInfo.Name = "selInfo";
+            this.selInfo.Size = new System.Drawing.Size(550, 19);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -757,13 +703,7 @@
         #endregion
 
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem arquivoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem editarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem organizarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem recortarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem transformarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem configuraçãoToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem ajudaToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem toolArquivo;
         private System.Windows.Forms.Panel pnlprincipal;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel2;
@@ -799,7 +739,6 @@
         private System.Windows.Forms.Label label8;
         private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.ToolStripMenuItem cortadoraToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastroModeloToolStripMenuItem;
@@ -810,5 +749,6 @@
         private System.Windows.Forms.StatusStrip status;
         private System.Windows.Forms.ToolStripStatusLabel docInfo;
         private System.Windows.Forms.ToolStripStatusLabel selInfo;
+        private System.Windows.Forms.ToolStripMenuItem cadastroRoloToolStripMenuItem;
     }
 }

@@ -72,6 +72,7 @@
     <Compile Include="Class\Veiculo.cs" />
     <Compile Include="Controller\Marca.cs" />
     <Compile Include="Controller\Modelo.cs" />
+    <Compile Include="Controller\Rolo.cs" />
     <Compile Include="FrmCadastroDesenho.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -108,6 +109,12 @@
     <Compile Include="FrmPrincipal.Designer.cs">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrnCadRolo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrnCadRolo.Designer.cs">
+      <DependentUpon>FrnCadRolo.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RawPrinterHelper.cs" />
@@ -129,6 +136,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrnCadRolo.resx">
+      <DependentUpon>FrnCadRolo.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

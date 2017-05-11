@@ -49,7 +49,8 @@ namespace GlassFilm
                 }
             }
 
-            FrmLogin frm = new FrmLogin();            
+            FrmLogin frm = new FrmLogin();
+            frm.ShowInTaskbar = false;
             frm.ShowDialog();
 
             if (frm.autorizado)
@@ -58,6 +59,7 @@ namespace GlassFilm
                 pnlprincipal.Visible = true;
                 //pnlMapa.Visible = true;
                 splitDesenho.Visible = true;
+                toolArquivo.Visible = true;
             }
 
             sel.AtualizaMarcas();
@@ -212,6 +214,12 @@ namespace GlassFilm
         private void button3_Click(object sender, EventArgs e)
         {
             MessageBox.Show("Função ainda não implementada");
+        }
+
+        private void cadastroRoloToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            Program.ShowDialog(new FrnCadRolo());
+            AtualizaCombos();
         }
     }
 }
