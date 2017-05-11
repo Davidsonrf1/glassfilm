@@ -493,7 +493,7 @@ namespace VectorView
                 ParseSvgElement(e);
             }
 
-            Normalize();
+            //Normalize();
         }
 
         public RectangleF GetBoundRect()
@@ -647,7 +647,14 @@ namespace VectorView
             d.Tag = p.Tag;
             d.Side = p.Side;
 
+            Normalize();
+
             return d;
+        }
+
+        public void UpdateWidth()
+        {
+
         }
 
         RectangleF viewBox = new RectangleF();
@@ -658,19 +665,13 @@ namespace VectorView
 
             float dx = 0, dy = 0;
 
-            //if (r.X < 0)
-                dx = -r.X;
+            dx = -r.X;
+            dy = -r.Y;
 
-            //if (r.Y < 0)
-                dy = -r.Y;
-
-            if (dx > 0 || dy > 0)
+            foreach (VectorPath p in paths)
             {
-                foreach (VectorPath p in paths)
-                {
-                    p.BeginTransform(new PointF(0, 0));
-                    p.Move(dx, dy);
-                }
+                p.BeginTransform(new PointF(0, 0));
+                p.Move(dx, dy);
             }
 
             r = GetBoundRect();

@@ -143,7 +143,7 @@ namespace GlassFilm
                     string cmds = vvCorte.Document.ToHPGL();
                     RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, cmds);
 
-                    //File.WriteAllText("teste_CORTE.plt", cmds);
+                    File.WriteAllText("teste_CORTE.plt", cmds);
                 }
             }
         }

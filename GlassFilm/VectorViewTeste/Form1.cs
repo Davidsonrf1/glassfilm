@@ -42,7 +42,7 @@ namespace VectorViewTeste
             corte.Height = 200;
             corte.BackColor = Color.White;
             corte.Dock = DockStyle.Bottom;
-            corte.ShowDocumentLimit = true;
+           // corte.ShowDocumentLimit = true;
             
             corte.Document.Width = 600;
             corte.Document.Height = 300;
@@ -119,11 +119,11 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014.svg", 1);
+            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 TESTE.svg", 1);
             //d.LoadSVGFromFile(@"D:\teste.svg");
             //d.AdjustSizeToContent();
             view.AutoFit(VectorFitStyle.Both, true, true);
-            view.ShowDocumentLimit = true;
+            //view.ShowDocumentLimit = true;
 
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 

@@ -63,7 +63,9 @@ namespace GlassFilm
                 float scale = (float)(100 / nEscala.Value);
 
                 vectorView.Document.LoadSVGFromFile(opf.FileName, scale);
-                vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);
+                vectorView.Document.Normalize();
+
+                vectorView.AutoFit(VectorView.VectorFitStyle.Both, true, true);               
 
                 EnableControls(false);
             }
