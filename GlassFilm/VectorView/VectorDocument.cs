@@ -204,6 +204,120 @@ namespace VectorView
             }
         }
 
+        public bool ConstraintOK
+        {
+            get
+            {
+                return constraintOK;
+            }
+        }
+
+        public bool AutoCheckConstraints
+        {
+            get
+            {
+                return autoCheckConstraints;
+            }
+
+            set
+            {
+                autoCheckConstraints = value;
+            }
+        }
+
+        public float GetMinX()
+        {
+            float min = float.MaxValue;
+
+            foreach (VectorPath p in paths)
+            {
+                RectangleF r = p.GetBoundRect();
+                min = Math.Min(r.X, min);
+            }
+
+            return min;
+        }
+
+        public float GetMinY()
+        {
+            float min = float.MaxValue;
+
+            foreach (VectorPath p in paths)
+            {
+                RectangleF r = p.GetBoundRect();
+                min = Math.Min(r.Y, min);
+            }
+
+            return min;
+        }
+
+        public float GetMaxY()
+        {
+            float max = float.MinValue;
+
+            foreach (VectorPath p in paths)
+            {
+                RectangleF r = p.GetBoundRect();
+                max = Math.Max(r.Bottom, max);
+            }
+
+            return max;
+        }
+
+        public float GetMaxX()
+        {
+            float max = float.MinValue;
+
+            foreach (VectorPath p in paths)
+            {
+                RectangleF r = p.GetBoundRect();
+                max = Math.Max(r.Right, max);
+            }
+
+            return max;
+        }
+
+        bool autoCheckConstraints = false;
+                
+        bool constraintOK = true;
+
+        public void CheckConstraints()
+        {
+            float minx = GetMinX();
+            float miny = GetMinY();
+
+            constraintOK = true;
+
+            if (minx < 0 || miny < 0)
+                constraintOK = false;
+
+            foreach (VectorPath vp in paths)
+            {
+                vp.ResetConstraints();
+            }
+
+            for (int i = 0; i < paths.Count; i++)
+            {
+                for (int j = i; j < paths.Count; j++)
+                {
+                    VectorPath a = paths[i];
+                    VectorPath b = paths[j];
+
+                    if (a == b)
+                        continue;
+
+                    if (a.Intersect(b))
+                    {
+                        a.IsIntersecting = true;
+                        b.IsIntersecting = true;
+
+                        constraintOK = false;
+                    }
+                }
+            }
+            
+        }
+
         public VectorPath CreatePath()
         {
             VectorPath p = new VectorPath(this);
@@ -279,7 +393,12 @@ namespace VectorView
             {
                 p.Render(g);
             }
-          
+
+            float maxH = GetMaxY();
+            float maxW = GetMaxX();
+            g.DrawLine(Pens.Red, maxW, 0, maxW, maxH);
+            g.DrawLine(Pens.Red, 0, maxH, maxW, maxH);
+
             if (showDocumentLimit)
             {
                 RectangleF r = new RectangleF(0, 0, width, height);
@@ -344,10 +463,12 @@ namespace VectorView
 
         void ParseSvgElement(SvgElement el)
         {
+            VectorPath path = null;
+
             if (el is SvgPolygon)
             {
                 SvgPolygon p = (SvgPolygon)el;
-                VectorPath path = CreatePath();
+                path = CreatePath();
 
                 int len = p.Points.Count;
 
@@ -359,9 +480,6 @@ namespace VectorView
                 for (int i = 0; i < len; i+=2)
                 {
                     float x, y;
-
-                    //x = UnitToMilimeter(p.Points[i].Value, p.Points[i].Type);
-                    //y = UnitToMilimeter(p.Points[i + 1].Value, p.Points[i].Type);
 
                     x = p.Points[i].Value / ppmx;
                     y = p.Points[i + 1].Value / ppmy;
@@ -382,7 +500,7 @@ namespace VectorView
             if (el is SvgPath)
             {
                 SvgPath p = (SvgPath)el;
-                VectorPath path = CreatePath();
+                path = CreatePath();
 
                 string tag, side;
 
@@ -440,11 +558,17 @@ namespace VectorView
                     }
                 }
 
-                path.ComputeArea();
+                path.ComputeArea(true);
             }
             else
             {
 
+            }
+
+            if (path != null)
+            {
+                path.ComputeMetrics();
+                path.ComputeArea(true);
             }
 
             foreach (SvgElement n in el.Children)
@@ -683,7 +807,12 @@ namespace VectorView
             d.Tag = p.Tag;
             d.Side = p.Side;
 
-            Normalize();
+            //d.ComputeMetrics();
+            d.CopyMetrics(p);
+
+            d.ComputeArea(false);
+
+            width = GetMaxX();    
 
             return d;
         }

@@ -33,7 +33,7 @@ namespace VectorViewTeste
             view.SelectionTransformed += View_SelectionTransformed;
             view.SelectionChanged += View_SelectionChanged;
 
-            view.AllowScalePath = false;
+            //view.AllowScalePath = false;
             view.AllowMoveDocument = false;
 
             corte.Parent = this;
@@ -67,11 +67,13 @@ namespace VectorViewTeste
         {
             VectorDocument d = view.Document;
 
+
+
             if (d != null)
             {
                 docInfo.Text = string.Format("Peças: {0}, Scala Visual: {1:0.00}, X: {2:0.00} Y: {3:0.00}", d.Paths.Count, d.Scale, d.OffsetX, d.OffsetY);
                 RectangleF r = d.GetBoundRect(true);
-                selInfo.Text = string.Format("Largura: {2:0.00}mm,    Altura: {3:0.00}mm", r.X + r.Width / 2, r.Y + r.Height / 2, r.Width, r.Height);
+                selInfo.Text = string.Format("Largura: {0:0.00}mm,  Altura: {1:0.00}mm Área {2:0.00} m²: ", r.Width, r.Height, view.GetSelectionArea() * 0.000001f);
             }
         }
 
@@ -119,12 +121,8 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 TESTE.svg", 1);
-            //d.LoadSVGFromFile(@"D:\teste.svg");
-            //d.AdjustSizeToContent();
+            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16) corel.svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
-            //view.ShowDocumentLimit = true;
-
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 
             corte.AutoFit(VectorFitStyle.Both, true, true);
@@ -134,7 +132,7 @@ namespace VectorViewTeste
             
             VectorPath vp = d.Paths[0];
 
-            float area = vp.ComputeArea(1);
+            float area = vp.ComputeArea(false, 1);
         }
 
         private void button2_Click(object sender, EventArgs e)

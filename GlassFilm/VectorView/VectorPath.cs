@@ -86,6 +86,9 @@ namespace VectorView
         {
             get
             {
+                if (area < 0)
+                    ComputeArea(true);
+
                 return area;
             }
         }
@@ -116,7 +119,20 @@ namespace VectorView
             }
         }
 
-        VectorEdge curStart = null;
+        public bool IsIntersecting
+        {
+            get
+            {
+                return isIntersecting;
+            }
+
+            internal set
+            {
+                isIntersecting = value;
+            }
+        }
+
+        VectorEdge curStart = null;       
 
         internal void AddEdge(VectorEdge e)
         {
@@ -157,7 +173,6 @@ namespace VectorView
             VectorMove m = new VectorMove(this, x, y, x, y);
             curX = x;
             curY = y;
-
             AddEdge(m);
         }
 
@@ -195,20 +210,38 @@ namespace VectorView
             }
         }
 
-
-        public float ComputeArea(float precicion=2)
+        public void CheckContraints()
         {
-            area = 0;
 
-            if (precicion <= 0)
-                precicion = 1f;
+        }
+
+        float bestAngle = 0;
+        PointF[] scans = null;
+        float scanPrecision = 1;
+
+        internal void CopyMetrics(VectorPath p)
+        {
+            bestAngle = p.bestAngle;
+            scans = new PointF[p.scans.Length];
+            Array.Copy(p.scans, scans, scans.Length);
+
+            scanPrecision = p.scanPrecision;
+        }
+
+        public void ComputeMetrics(float precision = 2)
+        {
+            if (precision <= 0)
+                precision = 1f;
 
             RectangleF r = GetBoundRect();
             float y = r.Y;
 
-            while(y < r.Bottom)
+            PointF center = VectorMath.GetBoxCenter(r);
+            List<PointF> sl = new List<PointF>();
+
+            while (y < r.Bottom)
             {
-                float h = precicion;
+                float h = precision;
 
                 if (y + h > r.Bottom)
                     h = r.Bottom - y;
@@ -216,27 +249,46 @@ namespace VectorView
                 List<PointF> pts = new List<PointF>();
 
                 int ct = CrossPointCount(y, pts);
-
                 pts.Sort(new PointComparer());
 
-                for (int i = 0; i < pts.Count; i+=2)
+                for (int i = 0; i < pts.Count; i += 2)
                 {
                     if (pts.Count - i >= 2)
-                    {            
-                        float va = (pts[i + 1].X - pts[i].X);
-
-                        if (va < 0)
-                        {
-
-                        }
-
-                        area += h * va;
+                    {
+                        sl.Add(new PointF(pts[i].X, y));
+                        sl.Add(new PointF(pts[i + 1].X, y));
                     }
                 }
 
-                y += precicion;
+                y += precision;
             }
 
+            scanPrecision = precision;
+            scans = sl.ToArray();
+
+            Matrix mt = new Matrix();
+            mt.Translate(-center.X, -center.Y);
+            mt.TransformPoints(scans);
+        }
+
+        public float ComputeArea(bool force, float precision=2)
+        {
+            if (area > 0 && !force)
+                return area;
+
+            area = 0;
+
+            if (scans == null)
+                ComputeMetrics(precision);
+
+            if (precision <= 0)
+                precision = 1f;
+
+            area = 0;
+
+            for (int i = 0; i < scans.Length; i+=2)
+                area += scanPrecision * Math.Abs(scans[i + 1].X - scans[i].X);
+            
             return area;
         }
 
@@ -359,9 +411,6 @@ namespace VectorView
 
                 foreach (VectorEdge e in edges)
                 {
-                    //if (e is VectorMove)
-                    //    continue;
-
                     e.FillPointList(pl, true);
                 }
             }
@@ -377,35 +426,78 @@ namespace VectorView
             ret.X = (int)Math.Round(p.X * HPGL_UNIT);
             ret.Y = (int)Math.Round(p.Y * HPGL_UNIT);
 
-            Matrix mt = new Matrix();
-            mt.Rotate(10);
-
             return ret;
         }
-
-        public RectangleF GetBoundRect()
+        
+        internal void ResetConstraints()
         {
-            float minx, miny, maxx, maxy;
+            isIntersecting = false;
+        }
 
-            minx = float.MaxValue;
-            miny = float.MaxValue;
-            maxx = float.MinValue;
-            maxy = float.MinValue;
+        bool isIntersecting = false;
 
-            foreach (VectorEdge e in edges)
+        public bool Intersect(VectorPath p)
+        {
+            if (p == null)
+                return false;
+
+            RectangleF b1 = GetBoundRect();
+            RectangleF b2 = p.GetBoundRect();
+
+            PointF c1 = VectorMath.GetBoxCenter(b1);
+            PointF c2 = VectorMath.GetBoxCenter(b2);
+
+            if (!RectangleF.Intersect(b1, b2).IsEmpty)
             {
-                if (e is VectorMove)
-                    continue;
+                if (b1.Contains(c2) || b2.Contains(c1))
+                    return true;
 
-                RectangleF r = e.GetBoundRect();
+                if (poligons == null)
+                    BuildPolygons();
 
-                minx = Math.Min(minx, r.X);
-                miny = Math.Min(miny, r.Y);
-                maxx = Math.Max(maxx, r.Right);
-                maxy = Math.Max(maxy, r.Bottom);
+                foreach (PointF[] pl in poligons)
+                {
+                    foreach (PointF pt in pl)
+                    {
+                        if (b2.Contains(pt))
+                            return true;
+                    }
+                }
             }
 
-            return new RectangleF(minx, miny, maxx-minx, maxy-miny);
+            return false;
+        }
+
+        RectangleF boundBox = RectangleF.Empty;
+
+        public RectangleF GetBoundRect(bool force = false)
+        {
+            if (boundBox == RectangleF.Empty || force)
+            {
+                float minx, miny, maxx, maxy;
+
+                minx = float.MaxValue;
+                miny = float.MaxValue;
+                maxx = float.MinValue;
+                maxy = float.MinValue;
+
+                foreach (VectorEdge e in edges)
+                {
+                    if (e is VectorMove)
+                        continue;
+
+                    RectangleF r = e.GetBoundRect();
+
+                    minx = Math.Min(minx, r.X);
+                    miny = Math.Min(miny, r.Y);
+                    maxx = Math.Max(maxx, r.Right);
+                    maxy = Math.Max(maxy, r.Bottom);
+                }
+
+                boundBox = new RectangleF(minx, miny, maxx - minx, maxy - miny);
+            }
+
+            return boundBox;
         }
 
         public virtual int CrossPointCount(float hline, List<PointF> crossPoints = null)
@@ -522,9 +614,7 @@ namespace VectorView
 
             lastEdge = edge;
         }
-
-
-
+        
         public string ToSVGPath(float ppmx, float ppmy)
         {
             StringBuilder sb = new StringBuilder();
@@ -535,9 +625,7 @@ namespace VectorView
             sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag);
 
             foreach (VectorEdge e in edges)
-            {
                 WriteEdge(sb, e, ppmx, ppmy);
-            }
 
             sb.Append("\" \n\t/>");
 
@@ -546,6 +634,7 @@ namespace VectorView
 
         PointF transformOrigin = new PointF();
         Dictionary<VectorEdge, List<PointF>> origins = new Dictionary<VectorEdge, List<PointF>>();
+        PointF[] originalScans = null;
         
         public void BeginTransform(PointF origin)
         {
@@ -560,6 +649,12 @@ namespace VectorView
 
             transformOrigin.X = origin.X;
             transformOrigin.Y = origin.Y;
+
+            if (scans != null)
+            {
+                originalScans = new PointF[scans.Length];
+                Array.Copy(scans, originalScans, scans.Length);
+            }
         }
 
         public void CancelTransform()
@@ -574,10 +669,16 @@ namespace VectorView
                 origins.Clear();
             }
 
+            scans = originalScans;
+            originalScans = null;
+
             poligons = null;
+
+            AfterTransforms();
+            ComputeArea(true);            
         }
 
-        public void Transform(Matrix mt, PointF origin)
+        void Transform(Matrix mt, PointF origin)
         {
             foreach (VectorEdge e in edges)
             {
@@ -608,8 +709,22 @@ namespace VectorView
                 e.SetPoints(tl);
             }
 
-            //ComputeArea();
             poligons = null;
+            AfterTransforms();
+            ComputeArea(true);
+        }
+
+        void AfterTransforms()
+        {
+            if (document != null)
+            {
+                if (document.AutoCheckConstraints)
+                {
+                    document.CheckConstraints();
+                }
+            }
+
+            GetBoundRect(true);
         }
 
         public void SetOrigin(PointF origin)
@@ -647,6 +762,9 @@ namespace VectorView
 
                 e.SetPoints(tl);
             }
+
+            poligons = null;
+            AfterTransforms();
         }
 
         public void Flip()
@@ -664,6 +782,30 @@ namespace VectorView
             Flip(false, true);
         }
 
+        public void Rotate(float angle, PointF origin)
+        {
+            Matrix mt = new Matrix();
+            mt.Rotate(angle);
+
+            Transform(mt, origin);
+        }
+
+        public void Scale(float scalex, float scaley, PointF origin)
+        {
+            Matrix mt = new Matrix();
+            mt.Scale(scalex, scaley);
+
+            Transform(mt, origin);
+
+            if (originalScans != null && scans != null)
+            {
+                Array.Copy(originalScans, scans, scans.Length);
+                mt.TransformPoints(scans);
+            }
+
+            ComputeArea(true);
+        }
+
         public void Move(float dx, float dy)
         {
             foreach (VectorEdge e in edges)
@@ -677,6 +819,7 @@ namespace VectorView
             }
 
             poligons = null;
+            AfterTransforms();
         }
         
         public string ToHPGL()

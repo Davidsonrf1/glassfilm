@@ -62,6 +62,18 @@ namespace VectorView
             OnSelectionChanged();
         }
 
+        public float GetSelectionArea()
+        {
+            float area = 0;
+
+            foreach (VectorPath p in selection)
+            {
+                area += p.Area;
+            }
+
+            return area;
+        }
+
         public IEnumerable<VectorPath> Selection()
         {
             foreach (VectorPath s in selection)
@@ -307,8 +319,6 @@ namespace VectorView
 
             if (isScaling)
             {
-                Matrix mt = new Matrix();
-
                 float dx = Math.Abs(transformCenter.X - mousePos.X);
                 float dy = Math.Abs(transformCenter.Y - mousePos.Y);
 
@@ -316,12 +326,9 @@ namespace VectorView
                 dy = dy / Math.Abs(mouseDownPos.Y - transformCenter.Y);
 
                 float scale = Math.Max(dx, dy);
-
-                mt.Scale(scale, scale);
-
                 foreach (VectorPath p in selection)
                 {
-                    p.Transform(mt, document.ViewPointToDocPoint(transformCenter));
+                    p.Scale(scale, scale, document.ViewPointToDocPoint(transformCenter));
                 }
 
                 OnSelectionTransformed();
@@ -329,14 +336,11 @@ namespace VectorView
 
             if (isRotating)
             {
-                Matrix mt = new Matrix();
-
                 float angle = VectorMath.AngleBetween(transformCenter, mousePos) - startAngle;
-                mt.Rotate(angle);
 
                 foreach (VectorPath p in selection)
                 {
-                    p.Transform(mt, document.ViewPointToDocPoint(transformCenter));
+                    p.Rotate(angle, document.ViewPointToDocPoint(transformCenter));
                 }
 
                 OnSelectionTransformed();
@@ -731,139 +735,146 @@ namespace VectorView
 
         protected override void OnPaint(PaintEventArgs e)
         {
-            base.OnPaint(e);
-            e.Graphics.Clear(BackColor);
-
-            Graphics g = e.Graphics;
-
-            g.SmoothingMode = SmoothingMode.HighQuality;
-            g.InterpolationMode = InterpolationMode.HighQualityBicubic;
-
-            DrawGrid(g);
-
-            if (document == null)
+            try
             {
-                return;
-            }
+                base.OnPaint(e);
+                e.Graphics.Clear(BackColor);
 
-            if (!(allowRotatePath && allowScalePath))
-            {
-                if (allowScalePath)
-                    showScaleCorner = true;
+                Graphics g = e.Graphics;
 
-                if (allowRotatePath)
-                    showScaleCorner = false;
-            }
+                g.SmoothingMode = SmoothingMode.HighQuality;
+                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-            document.Render(e.Graphics);
+                DrawGrid(g);
 
-            if (showPointer)
-            {
-                PointF p = document.ViewPointToDocPoint(mousePos);
-                document.DrawPoint(e.Graphics, p);
-            }
-
-            g.ResetTransform();
-
-            Pen selPen = new Pen(Color.FromArgb(BackColor.ToArgb() ^ 0xffffff));
-            selPen.Width = 1f;
-
-            selPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-            selPen.DashCap = System.Drawing.Drawing2D.DashCap.Round;
-
-            selPen.DashPattern = new float[] { 2, selDashSize, 2, selDashSize };
-
-            if ((selection.Count > 0 && drawSelecionBox) && allowTransforms && !isRotating)
-            {
-                BuildSelBox();
-
-                RectangleF r = document.DocRectToViewRect(selBox);
-
-                r.Inflate(selectionMargin, selectionMargin);
-
-                g.DrawRectangle(selPen, r.X, r.Y, r.Width, r.Height);
-
-                if (allowTransforms)
+                if (document == null)
                 {
-                    DrawCornerRect(g, SelectionHitCorner.TopLeft, r);
-                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Top, r);
-                    DrawCornerRect(g, SelectionHitCorner.TopRight, r);
-                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Right, r);
-                    DrawCornerRect(g, SelectionHitCorner.BottomRight, r);
-                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Bottom, r);
-                    DrawCornerRect(g, SelectionHitCorner.BottomLeft, r);
-                    //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Left, r);
+                    return;
+                }
+
+                if (!(allowRotatePath && allowScalePath))
+                {
+                    if (allowScalePath)
+                        showScaleCorner = true;
+
+                    if (allowRotatePath)
+                        showScaleCorner = false;
+                }
+
+                document.Render(e.Graphics);
+
+                if (showPointer)
+                {
+                    PointF p = document.ViewPointToDocPoint(mousePos);
+                    document.DrawPoint(e.Graphics, p);
+                }
+
+                g.ResetTransform();
+
+                Pen selPen = new Pen(Color.FromArgb(BackColor.ToArgb() ^ 0xffffff));
+                selPen.Width = 1f;
+
+                selPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
+                selPen.DashCap = System.Drawing.Drawing2D.DashCap.Round;
+
+                selPen.DashPattern = new float[] { 2, selDashSize, 2, selDashSize };
+
+                if ((selection.Count > 0 && drawSelecionBox) && allowTransforms && !isRotating)
+                {
+                    BuildSelBox();
+
+                    RectangleF r = document.DocRectToViewRect(selBox);
+
+                    r.Inflate(selectionMargin, selectionMargin);
+
+                    g.DrawRectangle(selPen, r.X, r.Y, r.Width, r.Height);
+
+                    if (allowTransforms)
+                    {
+                        DrawCornerRect(g, SelectionHitCorner.TopLeft, r);
+                        //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Top, r);
+                        DrawCornerRect(g, SelectionHitCorner.TopRight, r);
+                        //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Right, r);
+                        DrawCornerRect(g, SelectionHitCorner.BottomRight, r);
+                        //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Bottom, r);
+                        DrawCornerRect(g, SelectionHitCorner.BottomLeft, r);
+                        //if (!isRotating) DrawCornerRect(g, SelectionHitCorner.Left, r);
+                    }
+                }
+
+                /*
+                if (selection.Count > 0)
+                {
+                    RectangleF r = document.DocRectToViewRect(selBox);
+
+                    Pen p = new Pen(Color.Green);
+                    p.DashStyle = DashStyle.DashDot;
+                    p.EndCap = LineCap.ArrowAnchor;
+
+                    p.Width = 0.01f;
+
+                    float metricsMargin = 10;
+
+                    g.DrawLine(Pens.Red, r.X - metricsMargin, r.Y, r.X - metricsMargin, r.Bottom + metricsMargin);
+                    g.DrawLine(Pens.Green, r.X - metricsMargin, r.Bottom + metricsMargin, r.Right, r.Bottom + metricsMargin);
+                }
+                */
+
+                if (isRotating)
+                {
+                    float angle = VectorMath.AngleBetween(transformCenter, mousePos);
+                    DrawAngle(g, transformCenter, 50, angle, Color.DarkGreen);
+                }
+
+                if (isScaling)
+                {
+                    RectangleF r = document.GetBoundRect(true);
+                    DrawSize(g, r, Color.DarkGreen);
+                }
+
+                if (drawMultiSelectionBox && !isMovingSel)
+                {
+                    float x = Math.Min(mousePos.X, mouseDownPos.X);
+                    float y = Math.Min(mousePos.Y, mouseDownPos.Y);
+
+                    float w = Math.Abs(mousePos.X - mouseDownPos.X);
+                    float h = Math.Abs(mousePos.Y - mouseDownPos.Y);
+
+                    g.DrawRectangle(selPen, x, y, w, h);
+                }
+
+                if (showPathTags)
+                {
+                    foreach (VectorPath p in document.Paths)
+                    {
+                        if (!string.IsNullOrEmpty(p.Tag))
+                        {
+                            RectangleF r = p.GetBoundRect();
+
+                            PointF pt = document.DocPointToViewPoint(r.Location);
+                            float w, h;
+                            PointF pt2 = document.DocPointToViewPoint(new PointF(r.Right, r.Bottom));
+
+                            w = pt2.X - pt.X;
+                            h = pt2.Y - pt.Y;
+
+                            r.X = pt.X;
+                            r.Y = pt.Y;
+                            r.Width = w;
+                            r.Height = h;
+
+                            StringFormat sf = new StringFormat();
+                            sf.Alignment = StringAlignment.Center;
+                            sf.LineAlignment = StringAlignment.Center;
+
+                            g.DrawString(p.Tag, Font, Brushes.Black, r, sf);
+                        }
+                    }
                 }
             }
-            
-            /*
-            if (selection.Count > 0)
+            catch
             {
-                RectangleF r = document.DocRectToViewRect(selBox);
 
-                Pen p = new Pen(Color.Green);
-                p.DashStyle = DashStyle.DashDot;
-                p.EndCap = LineCap.ArrowAnchor;
-
-                p.Width = 0.01f;
-
-                float metricsMargin = 10;
-
-                g.DrawLine(Pens.Red, r.X - metricsMargin, r.Y, r.X - metricsMargin, r.Bottom + metricsMargin);
-                g.DrawLine(Pens.Green, r.X - metricsMargin, r.Bottom + metricsMargin, r.Right, r.Bottom + metricsMargin);
-            }
-            */
-
-            if (isRotating)
-            {
-                float angle = VectorMath.AngleBetween(transformCenter, mousePos);
-                DrawAngle(g, transformCenter, 50, angle, Color.DarkGreen);
-            }
-
-            if (isScaling)
-            {
-                RectangleF r = document.GetBoundRect(true);
-                DrawSize(g, r, Color.DarkGreen);
-            }
-
-            if (drawMultiSelectionBox && !isMovingSel)
-            {
-                float x = Math.Min(mousePos.X, mouseDownPos.X);
-                float y = Math.Min(mousePos.Y, mouseDownPos.Y);
-
-                float w = Math.Abs(mousePos.X - mouseDownPos.X);
-                float h = Math.Abs(mousePos.Y - mouseDownPos.Y);
-
-                g.DrawRectangle(selPen, x, y, w, h);
-            }
-
-            if (showPathTags)
-            {
-                foreach (VectorPath p in document.Paths)
-                {
-                    if (!string.IsNullOrEmpty(p.Tag))
-                    {
-                        RectangleF r = p.GetBoundRect();
-
-                        PointF pt = document.DocPointToViewPoint(r.Location);
-                        float w, h;
-                        PointF pt2 = document.DocPointToViewPoint(new PointF(r.Right, r.Bottom));
-
-                        w = pt2.X - pt.X;
-                        h = pt2.Y - pt.Y;
-
-                        r.X = pt.X;
-                        r.Y = pt.Y;
-                        r.Width = w;
-                        r.Height = h;
-
-                        StringFormat sf = new StringFormat();
-                        sf.Alignment = StringAlignment.Center;
-                        sf.LineAlignment = StringAlignment.Center;
-                        
-                        g.DrawString(p.Tag, Font, Brushes.Black, r, sf);
-                    }
-                }   
             }
         }
 
