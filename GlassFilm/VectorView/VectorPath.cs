@@ -132,6 +132,19 @@ namespace VectorView
             }
         }
 
+        public bool DrawScans
+        {
+            get
+            {
+                return drawScans;
+            }
+
+            set
+            {
+                drawScans = value;
+            }
+        }
+
         VectorEdge curStart = null;       
 
         internal void AddEdge(VectorEdge e)
@@ -214,7 +227,8 @@ namespace VectorView
         {
 
         }
-
+        
+        bool drawScans = false;
         float bestAngle = 0;
         PointF[] scans = null;
         float scanPrecision = 1;
@@ -328,6 +342,14 @@ namespace VectorView
                 }
 
                 g.DrawPolygon(linePen, poly);
+            }
+
+            if (drawScans && scans != null)
+            {
+                for (int i = 0; i < scans.Length; i += 2)
+                {
+                    g.DrawLine(Pens.Black, scans[i], scans[i + 1]);
+                }
             }
                 
             /*
@@ -553,7 +575,7 @@ namespace VectorView
             return lastEdge.Type == edge.Type;
         }
 
-        void WriteEdge(StringBuilder sb, VectorEdge edge, float ppmx, float ppmy)
+        void WriteSvgEdge(StringBuilder sb, VectorEdge edge, float ppmx, float ppmy)
         {
             int sx, sy, ex, ey;
 
@@ -625,7 +647,7 @@ namespace VectorView
             sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag);
 
             foreach (VectorEdge e in edges)
-                WriteEdge(sb, e, ppmx, ppmy);
+                WriteSvgEdge(sb, e, ppmx, ppmy);
 
             sb.Append("\" \n\t/>");
 
@@ -675,7 +697,6 @@ namespace VectorView
             poligons = null;
 
             AfterTransforms();
-            ComputeArea(true);            
         }
 
         void Transform(Matrix mt, PointF origin)
@@ -711,7 +732,6 @@ namespace VectorView
 
             poligons = null;
             AfterTransforms();
-            ComputeArea(true);
         }
 
         void AfterTransforms()
@@ -725,6 +745,7 @@ namespace VectorView
             }
 
             GetBoundRect(true);
+            ComputeArea(true);
         }
 
         public void SetOrigin(PointF origin)
@@ -734,6 +755,8 @@ namespace VectorView
 
             BeginTransform(origin);
             Move(origin.X - center.X, origin.Y - center.Y);
+
+            AfterTransforms();
         }
 
         public void Flip(bool vertical, bool horizontal)

@@ -121,7 +121,7 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16) corel.svg", 1);
+            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 
@@ -131,6 +131,8 @@ namespace VectorViewTeste
             d.Height = 300;
             
             VectorPath vp = d.Paths[0];
+
+            vp.DrawScans = true;
 
             float area = vp.ComputeArea(false, 1);
         }
