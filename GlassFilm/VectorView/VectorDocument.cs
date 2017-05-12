@@ -344,6 +344,41 @@ namespace VectorView
 
         void ParseSvgElement(SvgElement el)
         {
+            if (el is SvgPolygon)
+            {
+                SvgPolygon p = (SvgPolygon)el;
+                VectorPath path = CreatePath();
+
+                int len = p.Points.Count;
+
+                if (len % 2 != 0)
+                {
+                    len--;
+                }
+
+                for (int i = 0; i < len; i+=2)
+                {
+                    float x, y;
+
+                    //x = UnitToMilimeter(p.Points[i].Value, p.Points[i].Type);
+                    //y = UnitToMilimeter(p.Points[i + 1].Value, p.Points[i].Type);
+
+                    x = p.Points[i].Value / ppmx;
+                    y = p.Points[i + 1].Value / ppmy;
+
+                    if (i == 0)
+                    {
+                        path.MoveTo(x, y);
+                    }
+                    else
+                    {
+                        path.LineTo(x, y);
+                    }
+                }
+
+                path.ClosePath();
+            }
+
             if (el is SvgPath)
             {
                 SvgPath p = (SvgPath)el;
@@ -472,6 +507,7 @@ namespace VectorView
             loadScale = scale;
 
             XmlDocument xdoc = new XmlDocument();
+            xdoc.XmlResolver = null;
             xdoc.LoadXml(svg);
             SvgDocument doc = SvgDocument.Open(xdoc);
 
