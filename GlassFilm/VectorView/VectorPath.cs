@@ -132,18 +132,6 @@ namespace VectorView
             }
         }
 
-        public bool DrawScans
-        {
-            get
-            {
-                return drawScans;
-            }
-
-            set
-            {
-                drawScans = value;
-            }
-        }
 
         VectorEdge curStart = null;       
 
@@ -228,7 +216,6 @@ namespace VectorView
 
         }
         
-        bool drawScans = false;
         float bestAngle = 0;
         PointF[] scans = null;
         float scanPrecision = 1;
@@ -285,7 +272,7 @@ namespace VectorView
             mt.TransformPoints(scans);
         }
 
-        public float ComputeArea(bool force, float precision=2)
+        public float ComputeArea(bool force, float precision=1)
         {
             if (area > 0 && !force)
                 return area;
@@ -295,13 +282,18 @@ namespace VectorView
             if (scans == null)
                 ComputeMetrics(precision);
 
+            if (scans == null)
+                return 0;
+
             if (precision <= 0)
                 precision = 1f;
 
             area = 0;
 
+            float h = ((scans[scans.Length - 1].Y - scans[0].Y) / scans.Length) * scanPrecision;
+
             for (int i = 0; i < scans.Length; i+=2)
-                area += scanPrecision * Math.Abs(scans[i + 1].X - scans[i].X);
+                area += h * Math.Abs(scans[i + 1].X - scans[i].X);
             
             return area;
         }
@@ -344,14 +336,6 @@ namespace VectorView
                 g.DrawPolygon(linePen, poly);
             }
 
-            if (drawScans && scans != null)
-            {
-                for (int i = 0; i < scans.Length; i += 2)
-                {
-                    g.DrawLine(Pens.Black, scans[i], scans[i + 1]);
-                }
-            }
-                
             /*
             foreach (VectorEdge e in edges)
             {

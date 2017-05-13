@@ -73,7 +73,7 @@ namespace VectorViewTeste
             {
                 docInfo.Text = string.Format("Peças: {0}, Scala Visual: {1:0.00}, X: {2:0.00} Y: {3:0.00}", d.Paths.Count, d.Scale, d.OffsetX, d.OffsetY);
                 RectangleF r = d.GetBoundRect(true);
-                selInfo.Text = string.Format("Largura: {0:0.00}mm,  Altura: {1:0.00}mm Área {2:0.00} m²: ", r.Width, r.Height, view.GetSelectionArea() * 0.000001f);
+                selInfo.Text = string.Format("Largura: {0:0.00}mm,  Altura: {1:0.00}mm Área {2:0.00} m²: ", r.Width, r.Height, view.GetSelectionArea() /* 0.000001f*/);
             }
         }
 
@@ -121,7 +121,7 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
+            d.LoadSVGFromFile("g:\\COROLLA SEDAN ANO 2009 A 2014 (16) COREL.svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 
@@ -132,7 +132,6 @@ namespace VectorViewTeste
             
             VectorPath vp = d.Paths[0];
 
-            vp.DrawScans = true;
 
             float area = vp.ComputeArea(false, 1);
         }
