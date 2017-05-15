@@ -333,6 +333,8 @@ namespace VectorView
                 normalLinePen = new Pen(normalLineColor, 1);
 
             g.SmoothingMode = SmoothingMode.HighQuality;
+
+              
         }
 
         void DrawRuller(Graphics g)
@@ -653,7 +655,7 @@ namespace VectorView
                 ParseSvgElement(e);
             }
 
-            //Normalize();
+            Normalize();
         }
 
         public RectangleF GetBoundRect()
@@ -812,15 +814,9 @@ namespace VectorView
 
             d.ComputeArea(false);
 
-            width = GetMaxX();    
-
             return d;
         }
 
-        public void UpdateWidth()
-        {
-
-        }
 
         RectangleF viewBox = new RectangleF();
 
@@ -854,9 +850,6 @@ namespace VectorView
             }
 
             viewBox = new RectangleF(0, 0, r.Width * ppmx, r.Height * ppmy);
-
-            width = r.Width;
-            height = r.Height;
         }
 
         public void AutoNest()

@@ -738,9 +738,11 @@ namespace VectorView
             try
             {
                 base.OnPaint(e);
-                e.Graphics.Clear(BackColor);
 
                 Graphics g = e.Graphics;
+
+                g.Clear(BackColor);
+                g.SetClip(new RectangleF(0, 0, document.Width, document.Height));
 
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
