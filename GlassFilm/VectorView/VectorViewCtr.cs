@@ -126,6 +126,8 @@ namespace VectorView
             if (document == null)
                 return;
 
+            Capture = true;
+
             mousePos.X = e.X;
             mousePos.Y = e.Y;
 
@@ -366,6 +368,9 @@ namespace VectorView
             if (document == null)
                 return;
 
+            if (isRotating || isMovingSel || isScaling)
+                Document.CheckConstraints();
+
             isMovingDoc = false;
             isMovingSel = false;
             isRotating = false;
@@ -395,6 +400,8 @@ namespace VectorView
 
                 drawMultiSelectionBox = false;
             }
+
+            Capture = false;
         }
 
         float hitCornerTolerance = 2f;
@@ -742,7 +749,6 @@ namespace VectorView
                 Graphics g = e.Graphics;
 
                 g.Clear(BackColor);
-                g.SetClip(new RectangleF(0, 0, document.Width, document.Height));
 
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;

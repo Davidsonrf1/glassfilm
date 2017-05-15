@@ -25,8 +25,9 @@ namespace VectorView
     {
         List<VectorPath> paths = new List<VectorPath>();
         Color normalLineColor = Color.LightBlue;
-        Color docLimitLineColor = Color.Red;
+        Color docLimitLineColor = Color.Black;
         Color selectedLineColor = Color.OrangeRed;
+        Color docBackcolor = Color.White;
 
         Color rullerBorderColor = Color.LightGray;
         Color rullerBackColor = Color.WhiteSmoke;
@@ -37,8 +38,8 @@ namespace VectorView
 
         string observacao = "";
 
-        float width = 0;
-        float height = 0;
+        float docWidth = 0;
+        float docHeight = 0;
 
         float offsetX = 0;
         float offsetY = 0;
@@ -143,12 +144,12 @@ namespace VectorView
         {
             get
             {
-                return width;
+                return docWidth;
             }
 
             set
             {
-                width = value;
+                docWidth = value; viewBox.Width = docWidth * ppmx;
             }
         }
 
@@ -156,12 +157,12 @@ namespace VectorView
         {
             get
             {
-                return height;
+                return docHeight;
             }
 
             set
             {
-                height = value;
+                docHeight = value; viewBox.Height = docHeight * ppmy;
             }
         }
 
@@ -277,8 +278,7 @@ namespace VectorView
             return max;
         }
 
-        bool autoCheckConstraints = false;
-                
+        bool autoCheckConstraints = false;                
         bool constraintOK = true;
 
         public void CheckConstraints()
@@ -291,31 +291,33 @@ namespace VectorView
             if (minx < 0 || miny < 0)
                 constraintOK = false;
 
+            List<VectorPath> pl = new List<VectorPath>();
             foreach (VectorPath vp in paths)
             {
                 vp.ResetConstraints();
+                pl.Add(vp);
             }
 
-            for (int i = 0; i < paths.Count; i++)
+            while(pl.Count > 0)
             {
-                for (int j = i; j < paths.Count; j++)
+                VectorPath a = pl[0];
+                for (int j = 1; j < pl.Count; j++)
                 {
-                    VectorPath a = paths[i];
-                    VectorPath b = paths[j];
-
-                    if (a == b)
-                        continue;
+                    VectorPath b = pl[j];
 
                     if (a.Intersect(b))
                     {
+                        pl.Remove(b);
+
                         a.IsIntersecting = true;
                         b.IsIntersecting = true;
 
                         constraintOK = false;
                     }
                 }
-            }
-            
+
+                pl.RemoveAt(0);
+            }            
         }
 
         public VectorPath CreatePath()
@@ -324,6 +326,8 @@ namespace VectorView
             paths.Add(p);
             return p;
         }
+
+        SolidBrush docBackBrush = null;
 
         void BeginRender(Graphics g)
         {
@@ -334,7 +338,8 @@ namespace VectorView
 
             g.SmoothingMode = SmoothingMode.HighQuality;
 
-              
+            if (docBackBrush == null || docBackBrush.Color != docBackcolor)
+                docBackBrush = new SolidBrush(docBackcolor);
         }
 
         void DrawRuller(Graphics g)
@@ -361,6 +366,8 @@ namespace VectorView
         {
 
         }
+
+        bool drawShadow = true;
 
         public void Render(Graphics g)
         {
@@ -391,21 +398,32 @@ namespace VectorView
 
             }
 
+            if (drawShadow)
+            {
+                g.FillRectangle(Brushes.LightGray, 18, 18, docWidth, docHeight);
+            }
+
+            g.FillRectangle(docBackBrush, 0, 0, docWidth, docHeight);
+
             foreach (VectorPath p in paths)
             {
                 p.Render(g);
             }
-
+            /*
             float maxH = GetMaxY();
             float maxW = GetMaxX();
+
             g.DrawLine(Pens.Red, maxW, 0, maxW, maxH);
             g.DrawLine(Pens.Red, 0, maxH, maxW, maxH);
 
+            g.DrawRectangle(Pens.GreenYellow, 0, 0, maxW, maxH);
+            */
             if (showDocumentLimit)
             {
-                RectangleF r = new RectangleF(0, 0, width, height);
+                RectangleF r = new RectangleF(0, 0, docWidth, docHeight);
 
                 Pen bp = new Pen(docLimitLineColor, normalLinePen.Width);
+                bp.Width = 0.001f;
                 g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
             }
 
@@ -647,8 +665,8 @@ namespace VectorView
             ppmx = vb.Width / vw;
             ppmy = vb.Height / vh;
 
-            width = vb.Width;
-            height = vb.Height;
+            docWidth = vw;
+            docHeight = vh;
 
             foreach (SvgElement e in doc.Children)
             {
@@ -710,7 +728,7 @@ namespace VectorView
             NumberFormatInfo ni = new NumberFormatInfo();
             ni.NumberDecimalSeparator = ".";
 
-            sb.AppendFormat(ni, "<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {0:0.0000} {1:0.0000}\" width=\"{2:0.0000}mm\" height=\"{3:0.0000}mm\" version=\"1.1\">\n", viewBox.Width, viewBox.Height, width, height);
+            sb.AppendFormat(ni, "<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" xmlns:cc=\"http://creativecommons.org/ns#\" xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" xmlns:svg=\"http://www.w3.org/2000/svg\" xmlns=\"http://www.w3.org/2000/svg\" viewBox=\"0 0 {0:0.0000} {1:0.0000}\" width=\"{2:0.0000}mm\" height=\"{3:0.0000}mm\" version=\"1.1\">\n", viewBox.Width, viewBox.Height, docWidth, docHeight);
 
             foreach (VectorPath s in paths)
             {
@@ -850,6 +868,8 @@ namespace VectorView
             }
 
             viewBox = new RectangleF(0, 0, r.Width * ppmx, r.Height * ppmy);
+            docWidth = r.Width; 
+            docHeight = r.Height;
         }
 
         public void AutoNest()
@@ -859,12 +879,12 @@ namespace VectorView
 
         public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)
         {
-            float margin = 0;
+            int margin = 0;
 
             RectangleF bb;
             if (paths.Count == 0 || !fitContent)
             {
-                bb = new RectangleF(0, 0, width, height);
+                bb = new RectangleF(0, 0, docWidth, docHeight);
             }
             else
             {
@@ -874,6 +894,9 @@ namespace VectorView
             }
 
             bb.Inflate(margin, margin);
+
+            size.Width -= margin;
+            size.Height -= margin;
 
             if (showRuller)
             {
@@ -913,8 +936,8 @@ namespace VectorView
 
             if (center)
             {
-                offsetX = (size.Width - bb.Width * s) / 2;
-                offsetY = (size.Height - bb.Height * s) / 2;
+                offsetX = (size.Width - bb.Width * s) / 2 + margin *s / 2;
+                offsetY = (size.Height - bb.Height * s) / 2 + margin *s / 2;
 
                 if (showRuller)
                 {

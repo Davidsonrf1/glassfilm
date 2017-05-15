@@ -316,6 +316,11 @@ namespace VectorView
             else
                 linePen = Document.SelectedLinePen;
 
+            if (isIntersecting)
+            {
+                linePen.DashStyle = DashStyle.DashDotDot;
+            }
+
             if (poligons == null)
                 BuildPolygons();
 
@@ -447,15 +452,15 @@ namespace VectorView
             if (p == null)
                 return false;
 
-            RectangleF b1 = GetBoundRect();
-            RectangleF b2 = p.GetBoundRect();
+            RectangleF r1 = GetBoundRect();
+            RectangleF r2 = p.GetBoundRect();
 
-            PointF c1 = VectorMath.GetBoxCenter(b1);
-            PointF c2 = VectorMath.GetBoxCenter(b2);
+            PointF c1 = VectorMath.GetBoxCenter(r1);
+            PointF c2 = VectorMath.GetBoxCenter(r2);
 
-            if (!RectangleF.Intersect(b1, b2).IsEmpty)
+            if (!RectangleF.Intersect(r1, r2).IsEmpty)
             {
-                if (b1.Contains(c2) || b2.Contains(c1))
+                if (r1.Contains(c2) || r2.Contains(c1))
                     return true;
 
                 if (poligons == null)
@@ -465,8 +470,11 @@ namespace VectorView
                 {
                     foreach (PointF pt in pl)
                     {
-                        if (b2.Contains(pt))
-                            return true;
+                        if (r2.Contains(pt))
+                        {
+                            if (p.IsPointInside(pt))
+                                return true;
+                        }
                     }
                 }
             }
@@ -717,6 +725,8 @@ namespace VectorView
             poligons = null;
             AfterTransforms();
         }
+
+
 
         void AfterTransforms()
         {

@@ -5,7 +5,7 @@ namespace VectorView.Bezier
 {
     public abstract class BezierCurve
     {
-        int resolution = 460;
+        int resolution = 50;
 
         PointF startPoint = new PointF(0, 0);
         PointF endPoint = new PointF(0, 0);

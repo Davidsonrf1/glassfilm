@@ -25,7 +25,7 @@ namespace VectorViewTeste
             view.Width = 600;
             view.Height = 300;
             view.Left = 400;
-            view.BackColor = Color.White;
+            view.BackColor = Color.WhiteSmoke;
             view.Dock = DockStyle.Fill;
 
             view.DocementMoved += View_DocementMoved;
@@ -121,14 +121,14 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("g:\\COROLLA SEDAN ANO 2009 A 2014 (16) COREL.svg", 1);
+            d.LoadSVGFromFile("d:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 
             corte.AutoFit(VectorFitStyle.Both, true, true);
 
-            d.Width = 600;
-            d.Height = 300;
+            d.ShowDocumentLimit = false;
+            view.GridSize = 10;
             
             VectorPath vp = d.Paths[0];
 
