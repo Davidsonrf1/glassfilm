@@ -24,6 +24,7 @@ namespace VectorView
     public class VectorDocument
     {
         List<VectorPath> paths = new List<VectorPath>();
+
         Color normalLineColor = Color.LightBlue;
         Color docLimitLineColor = Color.Black;
         Color selectedLineColor = Color.OrangeRed;

@@ -298,6 +298,37 @@ namespace VectorView
             return area;
         }
 
+        List<PointF>[] horizontalScans = null;
+
+        void BuildHorizontalScans (int numScans = 100)
+        {
+            RectangleF r = GetBoundRect();
+
+            horizontalScans = new List<PointF>[numScans];
+
+            if (poligons == null)
+                BuildPolygons();
+
+            foreach (PointF[] p in poligons)
+            {
+                foreach (PointF pt in p)
+                {
+                    int idx = (int)(pt.X - r.X) / numScans;
+
+                    if (horizontalScans[idx] == null)
+                        horizontalScans[idx] = new List<PointF>();
+
+                    float min = idx * (r.Height / numScans);
+                    float max = (idx+1) * (r.Height / numScans);
+                    
+                    if (pt.Y >= min || pt.Y <= max)
+                    {
+                        //horizontalScans[idx]
+                    }
+                }
+            }
+        }
+
         Pen linePen = null;
 
         SolidBrush rSide = null;
