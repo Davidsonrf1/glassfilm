@@ -115,6 +115,14 @@ namespace VectorView
             return sb;
         }
 
+
+        protected override void OnMouseWheel(MouseEventArgs e)
+        {
+            base.OnMouseWheel(e);
+
+
+        }
+
         float startAngle = 0;
         PointF transformCenter = new PointF(0, 0);
         RectangleF transformBox = new RectangleF();

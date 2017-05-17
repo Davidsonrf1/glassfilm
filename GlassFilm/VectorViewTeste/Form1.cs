@@ -121,7 +121,7 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("d:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
+            d.LoadSVGFromFile("g:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
             VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 
