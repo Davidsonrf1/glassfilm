@@ -401,10 +401,11 @@ namespace VectorView
 
             if (drawShadow)
             {
-                g.FillRectangle(Brushes.LightGray, 18, 18, docWidth, docHeight);
+                //g.FillRectangle(Brushes.LightGray, 18, 18, docWidth, docHeight);
             }
 
-            g.FillRectangle(docBackBrush, 0, 0, docWidth, docHeight);
+            //g.FillRectangle(docBackBrush, 0, 0, docWidth, docHeight);
+            g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
 
             foreach (VectorPath p in paths)
             {
@@ -815,9 +816,95 @@ namespace VectorView
             return ret;
         }
 
+        public int CountSoruce(VectorPath source)
+        {
+            int count = 0;
+
+            foreach (VectorPath p in paths)
+            {
+                if (p.Source == source)
+                    count++;
+            }
+
+            return count;
+        }
+
+        class CompareArea : IComparer<VectorPath>
+        {
+            public int Compare(VectorPath x, VectorPath y)
+            {
+                return x.Area > y.Area ? -1 : x.Area == y.Area ? 0 : 1;
+            }
+        }
+
+        public void AutoNest()
+        {
+            List<VectorPath> pl = new List<VectorPath>();
+
+            foreach (VectorPath p in paths)
+            {
+                pl.Add(p);
+            }
+
+            pl.Sort(new CompareArea());
+            paths.Clear();
+
+            while (pl.Count > 0)
+            {
+                VectorPath cur = pl[0];
+                RectangleF r = cur.GetBoundRect();
+
+                if (paths.Count == 0)
+                {
+                    cur.SetOrigin(new PointF(r.Width / 2, r.Height / 2));
+                }
+                else
+                {
+                    bool nested = false;
+                    foreach (VectorPath vp in Paths)
+                    {
+                        RectangleF pr = vp.GetBoundRect();
+
+                        cur.SetOrigin(new PointF(pr.X + r.Width / 2 + 1, pr.Bottom + r.Height / 2 + 1));
+                        if (cur.CheckContraints())
+                        {
+                            nested = true;
+                            break;
+                        }
+
+                        cur.SetOrigin(new PointF((pr.Width / 2 + pr.X) + r.Width / 2 + 1, pr.Bottom + r.Height / 2 + 1));
+                        if (cur.CheckContraints())
+                        {
+                            nested = true;
+                            break;
+                        }
+
+                        cur.SetOrigin(new PointF(pr.Left + r.Width / 2 + 1, pr.Top + r.Height / 2 + 1));
+                        if (cur.CheckContraints())
+                        {
+                            nested = true;
+                            break;
+                        }
+                    }
+
+                    if (!nested)
+                    {
+                        float x = GetMaxX();
+                        cur.SetOrigin(new PointF(x + r.Width / 2 + 2, r.Height / 2 + 2));
+                    }
+                }
+
+                paths.Add(cur);
+                pl.RemoveAt(0);
+            }
+
+            docWidth = GetMaxX();
+        }
+
         public VectorPath ImportPath(VectorPath p)
         {
             VectorPath d = CreatePath();
+            d.Source = p;
 
             foreach (VectorEdge e in p.Edges)
             {
@@ -830,8 +917,9 @@ namespace VectorView
 
             //d.ComputeMetrics();
             d.CopyMetrics(p);
-
             d.ComputeArea(false);
+
+            AutoNest();
 
             return d;
         }
@@ -871,11 +959,6 @@ namespace VectorView
             viewBox = new RectangleF(0, 0, r.Width * ppmx, r.Height * ppmy);
             docWidth = r.Width; 
             docHeight = r.Height;
-        }
-
-        public void AutoNest()
-        {
-
         }
 
         public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)

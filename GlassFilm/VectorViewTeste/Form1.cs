@@ -44,8 +44,21 @@ namespace VectorViewTeste
             corte.Dock = DockStyle.Bottom;
            // corte.ShowDocumentLimit = true;
             
-            corte.Document.Width = 600;
-            corte.Document.Height = 300;
+            corte.Document.Width = 6000;
+            corte.Document.Height = 1520;
+
+            corte.DoubleClick += Corte_DoubleClick;
+            view.DoubleClick += View_DoubleClick;
+        }
+
+        private void View_DoubleClick(object sender, EventArgs e)
+        {
+            corte.ImportSelection(view);
+        }
+
+        private void Corte_DoubleClick(object sender, EventArgs e)
+        {
+            
         }
 
         private void View_SelectionChanged(object sender, VectorEventArgs e)
@@ -121,11 +134,11 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("g:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
+            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
-            VectorPath p = corte.Document.ImportPath(d.Paths[0]);
+            //VectorPath p = corte.Document.ImportPath(d.Paths[0]);
 
-            corte.AutoFit(VectorFitStyle.Both, true, true);
+            corte.AutoFit(VectorFitStyle.Both, false, true);
 
             d.ShowDocumentLimit = false;
             view.GridSize = 10;

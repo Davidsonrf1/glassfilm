@@ -10,6 +10,8 @@ namespace VectorView
 
     public class VectorPath
     {
+        VectorPath source = null;
+
         VectorDocument document = null;
         internal VectorPath(VectorDocument doc)
         {
@@ -132,6 +134,31 @@ namespace VectorView
             }
         }
 
+        public VectorPath Source
+        {
+            get
+            {
+                return source;
+            }
+
+            internal set
+            {
+                source = value;
+            }
+        }
+
+        public bool InvalidConstraints
+        {
+            get
+            {
+                return invalidConstraints;
+            }
+
+            set
+            {
+                invalidConstraints = value;
+            }
+        }
 
         VectorEdge curStart = null;       
 
@@ -211,10 +238,6 @@ namespace VectorView
             }
         }
 
-        public void CheckContraints()
-        {
-
-        }
         
         float bestAngle = 0;
         PointF[] scans = null;
@@ -469,6 +492,43 @@ namespace VectorView
             ret.Y = (int)Math.Round(p.Y * HPGL_UNIT);
 
             return ret;
+        }
+
+        bool invalidConstraints = false;
+
+        public bool CheckContraints()
+        {
+            invalidConstraints = false;
+            bool c = CheckBoundConstraints();
+
+            if (c)
+                invalidConstraints = true;
+
+            return c;
+        }
+
+        internal bool CheckBoundConstraints()
+        {
+            RectangleF r = GetBoundRect();
+
+            if (r.X < 0 || r.Y < 0)
+                return false;
+
+            if (r.Bottom > document.Height)
+                return false;
+
+            foreach (VectorPath p in document.Paths)
+            {
+                if (p == this)
+                    continue;
+
+                RectangleF cr = p.GetBoundRect();
+
+                if (!RectangleF.Intersect(cr, r).IsEmpty)
+                    return false;                                
+            }            
+
+            return true;
         }
         
         internal void ResetConstraints()
@@ -756,9 +816,7 @@ namespace VectorView
             poligons = null;
             AfterTransforms();
         }
-
-
-
+        
         void AfterTransforms()
         {
             if (document != null)
