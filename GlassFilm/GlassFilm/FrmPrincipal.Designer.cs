@@ -569,6 +569,7 @@
             // splitDesenho.Panel2
             // 
             this.splitDesenho.Panel2.Controls.Add(this.vvCorte);
+            this.splitDesenho.Panel2.Resize += new System.EventHandler(this.splitDesenho_Panel2_Resize);
             this.splitDesenho.Size = new System.Drawing.Size(1346, 492);
             this.splitDesenho.SplitterDistance = 266;
             this.splitDesenho.TabIndex = 13;

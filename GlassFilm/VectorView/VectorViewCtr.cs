@@ -58,7 +58,6 @@ namespace VectorView
             }
 
             selection.Clear();
-
             OnSelectionChanged();
         }
 
@@ -908,6 +907,7 @@ namespace VectorView
                 d = document.ImportPath(p);
             }
 
+            document.AutoNest();
             Invalidate();
             return d;
         }
@@ -923,10 +923,11 @@ namespace VectorView
             {
                 foreach (VectorPath p in src.Selection())
                 {
-                    ImportPath(p);
+                    document.ImportPath(p);
                 }
             }
 
+            document.AutoNest();
             Invalidate();
         }
 

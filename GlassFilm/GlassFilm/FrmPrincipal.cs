@@ -30,6 +30,10 @@ namespace GlassFilm
 
             vvCorte.Document = new VectorDocument();
             vvCorte.ShowDocumentLimit = true;
+            vvCorte.Document.Width = 600;
+            vvCorte.Document.Height = 1520;
+            vvCorte.AllowScalePath = false;
+            vvCorte.AllowMoveDocument = true;
 
             vvModelo.DoubleClick += VvModelo_DoubleClick;
         }
@@ -147,7 +151,19 @@ namespace GlassFilm
 
                     File.WriteAllText("teste_CORTE.plt", cmds);
                 }
+
+                //vvCorte.AutoFit(VectorFitStyle.Both, true, true);
             }
+        }
+
+        void UpdateImportCount()
+        {
+            foreach (VectorPath p in vvModelo.Document.Paths)
+            {
+                p.ImportCount = vvCorte.Document.CountSoruce(p);
+            }
+
+            vvModelo.Refresh();
         }
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -155,6 +171,7 @@ namespace GlassFilm
             vvCorte.ImportSelection(vvModelo);
             vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
             vvCorte.Refresh();
+            UpdateImportCount();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -173,6 +190,7 @@ namespace GlassFilm
             if (e.KeyCode == Keys.Delete)
             {
                 vvCorte.DeleteSelection();
+                UpdateImportCount();
             }
         }
 
@@ -213,13 +231,18 @@ namespace GlassFilm
 
         private void button3_Click(object sender, EventArgs e)
         {
-            MessageBox.Show("Função ainda não implementada");
+            vvCorte.Document.AutoNest();
         }
 
         private void cadastroRoloToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.ShowDialog(new FrnCadRolo());
             AtualizaCombos();
+        }
+
+        private void splitDesenho_Panel2_Resize(object sender, EventArgs e)
+        {
+            vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
         }
     }
 }

@@ -26,6 +26,8 @@ namespace VectorView
         bool fillPath = false;
         Color fillColor = Color.Lime;
 
+        int importCount = 0;
+
         string tag = "";
         VectorPathSide side = VectorPathSide.None;
 
@@ -157,6 +159,19 @@ namespace VectorView
             set
             {
                 invalidConstraints = value;
+            }
+        }
+
+        public int ImportCount
+        {
+            get
+            {
+                return importCount;
+            }
+
+            set
+            {
+                importCount = value;
             }
         }
 
@@ -372,7 +387,13 @@ namespace VectorView
 
             if (isIntersecting)
             {
-                linePen.DashStyle = DashStyle.DashDotDot;
+                //linePen.DashStyle = DashStyle.DashDotDot;
+            }
+
+            if (importCount > 0)
+            {
+                linePen.Color = Color.Red;
+                linePen.Width = 3;
             }
 
             if (poligons == null)
@@ -939,14 +960,15 @@ namespace VectorView
 
             Matrix mt = new Matrix();
 
+            mt.Translate(document.GetMaxY(), 0);
             mt.Rotate(90);
-            mt.Translate(0, -document.Height);            
 
             foreach (PointF[] polyline in polyList)
             {
                 first = true;
                 firstPoint = true;
 
+                // Move o desenha para a posição ideal de corte
                 mt.TransformPoints(polyline);
 
                 foreach (PointF p in polyline)
@@ -972,39 +994,9 @@ namespace VectorView
                     sb.Append(string.Format("{0},{1}", hp.X, hp.Y));
                 }
             }
-                        
-            /*
-            bool first = true;
-            bool firstPoint = true;
-            Point p = new Point();
 
-            List<PointF> polyline = GetPolyline();
-
-            foreach (PointF pl in polyline)
-            {
-                if (first)
-                {
-                    first = false;
-                    p = GetHPGLPoint(pl);
-                    sb.Append(string.Format("PU{0},{1};", p.X, p.Y));
-
-                    sb.Append("PD");
-
-                    continue;
-                }
-
-                if (!firstPoint)
-                {
-                    sb.Append(',');
-                }
-
-                firstPoint = false;
-
-                p = GetHPGLPoint(pl);
-                sb.Append(string.Format("{0},{1}", p.X, p.Y));
-            }
-            */
-
+            // Reseta o desenho
+            poligons = null;
 
             return sb.ToString();
         }

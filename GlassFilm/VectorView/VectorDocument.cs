@@ -27,7 +27,7 @@ namespace VectorView
 
         Color normalLineColor = Color.LightBlue;
         Color docLimitLineColor = Color.Black;
-        Color selectedLineColor = Color.OrangeRed;
+        Color selectedLineColor = Color.DarkBlue;
         Color docBackcolor = Color.White;
 
         Color rullerBorderColor = Color.LightGray;
@@ -918,8 +918,6 @@ namespace VectorView
             //d.ComputeMetrics();
             d.CopyMetrics(p);
             d.ComputeArea(false);
-
-            AutoNest();
 
             return d;
         }
