@@ -171,6 +171,7 @@ namespace GlassFilm
             vvCorte.ImportSelection(vvModelo);
             vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
             vvCorte.Refresh();
+
             UpdateImportCount();
         }
 
@@ -178,6 +179,8 @@ namespace GlassFilm
         {
             vvCorte.Clear();
             vvCorte.Refresh();
+
+            UpdateImportCount();
         }
 
         private void vvCorte_KeyPress(object sender, KeyPressEventArgs e)

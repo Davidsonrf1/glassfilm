@@ -18,7 +18,7 @@ namespace GlassFilm
                 if (f.GetType().Equals(dialog.GetType()))
                 {
                     Mensagens.Atencao("Rotina já está aberta!");
-                    return DialogResult.None;
+                    return DialogResult.None; 
                 }
             }
             
