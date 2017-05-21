@@ -71,12 +71,12 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.splitDesenho = new System.Windows.Forms.SplitContainer();
-            this.vvModelo = new VectorView.VectorViewCtr();
-            this.vvCorte = new VectorView.VectorViewCtr();
             this.status = new System.Windows.Forms.StatusStrip();
             this.docInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.selInfo = new System.Windows.Forms.ToolStripStatusLabel();
+            this.panel8 = new System.Windows.Forms.Panel();
+            this.vvCorte = new VectorView.VectorViewCtr();
+            this.vvModelo = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -87,10 +87,6 @@
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).BeginInit();
-            this.splitDesenho.Panel1.SuspendLayout();
-            this.splitDesenho.Panel2.SuspendLayout();
-            this.splitDesenho.SuspendLayout();
             this.status.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -103,7 +99,7 @@
             this.toolArquivo});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1347, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1329, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
@@ -163,7 +159,7 @@
             this.pnlprincipal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlprincipal.Location = new System.Drawing.Point(0, 24);
             this.pnlprincipal.Name = "pnlprincipal";
-            this.pnlprincipal.Size = new System.Drawing.Size(1347, 110);
+            this.pnlprincipal.Size = new System.Drawing.Size(1329, 110);
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             // 
@@ -430,7 +426,7 @@
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 134);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(1347, 65);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(1329, 65);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
             // 
@@ -440,7 +436,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 60);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1347, 5);
+            this.panel4.Size = new System.Drawing.Size(1329, 5);
             this.panel4.TabIndex = 14;
             // 
             // panel7
@@ -553,78 +549,6 @@
             this.label7.TabIndex = 0;
             this.label7.Text = "Tipo:";
             // 
-            // splitDesenho
-            // 
-            this.splitDesenho.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitDesenho.Location = new System.Drawing.Point(0, 196);
-            this.splitDesenho.Name = "splitDesenho";
-            this.splitDesenho.Orientation = System.Windows.Forms.Orientation.Horizontal;
-            // 
-            // splitDesenho.Panel1
-            // 
-            this.splitDesenho.Panel1.Controls.Add(this.vvModelo);
-            // 
-            // splitDesenho.Panel2
-            // 
-            this.splitDesenho.Panel2.Controls.Add(this.vvCorte);
-            this.splitDesenho.Panel2.Resize += new System.EventHandler(this.splitDesenho_Panel2_Resize);
-            this.splitDesenho.Size = new System.Drawing.Size(1346, 492);
-            this.splitDesenho.SplitterDistance = 266;
-            this.splitDesenho.TabIndex = 13;
-            this.splitDesenho.Visible = false;
-            // 
-            // vvModelo
-            // 
-            this.vvModelo.AllowMoveDocument = false;
-            this.vvModelo.AllowRotatePath = false;
-            this.vvModelo.AllowScalePath = false;
-            this.vvModelo.AllowTransforms = false;
-            this.vvModelo.BackColor = System.Drawing.Color.White;
-            this.vvModelo.BackgroundImage = global::GlassFilm.Properties.Resources.tumblr_inline_nn85tpbQkq1rewzq7_500;
-            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvModelo.Document = null;
-            this.vvModelo.DrawSelecionBox = true;
-            this.vvModelo.GridColor = System.Drawing.Color.Black;
-            this.vvModelo.GridSize = 10;
-            this.vvModelo.Location = new System.Drawing.Point(0, 0);
-            this.vvModelo.Name = "vvModelo";
-            this.vvModelo.SelctionMargin = 6F;
-            this.vvModelo.ShowDocumentLimit = false;
-            this.vvModelo.ShowPointer = false;
-            this.vvModelo.Size = new System.Drawing.Size(1346, 266);
-            this.vvModelo.TabIndex = 0;
-            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
-            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
-            // 
-            // vvCorte
-            // 
-            this.vvCorte.AllowMoveDocument = true;
-            this.vvCorte.AllowRotatePath = true;
-            this.vvCorte.AllowScalePath = true;
-            this.vvCorte.AllowTransforms = true;
-            this.vvCorte.BackColor = System.Drawing.Color.White;
-            this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
-            this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.vvCorte.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvCorte.Document = null;
-            this.vvCorte.DrawSelecionBox = true;
-            this.vvCorte.GridColor = System.Drawing.Color.Black;
-            this.vvCorte.GridSize = 10;
-            this.vvCorte.Location = new System.Drawing.Point(0, 0);
-            this.vvCorte.Name = "vvCorte";
-            this.vvCorte.SelctionMargin = 6F;
-            this.vvCorte.ShowDocumentLimit = false;
-            this.vvCorte.ShowPointer = false;
-            this.vvCorte.Size = new System.Drawing.Size(1346, 222);
-            this.vvCorte.TabIndex = 0;
-            this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed);
-            this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
-            this.vvCorte.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vvCorte_KeyDown);
-            this.vvCorte.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vvCorte_KeyPress);
-            // 
             // status
             // 
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -632,7 +556,7 @@
             this.selInfo});
             this.status.Location = new System.Drawing.Point(0, 688);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(1347, 24);
+            this.status.Size = new System.Drawing.Size(1329, 24);
             this.status.TabIndex = 15;
             this.status.Text = "statusStrip1";
             // 
@@ -655,26 +579,90 @@
             this.selInfo.Name = "selInfo";
             this.selInfo.Size = new System.Drawing.Size(550, 19);
             // 
+            // panel8
+            // 
+            this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.panel8.Location = new System.Drawing.Point(0, 0);
+            this.panel8.Name = "panel8";
+            this.panel8.Size = new System.Drawing.Size(1329, 712);
+            this.panel8.TabIndex = 19;
+            // 
+            // vvCorte
+            // 
+            this.vvCorte.AllowMoveDocument = true;
+            this.vvCorte.AllowRotatePath = true;
+            this.vvCorte.AllowScalePath = true;
+            this.vvCorte.AllowTransforms = true;
+            this.vvCorte.BackColor = System.Drawing.Color.White;
+            this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
+            this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vvCorte.Document = null;
+            this.vvCorte.DrawSelecionBox = true;
+            this.vvCorte.GridColor = System.Drawing.Color.Black;
+            this.vvCorte.GridSize = 10;
+            this.vvCorte.Location = new System.Drawing.Point(203, 529);
+            this.vvCorte.Name = "vvCorte";
+            this.vvCorte.SelctionMargin = 6F;
+            this.vvCorte.ShowGrid = false;
+            this.vvCorte.ShowPointer = false;
+            this.vvCorte.Size = new System.Drawing.Size(957, 145);
+            this.vvCorte.TabIndex = 0;
+            this.vvCorte.Visible = false;
+            this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed);
+            this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
+            this.vvCorte.KeyDown += new System.Windows.Forms.KeyEventHandler(this.vvCorte_KeyDown);
+            this.vvCorte.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.vvCorte_KeyPress);
+            // 
+            // vvModelo
+            // 
+            this.vvModelo.AllowMoveDocument = false;
+            this.vvModelo.AllowRotatePath = false;
+            this.vvModelo.AllowScalePath = false;
+            this.vvModelo.AllowTransforms = false;
+            this.vvModelo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.vvModelo.BackColor = System.Drawing.Color.White;
+            this.vvModelo.Document = null;
+            this.vvModelo.DrawSelecionBox = true;
+            this.vvModelo.GridColor = System.Drawing.Color.Black;
+            this.vvModelo.GridSize = 10;
+            this.vvModelo.Location = new System.Drawing.Point(0, 199);
+            this.vvModelo.Name = "vvModelo";
+            this.vvModelo.SelctionMargin = 3F;
+            this.vvModelo.ShowGrid = false;
+            this.vvModelo.ShowPointer = false;
+            this.vvModelo.Size = new System.Drawing.Size(1329, 324);
+            this.vvModelo.TabIndex = 17;
+            this.vvModelo.Visible = false;
+            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
+            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1347, 712);
+            this.ClientSize = new System.Drawing.Size(1329, 712);
+            this.Controls.Add(this.vvCorte);
+            this.Controls.Add(this.vvModelo);
             this.Controls.Add(this.status);
-            this.Controls.Add(this.splitDesenho);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
             this.Controls.Add(this.menuStrip1);
+            this.Controls.Add(this.panel8);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.IsMdiContainer = true;
+            this.KeyPreview = true;
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Glass Film - Bem vindo!";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmPrincipal_Load);
+            this.KeyDown += new System.Windows.Forms.KeyEventHandler(this.FrmPrincipal_KeyDown);
+            this.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.FrmPrincipal_KeyPress);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnlprincipal.ResumeLayout(false);
@@ -690,10 +678,6 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
-            this.splitDesenho.Panel1.ResumeLayout(false);
-            this.splitDesenho.Panel2.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.splitDesenho)).EndInit();
-            this.splitDesenho.ResumeLayout(false);
             this.status.ResumeLayout(false);
             this.status.PerformLayout();
             this.ResumeLayout(false);
@@ -743,13 +727,13 @@
         private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastroModeloToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer splitDesenho;
-        private VectorView.VectorViewCtr vvModelo;
         private VectorView.VectorViewCtr vvCorte;
         private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.StatusStrip status;
         private System.Windows.Forms.ToolStripStatusLabel docInfo;
         private System.Windows.Forms.ToolStripStatusLabel selInfo;
         private System.Windows.Forms.ToolStripMenuItem cadastroRoloToolStripMenuItem;
+        private VectorView.VectorViewCtr vvModelo;
+        private System.Windows.Forms.Panel panel8;
     }
 }

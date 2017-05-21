@@ -29,13 +29,12 @@ namespace GlassFilm
             sel.CbVeiculos = cbAno;
 
             vvCorte.Document = new VectorDocument();
-            vvCorte.ShowDocumentLimit = true;
             vvCorte.Document.Width = 600;
             vvCorte.Document.Height = 1520;
             vvCorte.AllowScalePath = false;
             vvCorte.AllowMoveDocument = true;
 
-            vvModelo.DoubleClick += VvModelo_DoubleClick;
+            //vvModelo.DoubleClick += VvModelo_DoubleClick;
         }
 
         private void VvModelo_DoubleClick(object sender, EventArgs e)
@@ -62,7 +61,7 @@ namespace GlassFilm
                 pnlFiltroInfo.Visible = true;
                 pnlprincipal.Visible = true;
                 //pnlMapa.Visible = true;
-                splitDesenho.Visible = true;
+                vvModelo.Visible = true;
                 toolArquivo.Visible = true;
             }
 
@@ -131,6 +130,8 @@ namespace GlassFilm
         {
             vvModelo.AutoFit(VectorFitStyle.Both, true, true);
             Invalidate();
+
+            UpdateViewCorte();
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -166,13 +167,43 @@ namespace GlassFilm
             vvModelo.Refresh();
         }
 
+        void UpdateViewCorte()
+        {
+            vvCorte.ShowGrid = true;
+
+            vvCorte.Width = (int)(vvModelo.Width * 0.75f);
+            //vvCorte.Height = (int)(vvModelo.Height * 0.2f);
+
+            if (vvCorte.Document != null)
+            {
+                float w = vvCorte.Document.ViewPointToDocPoint(new PointF(vvCorte.Width, 0)).X;
+                vvCorte.Document.Width = w;
+
+                vvCorte.Document.ShowDocBorder = true;
+            }
+
+            vvCorte.Left = vvModelo.Left + (vvModelo.Width - vvCorte.Width) / 2;
+            vvCorte.Top = vvModelo.Bottom;// + 10;// - vvCorte.Height - (int)(vvModelo.Height * 0.05f);
+
+            if (vvCorte.Document.Paths.Count > 0)
+                vvCorte.Visible = true;
+            else
+                vvCorte.Visible = false;
+
+            vvCorte.BringToFront();
+            vvCorte.Refresh();
+
+            vvCorte.AutoFit(VectorFitStyle.Vertical, false, false);
+        }
+
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             vvCorte.ImportSelection(vvModelo);
-            vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
+            //vvCorte.AutoFit(VectorFitStyle.Horizontal, false, true);
             vvCorte.Refresh();
 
             UpdateImportCount();
+            UpdateViewCorte();
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -181,6 +212,8 @@ namespace GlassFilm
             vvCorte.Refresh();
 
             UpdateImportCount();
+
+            UpdateViewCorte();
         }
 
         private void vvCorte_KeyPress(object sender, KeyPressEventArgs e)
@@ -194,7 +227,22 @@ namespace GlassFilm
             {
                 vvCorte.DeleteSelection();
                 UpdateImportCount();
+                UpdateViewCorte();
             }
+
+            if (e.KeyCode == Keys.Left)
+                vvCorte.MoveSelecion(-1, 0);
+
+            if (e.KeyCode == Keys.Right)
+                vvCorte.MoveSelecion(+1, 0);
+
+            if (e.KeyCode == Keys.Up)
+                vvCorte.MoveSelecion(0, -1);
+
+            if (e.KeyCode == Keys.Left)
+                vvCorte.MoveSelecion(0, +1);
+
+            Invalidate();
         }
 
 
@@ -246,6 +294,58 @@ namespace GlassFilm
         private void splitDesenho_Panel2_Resize(object sender, EventArgs e)
         {
             vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
+        }
+
+        private void FrmPrincipal_KeyDown(object sender, KeyEventArgs e)
+        {
+            vvCorte_KeyDown(sender, e);
+        }
+
+        protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
+        {
+            if (keyData == Keys.Left)
+                vvCorte.MoveSelecion(-1, 0);
+
+            if (keyData == Keys.Right)
+                vvCorte.MoveSelecion(+1, 0);
+
+            if (keyData == Keys.Up)
+                vvCorte.MoveSelecion(0, -1);
+
+            if (keyData == Keys.Down)
+                vvCorte.MoveSelecion(0, +1);
+
+            Invalidate();
+
+            return base.ProcessCmdKey(ref msg, keyData);
+        }
+
+        protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+        }
+
+        protected override bool IsInputKey(Keys keyData)
+        {
+            switch (keyData)
+            {
+                case Keys.Right:
+                case Keys.Left:
+                case Keys.Up:
+                case Keys.Down:
+                    return true;
+                case Keys.Shift | Keys.Right:
+                case Keys.Shift | Keys.Left:
+                case Keys.Shift | Keys.Up:
+                case Keys.Shift | Keys.Down:
+                    return true;
+            }
+            return base.IsInputKey(keyData);
+        }
+
+        private void FrmPrincipal_KeyPress(object sender, KeyPressEventArgs e)
+        {
+
         }
     }
 }

@@ -25,7 +25,7 @@ namespace VectorView
     {
         List<VectorPath> paths = new List<VectorPath>();
 
-        Color normalLineColor = Color.LightBlue;
+        Color normalLineColor = Color.Black;
         Color docLimitLineColor = Color.Black;
         Color selectedLineColor = Color.DarkBlue;
         Color docBackcolor = Color.White;
@@ -33,7 +33,7 @@ namespace VectorView
         Color rullerBorderColor = Color.LightGray;
         Color rullerBackColor = Color.WhiteSmoke;
 
-        bool showDocumentLimit = false;
+
         bool showRuller = false;
         float rullerWidth = 22f;
 
@@ -50,6 +50,8 @@ namespace VectorView
         float ppi = 96;
         float ppmx = 37.7952728f;  // ppm = Pontos por milímetro
         float ppmy = 37.7952728f;
+
+        bool showDocBorder = false;
 
         public List<VectorPath> Paths
         {
@@ -74,7 +76,10 @@ namespace VectorView
 
         Pen AdjustPen(Pen p)
         {
-            p.Width = 1 / scale;
+            p.Width = 2 / scale;
+
+            p.Alignment = PenAlignment.Inset;
+
             return p;
         }
 
@@ -125,19 +130,6 @@ namespace VectorView
             set
             {
                 showRuller = value; 
-            }
-        }
-
-        public bool ShowDocumentLimit
-        {
-            get
-            {
-                return showDocumentLimit;
-            }
-
-            set
-            {
-                showDocumentLimit = value;
             }
         }
 
@@ -224,6 +216,19 @@ namespace VectorView
             set
             {
                 autoCheckConstraints = value;
+            }
+        }
+
+        public bool ShowDocBorder
+        {
+            get
+            {
+                return showDocBorder;
+            }
+
+            set
+            {
+                showDocBorder = value;
             }
         }
 
@@ -405,7 +410,9 @@ namespace VectorView
             }
 
             //g.FillRectangle(docBackBrush, 0, 0, docWidth, docHeight);
-            g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
+
+            if (showDocBorder)
+                g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
 
             foreach (VectorPath p in paths)
             {
@@ -419,7 +426,7 @@ namespace VectorView
             g.DrawLine(Pens.Red, 0, maxH, maxW, maxH);
 
             g.DrawRectangle(Pens.GreenYellow, 0, 0, maxW, maxH);
-            */
+            
             if (showDocumentLimit)
             {
                 RectangleF r = new RectangleF(0, 0, docWidth, docHeight);
@@ -428,7 +435,7 @@ namespace VectorView
                 bp.Width = 0.001f;
                 g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
             }
-
+            */
             g.ResetTransform();
 
             if (showRuller)
@@ -898,7 +905,7 @@ namespace VectorView
                 pl.RemoveAt(0);
             }
 
-            docWidth = GetMaxX();
+            //docWidth = GetMaxX();
         }
 
         public VectorPath ImportPath(VectorPath p)

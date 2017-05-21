@@ -287,6 +287,19 @@ namespace VectorView
             base.OnKeyPress(e);
         }
 
+        public void MoveSelecion(float dx, float dy)
+        {
+            foreach (VectorPath p in selection)
+            {
+                p.BeginTransform(VectorMath.GetBoxCenter(selBox));
+                p.Move(dx, dy);
+            }
+
+            OnSelectionMoved();
+
+            Invalidate();
+        }
+
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseDown(e);
@@ -409,6 +422,7 @@ namespace VectorView
             }
 
             Capture = false;
+            Invalidate();
         }
 
         float hitCornerTolerance = 2f;
@@ -583,29 +597,6 @@ namespace VectorView
             }
         }
 
-        public bool ShowDocumentLimit
-        {
-            get
-            {
-                if (document != null)
-                {
-                    return document.ShowDocumentLimit;
-                }
-
-                return false;
-            }
-
-            set
-            {
-                if (document != null)
-                {
-                    document.ShowDocumentLimit = value;
-                }
-
-                Invalidate();
-            }
-        }
-
         public bool ShowPointer
         {
             get
@@ -723,6 +714,19 @@ namespace VectorView
             }
         }
 
+        public bool ShowGrid
+        {
+            get
+            {
+                return showGrid;
+            }
+
+            set
+            {
+                showGrid = value;
+            }
+        }
+
         bool drawSelecionBox = true;
         float selectionMargin =6f;
         float selDashSize = 3f;
@@ -747,6 +751,8 @@ namespace VectorView
 
         bool showPathTags = true;
 
+        bool showGrid = false;
+
         protected override void OnPaint(PaintEventArgs e)
         {
             try
@@ -760,7 +766,8 @@ namespace VectorView
                 g.SmoothingMode = SmoothingMode.HighQuality;
                 g.InterpolationMode = InterpolationMode.HighQualityBicubic;
 
-                DrawGrid(g);
+                if (showGrid)
+                    DrawGrid(g);
 
                 if (document == null)
                 {

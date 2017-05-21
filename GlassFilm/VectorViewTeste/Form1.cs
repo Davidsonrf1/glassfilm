@@ -101,11 +101,19 @@ namespace VectorViewTeste
 
         }
 
+        protected override void OnPaintBackground(PaintEventArgs e)
+        {
+            //base.OnPaintBackground(e);
+
+            e.Graphics.FillRectangle(Brushes.White, ClientRectangle);
+        }
+
         protected override void OnPaint(PaintEventArgs e)
         {
             base.OnPaint(e);
 
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
         }
 
         protected override void OnResize(EventArgs e)
@@ -140,12 +148,9 @@ namespace VectorViewTeste
 
             corte.AutoFit(VectorFitStyle.Both, false, true);
 
-            d.ShowDocumentLimit = false;
             view.GridSize = 10;
             
             VectorPath vp = d.Paths[0];
-
-
             float area = vp.ComputeArea(false, 1);
         }
 

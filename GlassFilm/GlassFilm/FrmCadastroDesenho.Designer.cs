@@ -414,7 +414,6 @@
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
             this.vectorView.SelctionMargin = 6F;
-            this.vectorView.ShowDocumentLimit = false;
             this.vectorView.ShowPointer = false;
             this.vectorView.Size = new System.Drawing.Size(750, 445);
             this.vectorView.TabIndex = 7;
