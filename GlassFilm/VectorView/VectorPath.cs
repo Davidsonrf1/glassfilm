@@ -26,6 +26,8 @@ namespace VectorView
         bool fillPath = false;
         Color fillColor = Color.Lime;
 
+        bool inCutSheet = false;        
+
         int importCount = 0;
 
         string tag = "";
@@ -172,6 +174,27 @@ namespace VectorView
             set
             {
                 importCount = value;
+            }
+        }
+
+        public bool InCutSheet
+        {
+            get
+            {
+                return inCutSheet;
+            }
+
+            internal set
+            {
+                inCutSheet = value;
+            }
+        }
+
+        public List<PointF[]> OriginalPoligons
+        {
+            get
+            {
+                return originalPoligons;
             }
         }
 
@@ -385,11 +408,6 @@ namespace VectorView
             else
                 linePen = Document.SelectedLinePen;
 
-            if (isIntersecting)
-            {
-                //linePen.DashStyle = DashStyle.DashDotDot;
-            }
-
             if (importCount > 0)
             {
                 linePen.Color = Color.Red;
@@ -415,46 +433,19 @@ namespace VectorView
 
                 g.DrawPolygon(linePen, poly);
             }
+        }
 
-            /*
-            foreach (VectorEdge e in edges)
+        List<PointF[]> originalPoligons = null;
+        public void BuildOriginalPolygons()
+        {
+            if (source != null)
             {
-                if (e is VectorMove)
-                {
-                    continue;
-                }
-
-                if (e is VectorCurve)
-                {
-                    if (e is VectorCubicBezier)
-                    {
-                        VectorCubicBezier c = (VectorCubicBezier)e;
-                        g.DrawBezier(linePen, c.StartX, c.StartY, c.Control1.X, c.Control1.Y, c.Control2.X, c.Control2.Y, c.EndX, c.EndY);
-                    }
-                    else
-                    {
-                        VectorQuadraticBezier c = (VectorQuadraticBezier)e;
-                        List<PointF> pts = c.GetPoints();
-                        g.DrawLines(linePen, pts.ToArray());
-                    }
-                }
-                else if (e is VectorEdge)
-                {
-                    g.DrawLine(linePen, e.StartX, e.StartY, e.EndX, e.EndY);
-                }
+                originalPoligons = source.BuildPolygons();
+                source.poligons = null;
             }
-            */
-            /*if (drawMiddlePoint)
-            {
-                float w = 3 / Document.Scale;
-
-                PointF m = GetMiddlePoint();
-                g.FillEllipse(Brushes.OrangeRed, m.X - w / 2, m.Y - w / 2, w, w);
-            }*/
         }
 
         List<PointF[]> poligons = null;
-
         public virtual List<PointF[]> BuildPolygons()
         {
             if (poligons != null)
@@ -485,23 +476,6 @@ namespace VectorView
                 poligons.Add(pl.ToArray());
 
             return poligons;
-        }
-
-        public virtual List<PointF> GetPolyline()
-        {
-            List<PointF> pl = new List<PointF>();
-
-            if (edges.Count > 0)
-            {
-                pl.Add(new PointF(edges[0].StartX, edges[0].StartY));
-
-                foreach (VectorEdge e in edges)
-                {
-                    e.FillPointList(pl, true);
-                }
-            }
-
-            return pl;
         }
 
         const int HPGL_UNIT = 40; // 0.025 mm
@@ -595,7 +569,6 @@ namespace VectorView
         }
 
         RectangleF boundBox = RectangleF.Empty;
-
         public RectangleF GetBoundRect(bool force = false)
         {
             if (boundBox == RectangleF.Empty || force)
@@ -968,7 +941,7 @@ namespace VectorView
                 first = true;
                 firstPoint = true;
 
-                // Move o desenha para a posição ideal de corte
+                // Move o desenho para a posição ideal de corte
                 mt.TransformPoints(polyline);
 
                 foreach (PointF p in polyline)

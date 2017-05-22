@@ -13,8 +13,6 @@ namespace GlassFilm.Class
 {
     public static class Comandos
     {
-        private static SQLiteDataAdapter iDa;
-        private static DataTable iDt;       
 
         /// <summary>
         /// Função que busca o retorno de um campo

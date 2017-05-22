@@ -232,6 +232,14 @@ namespace VectorView
             }
         }
 
+        internal VectorCutSheet CutSheet
+        {
+            get
+            {
+                return cutSheet;
+            }
+        }
+
         public float GetMinX()
         {
             float min = float.MaxValue;
@@ -368,13 +376,6 @@ namespace VectorView
             g.DrawRectangle(Pens.Orange, sx, sy, g.ClipBounds.Width, g.ClipBounds.Height);
         }
 
-        public void AdjustWidthToContent()
-        {
-
-        }
-
-        bool drawShadow = true;
-
         public void Render(Graphics g)
         {
             if (scale == float.NaN)
@@ -399,43 +400,15 @@ namespace VectorView
             g.TranslateTransform(ox, oy);
             g.ScaleTransform(scale, scale);
 
-            if (Debugger.IsAttached)
-            {
-
-            }
-
-            if (drawShadow)
-            {
-                //g.FillRectangle(Brushes.LightGray, 18, 18, docWidth, docHeight);
-            }
-
-            //g.FillRectangle(docBackBrush, 0, 0, docWidth, docHeight);
-
             if (showDocBorder)
                 g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
 
             foreach (VectorPath p in paths)
             {
-                p.Render(g);
+                if (!p.InCutSheet)
+                    p.Render(g);
             }
-            /*
-            float maxH = GetMaxY();
-            float maxW = GetMaxX();
 
-            g.DrawLine(Pens.Red, maxW, 0, maxW, maxH);
-            g.DrawLine(Pens.Red, 0, maxH, maxW, maxH);
-
-            g.DrawRectangle(Pens.GreenYellow, 0, 0, maxW, maxH);
-            
-            if (showDocumentLimit)
-            {
-                RectangleF r = new RectangleF(0, 0, docWidth, docHeight);
-
-                Pen bp = new Pen(docLimitLineColor, normalLinePen.Width);
-                bp.Width = 0.001f;
-                g.DrawRectangle(bp, r.X, r.Y, r.Width, r.Height);
-            }
-            */
             g.ResetTransform();
 
             if (showRuller)
@@ -478,6 +451,9 @@ namespace VectorView
 
             foreach (VectorPath s in paths)
             {
+                if (s.InCutSheet)
+                    continue;
+
                 sb.Append(s.ToHPGL());
                 sb.Append("\n");
             }
@@ -922,13 +898,27 @@ namespace VectorView
             d.Tag = p.Tag;
             d.Side = p.Side;
 
-            //d.ComputeMetrics();
             d.CopyMetrics(p);
             d.ComputeArea(false);
 
             return d;
         }
 
+        VectorCutSheet cutSheet = null;
+
+        void SendToCut(VectorPath p)
+        {
+            if (p.Document != this)
+                return;
+
+            VectorPath vp = ImportPath(p);
+            vp.Source = p;
+
+            if (cutSheet == null)
+                cutSheet = new VectorCutSheet(this);
+
+            cutSheet.AddPath(vp);
+        }
 
         RectangleF viewBox = new RectangleF();
 
