@@ -267,6 +267,30 @@ namespace VectorView
             AddEdge(c);
         }
 
+        public void CloneSource()
+        {
+            Clone(source);
+        }
+
+        public void Clone(VectorPath source)
+        {
+            if (source == null)
+                return;
+
+            edges.Clear();
+
+            foreach (VectorEdge e in source.Edges)
+            {
+                VectorEdge c = e.Clone();
+                AddEdge(c);
+            }
+
+            Tag = source.Tag;
+            Side = source.Side;
+
+            CopyMetrics(source);
+            ComputeArea(false);
+        }
 
         class PointComparer : IComparer<PointF>
         {
@@ -275,7 +299,6 @@ namespace VectorView
                 return x.X < y.X ? -1 : x.X == y.X ? 0 : 1;
             }
         }
-
         
         float bestAngle = 0;
         PointF[] scans = null;

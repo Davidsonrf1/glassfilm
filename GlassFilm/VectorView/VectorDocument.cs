@@ -240,6 +240,39 @@ namespace VectorView
             }
         }
 
+        public float CutSize
+        {
+            get
+            {
+                return cutSize;
+            }
+
+            set
+            {
+                cutSize = value; UpdateCutSheet();
+            }
+        }
+
+        RectangleF cutBox = new RectangleF(0,0,0,0);
+        public void UpdateCutSheet()
+        {
+            cutBox.Width = docWidth * 0.8f;
+            cutBox.Height = docHeight * 0.35f;
+
+            cutBox.X = (docWidth - cutBox.Width) / 2;
+            cutBox.Y = docHeight - cutBox.Height;
+
+            if (cutSheet == null)
+                cutSheet = new VectorCutSheet(this);
+
+            float s = cutBox.Height / cutSize;
+            cutSheet.SetScale(s);
+
+            cutSheet.X = cutBox.X;
+            cutSheet.Y = cutBox.Y;
+            cutSheet.Height = cutBox.Height;
+        }
+
         public float GetMinX()
         {
             float min = float.MaxValue;
@@ -405,8 +438,12 @@ namespace VectorView
 
             foreach (VectorPath p in paths)
             {
-                if (!p.InCutSheet)
-                    p.Render(g);
+                p.Render(g);
+            }
+
+            if (cutSheet != null)
+            {
+                g.DrawRectangle(Pens.DarkGray, cutBox.X, cutBox.Y, cutBox.Width, cutBox.Height);
             }
 
             g.ResetTransform();
@@ -581,6 +618,8 @@ namespace VectorView
                 ParseSvgElement(n);
             }
         }
+
+        float cutSize = 1520;
 
         public void LoadSVGFromFile(string file, float scale=1)
         {
@@ -888,25 +927,13 @@ namespace VectorView
         {
             VectorPath d = CreatePath();
             d.Source = p;
-
-            foreach (VectorEdge e in p.Edges)
-            {
-                VectorEdge c = e.Clone();
-                d.AddEdge(c);
-            }
-
-            d.Tag = p.Tag;
-            d.Side = p.Side;
-
-            d.CopyMetrics(p);
-            d.ComputeArea(false);
-
+            d.Clone(p);
             return d;
         }
 
         VectorCutSheet cutSheet = null;
 
-        void SendToCut(VectorPath p)
+        public void SendToCut(VectorPath p)
         {
             if (p.Document != this)
                 return;
@@ -915,7 +942,9 @@ namespace VectorView
             vp.Source = p;
 
             if (cutSheet == null)
-                cutSheet = new VectorCutSheet(this);
+            {
+                UpdateCutSheet();                
+            }
 
             cutSheet.AddPath(vp);
         }
@@ -954,6 +983,8 @@ namespace VectorView
             viewBox = new RectangleF(0, 0, r.Width * ppmx, r.Height * ppmy);
             docWidth = r.Width; 
             docHeight = r.Height;
+
+            UpdateCutSheet();
         }
 
         public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)

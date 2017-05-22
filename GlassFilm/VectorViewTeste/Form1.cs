@@ -14,7 +14,6 @@ namespace VectorViewTeste
     public partial class Form1 : Form
     {
         VectorViewCtr view = new VectorViewCtr();
-        VectorViewCtr corte = new VectorViewCtr();
 
         public Form1()
         {
@@ -36,24 +35,12 @@ namespace VectorViewTeste
             //view.AllowScalePath = false;
             view.AllowMoveDocument = false;
 
-            corte.Parent = this;
-            corte.Visible = true;
-            corte.Width = 600;
-            corte.Height = 200;
-            corte.BackColor = Color.White;
-            corte.Dock = DockStyle.Bottom;
-           // corte.ShowDocumentLimit = true;
-            
-            corte.Document.Width = 6000;
-            corte.Document.Height = 1520;
-
-            corte.DoubleClick += Corte_DoubleClick;
             view.DoubleClick += View_DoubleClick;
         }
 
         private void View_DoubleClick(object sender, EventArgs e)
         {
-            corte.ImportSelection(view);
+
         }
 
         private void Corte_DoubleClick(object sender, EventArgs e)
@@ -142,16 +129,16 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", 1);
+            d.LoadSVGFromFile("D:\\teste.svg", 1);
             view.AutoFit(VectorFitStyle.Both, true, true);
-            //VectorPath p = corte.Document.ImportPath(d.Paths[0]);
-
-            corte.AutoFit(VectorFitStyle.Both, false, true);
-
             view.GridSize = 10;
             
             VectorPath vp = d.Paths[0];
             float area = vp.ComputeArea(false, 1);
+
+            
+            view.Document.SendToCut(vp);
+            view.Document.CutSize = 1520;
         }
 
         private void button2_Click(object sender, EventArgs e)
@@ -162,7 +149,7 @@ namespace VectorViewTeste
 
         private void button3_Click(object sender, EventArgs e)
         {
-            corte.ImportSelection(view);
+
         }
     }
 }

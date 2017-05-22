@@ -40,6 +40,15 @@ namespace VectorView
                 }
             }
 
+            public VectorPath Path
+            {
+                get
+                {
+                    return path;
+                }
+                
+            }
+
             public SheetEntry(VectorPath p)
             {
                 path = p;
@@ -88,6 +97,45 @@ namespace VectorView
             }
         }
 
+        public float X
+        {
+            get
+            {
+                return x;
+            }
+
+            set
+            {
+                x = value;
+            }
+        }
+
+        public float Y
+        {
+            get
+            {
+                return y;
+            }
+
+            set
+            {
+                y = value;
+            }
+        }
+
+        public float Height
+        {
+            get
+            {
+                return height;
+            }
+
+            set
+            {
+                height = value;
+            }
+        }
+
         internal VectorCutSheet(VectorDocument doc)
         {
             document = doc;
@@ -103,6 +151,30 @@ namespace VectorView
             p.BuildOriginalPolygons();
 
             se.MakeHull();
+
+            PointF m = p.GetMiddlePoint();            
+
+            p.BeginTransform(m);
+            p.Scale(scale, scale, m);
+
+            m = p.GetMiddlePoint();
+            RectangleF r = p.GetBoundRect();
+
+            p.SetOrigin(new PointF(x,y));
+        }
+
+        public void SetScale(float scale)
+        {
+            foreach (SheetEntry e in paths)
+            {
+                PointF m = e.Path.GetMiddlePoint();
+                e.Path.CloneSource();
+
+                e.Path.BeginTransform(m);
+                e.Path.Scale(scale, scale, m);
+                e.Path.SetOrigin(e.Origin);
+                e.Path.Rotate(e.Angle, e.Origin);
+            }
         }
     }
 }
