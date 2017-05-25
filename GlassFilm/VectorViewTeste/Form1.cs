@@ -33,14 +33,14 @@ namespace VectorViewTeste
             view.SelectionChanged += View_SelectionChanged;
 
             //view.AllowScalePath = false;
-            view.AllowMoveDocument = false;
+            view.AllowMoveDocument = true;
 
             view.DoubleClick += View_DoubleClick;
         }
 
         private void View_DoubleClick(object sender, EventArgs e)
         {
-
+            view.SendToCut();
         }
 
         private void Corte_DoubleClick(object sender, EventArgs e)
@@ -106,8 +106,13 @@ namespace VectorViewTeste
         protected override void OnResize(EventArgs e)
         {
             base.OnResize(e);
+            view.AutoFit();
+        }
 
-            view.AutoFit(VectorFitStyle.Both, true, true);
+        protected override void OnResizeEnd(EventArgs e)
+        {
+            base.OnResizeEnd(e);
+            
         }
 
         protected override void OnMouseMove(MouseEventArgs e)
@@ -130,14 +135,12 @@ namespace VectorViewTeste
         {
             VectorDocument d = view.Document;
             d.LoadSVGFromFile("D:\\teste.svg", 1);
-            view.AutoFit(VectorFitStyle.Both, true, true);
+            view.AutoFit();
             view.GridSize = 10;
             
             VectorPath vp = d.Paths[0];
             float area = vp.ComputeArea(false, 1);
 
-            
-            view.Document.SendToCut(vp);
             view.Document.CutSize = 1520;
         }
 

@@ -121,14 +121,14 @@ namespace GlassFilm
 
                     vvModelo.Document.LoadSVG(svg);
 
-                    vvModelo.AutoFit(VectorFitStyle.Both, true, true);
+                    vvModelo.AutoFit();
                 }
             }
         }
 
         private void vvModelo_Resize(object sender, EventArgs e)
         {
-            vvModelo.AutoFit(VectorFitStyle.Both, true, true);
+            vvModelo.AutoFit();
             Invalidate();
 
             UpdateViewCorte();
@@ -193,7 +193,7 @@ namespace GlassFilm
             vvCorte.BringToFront();
             vvCorte.Refresh();
 
-            vvCorte.AutoFit(VectorFitStyle.Vertical, false, false);
+            vvCorte.AutoFit();
         }
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -293,7 +293,7 @@ namespace GlassFilm
 
         private void splitDesenho_Panel2_Resize(object sender, EventArgs e)
         {
-            vvCorte.AutoFit(VectorFitStyle.Vertical, false, true);
+            vvCorte.AutoFit();
         }
 
         private void FrmPrincipal_KeyDown(object sender, KeyEventArgs e)

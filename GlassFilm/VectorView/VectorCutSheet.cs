@@ -160,7 +160,7 @@ namespace VectorView
             m = p.GetMiddlePoint();
             RectangleF r = p.GetBoundRect();
 
-            p.SetOrigin(new PointF(x,y));
+            p.SetOrigin(new PointF(x, y));
         }
 
         public void SetScale(float scale)

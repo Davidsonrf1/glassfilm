@@ -114,12 +114,34 @@ namespace VectorView
             return sb;
         }
 
-
         protected override void OnMouseWheel(MouseEventArgs e)
         {
             base.OnMouseWheel(e);
 
+            if (document != null)
+            {
+                PointF op = document.ViewPointToDocPoint(new PointF(e.X, e.Y));
 
+                float ds = (e.Delta / Math.Abs(e.Delta));
+                float d = (0.04f * ds);
+
+                PointF p1 = Document.DocPointToViewPoint(new PointF(op.X, op.Y));
+                Document.Scale += d;
+                PointF p2 = Document.DocPointToViewPoint(new PointF(op.X, op.Y));
+
+                if (e.Delta > 0)
+                {
+                    Document.OffsetX -= Math.Abs(p2.X - p1.X);
+                    Document.OffsetY -= Math.Abs(p2.Y - p1.Y);
+                }
+                else
+                {
+                    Document.OffsetX += Math.Abs(p2.X - p1.X);
+                    Document.OffsetY += Math.Abs(p2.Y - p1.Y);
+                }
+
+                Invalidate();
+            }
         }
 
         float startAngle = 0;
@@ -763,8 +785,8 @@ namespace VectorView
 
                 g.Clear(BackColor);
 
-                g.SmoothingMode = SmoothingMode.HighQuality;
-                g.InterpolationMode = InterpolationMode.HighQualityBicubic;
+                g.SmoothingMode = SmoothingMode.AntiAlias;
+                g.InterpolationMode = InterpolationMode.HighQualityBilinear;
 
                 if (showGrid)
                     DrawGrid(g);
@@ -796,8 +818,8 @@ namespace VectorView
                 Pen selPen = new Pen(Color.FromArgb(BackColor.ToArgb() ^ 0xffffff));
                 selPen.Width = 1f;
 
-                selPen.DashStyle = System.Drawing.Drawing2D.DashStyle.Custom;
-                selPen.DashCap = System.Drawing.Drawing2D.DashCap.Round;
+                selPen.DashStyle = DashStyle.Custom;
+                selPen.DashCap = DashCap.Round;
 
                 selPen.DashPattern = new float[] { 2, selDashSize, 2, selDashSize };
 
@@ -938,11 +960,58 @@ namespace VectorView
             Invalidate();
         }
 
-        public void AutoFit(VectorFitStyle style, bool center, bool fitContent)
+        public void SendToCut()
+        {
+            foreach (VectorPath p in Selection())
+            {
+                document.SendToCut(p);
+            }
+        }
+
+        float cutBoxFactor = 0.35f;
+        
+        public void AutoFit(bool showCutBox=true)
         {
             if (document != null)
             {
-                document.AutoFit(new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 4, ClientRectangle.Height - 4), style, center, fitContent);
+                Rectangle content = ClientRectangle;
+
+                int margin = 15;
+
+                content.X += margin;
+                content.Y += margin;
+                content.Width -= margin * 2;
+                content.Height -= margin * 2;
+
+                int cutHeight = (int)(content.Height * cutBoxFactor);
+                RectangleF cut = new RectangleF(content.X, content.Bottom - cutHeight, content.Width, cutHeight);
+
+                if (showCutBox)
+                {
+                    content.Height -= (cutHeight + margin / 2);
+                    document.ShowCutBox = showCutBox;
+                }
+
+                document.AutoFit(content, VectorFitStyle.Both, true, true);
+                
+                if (showCutBox)
+                {
+                    float iscale = 1 / document.Scale;
+                    cut.Width *= iscale;
+                    cut.Height *= iscale;
+
+                    float half = cut.Width / 2;
+
+                    RectangleF docRect = document.GetBoundRect();
+
+                    float centerX = document.ViewPointToDocPoint(new PointF((ClientRectangle.Width / 2), 0)).X;
+
+                    cut.X = centerX - half;
+                    cut.Y = docRect.Bottom + (margin / 2 * iscale);
+
+                    document.SetCutBox(cut);
+                }
+
                 Invalidate();
             }
         }

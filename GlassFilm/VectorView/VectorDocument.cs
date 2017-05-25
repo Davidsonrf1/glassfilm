@@ -33,6 +33,9 @@ namespace VectorView
         Color rullerBorderColor = Color.LightGray;
         Color rullerBackColor = Color.WhiteSmoke;
 
+        bool showCutBox = false;
+
+        RectangleF cutSheetBox = new RectangleF();
 
         bool showRuller = false;
         float rullerWidth = 22f;
@@ -253,24 +256,41 @@ namespace VectorView
             }
         }
 
-        RectangleF cutBox = new RectangleF(0,0,0,0);
+        public bool ShowCutBox
+        {
+            get
+            {
+                return showCutBox;
+            }
+
+            set
+            {
+                showCutBox = value;
+            }
+        }
+
+        public void SetCutBox(RectangleF box)
+        {
+            cutSheetBox.X = box.X;
+            cutSheetBox.Y = box.Y;
+            cutSheetBox.Width = box.Width;
+            cutSheetBox.Height = box.Height;
+
+            UpdateCutSheet();
+        }
+
         public void UpdateCutSheet()
         {
-            cutBox.Width = docWidth * 0.8f;
-            cutBox.Height = docHeight * 0.35f;
-
-            cutBox.X = (docWidth - cutBox.Width) / 2;
-            cutBox.Y = docHeight - cutBox.Height;
-
             if (cutSheet == null)
                 cutSheet = new VectorCutSheet(this);
-
-            float s = cutBox.Height / cutSize;
+            
+            float s = cutSheetBox.Height / cutSize;
             cutSheet.SetScale(s);
 
-            cutSheet.X = cutBox.X;
-            cutSheet.Y = cutBox.Y;
-            cutSheet.Height = cutBox.Height;
+            cutSheet.X = cutSheetBox.X;
+            cutSheet.Y = cutSheetBox.Y;
+            cutSheet.Height = cutSheetBox.Height;
+            
         }
 
         public float GetMinX()
@@ -279,6 +299,9 @@ namespace VectorView
 
             foreach (VectorPath p in paths)
             {
+                if (p.InCutSheet)
+                    continue;
+
                 RectangleF r = p.GetBoundRect();
                 min = Math.Min(r.X, min);
             }
@@ -443,7 +466,7 @@ namespace VectorView
 
             if (cutSheet != null)
             {
-                g.DrawRectangle(Pens.DarkGray, cutBox.X, cutBox.Y, cutBox.Width, cutBox.Height);
+                g.DrawRectangle(Pens.DarkGray, cutSheetBox.X, cutSheetBox.Y, cutSheetBox.Width, cutSheetBox.Height);
             }
 
             g.ResetTransform();
@@ -1046,6 +1069,7 @@ namespace VectorView
 
             if (center)
             {
+
                 offsetX = (size.Width - bb.Width * s) / 2 + margin *s / 2;
                 offsetY = (size.Height - bb.Height * s) / 2 + margin *s / 2;
 
