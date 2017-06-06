@@ -51,22 +51,22 @@
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
             this.pbDesenho = new System.Windows.Forms.ProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
-            this.lbAnos = new System.Windows.Forms.CheckedListBox();
-            this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.rbEsquerda = new System.Windows.Forms.RadioButton();
-            this.rbDireita = new System.Windows.Forms.RadioButton();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tbEtiqueta = new System.Windows.Forms.TextBox();
+            this.groupBox2 = new System.Windows.Forms.GroupBox();
+            this.rbDireita = new System.Windows.Forms.RadioButton();
+            this.rbEsquerda = new System.Windows.Forms.RadioButton();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbAnos = new System.Windows.Forms.CheckedListBox();
             this.vectorView = new VectorView.VectorViewCtr();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.nEscala)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
             this.panel1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
-            this.groupBox2.SuspendLayout();
             this.groupBox3.SuspendLayout();
+            this.groupBox2.SuspendLayout();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolPrincipal
@@ -279,7 +279,7 @@
             // 
             // pnlFiltroInfo
             // 
-            this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(204)))), ((int)(((byte)(104)))), ((int)(((byte)(46)))));
+            this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
             this.pnlFiltroInfo.Controls.Add(this.panel3);
             this.pnlFiltroInfo.Controls.Add(this.label1);
             this.pnlFiltroInfo.Controls.Add(this.nEscala);
@@ -315,6 +315,64 @@
             this.panel1.Size = new System.Drawing.Size(174, 451);
             this.panel1.TabIndex = 17;
             // 
+            // groupBox3
+            // 
+            this.groupBox3.Controls.Add(this.tbEtiqueta);
+            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox3.Location = new System.Drawing.Point(0, 248);
+            this.groupBox3.Name = "groupBox3";
+            this.groupBox3.Size = new System.Drawing.Size(174, 46);
+            this.groupBox3.TabIndex = 17;
+            this.groupBox3.TabStop = false;
+            this.groupBox3.Text = "Etiqueta";
+            // 
+            // tbEtiqueta
+            // 
+            this.tbEtiqueta.Enabled = false;
+            this.tbEtiqueta.Location = new System.Drawing.Point(6, 20);
+            this.tbEtiqueta.Name = "tbEtiqueta";
+            this.tbEtiqueta.Size = new System.Drawing.Size(162, 20);
+            this.tbEtiqueta.TabIndex = 4;
+            this.tbEtiqueta.TextChanged += new System.EventHandler(this.tbEtiqueta_TextChanged);
+            // 
+            // groupBox2
+            // 
+            this.groupBox2.Controls.Add(this.rbDireita);
+            this.groupBox2.Controls.Add(this.rbEsquerda);
+            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
+            this.groupBox2.Location = new System.Drawing.Point(0, 202);
+            this.groupBox2.Name = "groupBox2";
+            this.groupBox2.Size = new System.Drawing.Size(174, 46);
+            this.groupBox2.TabIndex = 16;
+            this.groupBox2.TabStop = false;
+            this.groupBox2.Text = "Lado";
+            // 
+            // rbDireita
+            // 
+            this.rbDireita.AutoSize = true;
+            this.rbDireita.Enabled = false;
+            this.rbDireita.Location = new System.Drawing.Point(92, 19);
+            this.rbDireita.Name = "rbDireita";
+            this.rbDireita.Size = new System.Drawing.Size(55, 17);
+            this.rbDireita.TabIndex = 3;
+            this.rbDireita.TabStop = true;
+            this.rbDireita.Text = "Direita";
+            this.rbDireita.UseVisualStyleBackColor = true;
+            this.rbDireita.CheckedChanged += new System.EventHandler(this.rbEsquerda_CheckedChanged);
+            // 
+            // rbEsquerda
+            // 
+            this.rbEsquerda.AutoSize = true;
+            this.rbEsquerda.Enabled = false;
+            this.rbEsquerda.Location = new System.Drawing.Point(15, 19);
+            this.rbEsquerda.Name = "rbEsquerda";
+            this.rbEsquerda.Size = new System.Drawing.Size(70, 17);
+            this.rbEsquerda.TabIndex = 2;
+            this.rbEsquerda.TabStop = true;
+            this.rbEsquerda.Text = "Esquerda";
+            this.rbEsquerda.UseVisualStyleBackColor = true;
+            this.rbEsquerda.CheckedChanged += new System.EventHandler(this.rbEsquerda_CheckedChanged);
+            // 
             // groupBox1
             // 
             this.groupBox1.Controls.Add(this.lbAnos);
@@ -337,64 +395,6 @@
             this.lbAnos.TabIndex = 0;
             this.lbAnos.SelectedIndexChanged += new System.EventHandler(this.lbAnos_SelectedValueChanged);
             // 
-            // groupBox2
-            // 
-            this.groupBox2.Controls.Add(this.rbDireita);
-            this.groupBox2.Controls.Add(this.rbEsquerda);
-            this.groupBox2.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox2.Location = new System.Drawing.Point(0, 202);
-            this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(174, 46);
-            this.groupBox2.TabIndex = 16;
-            this.groupBox2.TabStop = false;
-            this.groupBox2.Text = "Lado";
-            // 
-            // rbEsquerda
-            // 
-            this.rbEsquerda.AutoSize = true;
-            this.rbEsquerda.Enabled = false;
-            this.rbEsquerda.Location = new System.Drawing.Point(15, 19);
-            this.rbEsquerda.Name = "rbEsquerda";
-            this.rbEsquerda.Size = new System.Drawing.Size(70, 17);
-            this.rbEsquerda.TabIndex = 2;
-            this.rbEsquerda.TabStop = true;
-            this.rbEsquerda.Text = "Esquerda";
-            this.rbEsquerda.UseVisualStyleBackColor = true;
-            this.rbEsquerda.CheckedChanged += new System.EventHandler(this.rbEsquerda_CheckedChanged);
-            // 
-            // rbDireita
-            // 
-            this.rbDireita.AutoSize = true;
-            this.rbDireita.Enabled = false;
-            this.rbDireita.Location = new System.Drawing.Point(92, 19);
-            this.rbDireita.Name = "rbDireita";
-            this.rbDireita.Size = new System.Drawing.Size(55, 17);
-            this.rbDireita.TabIndex = 3;
-            this.rbDireita.TabStop = true;
-            this.rbDireita.Text = "Direita";
-            this.rbDireita.UseVisualStyleBackColor = true;
-            this.rbDireita.CheckedChanged += new System.EventHandler(this.rbEsquerda_CheckedChanged);
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.tbEtiqueta);
-            this.groupBox3.Dock = System.Windows.Forms.DockStyle.Top;
-            this.groupBox3.Location = new System.Drawing.Point(0, 248);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(174, 46);
-            this.groupBox3.TabIndex = 17;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Etiqueta";
-            // 
-            // tbEtiqueta
-            // 
-            this.tbEtiqueta.Enabled = false;
-            this.tbEtiqueta.Location = new System.Drawing.Point(6, 20);
-            this.tbEtiqueta.Name = "tbEtiqueta";
-            this.tbEtiqueta.Size = new System.Drawing.Size(162, 20);
-            this.tbEtiqueta.TabIndex = 4;
-            this.tbEtiqueta.TextChanged += new System.EventHandler(this.tbEtiqueta_TextChanged);
-            // 
             // vectorView
             // 
             this.vectorView.AllowMoveDocument = true;
@@ -414,6 +414,7 @@
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
             this.vectorView.SelctionMargin = 6F;
+            this.vectorView.ShowGrid = false;
             this.vectorView.ShowPointer = false;
             this.vectorView.Size = new System.Drawing.Size(750, 445);
             this.vectorView.TabIndex = 7;
@@ -445,11 +446,11 @@
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.panel1.ResumeLayout(false);
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox2.ResumeLayout(false);
-            this.groupBox2.PerformLayout();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
+            this.groupBox2.ResumeLayout(false);
+            this.groupBox2.PerformLayout();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

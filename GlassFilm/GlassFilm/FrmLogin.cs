@@ -37,5 +37,11 @@ namespace GlassFilm
                 MessageBox.Show("Sem Internet");
             }
         }
+
+        private void FrmLogin_Load(object sender, EventArgs e)
+        {
+            this.BackColor = ColorTranslator.FromHtml("#f8f6f9");
+            pnlLogin.BackColor = ColorTranslator.FromHtml("#434144");
+        }
     }
 }
