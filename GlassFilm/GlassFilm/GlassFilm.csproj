@@ -53,6 +53,7 @@
       <HintPath>..\packages\System.Data.SQLite.Core.1.0.105.0\lib\net40\System.Data.SQLite.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="System.Management" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -67,6 +68,7 @@
     <Compile Include="Class\Controles.cs" />
     <Compile Include="Class\CriaBanco.cs" />
     <Compile Include="Class\DBManager.cs" />
+    <Compile Include="Class\HashMachine.cs" />
     <Compile Include="Class\Logs.cs" />
     <Compile Include="Class\Marca.cs" />
     <Compile Include="Class\Mensagens.cs" />

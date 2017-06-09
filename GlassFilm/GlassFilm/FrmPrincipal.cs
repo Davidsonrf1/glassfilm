@@ -43,7 +43,7 @@ namespace GlassFilm
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
-        {           
+        {            
             foreach (Control ctrl in this.Controls)
             {
                 if (ctrl is MdiClient)
