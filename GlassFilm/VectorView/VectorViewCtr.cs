@@ -129,16 +129,11 @@ namespace VectorView
                 Document.Scale += d;
                 PointF p2 = Document.DocPointToViewPoint(new PointF(op.X, op.Y));
 
-                if (e.Delta > 0)
-                {
-                    Document.OffsetX -= Math.Abs(p2.X - p1.X);
-                    Document.OffsetY -= Math.Abs(p2.Y - p1.Y);
-                }
-                else
-                {
-                    Document.OffsetX += Math.Abs(p2.X - p1.X);
-                    Document.OffsetY += Math.Abs(p2.Y - p1.Y);
-                }
+                float x = p2.X - p1.X;
+                float y = p2.Y - p1.Y;
+
+                Document.OffsetX -= x;
+                Document.OffsetY -= y;
 
                 Invalidate();
             }
@@ -964,7 +959,8 @@ namespace VectorView
         {
             foreach (VectorPath p in Selection())
             {
-                document.SendToCut(p);
+                if (p.Source == null)
+                    document.SendToCut(p);
             }
         }
 

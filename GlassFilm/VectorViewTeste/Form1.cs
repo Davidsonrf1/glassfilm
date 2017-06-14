@@ -134,7 +134,7 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile("D:\\teste.svg", 1);
+            d.LoadSVGFromFile(@"D:\desenhos\COROLLA SEDAN ANO 2009 A 2014.svg");
             view.AutoFit();
             view.GridSize = 10;
             

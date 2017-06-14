@@ -289,8 +289,7 @@ namespace VectorView
 
             cutSheet.X = cutSheetBox.X;
             cutSheet.Y = cutSheetBox.Y;
-            cutSheet.Height = cutSheetBox.Height;
-            
+            cutSheet.Height = cutSheetBox.Height;            
         }
 
         public float GetMinX()
@@ -466,7 +465,7 @@ namespace VectorView
 
             if (cutSheet != null)
             {
-                g.DrawRectangle(Pens.DarkGray, cutSheetBox.X, cutSheetBox.Y, cutSheetBox.Width, cutSheetBox.Height);
+                g.DrawRectangle(normalLinePen, cutSheetBox.X, cutSheetBox.Y, cutSheetBox.Width, cutSheetBox.Height);
             }
 
             g.ResetTransform();

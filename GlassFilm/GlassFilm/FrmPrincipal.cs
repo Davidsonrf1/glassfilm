@@ -198,9 +198,11 @@ namespace GlassFilm
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            vvCorte.ImportSelection(vvModelo);
+            vvModelo.SendToCut();
+
+            //vvCorte.ImportSelection(vvModelo);
             //vvCorte.AutoFit(VectorFitStyle.Horizontal, false, true);
-            vvCorte.Refresh();
+            //vvCorte.Refresh();
 
             UpdateImportCount();
             UpdateViewCorte();

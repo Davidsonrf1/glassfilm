@@ -5,88 +5,11 @@ namespace VectorView
 {
     public class VectorCutSheet
     {
-        class SheetEntry
-        {
-            VectorPath path = null;
-
-            PointF origin = new PointF();
-            float angle = 0;
-
-            ConvexHull convexHull = null;
-
-            public PointF Origin
-            {
-                get
-                {
-                    return origin;
-                }
-
-                set
-                {
-                    origin = value;
-                }
-            }
-
-            public float Angle
-            {
-                get
-                {
-                    return angle;
-                }
-
-                set
-                {
-                    angle = value;
-                }
-            }
-
-            public VectorPath Path
-            {
-                get
-                {
-                    return path;
-                }
-                
-            }
-
-            public SheetEntry(VectorPath p)
-            {
-                path = p;
-            }
-
-            public void MakeHull()
-            {
-                convexHull = new ConvexHull();
-
-                List<PointF> pl = new List<PointF>();
-
-                foreach (PointF[] pts in path.OriginalPoligons)
-                {
-                    pl.AddRange(pts);
-                }
-
-                convexHull.MakeConvexHull(pl);
-            }
-
-            public void ApplyTransform()
-            {
-                PointF o = new PointF(0, 0);
-
-                path.SetOrigin(o);
-                path.Rotate(angle, o);
-                path.SetOrigin(origin);
-
-                convexHull.SetCenter(0, 0);
-                convexHull.Rotate(angle);
-                convexHull.SetCenter(origin.X, origin.Y);
-            }
-        }
-
         float height = 1520;
-        float x, y;
+        float ox, oy;
         float scale = 1;
 
-        List<SheetEntry> paths = new List<SheetEntry>();
+        List<CuttingEntry> paths = new List<CuttingEntry>();
         VectorDocument document = null;
 
         public VectorDocument Document
@@ -101,12 +24,12 @@ namespace VectorView
         {
             get
             {
-                return x;
+                return ox;
             }
 
             set
             {
-                x = value;
+                ox = value;
             }
         }
 
@@ -114,12 +37,12 @@ namespace VectorView
         {
             get
             {
-                return y;
+                return oy;
             }
 
             set
             {
-                y = value;
+                oy = value;
             }
         }
 
@@ -139,11 +62,29 @@ namespace VectorView
         internal VectorCutSheet(VectorDocument doc)
         {
             document = doc;
-        }       
+        }
+
+        CuttingEntry FindEntryByPath(VectorPath vp)
+        {
+            foreach (CuttingEntry e in paths)
+            {
+                if (e.Path == vp)
+                    return e;
+            }
+
+            return null;
+        }
+
+        void FindBestPos(VectorPath vp, out float x, out float y, out float angle)
+        {
+            x = ox;
+            y = oy;
+            angle = 0;
+        }
 
         public void AddPath(VectorPath p)
         {
-            SheetEntry se = new SheetEntry(p);
+            CuttingEntry se = new CuttingEntry(p);
 
             paths.Add(se);
 
@@ -160,12 +101,16 @@ namespace VectorView
             m = p.GetMiddlePoint();
             RectangleF r = p.GetBoundRect();
 
+            float x, y, a;
+
+            FindBestPos(p, out x, out y, out a);
+
             p.SetOrigin(new PointF(x, y));
         }
 
         public void SetScale(float scale)
         {
-            foreach (SheetEntry e in paths)
+            foreach (CuttingEntry e in paths)
             {
                 PointF m = e.Path.GetMiddlePoint();
                 e.Path.CloneSource();
