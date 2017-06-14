@@ -28,7 +28,13 @@ namespace GlassFilm
         }
 
         private void btnEntrar_Click(object sender, EventArgs e)
-        {            
+        {
+            if (txtNome.Text.Trim().Length == 0 || txtSenha.Text.Trim().Length == 0)
+            {
+                Mensagens.Informacao("Preencha o Login e Senha corretamente para Continuar");
+                return;
+            }
+
             msgRetorno("Entrando, aguarde...");
             
             if (ValidaInternet.existeInternet())
