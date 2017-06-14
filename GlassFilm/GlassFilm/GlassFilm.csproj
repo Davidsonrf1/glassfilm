@@ -46,6 +46,10 @@
       <HintPath>..\packages\EntityFramework.6.0.0\lib\net40\EntityFramework.SqlServer.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="MySql.Data, Version=5.2.7.0, Culture=neutral, PublicKeyToken=c5687fc88969c44d, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\..\..\..\Program Files (x86)\MySQL\MySQL Connector Net 5.2.7\Binaries\.NET 2.0\MySql.Data.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
@@ -68,12 +72,15 @@
     <Compile Include="Class\Controles.cs" />
     <Compile Include="Class\CriaBanco.cs" />
     <Compile Include="Class\DBManager.cs" />
+    <Compile Include="Class\Glass.cs" />
     <Compile Include="Class\HashMachine.cs" />
     <Compile Include="Class\Logs.cs" />
     <Compile Include="Class\Marca.cs" />
     <Compile Include="Class\Mensagens.cs" />
     <Compile Include="Class\Modelo.cs" />
     <Compile Include="Class\SeletorVeiculo.cs" />
+    <Compile Include="Class\User.cs" />
+    <Compile Include="Class\ValidaLogin.cs" />
     <Compile Include="Class\Veiculo.cs" />
     <Compile Include="Controller\Marca.cs" />
     <Compile Include="Controller\Modelo.cs" />
@@ -265,6 +272,8 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="iconicon.ico" />
+    <None Include="Resources\identification-tokens.png" />
+    <None Include="Resources\token.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="..\packages\System.Data.SQLite.Core.1.0.105.0\build\net40\System.Data.SQLite.Core.targets" Condition="Exists('..\packages\System.Data.SQLite.Core.1.0.105.0\build\net40\System.Data.SQLite.Core.targets')" />

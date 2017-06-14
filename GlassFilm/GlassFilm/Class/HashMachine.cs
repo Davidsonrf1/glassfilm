@@ -66,7 +66,7 @@ namespace GlassFilm.Class
             catch (Exception) { return serial; }
         }
        
-        private static string criptoMD5(string mensagem, string senha)
+        public static string criptoMD5(string mensagem, string senha)
         {
 
             byte[] resultado; System.Text.UTF8Encoding UTF8 = new System.Text.UTF8Encoding();            
@@ -123,6 +123,6 @@ namespace GlassFilm.Class
             }
 
             return UTF8.GetString(resultado);
-        } 
+        }        
     }
 }
