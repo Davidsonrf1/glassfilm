@@ -4,7 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
-using System.Diagnostics;
+using System.Data.SQLite;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -18,8 +18,15 @@ namespace GlassFilm
 
         public FrmLogin()
         {
-            InitializeComponent();
-            pnlAguardando.Visible = false;
+            InitializeComponent();           
+
+            if (buscaCnpj().Length > 0)
+            {
+                pnlLogin.Size = new Size(358, 80);
+                this.Size = new Size(358, 300);
+                txtCnpj.Visible = false;
+                lbCnpjCpf.Visible = false;
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -30,63 +37,98 @@ namespace GlassFilm
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            if (Debugger.IsAttached)
-            {
-                autorizado = true;
-                this.Close();
-                return;
-            }
-
-            if ((txtNome.Text.Trim().Length == 0 || txtSenha.Text.Trim().Length == 0) && !Debugger.IsAttached)
+            if (txtNome.Text.Trim().Length == 0 || txtSenha.Text.Trim().Length == 0)
             {
                 Mensagens.Informacao("Preencha o Login e Senha corretamente para Continuar");
                 return;
             }
 
+            if (txtCnpj.Text.Length == 0 && txtCnpj.Visible)
+            {
+                Mensagens.Informacao("Preencha o Cnpj ou Cpf para Continuar");
+                return;
+            }
+
+            pnlLogin.Enabled = false;
             msgRetorno("Entrando, aguarde...");
             
             if (ValidaInternet.existeInternet())
             {
-                ValidaLogin vi = new ValidaLogin(txtNome.Text.Trim(),txtSenha.Text.Trim());
+                ValidaLogin vi = new ValidaLogin(txtNome.Text.Trim(), txtSenha.Text.Trim(), txtCnpj.Text.Trim());
+                RetornoValidacao rv = new RetornoValidacao();
 
-                if (vi.inicia())
+                if (txtCnpj.Text.Trim().Length > 0)
                 {
-                    if (vi.valida())
+                    rv = vi.verificaLicenca();
+                }
+
+                if (rv.pronto || txtCnpj.Text.Trim().Length == 0)
+                {
+                    if (txtCnpj.Text.Trim().Length == 0)
+                        vi.cnpj = buscaCnpj();
+
+                    rv = vi.inicia();
+
+                    if (rv.pronto)
                     {
-                        autorizado = true;
-                        this.Close();
-                    }                    
-                    else
-                    {
-                        if (Glass.usuario.idHash.Length > 0)
+                        if (vi.valida())
                         {
-                            Mensagens.Informacao("Este Computador não está Vinculado a está Conta.");
-                            pnlAguardando.Visible = false;
-                            pnlToken.Visible = false;
-                        }
-                        else if (!Glass.usuario.status.Equals("A"))
-                        {
-                            Mensagens.Informacao("Cliente Bloqueado, por favor, entre em Contato.");
-                            pnlAguardando.Visible = false;
-                            pnlToken.Visible = false;
+                            autorizado = true;
+                            this.Close();
                         }
                         else
                         {
-                            pnlAguardando.Visible = false;
-                            pnlToken.Visible = true;
+                            if (Glass.usuario.licenca.Length > 0)
+                            {
+                                Mensagens.Informacao("Este Computador não possui uma Licença Ativa.");                                
+                                pnlToken.Visible = false;
+                                pnlToken.Enabled = true;
+                                pnlLogin.Enabled = true;
+                                lbMensagem.Text = "";
+                            }
+                            else if (!Glass.usuario.status.Equals("A"))
+                            {
+                                Mensagens.Informacao("Cliente Bloqueado, por favor, entre em Contato.");                                
+                                pnlToken.Visible = false;
+                                pnlToken.Enabled = true;
+                                pnlLogin.Enabled = true;
+                                lbMensagem.Text = "";
+                            }
+                            else
+                            {                               
+                                pnlToken.Visible = true;
+                                pnlToken.Enabled = true;
+                                pnlLogin.Enabled = true;
+                                lbMensagem.Text = "";
+
+                                pnlLogin.Size = new Size(352, 99);
+                                this.Size = new Size(358, 317);
+                            }
                         }
                     }
+                    else
+                    {
+                        Mensagens.Informacao(rv.message);                        
+                        pnlToken.Visible = false;
+                        pnlToken.Enabled = true;
+                        pnlLogin.Enabled = true;
+                        lbMensagem.Text = "";
+                    }  
                 }
                 else
                 {
-                    Mensagens.Informacao("Usuário e Senha incorretos");
-                    pnlAguardando.Visible = false;
+                    Mensagens.Informacao(rv.message);                   
                     pnlToken.Visible = false;
-                }        
+                    pnlToken.Enabled = true;
+                    pnlLogin.Enabled = true;
+                    lbMensagem.Text = "";
+                }      
             }
             else
             {
                 MessageBox.Show("Sem Internet");
+                pnlLogin.Enabled = true;
+                lbMensagem.Text = "";
             }
         }
 
@@ -99,15 +141,18 @@ namespace GlassFilm
         private void btnValidarToken_Click(object sender, EventArgs e)
         {
             msgRetorno("Verificando Token, aguarde...");
+            pnlToken.Enabled = false;
             RetornoValidacao rv = Token.criaToken(txtToken.Text.Trim());
 
             if (!rv.pronto)
             {
                 Mensagens.Informacao(rv.message);
-                pnlAguardando.Visible = false;
+                pnlToken.Enabled = true;
+                lbMensagem.Text = "";
             }
             else
             {
+                addCnpj();
                 autorizado = true;
                 this.Close();     
             }
@@ -120,11 +165,60 @@ namespace GlassFilm
         }
 
         private void msgRetorno(string msg)
-        {
-            
-            pnlAguardando.Visible = true;                                   
+        {                      
             lbMensagem.Text = msg;
             Application.DoEvents();
+        }
+
+        private string buscaCnpj()
+        {
+            string retorno = "";
+            DataTable dt = new DataTable();
+
+            try
+            {
+                string _sql = " SELECT cnpj_cpf FROM empresa ";                
+
+                if (DBManager.conectado())
+                {
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(_sql, DBManager._mainDbName);
+                    da.Fill(dt);
+
+                    foreach (DataRow l in dt.Rows)
+                    {
+                        retorno = l["cnpj_cpf"].ToString();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+            }
+
+            return retorno;        
+        }
+
+        public void addCnpj()
+        {           
+            if (DBManager.conectado() && txtCnpj.Text.Trim().Length > 0)
+            {
+                try
+                {
+                    string _sql = " INSERT INTO EMPRESA (CNPJ_CPF) VALUES (@CNPJ) ";
+
+                    SQLiteCommand cmd = new SQLiteCommand();
+                    cmd.Connection = DBManager._mainConnection;
+                    cmd.CommandText = _sql;                        
+
+                    cmd.Parameters.Add(new SQLiteParameter("@CNPJ", txtCnpj.Text.Trim()));                        
+
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Logs.Log(ex.Message);
+                } 
+            }                             
         }
     }
 }

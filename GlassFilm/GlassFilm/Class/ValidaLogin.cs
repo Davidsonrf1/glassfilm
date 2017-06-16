@@ -7,7 +7,6 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
-using System.Diagnostics;
 
 namespace GlassFilm.Class
 {
@@ -20,52 +19,99 @@ namespace GlassFilm.Class
 
         private string nome;
         private string senha;
+        public string cnpj;
 
-        public ValidaLogin(string nome, string senha)
+        public ValidaLogin(string nome, string senha, string cnpj = "")
         {
             this.nome = nome;
             this.senha = senha;
+            this.cnpj = cnpj;
         }
 
-        public bool inicia()
-        {
-            if (Debugger.IsAttached)
-            {
-                return true;
-            }
+        public RetornoValidacao inicia()
+        {            
+            RetornoValidacao rv = new RetornoValidacao();            
 
-            bool retorno = false;
             if (ConexaoExterna.conectar())
-            {
+            {                
                 Glass.usuario = buscaUsuario();
 
                 if (Glass.usuario != null && Glass.usuario.status.Equals("A"))
                 {
-                    retorno = true;
-                }                
+                    rv.pronto = true;
+                }
+                else
+                {
+                    rv.pronto = false;
+                    rv.message = "Usuário e Senha incorretos";
+                }                                                 
             }
-            return retorno;
+            return rv;
         }
 
         public bool valida()
         {            
             hm = new HashMachine();
             string idMachine = hm.getHashMachine();
-            string idHash = HashMachine.criptoMD5(Glass.usuario.token + idMachine, "tech");
+            string idLicenca = HashMachine.criptoMD5(Glass.usuario.token + idMachine, "tech");
 
-            return Glass.usuario.idHash.Equals(idHash);
+            return Glass.usuario.licenca.Equals(idLicenca);
         }
 
         private User buscaUsuario()
         {
-            DataTable dtUser = ConexaoExterna.getDataTable("select cu.id,cu.licence,cu.idHash,c.status from gf_client_user cu inner join gf_client c on c.id=cu.id_cliente where cu.login = '" + this.nome + "' and cu.senha = '" + this.senha + "'");
+            string _sql = "SELECT" +
+                            "   cu.id," +
+                            "   cl.token," +
+                            "   cl.licenca," +
+                            "   c.status" +
+                            " FROM" +
+                            "   gf_client_user cu" +
+                            " INNER JOIN gf_client c on cu.id_cliente = c.id" +
+                            " INNER JOIN gf_client_licence cl on cl.id_cliente = c.id" +
+                            " WHERE" +
+                            "   c.cnpj_cpf = '"+this.cnpj+"'" +
+                            "   and cu.login = '"+this.nome+"'" +
+                            "   and cu.senha = '"+ this.senha + "'";
+
+            DataTable dtUser = ConexaoExterna.getDataTable(_sql);
             User _user = null;
             foreach (DataRow r in dtUser.Rows)
             {
-                _user = new User(Convert.ToInt16(r["id"].ToString()), r["licence"].ToString(), r["idHash"].ToString(), r["status"].ToString());
+                _user = new User(Convert.ToInt16(r["id"].ToString()), r["token"].ToString(), r["licenca"].ToString(), r["status"].ToString());
             }
             return _user;
-        }        
+        }
+
+        public RetornoValidacao verificaLicenca()
+        {
+            RetornoValidacao rv = new RetornoValidacao();
+
+            string _sql = "SELECT count(*) FROM gf_client_licence cl" +
+                          " INNER JOIN gf_client c on c.id = cl.id_cliente" +
+                          " WHERE c.cnpj_cpf = '" + this.cnpj + "'" +
+                          " and length(cl.licenca) = 0";
+
+            DataTable dtUser = ConexaoExterna.getDataTable(_sql);
+            bool retorno = false;
+            foreach (DataRow r in dtUser.Rows)
+            {
+                retorno = !r[0].ToString().Equals("0");
+            }
+
+            if (retorno)
+            {
+                rv.pronto = true;
+                rv.message = "";
+            }
+            else
+            {
+                rv.pronto = false;
+                rv.message = "Nenhuma Licença disponível para este Computador";
+            }
+
+            return rv;
+        }
     }
 
     public static class ConexaoExterna
@@ -225,15 +271,24 @@ namespace GlassFilm.Class
             string idMachine = hm.getHashMachine();
             string idHash = HashMachine.criptoMD5(Glass.usuario.token + idMachine, "tech");           
 
-            rv.pronto = atualizaHashUser(idHash);
-            rv.message = "Bem vindo";
+            if(atualizaHashUser(idHash))
+            {
+                rv.pronto = true;
+                rv.message = "Bem vindo";
+            }
+            else 
+            {
+                rv.pronto = false;
+                rv.message = "Não foi possível atualizar seu acesso!";
+            }
+            
             return rv;
         }
 
         private static bool atualizaHashUser(string hash)
-        {            
-            string _sql = "update gf_client_user set idHash = '" + hash + "' where licence = '" + Glass.usuario.token + "'";
-            return ConexaoExterna.insert(_sql);                       
+        {
+            string _sql = "update gf_client_licence set licenca = '" + hash + "', machine_name = '" + Environment.MachineName + "' where token = '" + Glass.usuario.token + "'";
+            return ConexaoExterna.insert(_sql);
         }        
     }
 
