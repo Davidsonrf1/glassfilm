@@ -121,7 +121,7 @@ namespace GlassFilm
 
                     vvModelo.Document.LoadSVG(svg);
 
-                    vvModelo.AutoFit();
+                    vvModelo.AutoFit(VectorFitStyle.Both, true, true);
                 }
             }
         }
@@ -198,11 +198,11 @@ namespace GlassFilm
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            vvModelo.SendToCut();
+            //vvModelo.SendToCut();
 
-            //vvCorte.ImportSelection(vvModelo);
+            vvCorte.ImportSelection(vvModelo);
             //vvCorte.AutoFit(VectorFitStyle.Horizontal, false, true);
-            //vvCorte.Refresh();
+            vvCorte.Refresh();
 
             UpdateImportCount();
             UpdateViewCorte();

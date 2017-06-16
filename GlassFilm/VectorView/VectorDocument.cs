@@ -235,14 +235,6 @@ namespace VectorView
             }
         }
 
-        internal VectorCutSheet CutSheet
-        {
-            get
-            {
-                return cutSheet;
-            }
-        }
-
         public float CutSize
         {
             get
@@ -252,44 +244,8 @@ namespace VectorView
 
             set
             {
-                cutSize = value; UpdateCutSheet();
+                cutSize = value;
             }
-        }
-
-        public bool ShowCutBox
-        {
-            get
-            {
-                return showCutBox;
-            }
-
-            set
-            {
-                showCutBox = value;
-            }
-        }
-
-        public void SetCutBox(RectangleF box)
-        {
-            cutSheetBox.X = box.X;
-            cutSheetBox.Y = box.Y;
-            cutSheetBox.Width = box.Width;
-            cutSheetBox.Height = box.Height;
-
-            UpdateCutSheet();
-        }
-
-        public void UpdateCutSheet()
-        {
-            if (cutSheet == null)
-                cutSheet = new VectorCutSheet(this);
-            
-            float s = cutSheetBox.Height / cutSize;
-            cutSheet.SetScale(s);
-
-            cutSheet.X = cutSheetBox.X;
-            cutSheet.Y = cutSheetBox.Y;
-            cutSheet.Height = cutSheetBox.Height;            
         }
 
         public float GetMinX()
@@ -461,11 +417,6 @@ namespace VectorView
             foreach (VectorPath p in paths)
             {
                 p.Render(g);
-            }
-
-            if (cutSheet != null)
-            {
-                g.DrawRectangle(normalLinePen, cutSheetBox.X, cutSheetBox.Y, cutSheetBox.Width, cutSheetBox.Height);
             }
 
             g.ResetTransform();
@@ -953,23 +904,6 @@ namespace VectorView
             return d;
         }
 
-        VectorCutSheet cutSheet = null;
-
-        public void SendToCut(VectorPath p)
-        {
-            if (p.Document != this)
-                return;
-
-            VectorPath vp = ImportPath(p);
-            vp.Source = p;
-
-            if (cutSheet == null)
-            {
-                UpdateCutSheet();                
-            }
-
-            cutSheet.AddPath(vp);
-        }
 
         RectangleF viewBox = new RectangleF();
 
@@ -1005,8 +939,7 @@ namespace VectorView
             viewBox = new RectangleF(0, 0, r.Width * ppmx, r.Height * ppmy);
             docWidth = r.Width; 
             docHeight = r.Height;
-
-            UpdateCutSheet();
+            
         }
 
         public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)

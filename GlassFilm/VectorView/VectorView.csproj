@@ -53,7 +53,6 @@
     <Compile Include="VectorClose.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />
-    <Compile Include="VectorCutSheet.cs" />
     <Compile Include="VectorDocument.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="VectorEdge.cs" />

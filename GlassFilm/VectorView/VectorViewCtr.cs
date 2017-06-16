@@ -201,6 +201,12 @@ namespace VectorView
                 }
                 else
                 {
+                    if (p.InCutSheet && selection.Count > 0)
+                    {
+                        if (!selection[0].InCutSheet)
+                            ClearSelection();
+                    }
+
                     if (selection.Contains(p))
                     {
                         if (allowRotatePath && allowScalePath)
@@ -319,7 +325,7 @@ namespace VectorView
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
-            base.OnMouseDown(e);
+            base.OnMouseMove(e);
 
             if (document == null)
                 return;
@@ -955,18 +961,7 @@ namespace VectorView
             Invalidate();
         }
 
-        public void SendToCut()
-        {
-            foreach (VectorPath p in Selection())
-            {
-                if (p.Source == null)
-                    document.SendToCut(p);
-            }
-        }
-
-        float cutBoxFactor = 0.35f;
-        
-        public void AutoFit(bool showCutBox=true)
+        public void AutoFit()
         {
             if (document != null)
             {
@@ -974,41 +969,22 @@ namespace VectorView
 
                 int margin = 15;
 
-                content.X += margin;
-                content.Y += margin;
-                content.Width -= margin * 2;
-                content.Height -= margin * 2;
-
-                int cutHeight = (int)(content.Height * cutBoxFactor);
-                RectangleF cut = new RectangleF(content.X, content.Bottom - cutHeight, content.Width, cutHeight);
-
-                if (showCutBox)
-                {
-                    content.Height -= (cutHeight + margin / 2);
-                    document.ShowCutBox = showCutBox;
-                }
+                //content.X += margin;
+                //content.Y += margin;
+                //content.Width -= margin * 2;
+                //content.Height -= margin * 2;
 
                 document.AutoFit(content, VectorFitStyle.Both, true, true);
-                
-                if (showCutBox)
-                {
-                    float iscale = 1 / document.Scale;
-                    cut.Width *= iscale;
-                    cut.Height *= iscale;
-
-                    float half = cut.Width / 2;
-
-                    RectangleF docRect = document.GetBoundRect();
-
-                    float centerX = document.ViewPointToDocPoint(new PointF((ClientRectangle.Width / 2), 0)).X;
-
-                    cut.X = centerX - half;
-                    cut.Y = docRect.Bottom + (margin / 2 * iscale);
-
-                    document.SetCutBox(cut);
-                }
-
                 Invalidate();
+            }
+        }
+
+        public void AutoFit(VectorFitStyle style, bool center, bool fitContent)
+        {
+            if (document != null)
+            {
+                document.AutoFit(new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 4, ClientRectangle.Height - 4), style, center, fitContent);
+                Refresh();
             }
         }
 

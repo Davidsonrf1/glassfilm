@@ -65,7 +65,7 @@ namespace GlassFilm
                 vectorView.Document.LoadSVGFromFile(opf.FileName, scale);
                 vectorView.Document.Normalize();
 
-                vectorView.AutoFit(false);               
+                vectorView.AutoFit();               
 
                 EnableControls(false);
             }
@@ -302,7 +302,7 @@ namespace GlassFilm
                     vectorView.Document.LoadSVG(svg);
                     vectorView.AllowTransforms = false;
 
-                    vectorView.AutoFit(false);
+                    vectorView.AutoFit();
                     UpdateDocInfo();
                 }
             }

@@ -7,6 +7,7 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
+using System.Diagnostics;
 
 namespace GlassFilm.Class
 {
@@ -28,6 +29,11 @@ namespace GlassFilm.Class
 
         public bool inicia()
         {
+            if (Debugger.IsAttached)
+            {
+                return true;
+            }
+
             bool retorno = false;
             if (ConexaoExterna.conectar())
             {

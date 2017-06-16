@@ -40,7 +40,7 @@ namespace VectorViewTeste
 
         private void View_DoubleClick(object sender, EventArgs e)
         {
-            view.SendToCut();
+            
         }
 
         private void Corte_DoubleClick(object sender, EventArgs e)
