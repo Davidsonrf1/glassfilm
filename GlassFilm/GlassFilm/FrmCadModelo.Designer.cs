@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label3;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCadModelo));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle4 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle5 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle6 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imagensIcons = new System.Windows.Forms.ImageList(this.components);
             this.label19 = new System.Windows.Forms.Label();
             this.txtFiltro = new System.Windows.Forms.TextBox();
@@ -50,7 +50,7 @@
             this.gridPrincipal = new System.Windows.Forms.DataGridView();
             this.pageManutencao = new System.Windows.Forms.TabPage();
             this.pnlManutencao = new System.Windows.Forms.Panel();
-            this.txtCodigoFipe = new System.Windows.Forms.TextBox();
+            this.txtCodigoAno = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
             this.btnBuscaMarca = new System.Windows.Forms.Button();
             this.txtDescCodigoMarca = new System.Windows.Forms.TextBox();
@@ -221,36 +221,36 @@
             this.gridPrincipal.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gridPrincipal.BackgroundColor = System.Drawing.Color.Gainsboro;
             this.gridPrincipal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridPrincipal.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle4.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle4.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle4.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle4.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle4.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle4.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle4.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridPrincipal.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle4;
             this.gridPrincipal.ColumnHeadersHeight = 22;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gridPrincipal.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle5.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle5.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle5.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle5.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle5.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle5.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle5.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gridPrincipal.DefaultCellStyle = dataGridViewCellStyle5;
             this.gridPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridPrincipal.Location = new System.Drawing.Point(0, 0);
             this.gridPrincipal.MultiSelect = false;
             this.gridPrincipal.Name = "gridPrincipal";
             this.gridPrincipal.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridPrincipal.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle6.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle6.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle6.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle6.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle6.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle6.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle6.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridPrincipal.RowHeadersDefaultCellStyle = dataGridViewCellStyle6;
             this.gridPrincipal.RowHeadersVisible = false;
             this.gridPrincipal.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridPrincipal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -278,7 +278,7 @@
             // pnlManutencao
             // 
             this.pnlManutencao.BackColor = System.Drawing.Color.Gainsboro;
-            this.pnlManutencao.Controls.Add(this.txtCodigoFipe);
+            this.pnlManutencao.Controls.Add(this.txtCodigoAno);
             this.pnlManutencao.Controls.Add(this.label5);
             this.pnlManutencao.Controls.Add(this.btnBuscaMarca);
             this.pnlManutencao.Controls.Add(this.txtDescCodigoMarca);
@@ -294,23 +294,23 @@
             this.pnlManutencao.Size = new System.Drawing.Size(962, 291);
             this.pnlManutencao.TabIndex = 134;
             // 
-            // txtCodigoFipe
+            // txtCodigoAno
             // 
-            this.txtCodigoFipe.Font = new System.Drawing.Font("Verdana", 8.3F);
-            this.txtCodigoFipe.Location = new System.Drawing.Point(157, 117);
-            this.txtCodigoFipe.Name = "txtCodigoFipe";
-            this.txtCodigoFipe.Size = new System.Drawing.Size(160, 21);
-            this.txtCodigoFipe.TabIndex = 126;
-            this.txtCodigoFipe.Tag = "HISTORICO";
+            this.txtCodigoAno.Font = new System.Drawing.Font("Verdana", 8.3F);
+            this.txtCodigoAno.Location = new System.Drawing.Point(157, 117);
+            this.txtCodigoAno.Name = "txtCodigoAno";
+            this.txtCodigoAno.Size = new System.Drawing.Size(205, 21);
+            this.txtCodigoAno.TabIndex = 126;
+            this.txtCodigoAno.Tag = "ANO";
             // 
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(65, 120);
+            this.label5.Location = new System.Drawing.Point(115, 120);
             this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(86, 14);
+            this.label5.Size = new System.Drawing.Size(36, 14);
             this.label5.TabIndex = 125;
-            this.label5.Text = "Código Fipe:";
+            this.label5.Text = "Ano:";
             // 
             // btnBuscaMarca
             // 
@@ -645,7 +645,7 @@
         private System.Windows.Forms.Button btnBuscaMarca;
         private System.Windows.Forms.TextBox txtDescCodigoMarca;
         private System.Windows.Forms.TextBox txtCodigoMarca;
-        private System.Windows.Forms.TextBox txtCodigoFipe;
+        private System.Windows.Forms.TextBox txtCodigoAno;
         private System.Windows.Forms.Label label5;
     }
 }

@@ -9,11 +9,13 @@ namespace GlassFilm.Class
     {
         int id;
         string modelo;
+        string ano_modelo;
 
-        public Modelo(int id, string modelo)
+        public Modelo(int id, string modelo, string ano)
         {
             this.id = id;
             this.modelo = modelo;
+            this.ano_modelo = ano;
         }
 
         public int Id
@@ -40,11 +42,11 @@ namespace GlassFilm.Class
             {
                 modelo = value;
             }
-        }
+        }       
 
         public override string ToString()
         {
-            return modelo;
+            return modelo + " ( ANO: " + this.ano_modelo + " )";
         }
     }
 }

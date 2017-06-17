@@ -30,12 +30,12 @@ namespace GlassFilm
 
         private void carregaGridPrincipal()
         {
-            string[] nomesColunas = { "Código", "Modelo", "Código Fipe", "Marca" };
+            string[] nomesColunas = { "Código", "Modelo", "Ano", "Marca" };
             int[] tamColunas = { 100, 200, 130, 200 };
             carregamento.carregarGrid(gridPrincipal, " SELECT  " +
                                                      "	 CAST(CODIGO_MODELO AS VARCHAR) AS CODIGO_MODELO," +
                                                      "	 MODELO," +
-                                                     "	 CODIGO_FIPE," +                                                     
+                                                     "	 ANO," +                                                     
                                                      "	 (SELECT MARCA FROM MARCA WHERE MARCA.CODIGO_MARCA = MODELO.CODIGO_MARCA) as MARCA" +
                                                      " FROM " +
                                                      "	 MODELO" +
@@ -49,7 +49,7 @@ namespace GlassFilm
 
         private void limpaCampos()
         {
-            txtCodigoFipe.Clear();
+            txtCodigoAno.Clear();
             txtDescricao.Clear();
             txtDescCodigoMarca.Clear();
             txtCodigoMarca.Clear();
@@ -129,7 +129,7 @@ namespace GlassFilm
             {
                 txtCodigo.Text = linhaSelecionada;
                 txtCodigoMarca.Text = linha["CODIGO_MARCA"].ToString();
-                txtCodigoFipe.Text = linha["CODIGO_FIPE"].ToString();
+                txtCodigoAno.Text = linha["ANO"].ToString();
                 txtDescricao.Text = linha["MODELO"].ToString();
 
                 txtCodigoMarca_Leave(txtCodigoMarca.Text, EventArgs.Empty);
@@ -151,10 +151,10 @@ namespace GlassFilm
                 return;
             }
 
-            if (txtCodigoFipe.Text.Length == 0)
+            if (txtCodigoAno.Text.Length == 0)
             {
                 Mensagens.Informacao("Preencha o Campo Código Fipe");
-                txtCodigoFipe.Focus();
+                txtCodigoAno.Focus();
                 return;
             }
 
@@ -167,7 +167,7 @@ namespace GlassFilm
 
             #endregion
             
-            modelo = new Modelo(txtCodigo.Text,txtCodigoMarca.Text,txtCodigoFipe.Text,txtDescricao.Text);
+            modelo = new Modelo(txtCodigo.Text,txtCodigoMarca.Text,txtCodigoAno.Text,txtDescricao.Text);
 
             if (toolStatus.Text == "Novo")
             {

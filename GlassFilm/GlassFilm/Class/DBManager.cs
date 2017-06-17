@@ -56,7 +56,7 @@ namespace GlassFilm.Class
             List<Modelo> modelos = new List<Class.Modelo>();
 
             while (dr.Read())
-                modelos.Add(new Modelo(Convert.ToInt32(dr["CODIGO_MODELO"].ToString()), dr["MODELO"].ToString()));
+                modelos.Add(new Modelo(Convert.ToInt32(dr["CODIGO_MODELO"].ToString()), dr["MODELO"].ToString(), dr["ANO"].ToString()));
 
             dr.Close();
             return modelos;
