@@ -21,6 +21,14 @@ namespace VectorView
         Both
     }
 
+    public enum VectorFitRegion
+    {
+        None, 
+        Document,
+        Content,
+        CutBox
+    }
+
     public class VectorDocument
     {
         List<VectorPath> paths = new List<VectorPath>();
@@ -32,13 +40,6 @@ namespace VectorView
 
         Color rullerBorderColor = Color.LightGray;
         Color rullerBackColor = Color.WhiteSmoke;
-
-        bool showCutBox = false;
-
-        RectangleF cutSheetBox = new RectangleF();
-
-        bool showRuller = false;
-        float rullerWidth = 22f;
 
         string observacao = "";
 
@@ -53,6 +54,10 @@ namespace VectorView
         float ppi = 96;
         float ppmx = 37.7952728f;  // ppm = Pontos por milímetro
         float ppmy = 37.7952728f;
+
+        float cutSize = 1520;
+        bool drawCutBox = false;
+        RectangleF cutBox = new RectangleF();
 
         bool showDocBorder = false;
 
@@ -120,19 +125,6 @@ namespace VectorView
             set
             {
                 scale = value;
-            }
-        }
-
-        public bool ShowRuller
-        {
-            get
-            {
-                return showRuller;
-            }
-
-            set
-            {
-                showRuller = value; 
             }
         }
 
@@ -244,7 +236,28 @@ namespace VectorView
 
             set
             {
-                cutSize = value;
+                cutSize = value; UpdateCutBox();
+            }
+        }
+
+        public bool DrawCutBox
+        {
+            get
+            {
+                return drawCutBox;
+            }
+
+            set
+            {
+                drawCutBox = value;
+            }
+        }
+
+        public RectangleF CutBox
+        {
+            get
+            {
+                return cutBox;
             }
         }
 
@@ -303,6 +316,16 @@ namespace VectorView
             return max;
         }
 
+        public void UpdateCutBox()
+        {
+            RectangleF r = GetBoundRect();
+
+            cutBox.X = 0;
+            cutBox.Y = 0;
+            cutBox.Width = r.Width;
+            cutBox.Height = cutSize;
+        }
+
         bool autoCheckConstraints = false;                
         bool constraintOK = true;
 
@@ -319,29 +342,32 @@ namespace VectorView
             List<VectorPath> pl = new List<VectorPath>();
             foreach (VectorPath vp in paths)
             {
-                vp.ResetConstraints();
+                vp.ResetContraints();
+                vp.CheckBoundConstraints();
                 pl.Add(vp);
             }
 
             while(pl.Count > 0)
             {
                 VectorPath a = pl[0];
+                List<VectorPath> toRemove = new List<VectorPath>(pl.Count);
+                toRemove.Add(a);
+
                 for (int j = 1; j < pl.Count; j++)
                 {
-                    VectorPath b = pl[j];
-
-                    if (a.Intersect(b))
+                    if (!a.CheckIntersectionContraints(pl[j]))
                     {
-                        pl.Remove(b);
-
-                        a.IsIntersecting = true;
-                        b.IsIntersecting = true;
-
                         constraintOK = false;
+                        toRemove.Add(pl[j]);
                     }
                 }
 
-                pl.RemoveAt(0);
+                foreach (VectorPath tr in toRemove)
+                {
+                    pl.Remove(tr);
+                }
+
+                toRemove.Clear();                
             }            
         }
 
@@ -367,25 +393,7 @@ namespace VectorView
                 docBackBrush = new SolidBrush(docBackcolor);
         }
 
-        void DrawRuller(Graphics g)
-        {
-            Pen rp = new Pen(rullerBorderColor, 0.1f);
-            SolidBrush rb = new SolidBrush(rullerBackColor);
-
-            g.FillRectangle(rb, 0, 0, g.ClipBounds.Right, rullerWidth);
-            g.FillRectangle(rb, 0, 0, rullerWidth, g.ClipBounds.Bottom);
-
-            g.DrawLine(rp, rullerWidth, rullerWidth, g.ClipBounds.Right, rullerWidth);
-            g.DrawLine(rp, rullerWidth, rullerWidth, rullerWidth, g.ClipBounds.Bottom);
-
-            float sx = (offsetX + rullerWidth);
-            float sy = (offsetY + rullerWidth);
-
-            float wx = g.ClipBounds.Width / scale;
-            float wy = g.ClipBounds.Height / scale;
-
-            g.DrawRectangle(Pens.Orange, sx, sy, g.ClipBounds.Width, g.ClipBounds.Height);
-        }
+        Pen cutPen = null;
 
         public void Render(Graphics g)
         {
@@ -395,12 +403,6 @@ namespace VectorView
             BeginRender(g);
 
             float ox = 0, oy = 0;
-
-            if (showRuller)
-            {
-                ox = rullerWidth;
-                oy = rullerWidth;
-            }
 
             ox += offsetX;
             oy += offsetY;
@@ -419,12 +421,18 @@ namespace VectorView
                 p.Render(g);
             }
 
-            g.ResetTransform();
-
-            if (showRuller)
+            if (drawCutBox)
             {
-                DrawRuller(g);
+                if (cutPen == null)
+                {
+                    cutPen = new Pen(Color.Red, 1 * Scale);
+                    cutPen.Alignment = PenAlignment.Outset;
+                }
+
+                g.DrawRectangle(cutPen, cutBox.X, cutBox.Y, cutBox.Width, cutBox.Height);
             }
+
+            g.ResetTransform();
         }
 
         public string ToHPGL()
@@ -592,7 +600,6 @@ namespace VectorView
             }
         }
 
-        float cutSize = 1520;
 
         public void LoadSVGFromFile(string file, float scale=1)
         {
@@ -942,35 +949,32 @@ namespace VectorView
             
         }
 
-        public void AutoFit(Rectangle size, VectorFitStyle style, bool center, bool fitContent)
+        public void AutoFit(Rectangle size, VectorFitStyle style, bool center, VectorFitRegion region, int margin)
         {
-            int margin = 0;
+            RectangleF bb = new RectangleF();
 
-            RectangleF bb;
-            if (paths.Count == 0 || !fitContent)
+            UpdateCutBox();
+
+            switch (region)
             {
-                bb = new RectangleF(0, 0, docWidth, docHeight);
-            }
-            else
-            {
-                bb = GetBoundRect();
-                bb.Width += bb.X;
-                bb.Height += bb.Y;
+                case VectorFitRegion.None:
+                case VectorFitRegion.Document:
+                    bb = new RectangleF(0, 0, docWidth, docHeight);
+                    break;
+                case VectorFitRegion.Content:
+                    bb = GetBoundRect();
+                    bb.Width += bb.X;
+                    bb.Height += bb.Y;
+                    break;
+                case VectorFitRegion.CutBox:
+                    bb = new RectangleF(0, 0, cutBox.Width, cutBox.Height);
+                    break;
             }
 
             bb.Inflate(margin, margin);
 
-            size.Width -= margin;
-            size.Height -= margin;
-
-            if (showRuller)
-            {
-                size.X += (int)rullerWidth + 2;
-                size.Y += (int)rullerWidth + 2;
-
-                size.Width -= (int)rullerWidth + 2;
-                size.Height -= (int)rullerWidth + 2;
-            }
+            //size.Width -= margin;
+            //size.Height -= margin;
 
             float s = 1;
 
@@ -1001,15 +1005,8 @@ namespace VectorView
 
             if (center)
             {
-
                 offsetX = (size.Width - bb.Width * s) / 2 + margin *s / 2;
                 offsetY = (size.Height - bb.Height * s) / 2 + margin *s / 2;
-
-                if (showRuller)
-                {
-                    offsetX += rullerWidth;
-                    offsetY += rullerWidth;
-                }
             }
         }
     }

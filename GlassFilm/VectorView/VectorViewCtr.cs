@@ -30,6 +30,8 @@ namespace VectorView
         bool allowRotatePath = true;
         bool allowScalePath = true;
 
+        bool showCutBox = false;
+
         List<VectorPath> selection = new List<VectorPath>();
        
         public VectorViewCtr()
@@ -750,6 +752,19 @@ namespace VectorView
             }
         }
 
+        public bool ShowCutBox
+        {
+            get
+            {
+                return showCutBox;
+            }
+
+            set
+            {
+                showCutBox = value; if (document != null) document.DrawCutBox = value; Invalidate();
+            }
+        }
+
         bool drawSelecionBox = true;
         float selectionMargin =6f;
         float selDashSize = 3f;
@@ -805,6 +820,8 @@ namespace VectorView
                     if (allowRotatePath)
                         showScaleCorner = false;
                 }
+
+                document.DrawCutBox = showCutBox;
 
                 document.Render(e.Graphics);
 
@@ -961,7 +978,8 @@ namespace VectorView
             Invalidate();
         }
 
-        public void AutoFit()
+
+        public void AutoFit(VectorFitRegion region)
         {
             if (document != null)
             {
@@ -969,21 +987,31 @@ namespace VectorView
 
                 int margin = 15;
 
-                //content.X += margin;
-                //content.Y += margin;
-                //content.Width -= margin * 2;
-                //content.Height -= margin * 2;
+                content.X += margin;
+                content.Y += margin;
+                content.Width -= margin * 2;
+                content.Height -= margin * 2;
 
-                document.AutoFit(content, VectorFitStyle.Both, true, true);
+                bool center = true;
+
+                if (region == VectorFitRegion.CutBox)
+                    center = false;
+
+                document.AutoFit(content, VectorFitStyle.Both, center, region, margin);
                 Invalidate();
             }
+        }
+
+        public void AutoFit()
+        {
+            AutoFit(VectorFitRegion.Content);
         }
 
         public void AutoFit(VectorFitStyle style, bool center, bool fitContent)
         {
             if (document != null)
             {
-                document.AutoFit(new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 4, ClientRectangle.Height - 4), style, center, fitContent);
+                document.AutoFit(new Rectangle(ClientRectangle.X, ClientRectangle.Y, ClientRectangle.Width - 4, ClientRectangle.Height - 4), style, center, fitContent? VectorFitRegion.Content: VectorFitRegion.Document, 10);
                 Refresh();
             }
         }

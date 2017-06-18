@@ -125,19 +125,6 @@ namespace VectorView
             }
         }
 
-        public bool IsIntersecting
-        {
-            get
-            {
-                return isIntersecting;
-            }
-
-            internal set
-            {
-                isIntersecting = value;
-            }
-        }
-
         public VectorPath Source
         {
             get
@@ -156,11 +143,6 @@ namespace VectorView
             get
             {
                 return invalidConstraints;
-            }
-
-            set
-            {
-                invalidConstraints = value;
             }
         }
 
@@ -195,6 +177,19 @@ namespace VectorView
             get
             {
                 return originalPoligons;
+            }
+        }
+
+        public bool InvalidConstraints1
+        {
+            get
+            {
+                return invalidConstraints;
+            }
+
+            set
+            {
+                invalidConstraints = value;
             }
         }
 
@@ -454,7 +449,15 @@ namespace VectorView
                     g.FillPolygon(sb, poly);
                 }
 
+                Color oldColor = linePen.Color;
+
+                if (invalidConstraints)
+                    linePen.Color = Color.Red;
+
                 g.DrawPolygon(linePen, poly);
+
+                if (linePen.Color != oldColor)
+                    linePen.Color = oldColor;
             }
         }
 
@@ -514,83 +517,148 @@ namespace VectorView
 
         bool invalidConstraints = false;
 
+        public void ResetContraints()
+        {
+            invalidConstraints = false;
+        }
+
         public bool CheckContraints()
         {
             invalidConstraints = false;
-            bool c = CheckBoundConstraints();
+            return !invalidConstraints;
+        }
 
-            if (c)
-                invalidConstraints = true;
+        bool PointInsideBox(PointF pt, RectangleF r)
+        {
+            if ((pt.X >= r.X && pt.X <= r.Right) && (pt.Y >= r.Y && pt.Y <= r.Bottom))
+                return true;
 
-            return c;
+            return false;
+        }
+
+        bool RectIntersection(RectangleF r1, RectangleF r2, out RectangleF result)
+        {
+            result = RectangleF.Empty;
+            PointF p = new PointF();
+
+            p.X = r2.X;
+            p.Y = r2.Y;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = p.X;
+                result.Y = p.Y;
+                result.Width = r2.Right - p.X;
+                result.Height = r2.Bottom - p.Y;
+
+                return true;
+            }
+
+            p.X = r2.Right;
+            p.Y = r2.Y;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = r1.X;
+                result.Y = r2.Y;
+                result.Width = r1.Right - result.X;
+                result.Height = r1.Bottom - result.Y;
+
+                return true;
+            }
+
+            p.X = r2.Right;
+            p.Y = r2.Bottom;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = r1.X;
+                result.Y = r1.Y;
+                result.Width = r2.Right - result.X;
+                result.Height = r2.Bottom - result.Y;
+
+                return true;
+            }
+
+            p.X = r2.X;
+            p.Y = r2.Bottom;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = r2.X;
+                result.Y = r1.Y;
+                result.Width = r1.Right - result.X;
+                result.Height = r2.Bottom - result.Y;
+
+                return true;
+            }
+
+            return false;
+        }
+
+        internal bool CheckIntersectionContraints(VectorPath p)
+        {
+            RectangleF mb = GetBoundRect();
+
+            if (p == this)
+                return invalidConstraints = false;
+
+            RectangleF pb = p.GetBoundRect();
+            RectangleF ir = new RectangleF();
+
+            if (poligons == null)
+                BuildPolygons();
+
+            if (RectIntersection(mb, pb, out ir))
+            {
+                // Verifica se algum dos pontos do path atual estão dentro do path testado
+                foreach (PointF[] i in poligons)
+                {
+                    foreach (PointF pt in i)
+                    {
+                        if (PointInsideBox(pt, ir))
+                        {
+                            if (p.IsPointInside(pt))
+                            {
+                                p.invalidConstraints = true;
+                                return invalidConstraints = true;
+                            }
+                        }
+                    }
+                }
+
+                if (p.poligons == null)
+                    p.BuildPolygons();
+
+                // Verifica se algum dos pontos do path sendo testado estão dentro do path atual
+                foreach (PointF[] i in p.poligons)
+                {
+                    foreach (PointF pt in i)
+                    {
+                        if (PointInsideBox(pt, ir))
+                        {
+                            if (IsPointInside(pt))
+                            {
+                                p.invalidConstraints = true;
+                                return invalidConstraints = true;
+                            }
+                        }
+                    }
+                }
+            }
+
+            return invalidConstraints = false;
         }
 
         internal bool CheckBoundConstraints()
         {
             RectangleF r = GetBoundRect();
 
-            if (r.X < 0 || r.Y < 0)
-                return false;
+            if (r.X < 0 || r.Y < 0)            
+                return invalidConstraints = true;            
 
-            if (r.Bottom > document.Height)
-                return false;
-
-            foreach (VectorPath p in document.Paths)
-            {
-                if (p == this)
-                    continue;
-
-                RectangleF cr = p.GetBoundRect();
-
-                if (!RectangleF.Intersect(cr, r).IsEmpty)
-                    return false;                                
-            }            
+            if (r.Bottom > document.CutBox.Bottom)
+                return invalidConstraints = true;        
 
             return true;
         }
-        
-        internal void ResetConstraints()
-        {
-            isIntersecting = false;
-        }
-
-        bool isIntersecting = false;
-
-        public bool Intersect(VectorPath p)
-        {
-            if (p == null)
-                return false;
-
-            RectangleF r1 = GetBoundRect();
-            RectangleF r2 = p.GetBoundRect();
-
-            PointF c1 = VectorMath.GetBoxCenter(r1);
-            PointF c2 = VectorMath.GetBoxCenter(r2);
-
-            if (!RectangleF.Intersect(r1, r2).IsEmpty)
-            {
-                if (r1.Contains(c2) || r2.Contains(c1))
-                    return true;
-
-                if (poligons == null)
-                    BuildPolygons();
-
-                foreach (PointF[] pl in poligons)
-                {
-                    foreach (PointF pt in pl)
-                    {
-                        if (r2.Contains(pt))
-                        {
-                            if (p.IsPointInside(pt))
-                                return true;
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
+       
         RectangleF boundBox = RectangleF.Empty;
         public RectangleF GetBoundRect(bool force = false)
         {

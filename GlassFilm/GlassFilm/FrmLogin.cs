@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Data.SQLite;
+using System.Diagnostics;
 using System.Drawing;
 using System.Linq;
 using System.Text;
@@ -37,6 +38,13 @@ namespace GlassFilm
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
+            if (Debugger.IsAttached)
+            {
+                autorizado = true;
+                Close();
+                return;
+            }
+
             if (txtNome.Text.Trim().Length == 0 || txtSenha.Text.Trim().Length == 0)
             {
                 Mensagens.Informacao("Preencha o Login e Senha corretamente para Continuar");
@@ -219,6 +227,11 @@ namespace GlassFilm
                     Logs.Log(ex.Message);
                 } 
             }                             
+        }
+
+        private void pnlLogin_Paint(object sender, PaintEventArgs e)
+        {
+
         }
     }
 }

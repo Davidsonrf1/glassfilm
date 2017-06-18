@@ -43,10 +43,10 @@
             this.label1 = new System.Windows.Forms.Label();
             this.btnCancelar = new System.Windows.Forms.Button();
             this.btnEntrar = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.lbMensagem = new System.Windows.Forms.Label();
             this.txtCnpj = new System.Windows.Forms.TextBox();
             this.lbCnpjCpf = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.lbMensagem = new System.Windows.Forms.Label();
             this.pnlLogin.SuspendLayout();
             this.pnlToken.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox4)).BeginInit();
@@ -74,6 +74,7 @@
             this.pnlLogin.Name = "pnlLogin";
             this.pnlLogin.Size = new System.Drawing.Size(358, 107);
             this.pnlLogin.TabIndex = 7;
+            this.pnlLogin.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlLogin_Paint);
             // 
             // pnlToken
             // 
@@ -224,6 +225,24 @@
             this.btnEntrar.UseVisualStyleBackColor = false;
             this.btnEntrar.Click += new System.EventHandler(this.btnEntrar_Click);
             // 
+            // txtCnpj
+            // 
+            this.txtCnpj.Location = new System.Drawing.Point(107, 73);
+            this.txtCnpj.Name = "txtCnpj";
+            this.txtCnpj.Size = new System.Drawing.Size(225, 20);
+            this.txtCnpj.TabIndex = 2;
+            // 
+            // lbCnpjCpf
+            // 
+            this.lbCnpjCpf.AutoSize = true;
+            this.lbCnpjCpf.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbCnpjCpf.ForeColor = System.Drawing.Color.White;
+            this.lbCnpjCpf.Location = new System.Drawing.Point(31, 74);
+            this.lbCnpjCpf.Name = "lbCnpjCpf";
+            this.lbCnpjCpf.Size = new System.Drawing.Size(65, 16);
+            this.lbCnpjCpf.TabIndex = 20;
+            this.lbCnpjCpf.Text = "Cnpj/Cpf";
+            // 
             // pictureBox1
             // 
             this.pictureBox1.Image = global::GlassFilm.Properties.Resources.logoComputer2;
@@ -243,24 +262,6 @@
             this.lbMensagem.Size = new System.Drawing.Size(16, 13);
             this.lbMensagem.TabIndex = 8;
             this.lbMensagem.Text = "...";
-            // 
-            // txtCnpj
-            // 
-            this.txtCnpj.Location = new System.Drawing.Point(107, 73);
-            this.txtCnpj.Name = "txtCnpj";
-            this.txtCnpj.Size = new System.Drawing.Size(225, 20);
-            this.txtCnpj.TabIndex = 2;
-            // 
-            // lbCnpjCpf
-            // 
-            this.lbCnpjCpf.AutoSize = true;
-            this.lbCnpjCpf.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbCnpjCpf.ForeColor = System.Drawing.Color.White;
-            this.lbCnpjCpf.Location = new System.Drawing.Point(31, 74);
-            this.lbCnpjCpf.Name = "lbCnpjCpf";
-            this.lbCnpjCpf.Size = new System.Drawing.Size(65, 16);
-            this.lbCnpjCpf.TabIndex = 20;
-            this.lbCnpjCpf.Text = "Cnpj/Cpf";
             // 
             // FrmLogin
             // 

@@ -33,13 +33,9 @@ namespace GlassFilm
             vvCorte.Document.Height = 1520;
             vvCorte.AllowScalePath = false;
             vvCorte.AllowMoveDocument = true;
+            vvCorte.ShowCutBox = true;
 
             //vvModelo.DoubleClick += VvModelo_DoubleClick;
-        }
-
-        private void VvModelo_DoubleClick(object sender, EventArgs e)
-        {
-
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
@@ -71,12 +67,7 @@ namespace GlassFilm
 
         private void cortadoraToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            FrmConfigPlotter conf = new FrmConfigPlotter();
 
-            if (conf.ShowDialog() == DialogResult.OK)
-            {
-
-            }
         }
 
         void AtualizaCombos()
@@ -122,6 +113,7 @@ namespace GlassFilm
                     vvModelo.Document.LoadSVG(svg);
 
                     vvModelo.AutoFit(VectorFitStyle.Both, true, true);
+
                 }
             }
         }
@@ -170,20 +162,18 @@ namespace GlassFilm
         void UpdateViewCorte()
         {
             vvCorte.ShowGrid = true;
-
             vvCorte.Width = (int)(vvModelo.Width * 0.75f);
-            //vvCorte.Height = (int)(vvModelo.Height * 0.2f);
 
             if (vvCorte.Document != null)
             {
                 float w = vvCorte.Document.ViewPointToDocPoint(new PointF(vvCorte.Width, 0)).X;
                 vvCorte.Document.Width = w;
 
-                vvCorte.Document.ShowDocBorder = true;
+                vvCorte.Document.ShowDocBorder = false;
             }
 
             vvCorte.Left = vvModelo.Left + (vvModelo.Width - vvCorte.Width) / 2;
-            vvCorte.Top = vvModelo.Bottom;// + 10;// - vvCorte.Height - (int)(vvModelo.Height * 0.05f);
+            vvCorte.Top = vvModelo.Bottom;
 
             if (vvCorte.Document.Paths.Count > 0)
                 vvCorte.Visible = true;
@@ -193,15 +183,15 @@ namespace GlassFilm
             vvCorte.BringToFront();
             vvCorte.Refresh();
 
-            vvCorte.AutoFit();
+            vvCorte.AutoFit(VectorFitRegion.CutBox);
+
+            vvCorte.Document.AutoCheckConstraints = true;
         }
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            //vvModelo.SendToCut();
-
             vvCorte.ImportSelection(vvModelo);
-            //vvCorte.AutoFit(VectorFitStyle.Horizontal, false, true);
+            vvCorte.AutoFit(VectorFitRegion.CutBox);
             vvCorte.Refresh();
 
             UpdateImportCount();
@@ -348,6 +338,33 @@ namespace GlassFilm
         private void FrmPrincipal_KeyPress(object sender, KeyPressEventArgs e)
         {
 
+        }
+
+        private void vvCorte_Resize(object sender, EventArgs e)
+        {
+            vvCorte.AutoFit(VectorFitRegion.CutBox);
+        }
+
+        private void vvCorte_SelectionTransformed_1(object sender, VectorEventArgs e)
+        {
+            //UpdateViewCorte();
+
+            if (vvCorte.Document != null)
+            {
+                VectorDocument doc = vvCorte.Document;
+                doc.UpdateCutBox();
+            }
+        }
+
+        private void vvCorte_SelectionMoved(object sender, VectorEventArgs e)
+        {
+            //UpdateViewCorte();
+
+            if (vvCorte.Document != null)
+            {
+                VectorDocument doc = vvCorte.Document;
+                doc.UpdateCutBox();
+            }
         }
     }
 }

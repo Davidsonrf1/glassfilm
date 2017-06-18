@@ -36,8 +36,6 @@ namespace GlassFilm
             cbModelo.Enabled = enable;
 
             lbAnos.Enabled = enable;
-
-            nEscala.Enabled = enable;
         }
 
         private void btImportar_Click(object sender, EventArgs e)
@@ -60,7 +58,7 @@ namespace GlassFilm
 
             if (opf.ShowDialog() == DialogResult.OK)
             {
-                float scale = (float)(100 / nEscala.Value);
+                float scale = (float)(100 / 1);
 
                 vectorView.Document.LoadSVGFromFile(opf.FileName, scale);
                 vectorView.Document.Normalize();

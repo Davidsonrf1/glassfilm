@@ -45,9 +45,6 @@
             this.cbModelo = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.btImportar = new System.Windows.Forms.Button();
-            this.nEscala = new System.Windows.Forms.NumericUpDown();
-            this.label1 = new System.Windows.Forms.Label();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
             this.pbDesenho = new System.Windows.Forms.ProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -61,7 +58,6 @@
             this.vectorView = new VectorView.VectorViewCtr();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nEscala)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
             this.panel1.SuspendLayout();
             this.groupBox3.SuspendLayout();
@@ -205,7 +201,7 @@
             this.cbModelo.FormattingEnabled = true;
             this.cbModelo.Location = new System.Drawing.Point(227, 26);
             this.cbModelo.Name = "cbModelo";
-            this.cbModelo.Size = new System.Drawing.Size(435, 21);
+            this.cbModelo.Size = new System.Drawing.Size(595, 21);
             this.cbModelo.TabIndex = 1;
             // 
             // panel2
@@ -231,58 +227,9 @@
             this.btImportar.UseVisualStyleBackColor = false;
             this.btImportar.Click += new System.EventHandler(this.btImportar_Click);
             // 
-            // nEscala
-            // 
-            this.nEscala.DecimalPlaces = 3;
-            this.nEscala.Increment = new decimal(new int[] {
-            2,
-            0,
-            0,
-            65536});
-            this.nEscala.Location = new System.Drawing.Point(675, 27);
-            this.nEscala.Maximum = new decimal(new int[] {
-            300,
-            0,
-            0,
-            0});
-            this.nEscala.Minimum = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this.nEscala.Name = "nEscala";
-            this.nEscala.Size = new System.Drawing.Size(147, 20);
-            this.nEscala.TabIndex = 18;
-            this.nEscala.Value = new decimal(new int[] {
-            100,
-            0,
-            0,
-            0});
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(671, 10);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(42, 13);
-            this.label1.TabIndex = 19;
-            this.label1.Text = "Escala:";
-            // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel3.Location = new System.Drawing.Point(668, 7);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1, 42);
-            this.panel3.TabIndex = 18;
-            // 
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            this.pnlFiltroInfo.Controls.Add(this.panel3);
-            this.pnlFiltroInfo.Controls.Add(this.label1);
-            this.pnlFiltroInfo.Controls.Add(this.nEscala);
             this.pnlFiltroInfo.Controls.Add(this.btImportar);
             this.pnlFiltroInfo.Controls.Add(this.panel2);
             this.pnlFiltroInfo.Controls.Add(this.cbModelo);
@@ -442,7 +389,6 @@
             this.toolPrincipal.PerformLayout();
             this.status.ResumeLayout(false);
             this.status.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.nEscala)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -474,9 +420,6 @@
         private System.Windows.Forms.ComboBox cbModelo;
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.Button btImportar;
-        private System.Windows.Forms.NumericUpDown nEscala;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Panel pnlFiltroInfo;
         private System.Windows.Forms.ProgressBar pbDesenho;
         private System.Windows.Forms.Panel panel1;
