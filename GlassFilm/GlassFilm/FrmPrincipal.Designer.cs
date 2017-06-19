@@ -40,15 +40,6 @@
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
-            this.groupBox3 = new System.Windows.Forms.GroupBox();
-            this.pictureBox3 = new System.Windows.Forms.PictureBox();
-            this.numericUpDown2 = new System.Windows.Forms.NumericUpDown();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
-            this.label6 = new System.Windows.Forms.Label();
-            this.textBox2 = new System.Windows.Forms.TextBox();
-            this.textBox1 = new System.Windows.Forms.TextBox();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.pictureBox2 = new System.Windows.Forms.PictureBox();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
@@ -80,9 +71,6 @@
             this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
-            this.groupBox3.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).BeginInit();
             this.groupBox2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
@@ -105,7 +93,7 @@
             this.toolArquivo});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1514, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1362, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
@@ -157,7 +145,6 @@
             this.pnlprincipal.Controls.Add(this.button3);
             this.pnlprincipal.Controls.Add(this.button2);
             this.pnlprincipal.Controls.Add(this.panel3);
-            this.pnlprincipal.Controls.Add(this.groupBox3);
             this.pnlprincipal.Controls.Add(this.groupBox2);
             this.pnlprincipal.Controls.Add(this.panel1);
             this.pnlprincipal.Controls.Add(this.groupBox1);
@@ -166,7 +153,7 @@
             this.pnlprincipal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlprincipal.Location = new System.Drawing.Point(0, 24);
             this.pnlprincipal.Name = "pnlprincipal";
-            this.pnlprincipal.Size = new System.Drawing.Size(1514, 110);
+            this.pnlprincipal.Size = new System.Drawing.Size(1362, 110);
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             // 
@@ -176,7 +163,7 @@
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.ForeColor = System.Drawing.Color.White;
             this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
-            this.button4.Location = new System.Drawing.Point(1432, 19);
+            this.button4.Location = new System.Drawing.Point(1047, 19);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 80);
             this.button4.TabIndex = 10;
@@ -191,7 +178,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.Black;
             this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
-            this.button3.Location = new System.Drawing.Point(1351, 19);
+            this.button3.Location = new System.Drawing.Point(966, 19);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 80);
             this.button3.TabIndex = 9;
@@ -206,7 +193,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.Color.Black;
             this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
-            this.button2.Location = new System.Drawing.Point(1270, 19);
+            this.button2.Location = new System.Drawing.Point(885, 19);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 80);
             this.button2.TabIndex = 8;
@@ -218,114 +205,10 @@
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel3.Location = new System.Drawing.Point(898, 9);
+            this.panel3.Location = new System.Drawing.Point(875, 9);
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(1, 97);
             this.panel3.TabIndex = 6;
-            // 
-            // groupBox3
-            // 
-            this.groupBox3.Controls.Add(this.pictureBox3);
-            this.groupBox3.Controls.Add(this.numericUpDown2);
-            this.groupBox3.Controls.Add(this.checkBox1);
-            this.groupBox3.Controls.Add(this.label6);
-            this.groupBox3.Controls.Add(this.textBox2);
-            this.groupBox3.Controls.Add(this.textBox1);
-            this.groupBox3.Controls.Add(this.label5);
-            this.groupBox3.Controls.Add(this.label4);
-            this.groupBox3.Location = new System.Drawing.Point(905, 11);
-            this.groupBox3.Name = "groupBox3";
-            this.groupBox3.Size = new System.Drawing.Size(359, 88);
-            this.groupBox3.TabIndex = 5;
-            this.groupBox3.TabStop = false;
-            this.groupBox3.Text = "Outros";
-            // 
-            // pictureBox3
-            // 
-            this.pictureBox3.BackgroundImage = global::GlassFilm.Properties.Resources.heigth;
-            this.pictureBox3.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox3.Location = new System.Drawing.Point(224, 50);
-            this.pictureBox3.Name = "pictureBox3";
-            this.pictureBox3.Size = new System.Drawing.Size(20, 23);
-            this.pictureBox3.TabIndex = 7;
-            this.pictureBox3.TabStop = false;
-            // 
-            // numericUpDown2
-            // 
-            this.numericUpDown2.DecimalPlaces = 2;
-            this.numericUpDown2.Location = new System.Drawing.Point(248, 51);
-            this.numericUpDown2.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this.numericUpDown2.Name = "numericUpDown2";
-            this.numericUpDown2.Size = new System.Drawing.Size(84, 20);
-            this.numericUpDown2.TabIndex = 6;
-            this.numericUpDown2.Value = new decimal(new int[] {
-            27,
-            0,
-            0,
-            131072});
-            // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Checked = true;
-            this.checkBox1.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBox1.Location = new System.Drawing.Point(248, 27);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(62, 17);
-            this.checkBox1.TabIndex = 5;
-            this.checkBox1.Text = "Pull Cut";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            // 
-            // label6
-            // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(182, 55);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(15, 13);
-            this.label6.TabIndex = 4;
-            this.label6.Text = "%";
-            // 
-            // textBox2
-            // 
-            this.textBox2.BackColor = System.Drawing.Color.Gainsboro;
-            this.textBox2.Enabled = false;
-            this.textBox2.Location = new System.Drawing.Point(98, 51);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(81, 20);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "64.51";
-            // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.Color.Gainsboro;
-            this.textBox1.Enabled = false;
-            this.textBox1.Location = new System.Drawing.Point(98, 27);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(81, 20);
-            this.textBox1.TabIndex = 2;
-            this.textBox1.Text = "4.60";
-            // 
-            // label5
-            // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(21, 55);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(71, 13);
-            this.label5.TabIndex = 1;
-            this.label5.Text = "Film Utilizado:";
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(21, 31);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(71, 13);
-            this.label4.TabIndex = 0;
-            this.label4.Text = "SQ Ft Usado:";
             // 
             // groupBox2
             // 
@@ -334,7 +217,7 @@
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(560, 11);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(332, 88);
+            this.groupBox2.Size = new System.Drawing.Size(307, 88);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Mídia";
@@ -342,7 +225,7 @@
             // pictureBox2
             // 
             this.pictureBox2.Image = global::GlassFilm.Properties.Resources.locked;
-            this.pictureBox2.Location = new System.Drawing.Point(301, 38);
+            this.pictureBox2.Location = new System.Drawing.Point(261, 38);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(25, 28);
             this.pictureBox2.TabIndex = 4;
@@ -354,7 +237,7 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "40 Inch"});
-            this.comboBox1.Location = new System.Drawing.Point(76, 40);
+            this.comboBox1.Location = new System.Drawing.Point(61, 40);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(188, 21);
             this.comboBox1.TabIndex = 1;
@@ -363,7 +246,7 @@
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(16, 43);
+            this.label2.Location = new System.Drawing.Point(13, 43);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(43, 13);
             this.label2.TabIndex = 0;
@@ -433,7 +316,7 @@
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 134);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(1514, 65);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(1362, 65);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
             // 
@@ -443,7 +326,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 60);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1514, 5);
+            this.panel4.Size = new System.Drawing.Size(1362, 5);
             this.panel4.TabIndex = 14;
             // 
             // panel7
@@ -563,7 +446,7 @@
             this.selInfo});
             this.status.Location = new System.Drawing.Point(0, 545);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(1514, 24);
+            this.status.Size = new System.Drawing.Size(1362, 24);
             this.status.TabIndex = 15;
             this.status.Text = "statusStrip1";
             // 
@@ -592,7 +475,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(0, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1514, 569);
+            this.panel8.Size = new System.Drawing.Size(1362, 569);
             this.panel8.TabIndex = 19;
             // 
             // splitCorte
@@ -612,7 +495,7 @@
             // splitCorte.Panel2
             // 
             this.splitCorte.Panel2.Controls.Add(this.vvCorte);
-            this.splitCorte.Size = new System.Drawing.Size(1508, 345);
+            this.splitCorte.Size = new System.Drawing.Size(1356, 345);
             this.splitCorte.SplitterDistance = 220;
             this.splitCorte.TabIndex = 18;
             // 
@@ -635,7 +518,7 @@
             this.vvModelo.ShowCutBox = false;
             this.vvModelo.ShowGrid = false;
             this.vvModelo.ShowPointer = false;
-            this.vvModelo.Size = new System.Drawing.Size(1508, 220);
+            this.vvModelo.Size = new System.Drawing.Size(1356, 220);
             this.vvModelo.TabIndex = 19;
             this.vvModelo.Visible = false;
             this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
@@ -661,7 +544,7 @@
             this.vvCorte.ShowCutBox = false;
             this.vvCorte.ShowGrid = false;
             this.vvCorte.ShowPointer = false;
-            this.vvCorte.Size = new System.Drawing.Size(1508, 121);
+            this.vvCorte.Size = new System.Drawing.Size(1356, 121);
             this.vvCorte.TabIndex = 1;
             this.vvCorte.Visible = false;
             this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
@@ -674,7 +557,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1514, 569);
+            this.ClientSize = new System.Drawing.Size(1362, 569);
             this.Controls.Add(this.status);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
@@ -694,10 +577,6 @@
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.pnlprincipal.ResumeLayout(false);
-            this.groupBox3.ResumeLayout(false);
-            this.groupBox3.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numericUpDown2)).EndInit();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
@@ -733,15 +612,6 @@
         private System.Windows.Forms.ComboBox comboBox1;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.GroupBox groupBox3;
-        private System.Windows.Forms.TextBox textBox2;
-        private System.Windows.Forms.TextBox textBox1;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.NumericUpDown numericUpDown2;
-        private System.Windows.Forms.CheckBox checkBox1;
-        private System.Windows.Forms.PictureBox pictureBox3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
