@@ -96,5 +96,69 @@ namespace VectorView
             return r.Width * r.Height;
         }
 
+        public static bool PointInsideBox(PointF pt, RectangleF r)
+        {
+            if ((pt.X >= r.X && pt.X <= r.Right) && (pt.Y >= r.Y && pt.Y <= r.Bottom))
+                return true;
+
+            return false;
+        }
+
+        public static bool RectIntersection(RectangleF r1, RectangleF r2, out RectangleF result)
+        {
+            result = RectangleF.Empty;
+            PointF p = new PointF();
+
+            p.X = r2.X;
+            p.Y = r2.Y;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = p.X;
+                result.Y = p.Y;
+                result.Width = r2.Right - p.X;
+                result.Height = r2.Bottom - p.Y;
+
+                return true;
+            }
+
+            p.X = r2.Right;
+            p.Y = r2.Y;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = r1.X;
+                result.Y = r2.Y;
+                result.Width = r1.Right - result.X;
+                result.Height = r1.Bottom - result.Y;
+
+                return true;
+            }
+
+            p.X = r2.Right;
+            p.Y = r2.Bottom;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = r1.X;
+                result.Y = r1.Y;
+                result.Width = r2.Right - result.X;
+                result.Height = r2.Bottom - result.Y;
+
+                return true;
+            }
+
+            p.X = r2.X;
+            p.Y = r2.Bottom;
+            if (PointInsideBox(p, r1))
+            {
+                result.X = r2.X;
+                result.Y = r1.Y;
+                result.Width = r1.Right - result.X;
+                result.Height = r2.Bottom - result.Y;
+
+                return true;
+            }
+
+            return false;
+        }
+
     }
 }

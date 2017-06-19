@@ -413,9 +413,6 @@ namespace VectorView
             if (document == null)
                 return;
 
-            if (isRotating || isMovingSel || isScaling)
-                Document.CheckConstraints();
-
             isMovingDoc = false;
             isMovingSel = false;
             isRotating = false;

@@ -124,7 +124,6 @@ namespace VectorView
 
             if (VectorMath.CrossPoint(hline, new PointF(sx, sy), new PointF(ex, ey), out x, out y))
             {
-
                 p.X = x;
                 p.Y = y;
 

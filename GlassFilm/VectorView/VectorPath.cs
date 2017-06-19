@@ -26,8 +26,7 @@ namespace VectorView
         bool fillPath = false;
         Color fillColor = Color.Lime;
 
-        bool inCutSheet = false;        
-
+        bool inCutSheet = false;
         int importCount = 0;
 
         string tag = "";
@@ -177,19 +176,6 @@ namespace VectorView
             get
             {
                 return originalPoligons;
-            }
-        }
-
-        public bool InvalidConstraints1
-        {
-            get
-            {
-                return invalidConstraints;
-            }
-
-            set
-            {
-                invalidConstraints = value;
             }
         }
 
@@ -459,6 +445,11 @@ namespace VectorView
                 if (linePen.Color != oldColor)
                     linePen.Color = oldColor;
             }
+
+            if (document.ShowConvexHull)
+            {
+                hull.Render(g);
+            }
         }
 
         List<PointF[]> originalPoligons = null;
@@ -471,6 +462,7 @@ namespace VectorView
             }
         }
 
+        ConvexHull hull = null;
         List<PointF[]> poligons = null;
         public virtual List<PointF[]> BuildPolygons()
         {
@@ -480,6 +472,9 @@ namespace VectorView
             poligons = new List<PointF[]>();
 
             List<PointF> pl = null;
+            List<PointF> hl = new List<PointF>();
+
+            hull = new ConvexHull();
 
             foreach (VectorEdge e in edges)
             {
@@ -493,14 +488,19 @@ namespace VectorView
 
                 if (e is VectorClose)
                 {
+                    hl.AddRange(pl);
                     poligons.Add(pl.ToArray());
                     pl = null;
                 }
             }
 
             if (pl != null)
+            {
+                hl.AddRange(pl);
                 poligons.Add(pl.ToArray());
+            }
 
+            hull.MakeConvexHull(hl);
             return poligons;
         }
 
@@ -528,66 +528,37 @@ namespace VectorView
             return !invalidConstraints;
         }
 
-        bool PointInsideBox(PointF pt, RectangleF r)
+        internal bool GetDocIntersections(List<VectorPath> intersections)
         {
-            if ((pt.X >= r.X && pt.X <= r.Right) && (pt.Y >= r.Y && pt.Y <= r.Bottom))
-                return true;
+            RectangleF bb = GetBoundRect();
+            intersections.Clear();
 
-            return false;
-        }
+            if (hull == null)
+                BuildPolygons();
 
-        bool RectIntersection(RectangleF r1, RectangleF r2, out RectangleF result)
-        {
-            result = RectangleF.Empty;
-            PointF p = new PointF();
-
-            p.X = r2.X;
-            p.Y = r2.Y;
-            if (PointInsideBox(p, r1))
+            foreach (VectorPath p in document.Paths)
             {
-                result.X = p.X;
-                result.Y = p.Y;
-                result.Width = r2.Right - p.X;
-                result.Height = r2.Bottom - p.Y;
+                if (p == this)
+                    continue;
 
-                return true;
+                if (p.hull == null)
+                    p.BuildPolygons();
+
+                RectangleF pb = p.GetBoundRect();
+                RectangleF ib = RectangleF.Intersect(bb, pb);
+
+                if (!ib.IsEmpty)
+                {
+                    if (hull.Intersecting(p.hull))
+                    {
+                        if (CheckIntersectionContraints(p))
+                            intersections.Add(p);
+                    }
+                }                
             }
 
-            p.X = r2.Right;
-            p.Y = r2.Y;
-            if (PointInsideBox(p, r1))
-            {
-                result.X = r1.X;
-                result.Y = r2.Y;
-                result.Width = r1.Right - result.X;
-                result.Height = r1.Bottom - result.Y;
-
+            if (intersections.Count > 0)
                 return true;
-            }
-
-            p.X = r2.Right;
-            p.Y = r2.Bottom;
-            if (PointInsideBox(p, r1))
-            {
-                result.X = r1.X;
-                result.Y = r1.Y;
-                result.Width = r2.Right - result.X;
-                result.Height = r2.Bottom - result.Y;
-
-                return true;
-            }
-
-            p.X = r2.X;
-            p.Y = r2.Bottom;
-            if (PointInsideBox(p, r1))
-            {
-                result.X = r2.X;
-                result.Y = r1.Y;
-                result.Width = r1.Right - result.X;
-                result.Height = r2.Bottom - result.Y;
-
-                return true;
-            }
 
             return false;
         }
@@ -597,7 +568,7 @@ namespace VectorView
             RectangleF mb = GetBoundRect();
 
             if (p == this)
-                return invalidConstraints = false;
+                return false;
 
             RectangleF pb = p.GetBoundRect();
             RectangleF ir = new RectangleF();
@@ -605,19 +576,20 @@ namespace VectorView
             if (poligons == null)
                 BuildPolygons();
 
-            if (RectIntersection(mb, pb, out ir))
+            ir = RectangleF.Intersect(mb, pb);
+
+            if (!ir.IsEmpty )
             {
                 // Verifica se algum dos pontos do path atual estão dentro do path testado
                 foreach (PointF[] i in poligons)
                 {
                     foreach (PointF pt in i)
                     {
-                        if (PointInsideBox(pt, ir))
+                        if (pt.Y >= ir.Y && pt.Y <= ir.Bottom)
                         {
                             if (p.IsPointInside(pt))
                             {
-                                p.invalidConstraints = true;
-                                return invalidConstraints = true;
+                                return true;
                             }
                         }
                     }
@@ -631,19 +603,18 @@ namespace VectorView
                 {
                     foreach (PointF pt in i)
                     {
-                        if (PointInsideBox(pt, ir))
+                        if (pt.Y >= ir.Y && pt.Y <= ir.Bottom)
                         {
                             if (IsPointInside(pt))
                             {
-                                p.invalidConstraints = true;
-                                return invalidConstraints = true;
+                                return true;
                             }
                         }
                     }
                 }
             }
 
-            return invalidConstraints = false;
+            return false;
         }
 
         internal bool CheckBoundConstraints()
@@ -904,14 +875,6 @@ namespace VectorView
         
         void AfterTransforms()
         {
-            if (document != null)
-            {
-                if (document.AutoCheckConstraints)
-                {
-                    document.CheckConstraints();
-                }
-            }
-
             GetBoundRect(true);
             ComputeArea(true);
         }
@@ -999,6 +962,7 @@ namespace VectorView
 
         public void Move(float dx, float dy)
         {
+            int time = Environment.TickCount;
             foreach (VectorEdge e in edges)
             {
                 List<PointF> tl = new List<PointF>();
@@ -1009,8 +973,26 @@ namespace VectorView
                 e.SetPoints(tl);
             }
 
+            invalidConstraints = false;
+
+            List<VectorPath> intersections = new List<VectorPath>();
+
+            if(GetDocIntersections(intersections))
+            {
+                invalidConstraints = true;
+            }
+
             poligons = null;
             AfterTransforms();
+
+            try
+            {
+                if (System.Windows.Forms.Form.ActiveForm != null)
+                    System.Windows.Forms.Form.ActiveForm.Text = (Environment.TickCount - time).ToString();
+            }catch
+            {
+
+            }
         }
         
         public string ToHPGL()

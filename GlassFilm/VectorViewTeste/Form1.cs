@@ -134,9 +134,12 @@ namespace VectorViewTeste
         private void button1_Click(object sender, EventArgs e)
         {
             VectorDocument d = view.Document;
-            d.LoadSVGFromFile(@"D:\desenhos\COROLLA SEDAN ANO 2009 A 2014.svg");
+            d.LoadSVGFromFile(@"D:\teste.svg");
             view.AutoFit();
             view.GridSize = 10;
+            view.Document.AutoCheckConstraints = true;
+            view.Document.DrawCutBox = true;
+            //view.Document.ShowConvexHull = true;
             
             VectorPath vp = d.Paths[0];
             float area = vp.ComputeArea(false, 1);

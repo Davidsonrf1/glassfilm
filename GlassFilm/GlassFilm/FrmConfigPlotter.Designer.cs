@@ -33,10 +33,9 @@
             this.btnEntrar = new System.Windows.Forms.Button();
             this.label1 = new System.Windows.Forms.Label();
             this.comboBox1 = new System.Windows.Forms.ComboBox();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.comboBox3 = new System.Windows.Forms.ComboBox();
-            this.label3 = new System.Windows.Forms.Label();
+            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.pnlSerial = new System.Windows.Forms.Panel();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +45,7 @@
             this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.btnEntrar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 237);
+            this.panel1.Location = new System.Drawing.Point(0, 308);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(423, 51);
             this.panel1.TabIndex = 8;
@@ -93,22 +92,11 @@
             this.comboBox1.FormattingEnabled = true;
             this.comboBox1.Items.AddRange(new object[] {
             "PRINTER",
-            "SERIAL",
-            "USB"});
-            this.comboBox1.Location = new System.Drawing.Point(112, 55);
+            "SERIAL"});
+            this.comboBox1.Location = new System.Drawing.Point(111, 55);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(299, 21);
             this.comboBox1.TabIndex = 11;
-            // 
-            // comboBox2
-            // 
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
-            "GRAPHTEC"});
-            this.comboBox2.Location = new System.Drawing.Point(111, 28);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(299, 21);
-            this.comboBox2.TabIndex = 13;
             // 
             // label2
             // 
@@ -119,41 +107,33 @@
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(94, 20);
             this.label2.TabIndex = 12;
-            this.label2.Text = "Tipo";
+            this.label2.Text = "Linguagem";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // comboBox3
+            // comboBox2
             // 
-            this.comboBox3.FormattingEnabled = true;
-            this.comboBox3.Items.AddRange(new object[] {
-            "PRINTER",
-            "SERIAL",
-            "USB"});
-            this.comboBox3.Location = new System.Drawing.Point(111, 82);
-            this.comboBox3.Name = "comboBox3";
-            this.comboBox3.Size = new System.Drawing.Size(299, 21);
-            this.comboBox3.TabIndex = 15;
+            this.comboBox2.FormattingEnabled = true;
+            this.comboBox2.Items.AddRange(new object[] {
+            "HPGL"});
+            this.comboBox2.Location = new System.Drawing.Point(111, 28);
+            this.comboBox2.Name = "comboBox2";
+            this.comboBox2.Size = new System.Drawing.Size(299, 21);
+            this.comboBox2.TabIndex = 13;
             // 
-            // label3
+            // pnlSerial
             // 
-            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label3.ForeColor = System.Drawing.Color.Black;
-            this.label3.Location = new System.Drawing.Point(11, 82);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(95, 20);
-            this.label3.TabIndex = 14;
-            this.label3.Text = "Porta";
-            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.pnlSerial.Location = new System.Drawing.Point(11, 82);
+            this.pnlSerial.Name = "pnlSerial";
+            this.pnlSerial.Size = new System.Drawing.Size(399, 220);
+            this.pnlSerial.TabIndex = 14;
             // 
             // FrmConfigPlotter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(423, 288);
-            this.Controls.Add(this.comboBox3);
-            this.Controls.Add(this.label3);
+            this.ClientSize = new System.Drawing.Size(423, 359);
+            this.Controls.Add(this.pnlSerial);
             this.Controls.Add(this.comboBox2);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.comboBox1);
@@ -176,9 +156,8 @@
         private System.Windows.Forms.Button btnEntrar;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ComboBox comboBox1;
-        private System.Windows.Forms.ComboBox comboBox2;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.ComboBox comboBox3;
-        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.Panel pnlSerial;
     }
 }

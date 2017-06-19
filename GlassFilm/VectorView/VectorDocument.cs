@@ -41,6 +41,8 @@ namespace VectorView
         Color rullerBorderColor = Color.LightGray;
         Color rullerBackColor = Color.WhiteSmoke;
 
+        bool showConvexHull = false;
+
         string observacao = "";
 
         float docWidth = 0;
@@ -261,6 +263,19 @@ namespace VectorView
             }
         }
 
+        public bool ShowConvexHull
+        {
+            get
+            {
+                return showConvexHull;
+            }
+
+            set
+            {
+                showConvexHull = value;
+            }
+        }
+
         public float GetMinX()
         {
             float min = float.MaxValue;
@@ -346,15 +361,16 @@ namespace VectorView
                 vp.CheckBoundConstraints();
                 pl.Add(vp);
             }
+            int time = Environment.TickCount;
 
-            while(pl.Count > 0)
+            while (pl.Count > 0)
             {
                 VectorPath a = pl[0];
                 List<VectorPath> toRemove = new List<VectorPath>(pl.Count);
                 toRemove.Add(a);
 
                 for (int j = 1; j < pl.Count; j++)
-                {
+                {                    
                     if (!a.CheckIntersectionContraints(pl[j]))
                     {
                         constraintOK = false;
@@ -368,7 +384,11 @@ namespace VectorView
                 }
 
                 toRemove.Clear();                
-            }            
+            }
+
+            time = Environment.TickCount - time;
+            if (System.Windows.Forms.Form.ActiveForm != null)
+                System.Windows.Forms.Form.ActiveForm.Text = time.ToString();
         }
 
         public VectorPath CreatePath()
@@ -867,26 +887,28 @@ namespace VectorView
                     {
                         RectangleF pr = vp.GetBoundRect();
 
+                        /*
                         cur.SetOrigin(new PointF(pr.X + r.Width / 2 + 1, pr.Bottom + r.Height / 2 + 1));
-                        if (cur.CheckContraints())
+                        if (cur.CheckConstraints())
                         {
                             nested = true;
                             break;
                         }
 
                         cur.SetOrigin(new PointF((pr.Width / 2 + pr.X) + r.Width / 2 + 1, pr.Bottom + r.Height / 2 + 1));
-                        if (cur.CheckContraints())
+                        if (cur.CheckConstraints())
                         {
                             nested = true;
                             break;
                         }
 
                         cur.SetOrigin(new PointF(pr.Left + r.Width / 2 + 1, pr.Top + r.Height / 2 + 1));
-                        if (cur.CheckContraints())
+                        if (cur.CheckConstraints())
                         {
                             nested = true;
                             break;
                         }
+                        */
                     }
 
                     if (!nested)

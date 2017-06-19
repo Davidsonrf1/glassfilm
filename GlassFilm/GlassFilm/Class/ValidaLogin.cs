@@ -12,9 +12,6 @@ namespace GlassFilm.Class
 {
     class ValidaLogin
     {                
-        private MySqlCommand cmd;
-        private MySqlDataAdapter da;
-        private DataTable dt;
         private HashMachine hm;       
 
         private string nome;

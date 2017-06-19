@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
@@ -11,6 +12,7 @@ namespace VectorView
         RectangleF minMaxBox;
         PointF[] nonCulledPoints;
 
+        PointF[] originalPoints = null;
         PointF[] convexPoints = null;
         float[] angles = null;
 
@@ -20,7 +22,19 @@ namespace VectorView
         float angle = 0;
         float minWidthAngle = 0;
 
-        bool hasPointInside = false;
+        bool isIntersecting = false;
+        bool isOutside = false;
+
+        public bool IsOK
+        {
+            get
+            {
+                if (isIntersecting || isOutside)
+                    return false;
+
+                return true;
+            }
+        }
 
         PointF center = new PointF();
         public PointF[] MinMaxCorners
@@ -92,14 +106,6 @@ namespace VectorView
             }
         }
 
-        public bool HasPointInside
-        {
-            get
-            {
-                return hasPointInside;
-            }
-        }
-
         public float Angle
         {
             get
@@ -113,6 +119,32 @@ namespace VectorView
             get
             {
                 return minWidthAngle;
+            }
+        }
+
+        public bool IsIntersecting
+        {
+            get
+            {
+                return isIntersecting;
+            }
+
+            set
+            {
+                this.isIntersecting = value;
+            }
+        }
+
+        public bool IsOutside
+        {
+            get
+            {
+                return isOutside;
+            }
+
+            set
+            {
+                isOutside = value;
             }
         }
 
@@ -175,6 +207,11 @@ namespace VectorView
             }
 
             return new RectangleF(xmin, ymin, xmax - xmin, ymax - ymin);
+        }
+
+        public RectangleF GetBounds()
+        {
+            return GetBounds(convexPoints);
         }
 
         private List<PointF> HullCull(List<PointF> points)
@@ -276,10 +313,35 @@ namespace VectorView
             center.Y = r.Y + r.Height / 2;
 
             Array.Sort(convexPoints, new PointAngleComparer(center));
-
             UpdateAngles();
 
+            originalPoints = new PointF[convexPoints.Length];
+
+            for (int i = 0; i < convexPoints.Length; i++)
+            {
+                originalPoints[i] = new PointF(convexPoints[i].X, convexPoints[i].Y);
+            }
+
             return hull;
+        }
+
+        public void Restore()
+        {
+            convexPoints = originalPoints;
+
+            RectangleF r = GetBounds(convexPoints);
+            center.X = r.X + r.Width / 2;
+            center.Y = r.Y + r.Height / 2;
+
+            Array.Sort(convexPoints, new PointAngleComparer(center));
+            UpdateAngles();
+
+            originalPoints = new PointF[convexPoints.Length];
+
+            for (int i = 0; i < convexPoints.Length; i++)
+            {
+                originalPoints[i] = new PointF(convexPoints[i].X, convexPoints[i].Y);
+            }
         }
 
         public void GetNearPoints(PointF pt, out PointF p1, out PointF p2)
@@ -351,9 +413,7 @@ namespace VectorView
             nearRight.X = p2.X;
             nearRight.Y = p2.Y;
 
-            hasPointInside = PointInTriangle(pt, center, p1, p2);
-
-            return hasPointInside;
+            return PointInTriangle(pt, center, p1, p2);
         }
 
         public static float AngleValue(float x1, float y1, float x2, float y2)
@@ -364,6 +424,7 @@ namespace VectorView
             ax = Math.Abs(dx);
             dy = y2 - y1;
             ay = Math.Abs(dy);
+
             if (ax + ay == 0)
             {
                 t = 360f / 9f;
@@ -436,22 +497,69 @@ namespace VectorView
         {
             float oldAngle = angle;
             float minw = float.MaxValue;
+            minWidthAngle = 0;
+
+            Matrix mt = new Matrix();
+
+            PointF[] pts = new PointF[originalPoints.Length];
+
+            RectangleF r = GetBounds();
+            PointF center = new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
+
+            for (int i = 0; i < pts.Length; i++)
+                pts[i] = new PointF(originalPoints[i].X - center.X, originalPoints[i].Y - center.Y);
 
             for (int i = 0; i < 360; i++)
             {
-                Rotate(i);
+                mt.Reset();
+                mt.Rotate(1);
 
-                RectangleF r = GetBounds(convexPoints);
-                minw = Math.Min(r.Width, minw);
+                mt.TransformPoints(pts);
+                RectangleF tr = GetBounds(pts);
 
-                if (r.Width <= minw)
+                if (tr.Width <= minw)
                 {
                     minWidthAngle = i;
-                    minw = r.Width;
+                    minw = tr.Width;
                 }
             }
 
             return minWidthAngle;
+        }
+
+        public bool Intersecting(ConvexHull ch)
+        {
+            if (ch == this)
+                return false;
+
+            foreach (PointF p in ch.convexPoints)
+            {
+                if (IsPointInside(p))
+                    return true;
+            }
+
+            foreach (PointF p in convexPoints)
+            {
+                if (ch.IsPointInside(p))
+                    return true;
+            }
+
+            return false;
+        }
+
+        public void Render(Graphics g)
+        {
+            Pen pen = new Pen(Color.Orange);
+
+            if (!IsOK)
+                pen.Color = Color.Red;
+
+            g.DrawPolygon(pen, convexPoints);
+
+            foreach (PointF p in convexPoints)
+            {
+                g.FillEllipse(Brushes.Blue, p.X - 3, p.Y - 3, 6, 6);
+            }
         }
     }
 }
