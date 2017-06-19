@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
@@ -31,6 +32,9 @@ namespace VectorView
 
         string tag = "";
         VectorPathSide side = VectorPathSide.None;
+
+        float centerX = 0;
+        float centerY = 0;
 
         public VectorDocument Document
         {
@@ -190,7 +194,7 @@ namespace VectorView
             edges.Add(e);
         }
 
-        public void ClosePath()
+        public void ClosePolygon()
         {
             if(curStart != null)
             {
@@ -204,6 +208,30 @@ namespace VectorView
 
             curY = 0;
             curX = 0;
+        }
+
+        List<PointF[]> originPolygons = null;
+
+        public void ClosePath()
+        {
+            RectangleF b = GetBoundRect(true);
+            PointF center = VectorMath.GetBoxCenter(b);
+
+            centerX = center.X;
+            centerY = center.Y;
+
+            BuildPolygons();
+            originPolygons = poligons;
+            poligons = null;
+
+            foreach (PointF[] poly in originPolygons)
+            {
+                for (int i = 0; i < poly.Length; i++)
+                {
+                    poly[i].X -= center.X;
+                    poly[i].Y -= center.Y;
+                }
+            }
         }
 
         public void LineTo(float x, float y)
@@ -444,6 +472,25 @@ namespace VectorView
 
                 if (linePen.Color != oldColor)
                     linePen.Color = oldColor;
+            }
+
+            if (Debugger.IsAttached)
+            {
+                if (originPolygons != null)
+                {
+                    PointF[] pts = new PointF[originPolygons[0].Length];
+
+                    Array.Copy(originPolygons[0], pts, pts.Length);
+
+                    Matrix mt = new Matrix();
+                    mt.Translate(centerX, centerY);
+                    //mt.Scale(scalex, scaley);
+                    mt.Rotate(angle);
+
+                    mt.TransformPoints(pts);
+
+                    g.DrawPolygon(Pens.Red, pts);
+                }
             }
 
             if (document.ShowConvexHull)
@@ -796,10 +843,14 @@ namespace VectorView
         PointF transformOrigin = new PointF();
         Dictionary<VectorEdge, List<PointF>> origins = new Dictionary<VectorEdge, List<PointF>>();
         PointF[] originalScans = null;
+
+        float oldAngle = 0;
         
         public void BeginTransform(PointF origin)
         {
             origins.Clear();
+
+            oldAngle = angle;
 
             foreach (VectorEdge e in edges)
             {
@@ -829,6 +880,8 @@ namespace VectorView
 
                 origins.Clear();
             }
+
+            angle = oldAngle;
 
             scans = originalScans;
             originalScans = null;
@@ -936,20 +989,28 @@ namespace VectorView
             Flip(false, true);
         }
 
-        public void Rotate(float angle, PointF origin)
+        float angle = 0;
+
+        public void Rotate(float a, PointF origin)
         {
             Matrix mt = new Matrix();
-            mt.Rotate(angle);
+            mt.Rotate(a);
+
+            angle = oldAngle + a;
 
             Transform(mt, origin);
         }
 
+        float scalex = 1;
+        float scaley = 1;
         public void Scale(float scalex, float scaley, PointF origin)
         {
             Matrix mt = new Matrix();
             mt.Scale(scalex, scaley);
 
             Transform(mt, origin);
+            this.scalex = scalex;
+            this.scaley = scaley;
 
             if (originalScans != null && scans != null)
             {
@@ -962,7 +1023,6 @@ namespace VectorView
 
         public void Move(float dx, float dy)
         {
-            int time = Environment.TickCount;
             foreach (VectorEdge e in edges)
             {
                 List<PointF> tl = new List<PointF>();
@@ -985,14 +1045,9 @@ namespace VectorView
             poligons = null;
             AfterTransforms();
 
-            try
-            {
-                if (System.Windows.Forms.Form.ActiveForm != null)
-                    System.Windows.Forms.Form.ActiveForm.Text = (Environment.TickCount - time).ToString();
-            }catch
-            {
-
-            }
+            PointF center = VectorMath.GetBoxCenter(boundBox);
+            centerX = center.X;
+            centerY = center.Y;
         }
         
         public string ToHPGL()

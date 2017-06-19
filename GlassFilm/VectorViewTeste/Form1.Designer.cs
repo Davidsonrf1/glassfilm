@@ -62,9 +62,9 @@
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.docInfo,
             this.selInfo});
-            this.status.Location = new System.Drawing.Point(0, 379);
+            this.status.Location = new System.Drawing.Point(0, 299);
             this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(956, 24);
+            this.status.Size = new System.Drawing.Size(693, 24);
             this.status.TabIndex = 4;
             this.status.Text = "statusStrip1";
             // 
@@ -101,7 +101,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(956, 403);
+            this.ClientSize = new System.Drawing.Size(693, 323);
             this.Controls.Add(this.button3);
             this.Controls.Add(this.status);
             this.Controls.Add(this.button2);

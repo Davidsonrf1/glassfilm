@@ -96,6 +96,12 @@
     <Compile Include="FrmCadMarca.Designer.cs">
       <DependentUpon>FrmCadMarca.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmCadDesenho.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCadDesenho.Designer.cs">
+      <DependentUpon>FrmCadDesenho.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmCadModelo.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -135,6 +141,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCadMarca.resx">
       <DependentUpon>FrmCadMarca.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCadDesenho.resx">
+      <DependentUpon>FrmCadDesenho.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCadModelo.resx">
       <DependentUpon>FrmCadModelo.cs</DependentUpon>
@@ -270,6 +279,9 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="MySql.Data.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="config.png" />
     <Content Include="iconicon.ico" />
     <None Include="Resources\identification-tokens.png" />

@@ -316,14 +316,15 @@ namespace VectorView
         {
             foreach (VectorPath p in selection)
             {
-                p.BeginTransform(VectorMath.GetBoxCenter(selBox));
+                p.BeginTransform(selMiddle);
                 p.Move(dx, dy);
             }
 
             OnSelectionMoved();
-
             Invalidate();
         }
+
+        float curAngle = 0;
 
         protected override void OnMouseMove(MouseEventArgs e)
         {
@@ -383,7 +384,11 @@ namespace VectorView
 
             if (isRotating)
             {
-                float angle = VectorMath.AngleBetween(transformCenter, mousePos) - startAngle;
+                float ma = VectorMath.AngleBetween(transformCenter, mousePos);
+                float angle = ma - startAngle;
+
+                curAngle = angle;
+                Parent.Text = curAngle.ToString("0.00");
 
                 foreach (VectorPath p in selection)
                 {

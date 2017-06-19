@@ -430,11 +430,12 @@ namespace VectorView
             if (scale <= 0)
                 scale = 0.001f;
 
-            g.TranslateTransform(ox, oy);
-            g.ScaleTransform(scale, scale);
-
             if (showDocBorder)
                 g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
+
+            g.ResetTransform();
+            g.TranslateTransform(ox, oy);
+            g.ScaleTransform(scale, scale);
 
             foreach (VectorPath p in paths)
             {
@@ -537,7 +538,7 @@ namespace VectorView
                     }
                 }
 
-                path.ClosePath();
+                path.ClosePolygon();
             }
 
             if (el is SvgPath)
@@ -589,7 +590,7 @@ namespace VectorView
                     }
                     else if (seg is SvgClosePathSegment)
                     {
-                        path.ClosePath();
+                        path.ClosePolygon();
                     }
                     else if (seg is SvgMoveToSegment)
                     {
@@ -610,6 +611,8 @@ namespace VectorView
 
             if (path != null)
             {
+                path.ClosePath();
+
                 path.ComputeMetrics();
                 path.ComputeArea(true);
             }

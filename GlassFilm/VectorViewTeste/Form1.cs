@@ -138,13 +138,13 @@ namespace VectorViewTeste
             view.AutoFit();
             view.GridSize = 10;
             view.Document.AutoCheckConstraints = true;
-            view.Document.DrawCutBox = true;
             //view.Document.ShowConvexHull = true;
             
             VectorPath vp = d.Paths[0];
             float area = vp.ComputeArea(false, 1);
 
             view.Document.CutSize = 1520;
+            view.Document.ShowDocBorder = true;
         }
 
         private void button2_Click(object sender, EventArgs e)
