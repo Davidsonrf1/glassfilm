@@ -1055,6 +1055,7 @@ namespace VectorView
             foreach (VectorPath p in selection)
             {
                 document.Paths.Remove(p);
+                document.UpdateCutBox();
             }
 
             ClearSelection();

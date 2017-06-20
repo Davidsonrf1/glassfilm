@@ -337,7 +337,7 @@ namespace VectorView
 
             cutBox.X = 0;
             cutBox.Y = 0;
-            cutBox.Width = r.Width;
+            cutBox.Width = r.Right;
             cutBox.Height = cutSize;
         }
 
