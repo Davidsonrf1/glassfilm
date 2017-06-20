@@ -99,11 +99,11 @@ namespace GlassFilm
         {
             if (cbAno.SelectedItem != null)
             {
-                Veiculo v = (Veiculo)cbAno.SelectedItem;
+                ModeloAno m = (ModeloAno)cbAno.SelectedItem;
 
                 vvModelo.Document = null;
 
-                string svg = DBManager.CarregarDesenho(v.Id);
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano));
                 if (svg != null)
                 {
                     vvModelo.Document = new VectorView.VectorDocument();

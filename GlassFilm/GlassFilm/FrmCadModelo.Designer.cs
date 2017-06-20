@@ -31,9 +31,9 @@
             this.components = new System.ComponentModel.Container();
             System.Windows.Forms.Label label3;
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCadModelo));
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle1 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle2 = new System.Windows.Forms.DataGridViewCellStyle();
-            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle3 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle13 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle14 = new System.Windows.Forms.DataGridViewCellStyle();
+            System.Windows.Forms.DataGridViewCellStyle dataGridViewCellStyle15 = new System.Windows.Forms.DataGridViewCellStyle();
             this.imagensIcons = new System.Windows.Forms.ImageList(this.components);
             this.label19 = new System.Windows.Forms.Label();
             this.txtFiltro = new System.Windows.Forms.TextBox();
@@ -52,7 +52,6 @@
             this.pnlManutencao = new System.Windows.Forms.Panel();
             this.txtCodigoAno = new System.Windows.Forms.TextBox();
             this.label5 = new System.Windows.Forms.Label();
-            this.btnBuscaMarca = new System.Windows.Forms.Button();
             this.txtDescCodigoMarca = new System.Windows.Forms.TextBox();
             this.txtCodigoMarca = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
@@ -60,14 +59,18 @@
             this.label1 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
             this.pnlCodigo = new System.Windows.Forms.Panel();
-            this.button2 = new System.Windows.Forms.Button();
             this.txtCodigo = new System.Windows.Forms.TextBox();
             this.panel1 = new System.Windows.Forms.Panel();
             this.pnlPesquisa = new System.Windows.Forms.Panel();
-            this.button1 = new System.Windows.Forms.Button();
             this.toolStatus = new System.Windows.Forms.ToolStripLabel();
             this.toolBar = new System.Windows.Forms.StatusStrip();
             this.toolPrincipal = new System.Windows.Forms.ToolStrip();
+            this.cbAnos = new System.Windows.Forms.ComboBox();
+            this.btnAdd = new System.Windows.Forms.Button();
+            this.btnDel = new System.Windows.Forms.Button();
+            this.btnBuscaMarca = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
             this.btnNovo = new System.Windows.Forms.ToolStripButton();
             this.btnEditar = new System.Windows.Forms.ToolStripButton();
             this.btnSalvar = new System.Windows.Forms.ToolStripButton();
@@ -221,36 +224,36 @@
             this.gridPrincipal.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.gridPrincipal.BackgroundColor = System.Drawing.Color.Gainsboro;
             this.gridPrincipal.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            dataGridViewCellStyle1.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle1.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle1.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle1.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle1.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            dataGridViewCellStyle1.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle1.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridPrincipal.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle1;
+            dataGridViewCellStyle13.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle13.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle13.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle13.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle13.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle13.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle13.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridPrincipal.ColumnHeadersDefaultCellStyle = dataGridViewCellStyle13;
             this.gridPrincipal.ColumnHeadersHeight = 22;
-            dataGridViewCellStyle2.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle2.BackColor = System.Drawing.SystemColors.Window;
-            dataGridViewCellStyle2.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle2.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle2.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            dataGridViewCellStyle2.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle2.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
-            this.gridPrincipal.DefaultCellStyle = dataGridViewCellStyle2;
+            dataGridViewCellStyle14.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle14.BackColor = System.Drawing.SystemColors.Window;
+            dataGridViewCellStyle14.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle14.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle14.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle14.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle14.WrapMode = System.Windows.Forms.DataGridViewTriState.False;
+            this.gridPrincipal.DefaultCellStyle = dataGridViewCellStyle14;
             this.gridPrincipal.Dock = System.Windows.Forms.DockStyle.Fill;
             this.gridPrincipal.Location = new System.Drawing.Point(0, 0);
             this.gridPrincipal.MultiSelect = false;
             this.gridPrincipal.Name = "gridPrincipal";
             this.gridPrincipal.ReadOnly = true;
-            dataGridViewCellStyle3.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
-            dataGridViewCellStyle3.BackColor = System.Drawing.SystemColors.Control;
-            dataGridViewCellStyle3.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            dataGridViewCellStyle3.ForeColor = System.Drawing.Color.Black;
-            dataGridViewCellStyle3.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            dataGridViewCellStyle3.SelectionForeColor = System.Drawing.Color.White;
-            dataGridViewCellStyle3.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
-            this.gridPrincipal.RowHeadersDefaultCellStyle = dataGridViewCellStyle3;
+            dataGridViewCellStyle15.Alignment = System.Windows.Forms.DataGridViewContentAlignment.MiddleLeft;
+            dataGridViewCellStyle15.BackColor = System.Drawing.SystemColors.Control;
+            dataGridViewCellStyle15.Font = new System.Drawing.Font("Verdana", 8.3F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            dataGridViewCellStyle15.ForeColor = System.Drawing.Color.Black;
+            dataGridViewCellStyle15.SelectionBackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            dataGridViewCellStyle15.SelectionForeColor = System.Drawing.Color.White;
+            dataGridViewCellStyle15.WrapMode = System.Windows.Forms.DataGridViewTriState.True;
+            this.gridPrincipal.RowHeadersDefaultCellStyle = dataGridViewCellStyle15;
             this.gridPrincipal.RowHeadersVisible = false;
             this.gridPrincipal.RowTemplate.Resizable = System.Windows.Forms.DataGridViewTriState.False;
             this.gridPrincipal.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
@@ -278,6 +281,9 @@
             // pnlManutencao
             // 
             this.pnlManutencao.BackColor = System.Drawing.Color.Gainsboro;
+            this.pnlManutencao.Controls.Add(this.btnAdd);
+            this.pnlManutencao.Controls.Add(this.btnDel);
+            this.pnlManutencao.Controls.Add(this.cbAnos);
             this.pnlManutencao.Controls.Add(this.txtCodigoAno);
             this.pnlManutencao.Controls.Add(this.label5);
             this.pnlManutencao.Controls.Add(this.btnBuscaMarca);
@@ -299,9 +305,10 @@
             this.txtCodigoAno.Font = new System.Drawing.Font("Verdana", 8.3F);
             this.txtCodigoAno.Location = new System.Drawing.Point(157, 117);
             this.txtCodigoAno.Name = "txtCodigoAno";
-            this.txtCodigoAno.Size = new System.Drawing.Size(205, 21);
+            this.txtCodigoAno.Size = new System.Drawing.Size(66, 21);
             this.txtCodigoAno.TabIndex = 2;
             this.txtCodigoAno.Tag = "ANO";
+            this.txtCodigoAno.KeyPress += new System.Windows.Forms.KeyPressEventHandler(this.txtCodigoAno_KeyPress);
             // 
             // label5
             // 
@@ -311,20 +318,6 @@
             this.label5.Size = new System.Drawing.Size(36, 14);
             this.label5.TabIndex = 125;
             this.label5.Text = "Ano:";
-            // 
-            // btnBuscaMarca
-            // 
-            this.btnBuscaMarca.BackColor = System.Drawing.Color.Gainsboro;
-            this.btnBuscaMarca.FlatAppearance.BorderSize = 0;
-            this.btnBuscaMarca.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnBuscaMarca.Image = global::GlassFilm.Properties.Resources.magnifying_glass_search_button;
-            this.btnBuscaMarca.Location = new System.Drawing.Point(660, 57);
-            this.btnBuscaMarca.Name = "btnBuscaMarca";
-            this.btnBuscaMarca.Size = new System.Drawing.Size(34, 32);
-            this.btnBuscaMarca.TabIndex = 124;
-            this.btnBuscaMarca.TabStop = false;
-            this.btnBuscaMarca.UseVisualStyleBackColor = false;
-            this.btnBuscaMarca.Click += new System.EventHandler(this.btnBuscaMarca_Click);
             // 
             // txtDescCodigoMarca
             // 
@@ -398,24 +391,6 @@
             this.pnlCodigo.Size = new System.Drawing.Size(962, 43);
             this.pnlCodigo.TabIndex = 136;
             // 
-            // button2
-            // 
-            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button2.FlatAppearance.BorderSize = 0;
-            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.Font = new System.Drawing.Font("Verdana", 8.3F);
-            this.button2.ForeColor = System.Drawing.Color.White;
-            this.button2.Image = global::GlassFilm.Properties.Resources.t;
-            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.button2.Location = new System.Drawing.Point(256, 5);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(106, 32);
-            this.button2.TabIndex = 132;
-            this.button2.Text = "      Carregar";
-            this.button2.UseVisualStyleBackColor = true;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // txtCodigo
             // 
             this.txtCodigo.Font = new System.Drawing.Font("Verdana", 8.3F);
@@ -448,22 +423,6 @@
             this.pnlPesquisa.Name = "pnlPesquisa";
             this.pnlPesquisa.Size = new System.Drawing.Size(976, 39);
             this.pnlPesquisa.TabIndex = 15;
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.BorderSize = 0;
-            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
-            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
-            this.button1.Image = global::GlassFilm.Properties.Resources.search__1_;
-            this.button1.Location = new System.Drawing.Point(929, 9);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(27, 21);
-            this.button1.TabIndex = 6;
-            this.button1.UseVisualStyleBackColor = false;
             // 
             // toolStatus
             // 
@@ -501,6 +460,92 @@
             this.toolPrincipal.Size = new System.Drawing.Size(976, 25);
             this.toolPrincipal.TabIndex = 14;
             this.toolPrincipal.Text = "toolStrip1";
+            // 
+            // cbAnos
+            // 
+            this.cbAnos.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbAnos.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbAnos.FormattingEnabled = true;
+            this.cbAnos.Location = new System.Drawing.Point(263, 117);
+            this.cbAnos.Name = "cbAnos";
+            this.cbAnos.Size = new System.Drawing.Size(99, 21);
+            this.cbAnos.TabIndex = 126;
+            this.cbAnos.TabStop = false;
+            // 
+            // btnAdd
+            // 
+            this.btnAdd.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnAdd.FlatAppearance.BorderSize = 0;
+            this.btnAdd.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnAdd.Image = global::GlassFilm.Properties.Resources.add_button_inside_black_circle;
+            this.btnAdd.Location = new System.Drawing.Point(225, 111);
+            this.btnAdd.Name = "btnAdd";
+            this.btnAdd.Size = new System.Drawing.Size(34, 32);
+            this.btnAdd.TabIndex = 3;
+            this.btnAdd.UseVisualStyleBackColor = false;
+            this.btnAdd.Click += new System.EventHandler(this.btnAdd_Click);
+            // 
+            // btnDel
+            // 
+            this.btnDel.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnDel.FlatAppearance.BorderSize = 0;
+            this.btnDel.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnDel.Image = global::GlassFilm.Properties.Resources.minus;
+            this.btnDel.Location = new System.Drawing.Point(365, 111);
+            this.btnDel.Name = "btnDel";
+            this.btnDel.Size = new System.Drawing.Size(34, 32);
+            this.btnDel.TabIndex = 127;
+            this.btnDel.TabStop = false;
+            this.btnDel.UseVisualStyleBackColor = false;
+            this.btnDel.Click += new System.EventHandler(this.btnDel_Click);
+            // 
+            // btnBuscaMarca
+            // 
+            this.btnBuscaMarca.BackColor = System.Drawing.Color.Gainsboro;
+            this.btnBuscaMarca.FlatAppearance.BorderSize = 0;
+            this.btnBuscaMarca.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnBuscaMarca.Image = global::GlassFilm.Properties.Resources.magnifying_glass_search_button;
+            this.btnBuscaMarca.Location = new System.Drawing.Point(660, 57);
+            this.btnBuscaMarca.Name = "btnBuscaMarca";
+            this.btnBuscaMarca.Size = new System.Drawing.Size(34, 32);
+            this.btnBuscaMarca.TabIndex = 124;
+            this.btnBuscaMarca.TabStop = false;
+            this.btnBuscaMarca.UseVisualStyleBackColor = false;
+            this.btnBuscaMarca.Click += new System.EventHandler(this.btnBuscaMarca_Click);
+            // 
+            // button2
+            // 
+            this.button2.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button2.FlatAppearance.BorderSize = 0;
+            this.button2.FlatAppearance.MouseDownBackColor = System.Drawing.Color.Transparent;
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.Font = new System.Drawing.Font("Verdana", 8.3F);
+            this.button2.ForeColor = System.Drawing.Color.White;
+            this.button2.Image = global::GlassFilm.Properties.Resources.t;
+            this.button2.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.button2.Location = new System.Drawing.Point(256, 5);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(106, 32);
+            this.button2.TabIndex = 132;
+            this.button2.Text = "      Carregar";
+            this.button2.UseVisualStyleBackColor = true;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.BorderSize = 0;
+            this.button1.FlatAppearance.MouseDownBackColor = System.Drawing.Color.White;
+            this.button1.FlatAppearance.MouseOverBackColor = System.Drawing.Color.White;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
+            this.button1.Image = global::GlassFilm.Properties.Resources.search__1_;
+            this.button1.Location = new System.Drawing.Point(929, 9);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(27, 21);
+            this.button1.TabIndex = 6;
+            this.button1.UseVisualStyleBackColor = false;
             // 
             // btnNovo
             // 
@@ -647,5 +692,8 @@
         private System.Windows.Forms.TextBox txtCodigoMarca;
         private System.Windows.Forms.TextBox txtCodigoAno;
         private System.Windows.Forms.Label label5;
+        private System.Windows.Forms.Button btnAdd;
+        private System.Windows.Forms.Button btnDel;
+        private System.Windows.Forms.ComboBox cbAnos;
     }
 }

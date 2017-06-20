@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GlassFilm.Controller;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -30,12 +31,11 @@ namespace GlassFilm
 
         private void carregaGridPrincipal()
         {
-            string[] nomesColunas = { "Código", "Modelo", "Ano", "Marca" };
-            int[] tamColunas = { 100, 200, 130, 200 };
+            string[] nomesColunas = { "Código", "Modelo", "Marca" };
+            int[] tamColunas = { 100, 200, 200 };
             carregamento.carregarGrid(gridPrincipal, " SELECT  " +
                                                      "	 CAST(CODIGO_MODELO AS VARCHAR) AS CODIGO_MODELO," +
-                                                     "	 MODELO," +
-                                                     "	 ANO," +                                                     
+                                                     "	 MODELO," +                                                                                                  
                                                      "	 (SELECT MARCA FROM MARCA WHERE MARCA.CODIGO_MARCA = MODELO.CODIGO_MARCA) as MARCA" +
                                                      " FROM " +
                                                      "	 MODELO" +
@@ -128,12 +128,22 @@ namespace GlassFilm
             foreach (DataRow linha in modelo.carrega(linhaSelecionada).Rows)
             {
                 txtCodigo.Text = linhaSelecionada;
-                txtCodigoMarca.Text = linha["CODIGO_MARCA"].ToString();
-                txtCodigoAno.Text = linha["ANO"].ToString();
+                txtCodigoMarca.Text = linha["CODIGO_MARCA"].ToString();                
                 txtDescricao.Text = linha["MODELO"].ToString();
 
                 txtCodigoMarca_Leave(txtCodigoMarca.Text, EventArgs.Empty);
             }
+
+            ModeloAno ma = new ModeloAno();
+            cbAnos.Items.Clear();
+            foreach (DataRow ano in ma.carrega(linhaSelecionada).Rows)
+            {
+                cbAnos.Items.Add(ano["ANO"].ToString());
+            }
+            cbAnos.Sorted = true;
+
+            if (cbAnos.Items.Count > 0)
+                cbAnos.SelectedIndex = 0;
 
             controle.controlaBotoes(toolPrincipal, "Editar");
             controlePanels("Editar");
@@ -149,14 +159,7 @@ namespace GlassFilm
                 Mensagens.Informacao("Preencha o Campo Marca");
                 txtCodigoMarca.Focus();
                 return;
-            }
-
-            if (txtCodigoAno.Text.Length == 0)
-            {
-                Mensagens.Informacao("Preencha o Campo Código Fipe");
-                txtCodigoAno.Focus();
-                return;
-            }
+            }            
 
             if (txtDescricao.Text.Length == 0)
             {
@@ -167,7 +170,7 @@ namespace GlassFilm
 
             #endregion
             
-            modelo = new Modelo(txtCodigo.Text,txtCodigoMarca.Text,txtCodigoAno.Text,txtDescricao.Text);
+            modelo = new Modelo(txtCodigo.Text,txtCodigoMarca.Text,txtDescricao.Text);
 
             if (toolStatus.Text == "Novo")
             {
@@ -177,6 +180,12 @@ namespace GlassFilm
             {                
                 modelo.Codigo_modelo = txtCodigo.Text;
                 modelo.gravar("Atualizar");
+            }
+
+            if (!gravarAno())
+            {
+                Mensagens.Informacao("Aconteceu algum erro ao Salvar os Anos selecionados.");
+                return;
             }
 
             toolStatus.Text = "...";
@@ -302,5 +311,57 @@ namespace GlassFilm
             Validacoes.ValidaInternet.campoSomenteNumero(sender, e);
         }
 
+        private void txtCodigoAno_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            Validacoes.ValidaInternet.campoSomenteNumero(sender, e);
+        }
+
+        private void btnAdd_Click(object sender, EventArgs e)
+        {
+            if (txtCodigoAno.Text.Length != 4)
+            {
+                Mensagens.Informacao("Este não parece um Ano válido. Por favor, verifique!");
+                return;
+            }
+
+            if (txtCodigoAno.Text.Length > 0)
+            {
+                cbAnos.Items.Add(txtCodigoAno.Text.Trim());
+                txtCodigoAno.Clear();
+                txtCodigoAno.Focus();
+                cbAnos.Sorted = true;
+            }
+        }
+
+        private void btnDel_Click(object sender, EventArgs e)
+        {
+            if (cbAnos.Text.Length > 0)
+            {                
+                cbAnos.Items.RemoveAt(cbAnos.SelectedIndex);
+                cbAnos.Sorted = true;
+            }
+        }
+
+        private bool gravarAno()
+        {
+            try
+            {
+                ModeloAno ma = new ModeloAno(txtCodigo.Text.Trim());
+                ma.excluir(txtCodigo.Text.Trim());
+
+                foreach (string ano in cbAnos.Items)
+                {
+                    ma = new ModeloAno(txtCodigo.Text.Trim(), ano);
+                    ma.gravar();
+                }
+                cbAnos.Items.Clear();
+                return true;
+            }
+            catch (Exception)
+            {
+                return false;
+                throw;
+            }
+        }
     }
 }

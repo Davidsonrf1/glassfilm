@@ -54,6 +54,7 @@ namespace GlassFilm
 
             OpenFileDialog opf = new OpenFileDialog();
             opf.DefaultExt = ".svg";
+            opf.Filter = "SVG|*.svg";
             opf.RestoreDirectory = true;
 
             if (opf.ShowDialog() == DialogResult.OK)
@@ -95,8 +96,8 @@ namespace GlassFilm
 
                     foreach (object i in lbAnos.CheckedItems)
                     {
-                        Veiculo v = (Veiculo)i;
-                        DBManager.SalvarDesenho(v.Id, svg);
+                        ModeloAno v = (ModeloAno)i;
+                        DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg);
 
                         pbDesenho.Value++;
                         Application.DoEvents();
@@ -173,12 +174,12 @@ namespace GlassFilm
             if (sel.ModeloAtual == null)
                 return;
 
-            List<Veiculo> veic = DBManager.CarregarVeiculos(sel.ModeloAtual.Id, true);
-            
+            List<ModeloAno> lma = DBManager.CarregaModeloANO(sel.ModeloAtual.Id);
+
             lbAnos.Items.Clear();
-            foreach (Veiculo v in veic)
+            foreach (ModeloAno ma in lma)
             {
-                lbAnos.Items.Add(v);
+                lbAnos.Items.Add(ma);
             }
         }
 
@@ -292,9 +293,9 @@ namespace GlassFilm
 
             if (lbAnos.SelectedItem != null)
             {
-                Veiculo v = (Veiculo)lbAnos.SelectedItem;
+                ModeloAno ma = (ModeloAno)lbAnos.SelectedItem;
 
-                string svg = DBManager.CarregarDesenho(v.Id);
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(ma.Codigo_ano));
                 if (svg != null)
                 {
                     vectorView.Document.LoadSVG(svg);

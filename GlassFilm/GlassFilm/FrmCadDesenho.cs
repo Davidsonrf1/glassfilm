@@ -167,7 +167,7 @@ namespace GlassFilm
 
             #endregion
             
-            modelo = new Modelo(txtCodigo.Text,txtCodigoMarca.Text,txtCodigoAno.Text,txtDescricao.Text);
+            modelo = new Modelo(txtCodigo.Text,txtCodigoMarca.Text,txtDescricao.Text);
 
             if (toolStatus.Text == "Novo")
             {

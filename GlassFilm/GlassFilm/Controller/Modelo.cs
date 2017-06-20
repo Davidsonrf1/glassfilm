@@ -16,8 +16,7 @@ namespace GlassFilm
         private SQLiteCommand cmd;
  
         public string Codigo_modelo { get; set; }
-        private string Codigo_marca { get; set; }
-        private string Ano { get; set; }
+        private string Codigo_marca { get; set; }        
         private string Descricao { get; set; }
                 
         public Modelo()
@@ -25,11 +24,10 @@ namespace GlassFilm
             DBManager.InitDB();
         }
  
-        public Modelo(string codigo_modelo,string codigo_marca,string ano,string descricao)
+        public Modelo(string codigo_modelo,string codigo_marca,string descricao)
         {
             this.Codigo_modelo = codigo_modelo;
-            this.Codigo_marca = codigo_marca;
-            this.Ano = ano;
+            this.Codigo_marca = codigo_marca;            
             this.Descricao = descricao;
 
             DBManager.InitDB();
@@ -43,8 +41,7 @@ namespace GlassFilm
             {
                 string _sql = " SELECT "+                              
                               "      CODIGO_MODELO," +
-                              "      CODIGO_MARCA," +
-                              "      ANO," +
+                              "      CODIGO_MARCA," +                              
                               "      MODELO" +
                               "  FROM " +
 	                          "      MODELO";
@@ -95,8 +92,8 @@ namespace GlassFilm
                 {
                     try
                     {
-                        string _sql = " INSERT INTO modelo (CODIGO_MODELO,CODIGO_MARCA,ANO,CODIGO_FIPE,MODELO) " +
-                                      " VALUES (@codigo_modelo,@codigo_marca,@ano,@codigo_fipe,@modelo) ";
+                        string _sql = " INSERT INTO modelo (CODIGO_MODELO,CODIGO_MARCA,MODELO) " +
+                                      " VALUES (@codigo_modelo,@codigo_marca,@modelo) ";
 
                         cmd = new SQLiteCommand();
                         cmd.Connection = DBManager._mainConnection;
@@ -109,9 +106,7 @@ namespace GlassFilm
                         }
 
                         cmd.Parameters.Add(new SQLiteParameter("@codigo_modelo", ultCodigo));
-                        cmd.Parameters.Add(new SQLiteParameter("@codigo_marca", this.Codigo_marca));
-                        cmd.Parameters.Add(new SQLiteParameter("@ano", this.Ano));
-                        cmd.Parameters.Add(new SQLiteParameter("@codigo_fipe", "0"));
+                        cmd.Parameters.Add(new SQLiteParameter("@codigo_marca", this.Codigo_marca));                        
                         cmd.Parameters.Add(new SQLiteParameter("@modelo", this.Descricao));
 
                         cmd.ExecuteNonQuery();
@@ -129,8 +124,7 @@ namespace GlassFilm
                     try
                     {
                         string _sql = " UPDATE modelo SET " +                                      
-                                      "      CODIGO_MARCA = @codigo_marca," +
-                                      "      ANO = @ano," +
+                                      "      CODIGO_MARCA = @codigo_marca," +                                      
                                       "      MODELO = @modelo" +
                                       " WHERE " +
                                       "      CODIGO_MODELO = @codigo_modelo";
@@ -140,8 +134,7 @@ namespace GlassFilm
                         cmd.CommandText = _sql;
 
                         cmd.Parameters.Add(new SQLiteParameter("@codigo_modelo", this.Codigo_modelo));
-                        cmd.Parameters.Add(new SQLiteParameter("@codigo_marca", this.Codigo_marca));
-                        cmd.Parameters.Add(new SQLiteParameter("@ano", this.Ano));
+                        cmd.Parameters.Add(new SQLiteParameter("@codigo_marca", this.Codigo_marca));                        
                         cmd.Parameters.Add(new SQLiteParameter("@modelo", this.Descricao));                        
 
                         cmd.ExecuteNonQuery();

@@ -16,11 +16,11 @@ namespace GlassFilm.Class
 
         List<Marca> marcas = new List<Marca>();
         List<Modelo> modelos = new List<Modelo>();
-        List<Veiculo> veiculos = new List<Veiculo>();
+        List<ModeloAno> modeloAno = new List<ModeloAno>();
 
         Marca marcaAtual = null;
         Modelo modeloAtual = null;
-        Veiculo veiculoAtual = null;
+        ModeloAno veiculoAtual = null;
 
         public bool ListaTodas
         {
@@ -98,7 +98,7 @@ namespace GlassFilm.Class
             }
         }
 
-        public Veiculo VeiculoAtual
+        public ModeloAno VeiculoAtual
         {
             get
             {
@@ -163,8 +163,8 @@ namespace GlassFilm.Class
 
                 if (modeloAtual != null)
                 {
-                    veiculos = DBManager.CarregarVeiculos(modeloAtual.Id, listaTodas);
-                    foreach (Veiculo m in veiculos)
+                    modeloAno = DBManager.CarregaModeloANO(modeloAtual.Id);
+                    foreach (ModeloAno m in modeloAno)
                     {
                         cbVeiculos.Items.Add(m);
                     }
@@ -176,7 +176,7 @@ namespace GlassFilm.Class
         {
             veiculoAtual = null;
             if (cbVeiculos.SelectedItem != null)
-                veiculoAtual = (Veiculo)cbVeiculos.SelectedItem;
+                veiculoAtual = (ModeloAno)cbVeiculos.SelectedItem;
         }
 
         void PreencheCbMarcas()

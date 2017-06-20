@@ -29,17 +29,17 @@ namespace GlassFilm.Class
         {
             return _mainConnection != null && _mainConnection.State == ConnectionState.Open;
         }
-        
-        public static List<Marca> CarregarMarcas(bool todas=false)
-        {            
+
+        public static List<Marca> CarregarMarcas(bool todas = false)
+        {
             SQLiteCommand cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "SELECT * FROM MARCA " + (!todas ? "WHERE POSSUI_DESENHO = 1" : "") + " ORDER BY MARCA";
+            cmd.CommandText = "SELECT * FROM MARCA " + (!todas ? "WHERE POSSUI_DESENHO = 1" : "") + (!todas ? " AND " : " WHERE ") + "(SELECT CODIGO_MODELO FROM MODELO WHERE CODIGO_MARCA = MARCA.CODIGO_MARCA)>0 ORDER BY MARCA";
             IDataReader dr = cmd.ExecuteReader();
 
             List<Marca> marcas = new List<Marca>();
 
-            while(dr.Read())
+            while (dr.Read())
                 marcas.Add(new Marca(Convert.ToInt32(dr["CODIGO_MARCA"].ToString()), dr["MARCA"].ToString()));
 
             dr.Close();
@@ -56,7 +56,7 @@ namespace GlassFilm.Class
             List<Modelo> modelos = new List<Class.Modelo>();
 
             while (dr.Read())
-                modelos.Add(new Modelo(Convert.ToInt32(dr["CODIGO_MODELO"].ToString()), dr["MODELO"].ToString(), dr["ANO"].ToString()));
+                modelos.Add(new Modelo(Convert.ToInt32(dr["CODIGO_MODELO"].ToString()), dr["MODELO"].ToString()));
 
             dr.Close();
             return modelos;
@@ -76,6 +76,24 @@ namespace GlassFilm.Class
 
             dr.Close();
             return veiculos;
+        }
+
+        public static List<ModeloAno> CarregaModeloANO(int modelo)
+        {
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = "SELECT * FROM MODELO_ANO WHERE CODIGO_MODELO = " + modelo.ToString() + " ORDER BY ANO ASC";
+            IDataReader dr = cmd.ExecuteReader();
+
+            List<ModeloAno> lma = new List<ModeloAno>();
+
+            while (dr.Read())
+            {
+                lma.Add(new ModeloAno(dr["CODIGO_ANO"].ToString(),dr["CODIGO_MODELO"].ToString(), dr["ANO"].ToString()));
+            }
+
+            dr.Close();
+            return lma;
         }
 
         public static string CarregarDesenho(int veiculo)
@@ -98,7 +116,7 @@ namespace GlassFilm.Class
             return null;
         }
 
-        public static void SalvarDesenho(int veiculo, string svg)
+        public static void SalvarDesenho(int codigo_ano, string svg)
         {
             byte[] svgData = Encoding.UTF8.GetBytes(svg);
 
@@ -112,11 +130,11 @@ namespace GlassFilm.Class
                 cmd.CommandText = "SELECT IFNULL(MAX(VERSAO), 0) VERSAO FROM DESENHOS";
                 versao = Convert.ToInt32(cmd.ExecuteScalar().ToString()) + 1;
 
-                cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + veiculo.ToString();
+                cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO) VALUES (@veic,@versao,@dados,@tamanho)";
-                cmd.Parameters.Add("@veic", DbType.Int32).Value = veiculo;
+                cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
                 cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
                 cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;
                 cmd.Parameters.Add("@tamanho", DbType.Int32).Value = svgData.Length;
@@ -133,10 +151,10 @@ namespace GlassFilm.Class
 
             cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "UPDATE VEICULO SET POSSUI_DESENHO = 1 WHERE VEICULO = " + veiculo.ToString();
+            cmd.CommandText = "UPDATE MODELO_ANO SET POSSUI_DESENHO = 1 WHERE CODIGO_ANO = " + codigo_ano.ToString();
             cmd.ExecuteNonQuery();
 
-            cmd.CommandText = "UPDATE MODELO SET POSSUI_DESENHO = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM VEICULO WHERE POSSUI_DESENHO = 1)";
+            cmd.CommandText = "UPDATE MODELO SET POSSUI_DESENHO = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_DESENHO = 1)";
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = "UPDATE MARCA SET POSSUI_DESENHO = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";

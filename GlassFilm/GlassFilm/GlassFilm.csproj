@@ -77,12 +77,14 @@
     <Compile Include="Class\Marca.cs" />
     <Compile Include="Class\Mensagens.cs" />
     <Compile Include="Class\Modelo.cs" />
+    <Compile Include="Class\ModeloAno.cs" />
     <Compile Include="Class\SeletorVeiculo.cs" />
     <Compile Include="Class\User.cs" />
     <Compile Include="Class\ValidaLogin.cs" />
     <Compile Include="Class\Veiculo.cs" />
     <Compile Include="Controller\Marca.cs" />
     <Compile Include="Controller\Modelo.cs" />
+    <Compile Include="Controller\ModeloAno.cs" />
     <Compile Include="Controller\Rolo.cs" />
     <Compile Include="FrmCadastroDesenho.cs">
       <SubType>Form</SubType>
@@ -279,6 +281,8 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\minus.png" />
+    <None Include="Resources\add-button-inside-black-circle.png" />
     <None Include="MySql.Data.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
