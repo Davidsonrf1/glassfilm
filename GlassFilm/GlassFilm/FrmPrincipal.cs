@@ -10,6 +10,7 @@ using System.Data.SQLite;
 using GlassFilm.Class;
 using System.IO;
 using VectorView;
+using System.Diagnostics;
 
 namespace GlassFilm
 {
@@ -35,7 +36,9 @@ namespace GlassFilm
             vvCorte.AllowMoveDocument = true;
             vvCorte.ShowCutBox = true;
 
-            //vvModelo.DoubleClick += VvModelo_DoubleClick;
+            AtualizaFilmes();
+
+            cbFilme.Text = "";
         }
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
@@ -48,11 +51,22 @@ namespace GlassFilm
                 }
             }
 
-            FrmLogin frm = new FrmLogin();
-            frm.ShowInTaskbar = false;
-            frm.ShowDialog();
+            if (!Debugger.IsAttached)
+            {
+                FrmLogin frm = new FrmLogin();
+                frm.ShowInTaskbar = false;
+                frm.ShowDialog();
 
-            if (frm.autorizado)
+                if (frm.autorizado)
+                {
+                    pnlFiltroInfo.Visible = true;
+                    pnlprincipal.Visible = true;
+                    //pnlMapa.Visible = true;
+                    vvModelo.Visible = true;
+                    toolArquivo.Visible = true;
+                }
+            }
+            else
             {
                 pnlFiltroInfo.Visible = true;
                 pnlprincipal.Visible = true;
@@ -277,10 +291,22 @@ namespace GlassFilm
             vvCorte.Document.AutoNest();
         }
 
+        void AtualizaFilmes()
+        {
+            List<Filme> filmes = DBManager.CarregarRolos();
+
+            cbFilme.Items.Clear();
+
+            foreach (Filme f in filmes)
+            {
+                cbFilme.Items.Add(f);
+            }
+        }
+
         private void cadastroRoloToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Program.ShowDialog(new FrnCadRolo());
-            AtualizaCombos();
+            AtualizaFilmes();
         }
 
         private void splitDesenho_Panel2_Resize(object sender, EventArgs e)
@@ -365,6 +391,14 @@ namespace GlassFilm
                 VectorDocument doc = vvCorte.Document;
                 doc.UpdateCutBox();
             }
+        }
+
+        private void cbFilme_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            Filme filme = (Filme)cbFilme.SelectedItem;
+            vvCorte.Document.CutSize = filme.Largura;
+
+            vvCorte.Refresh();
         }
     }
 }

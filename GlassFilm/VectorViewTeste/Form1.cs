@@ -26,6 +26,7 @@ namespace VectorViewTeste
             view.Left = 400;
             view.BackColor = Color.WhiteSmoke;
             view.Dock = DockStyle.Fill;
+            view.ShowCutBox = true;
 
             view.DocementMoved += View_DocementMoved;
             view.SelectionMoved += View_SelectionMoved;
@@ -66,8 +67,6 @@ namespace VectorViewTeste
         void UpdateDocInfo()
         {
             VectorDocument d = view.Document;
-
-
 
             if (d != null)
             {
@@ -150,7 +149,7 @@ namespace VectorViewTeste
         private void button2_Click(object sender, EventArgs e)
         {
             string s = view.Document.ToHPGL();
-            File.WriteAllText( @"D:\\teste.plt", s);
+            File.WriteAllText(@"D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", s);
         }
 
         private void button3_Click(object sender, EventArgs e)

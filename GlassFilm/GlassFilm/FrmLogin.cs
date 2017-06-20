@@ -28,6 +28,12 @@ namespace GlassFilm
                 txtCnpj.Visible = false;
                 lbCnpjCpf.Visible = false;
             }
+
+            if (Debugger.IsAttached)
+            {
+                autorizado = true;
+                this.Close();
+            }
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)

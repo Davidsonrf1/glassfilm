@@ -474,7 +474,7 @@ namespace VectorView
                     linePen.Color = oldColor;
             }
 
-            if (Debugger.IsAttached)
+            if (Debugger.IsAttached && false)
             {
                 if (originPolygons != null)
                 {
@@ -1035,11 +1035,21 @@ namespace VectorView
 
             invalidConstraints = false;
 
-            List<VectorPath> intersections = new List<VectorPath>();
+            RectangleF r = GetBoundRect();
 
-            if(GetDocIntersections(intersections))
-            {
+            if (r.X < 0 || r.Y < 0)
                 invalidConstraints = true;
+
+            if (r.Bottom > document.CutSize)
+                invalidConstraints = true;
+
+            if (!invalidConstraints)
+            {
+                List<VectorPath> intersections = new List<VectorPath>();
+                if (GetDocIntersections(intersections))
+                {
+                    invalidConstraints = true;
+                }
             }
 
             poligons = null;

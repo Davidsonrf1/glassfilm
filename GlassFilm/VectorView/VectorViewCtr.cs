@@ -129,6 +129,10 @@ namespace VectorView
 
                 PointF p1 = Document.DocPointToViewPoint(new PointF(op.X, op.Y));
                 Document.Scale += d;
+
+                if (Document.Scale < 0.02f)
+                    Document.Scale = 0.02f;
+
                 PointF p2 = Document.DocPointToViewPoint(new PointF(op.X, op.Y));
 
                 float x = p2.X - p1.X;

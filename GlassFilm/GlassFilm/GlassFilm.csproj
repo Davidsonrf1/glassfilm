@@ -78,6 +78,7 @@
     <Compile Include="Class\Mensagens.cs" />
     <Compile Include="Class\Modelo.cs" />
     <Compile Include="Class\ModeloAno.cs" />
+    <Compile Include="Class\Filme.cs" />
     <Compile Include="Class\SeletorVeiculo.cs" />
     <Compile Include="Class\User.cs" />
     <Compile Include="Class\ValidaLogin.cs" />
@@ -169,10 +170,10 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="GlassFilm.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="Modelos.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

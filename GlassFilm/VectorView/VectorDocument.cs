@@ -430,12 +430,11 @@ namespace VectorView
             if (scale <= 0)
                 scale = 0.001f;
 
-            if (showDocBorder)
-                g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
-
-            g.ResetTransform();
             g.TranslateTransform(ox, oy);
             g.ScaleTransform(scale, scale);
+
+            if (showDocBorder)
+                g.DrawRectangle(Pens.DarkGray, 0, 0, docWidth, docHeight);
 
             foreach (VectorPath p in paths)
             {
@@ -601,8 +600,6 @@ namespace VectorView
 
                     }
                 }
-
-                path.ComputeArea(true);
             }
             else
             {
@@ -624,7 +621,7 @@ namespace VectorView
         }
 
 
-        public void LoadSVGFromFile(string file, float scale=1)
+        public void LoadSVGFromFile(string file)
         {
             string svg = File.ReadAllText(file, Encoding.UTF8);
             LoadSVG(svg, scale);

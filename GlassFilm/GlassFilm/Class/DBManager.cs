@@ -30,6 +30,22 @@ namespace GlassFilm.Class
             return _mainConnection != null && _mainConnection.State == ConnectionState.Open;
         }
 
+        public static List<Filme> CarregarRolos()
+        {
+            List<Filme> rolos = new List<Class.Filme>();
+
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = "SELECT * FROM ROLO ORDER BY LARGURA";
+            IDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+                rolos.Add(new Filme(Convert.ToInt32(dr["LARGURA"].ToString()), dr["DESCRICAO"].ToString()));
+
+            dr.Close();
+            return rolos;
+        }
+
         public static List<Marca> CarregarMarcas(bool todas = false)
         {
             SQLiteCommand cmd = _mainConnection.CreateCommand();

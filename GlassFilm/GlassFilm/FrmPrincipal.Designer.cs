@@ -41,8 +41,7 @@
             this.button2 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
-            this.pictureBox2 = new System.Windows.Forms.PictureBox();
-            this.comboBox1 = new System.Windows.Forms.ComboBox();
+            this.cbFilme = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
@@ -72,7 +71,6 @@
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
@@ -212,8 +210,7 @@
             // 
             // groupBox2
             // 
-            this.groupBox2.Controls.Add(this.pictureBox2);
-            this.groupBox2.Controls.Add(this.comboBox1);
+            this.groupBox2.Controls.Add(this.cbFilme);
             this.groupBox2.Controls.Add(this.label2);
             this.groupBox2.Location = new System.Drawing.Point(560, 11);
             this.groupBox2.Name = "groupBox2";
@@ -222,26 +219,18 @@
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Mídia";
             // 
-            // pictureBox2
+            // cbFilme
             // 
-            this.pictureBox2.Image = global::GlassFilm.Properties.Resources.locked;
-            this.pictureBox2.Location = new System.Drawing.Point(261, 38);
-            this.pictureBox2.Name = "pictureBox2";
-            this.pictureBox2.Size = new System.Drawing.Size(25, 28);
-            this.pictureBox2.TabIndex = 4;
-            this.pictureBox2.TabStop = false;
-            // 
-            // comboBox1
-            // 
-            this.comboBox1.ForeColor = System.Drawing.Color.Black;
-            this.comboBox1.FormattingEnabled = true;
-            this.comboBox1.Items.AddRange(new object[] {
+            this.cbFilme.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbFilme.ForeColor = System.Drawing.Color.Black;
+            this.cbFilme.FormattingEnabled = true;
+            this.cbFilme.Items.AddRange(new object[] {
             "40 Inch"});
-            this.comboBox1.Location = new System.Drawing.Point(61, 40);
-            this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(188, 21);
-            this.comboBox1.TabIndex = 1;
-            this.comboBox1.Text = "40 Inch";
+            this.cbFilme.Location = new System.Drawing.Point(61, 40);
+            this.cbFilme.Name = "cbFilme";
+            this.cbFilme.Size = new System.Drawing.Size(240, 21);
+            this.cbFilme.TabIndex = 1;
+            this.cbFilme.SelectedIndexChanged += new System.EventHandler(this.cbFilme_SelectedIndexChanged);
             // 
             // label2
             // 
@@ -579,7 +568,6 @@
             this.pnlprincipal.ResumeLayout(false);
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
@@ -608,8 +596,7 @@
         private System.Windows.Forms.Label lbTamanho;
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox2;
-        private System.Windows.Forms.PictureBox pictureBox2;
-        private System.Windows.Forms.ComboBox comboBox1;
+        private System.Windows.Forms.ComboBox cbFilme;
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button button4;
