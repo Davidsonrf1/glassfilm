@@ -39,7 +39,23 @@ namespace GlassFilm
             AtualizaFilmes();
 
             cbFilme.Text = "";
+
+            int roloPadrao = Convert.ToInt32(Program.Config.GetValue("FilmePadrao", "0"));
+
+            for (int i = 0; i < cbFilme.Items.Count; i++)
+            {
+                Filme f = (Filme)cbFilme.Items[i];
+
+                if (f.Id == roloPadrao)
+                {
+                    cbFilme.SelectedItem = f;
+                    filmeAtual = f;
+                    break;
+                }
+            }
         }
+
+        Filme filmeAtual = null;
 
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {            
@@ -189,10 +205,20 @@ namespace GlassFilm
             vvCorte.Left = vvModelo.Left + (vvModelo.Width - vvCorte.Width) / 2;
             vvCorte.Top = vvModelo.Bottom;
 
+            bool bVis = vvCorte.Visible;
+
             if (vvCorte.Document.Paths.Count > 0)
                 vvCorte.Visible = true;
             else
                 vvCorte.Visible = false;
+
+            if (bVis != vvCorte.Visible && bVis)
+            {
+                if (filmeAtual != null)
+                {
+                    vvCorte.Document.CutSize = filmeAtual.Largura;
+                }
+            }
 
             vvCorte.BringToFront();
             vvCorte.Refresh();
@@ -395,10 +421,17 @@ namespace GlassFilm
 
         private void cbFilme_SelectedIndexChanged(object sender, EventArgs e)
         {
-            Filme filme = (Filme)cbFilme.SelectedItem;
-            vvCorte.Document.CutSize = filme.Largura;
+            if (cbFilme.SelectedItem != null)
+            {
+                Filme filme = (Filme)cbFilme.SelectedItem;
 
-            vvCorte.Refresh();
+                vvCorte.Document.CutSize = filme.Largura;
+                Program.Config["FilmePadrao"] = filme.Id.ToString();
+
+                filmeAtual = filme;
+
+                vvCorte.Refresh();
+            }
         }
     }
 }

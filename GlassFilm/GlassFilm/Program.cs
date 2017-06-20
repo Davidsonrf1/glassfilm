@@ -26,6 +26,20 @@ namespace GlassFilm
             return dialog.ShowDialog();
         }
 
+        static Config config = new Config();
+        public static Config Config
+        {
+            get
+            {
+                return config;
+            }
+        }
+
+        public static void InitConfig ()
+        {
+            config.RegValue("FilmePadrao", "0");
+        }
+
         /// <summary>
         /// The main entry point for the application.
         /// </summary>
@@ -34,10 +48,20 @@ namespace GlassFilm
         {
             DBManager.InitDB();
 
+            if (!config.TemConfig())
+            {
+                InitConfig();
+                config.SaveConfig();
+            }
+
+            config.LoadConfig();
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new FrmPrincipal());
-            //Application.Run(new FrmCadastroDesenho());            
+            //Application.Run(new FrmCadastroDesenho());       
+
+            config.SaveConfig();     
         }
     }
 }

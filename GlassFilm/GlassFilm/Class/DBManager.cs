@@ -30,6 +30,65 @@ namespace GlassFilm.Class
             return _mainConnection != null && _mainConnection.State == ConnectionState.Open;
         }
 
+        public static int Count(string tableName)
+        {
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = string.Format("SELECT COUNT(*) FROM {0}", tableName);
+            int count = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+            return count;
+        }
+
+        public static List<ConfigValue> CarregaConfig()
+        {
+            List<ConfigValue> cfg = new List<ConfigValue>();
+
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = "SELECT * FROM PARAMETROS ORDER BY NOME";
+            IDataReader dr = cmd.ExecuteReader();
+
+            while (dr.Read())
+            {
+                ConfigValue c = new ConfigValue(Convert.ToInt32(dr["ID"].ToString()), dr["NOME"].ToString(), dr["VALOR_PADRAO"].ToString());
+                c.Valor = dr["VALOR"].ToString();
+                cfg.Add(c);                
+            }
+
+            dr.Close();
+            return cfg;
+        }
+
+        public static void GravaConfig(List<ConfigValue> cfg)
+        {
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = "DELETE FROM PARAMETROS";
+            cmd.ExecuteNonQuery();
+
+            foreach (ConfigValue c in cfg)
+            {
+                SQLiteParameter p; 
+
+                cmd.CommandText = "INSERT INTO PARAMETROS(NOME, VALOR_PADRAO, VALOR) VALUES(@NOME, @VALOR_PADRAO, @VALOR)";
+
+                p = new SQLiteParameter("NOME", DbType.String);
+                p.Value = c.Nome;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("VALOR_PADRAO", DbType.String);
+                p.Value = c.ValorPadrao;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("VALOR", DbType.String);
+                p.Value = c.Valor;
+                cmd.Parameters.Add(p);
+
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static List<Filme> CarregarRolos()
         {
             List<Filme> rolos = new List<Class.Filme>();
@@ -40,7 +99,7 @@ namespace GlassFilm.Class
             IDataReader dr = cmd.ExecuteReader();
 
             while (dr.Read())
-                rolos.Add(new Filme(Convert.ToInt32(dr["LARGURA"].ToString()), dr["DESCRICAO"].ToString()));
+                rolos.Add(new Filme(Convert.ToInt32(dr["ID"].ToString()), Convert.ToInt32(dr["LARGURA"].ToString()), dr["DESCRICAO"].ToString()));
 
             dr.Close();
             return rolos;

@@ -68,6 +68,8 @@
   <ItemGroup>
     <Compile Include="Class\Carregamentos.cs" />
     <Compile Include="Class\Comandos.cs" />
+    <Compile Include="Class\Config.cs" />
+    <Compile Include="Class\ConfigValue.cs" />
     <Compile Include="Class\Controles.cs" />
     <Compile Include="Class\CriaBanco.cs" />
     <Compile Include="Class\DBManager.cs" />
@@ -170,10 +172,10 @@
     </EmbeddedResource>
     <None Include="app.config" />
     <None Include="GlassFilm.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="Modelos.db">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">

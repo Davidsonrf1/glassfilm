@@ -7,12 +7,14 @@ namespace GlassFilm.Class
 {
     public class Filme
     {
-        public Filme(int size, string descricao)
+        public Filme(int id, int size, string descricao)
         {
+            this.id = id;
             this.largura = size;
             this.descricao = descricao;
         }
 
+        int id = -1;
         int largura = 0;
         string descricao = "";
 
@@ -39,6 +41,14 @@ namespace GlassFilm.Class
             set
             {
                 descricao = value;
+            }
+        }
+
+        public int Id
+        {
+            get
+            {
+                return id;
             }
         }
 
