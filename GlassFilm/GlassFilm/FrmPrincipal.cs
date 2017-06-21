@@ -220,18 +220,23 @@ namespace GlassFilm
                 }
             }
 
-            vvCorte.BringToFront();
-            vvCorte.Refresh();
-
-            vvCorte.AutoFit(VectorFitRegion.CutBox);
+            vvCorte.Document.AutoFit(vvCorte.ClientRectangle, VectorFitStyle.Both, false, VectorFitRegion.CutBox, 80);
+            vvCorte.Document.OffsetX = 20;
+            vvCorte.Document.OffsetY = 20;
 
             vvCorte.Document.AutoCheckConstraints = true;
+
+            vvCorte.BringToFront();
+            vvCorte.Refresh();
         }
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             vvCorte.ImportSelection(vvModelo);
-            vvCorte.AutoFit(VectorFitRegion.CutBox);
+
+            if (vvCorte.Document.Paths.Count == 1)
+                vvCorte.AutoFit(VectorFitRegion.CutBox);
+
             vvCorte.Refresh();
 
             UpdateImportCount();
@@ -430,6 +435,39 @@ namespace GlassFilm
 
                 filmeAtual = filme;
 
+                vvCorte.Refresh();
+            }
+        }
+
+        private void toolStripButton1_Click(object sender, EventArgs e)
+        {
+            if (vvCorte.Document != null)
+            {
+                vvCorte.Document.Scale += 0.05f;
+                vvCorte.Refresh();
+            }
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            if (vvCorte.Document != null)
+            {
+                vvCorte.Document.Scale -= 0.05f;
+
+                if (vvCorte.Document.Scale < 0.02f)
+                    vvCorte.Document.Scale = 0.02f;
+
+                vvCorte.Refresh();
+            }
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            if (vvCorte.Document != null)
+            {
+                vvCorte.Document.AutoFit(vvCorte.ClientRectangle, VectorFitStyle.Both, false, VectorFitRegion.CutBox, 80);
+                vvCorte.Document.OffsetX = 20;
+                vvCorte.Document.OffsetY = 20;
                 vvCorte.Refresh();
             }
         }

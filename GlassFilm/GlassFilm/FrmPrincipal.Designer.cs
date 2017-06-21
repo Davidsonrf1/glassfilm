@@ -68,6 +68,10 @@
             this.splitCorte = new System.Windows.Forms.SplitContainer();
             this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -80,6 +84,7 @@
             this.splitCorte.Panel1.SuspendLayout();
             this.splitCorte.Panel2.SuspendLayout();
             this.splitCorte.SuspendLayout();
+            this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -483,9 +488,10 @@
             // 
             // splitCorte.Panel2
             // 
+            this.splitCorte.Panel2.Controls.Add(this.toolStrip1);
             this.splitCorte.Panel2.Controls.Add(this.vvCorte);
             this.splitCorte.Size = new System.Drawing.Size(1356, 345);
-            this.splitCorte.SplitterDistance = 220;
+            this.splitCorte.SplitterDistance = 189;
             this.splitCorte.TabIndex = 18;
             // 
             // vvModelo
@@ -507,7 +513,7 @@
             this.vvModelo.ShowCutBox = false;
             this.vvModelo.ShowGrid = false;
             this.vvModelo.ShowPointer = false;
-            this.vvModelo.Size = new System.Drawing.Size(1356, 220);
+            this.vvModelo.Size = new System.Drawing.Size(1356, 189);
             this.vvModelo.TabIndex = 19;
             this.vvModelo.Visible = false;
             this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
@@ -521,8 +527,7 @@
             this.vvCorte.AllowTransforms = true;
             this.vvCorte.BackColor = System.Drawing.Color.White;
             this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
-            this.vvCorte.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vvCorte.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvCorte.Dock = System.Windows.Forms.DockStyle.Left;
             this.vvCorte.Document = null;
             this.vvCorte.DrawSelecionBox = true;
             this.vvCorte.GridColor = System.Drawing.Color.Black;
@@ -533,12 +538,62 @@
             this.vvCorte.ShowCutBox = false;
             this.vvCorte.ShowGrid = false;
             this.vvCorte.ShowPointer = false;
-            this.vvCorte.Size = new System.Drawing.Size(1356, 121);
+            this.vvCorte.Size = new System.Drawing.Size(1306, 152);
             this.vvCorte.TabIndex = 1;
             this.vvCorte.Visible = false;
             this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
             this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed_1);
             this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.AutoSize = false;
+            this.toolStrip1.Dock = System.Windows.Forms.DockStyle.Right;
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripButton1,
+            this.toolStripButton2,
+            this.toolStripButton3});
+            this.toolStrip1.Location = new System.Drawing.Point(1309, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(47, 152);
+            this.toolStrip1.TabIndex = 21;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.AutoSize = false;
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(38, 38);
+            this.toolStripButton1.Text = "toolStripButton1";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.AutoSize = false;
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(38, 38);
+            this.toolStripButton2.Text = "toolStripButton2";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            // 
+            // toolStripButton3
+            // 
+            this.toolStripButton3.AutoSize = false;
+            this.toolStripButton3.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton3.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton3.Image")));
+            this.toolStripButton3.ImageScaling = System.Windows.Forms.ToolStripItemImageScaling.None;
+            this.toolStripButton3.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton3.Name = "toolStripButton3";
+            this.toolStripButton3.Size = new System.Drawing.Size(38, 38);
+            this.toolStripButton3.Text = "toolStripButton3";
+            this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
             // FrmPrincipal
             // 
@@ -580,6 +635,8 @@
             this.splitCorte.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitCorte)).EndInit();
             this.splitCorte.ResumeLayout(false);
+            this.toolStrip1.ResumeLayout(false);
+            this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -626,5 +683,9 @@
         private System.Windows.Forms.SplitContainer splitCorte;
         private VectorView.VectorViewCtr vvCorte;
         private VectorView.VectorViewCtr vvModelo;
+        private System.Windows.Forms.ToolStrip toolStrip1;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton3;
     }
 }

@@ -124,6 +124,9 @@ namespace VectorView
             {
                 PointF op = document.ViewPointToDocPoint(new PointF(e.X, e.Y));
 
+                if (e.Delta == 0)
+                    return;
+
                 float ds = (e.Delta / Math.Abs(e.Delta));
                 float d = (0.04f * ds);
 

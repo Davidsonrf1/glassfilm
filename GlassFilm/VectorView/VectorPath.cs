@@ -427,6 +427,8 @@ namespace VectorView
         SolidBrush rSide = null;
         SolidBrush lSide = null;
 
+        SolidBrush errorBrush = null;
+
         public void Render(Graphics g)
         {
             if (rSide == null)
@@ -474,7 +476,15 @@ namespace VectorView
                 Color oldColor = linePen.Color;
 
                 if (invalidConstraints)
+                {
+                    Color ic = Color.FromArgb(128, Color.Red);
+
+                    if (errorBrush == null)
+                        errorBrush = new SolidBrush(ic);
+
                     linePen.Color = Color.Red;
+                    g.FillPolygon(errorBrush, poly);
+                }
 
                 g.DrawPolygon(linePen, poly);
 
@@ -1007,6 +1017,8 @@ namespace VectorView
             angle = oldAngle + a;
 
             Transform(mt, origin);
+
+            Check();
         }
 
         float scalex = 1;
@@ -1026,21 +1038,13 @@ namespace VectorView
                 mt.TransformPoints(scans);
             }
 
+            Check();
+
             ComputeArea(true);
         }
 
-        public void Move(float dx, float dy)
+        void Check()
         {
-            foreach (VectorEdge e in edges)
-            {
-                List<PointF> tl = new List<PointF>();
-
-                foreach (PointF pt in origins[e])
-                    tl.Add(new PointF(pt.X + dx, pt.Y + dy));
-
-                e.SetPoints(tl);
-            }
-
             invalidConstraints = false;
 
             RectangleF r = GetBoundRect();
@@ -1059,6 +1063,21 @@ namespace VectorView
                     invalidConstraints = true;
                 }
             }
+        }
+
+        public void Move(float dx, float dy)
+        {
+            foreach (VectorEdge e in edges)
+            {
+                List<PointF> tl = new List<PointF>();
+
+                foreach (PointF pt in origins[e])
+                    tl.Add(new PointF(pt.X + dx, pt.Y + dy));
+
+                e.SetPoints(tl);
+            }
+
+            Check();
 
             poligons = null;
             AfterTransforms();
