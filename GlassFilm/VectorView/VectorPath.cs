@@ -451,7 +451,7 @@ namespace VectorView
 
             foreach (PointF[] poly in poligons)
             {
-                if (Side != VectorPathSide.None)
+                if (Side != VectorPathSide.None || importCount > 0)
                 {
                     SolidBrush sb = null;
 
@@ -460,7 +460,15 @@ namespace VectorView
                     else
                         sb = rSide;
 
+                    Color oldSbColor = sb.Color;
+                    if (importCount > 0)
+                    {
+                        sb.Color = Color.Black;
+                    }
+
                     g.FillPolygon(sb, poly);
+
+                    sb.Color = oldSbColor;
                 }
 
                 Color oldColor = linePen.Color;

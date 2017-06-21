@@ -414,6 +414,7 @@ namespace VectorView
         }
 
         Pen cutPen = null;
+        Font cutFont = null;
 
         public void Render(Graphics g)
         {
@@ -450,6 +451,22 @@ namespace VectorView
                 }
 
                 g.DrawRectangle(cutPen, cutBox.X, cutBox.Y, cutBox.Width, cutBox.Height);
+
+                RectangleF r = new RectangleF(cutBox.X, cutBox.Bottom, cutBox.Width, 48);
+
+                StringFormat sf = new StringFormat();
+                sf.Alignment = StringAlignment.Center;
+                sf.LineAlignment = StringAlignment.Center;
+
+                if (cutFont == null)
+                {
+                    cutFont = new Font("Arial", 18, FontStyle.Regular);
+                }
+
+                string str = "PLANO DE CORTE";
+
+                SizeF size = g.MeasureString(str, cutFont);
+                g.DrawString(str, cutFont, Brushes.Red, r, sf);
             }
 
             g.ResetTransform();
