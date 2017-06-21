@@ -136,6 +136,8 @@ namespace GlassFilm
             vectorView.Document.LoadSVGFromFile(@"D:\tmp\PALIO-4-PORTAS-ANO-2011-A-2016.svg");
             vectorView.AutoFit(VectorView.VectorViewFitStyle.Vertical);
             */
+
+            vectorView.AllowTransforms = false;
         }
 
         private void cbAno_SelectedIndexChanged(object sender, EventArgs e)

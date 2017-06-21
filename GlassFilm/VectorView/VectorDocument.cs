@@ -882,6 +882,7 @@ namespace VectorView
 
             foreach (VectorPath p in paths)
             {
+                p.ResetContraints();
                 pl.Add(p);
             }
 
@@ -895,7 +896,7 @@ namespace VectorView
 
                 if (paths.Count == 0)
                 {
-                    cur.SetOrigin(new PointF(r.Width / 2, r.Height / 2));
+                    cur.SetOrigin(new PointF(r.Width / 2+3, r.Height / 2+3));
                 }
                 else
                 {
@@ -931,7 +932,7 @@ namespace VectorView
                     if (!nested)
                     {
                         float x = GetMaxX();
-                        cur.SetOrigin(new PointF(x + r.Width / 2 + 2, r.Height / 2 + 2));
+                        cur.SetOrigin(new PointF(x + r.Width / 2 + 3, r.Height / 2 + 3));
                     }
                 }
 
@@ -939,6 +940,12 @@ namespace VectorView
                 pl.RemoveAt(0);
             }
 
+
+            foreach (VectorPath p in paths)
+            {
+                p.ResetContraints();
+                pl.Add(p);
+            }
             //docWidth = GetMaxX();
         }
 

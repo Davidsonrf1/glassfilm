@@ -145,7 +145,7 @@ namespace GlassFilm
                     vvModelo.Document.LoadSVG(svg);
 
                     vvModelo.AutoFit(VectorFitStyle.Both, true, true);
-
+                    vvModelo.Document.AutoCheckConstraints = false;
                 }
             }
         }

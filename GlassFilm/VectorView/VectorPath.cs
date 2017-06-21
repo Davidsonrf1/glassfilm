@@ -1018,7 +1018,8 @@ namespace VectorView
 
             Transform(mt, origin);
 
-            Check();
+            if (document.AutoCheckConstraints)
+                Check();
         }
 
         float scalex = 1;
@@ -1038,13 +1039,17 @@ namespace VectorView
                 mt.TransformPoints(scans);
             }
 
-            Check();
+            if (document.AutoCheckConstraints)
+                Check();
 
             ComputeArea(true);
         }
 
         void Check()
         {
+            //if (!document.AutoCheckConstraints)
+            //    return;
+
             invalidConstraints = false;
 
             RectangleF r = GetBoundRect();
@@ -1077,7 +1082,8 @@ namespace VectorView
                 e.SetPoints(tl);
             }
 
-            Check();
+            if (document.AutoCheckConstraints)
+                Check();
 
             poligons = null;
             AfterTransforms();

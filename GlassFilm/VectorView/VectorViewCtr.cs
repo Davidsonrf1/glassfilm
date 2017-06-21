@@ -120,7 +120,7 @@ namespace VectorView
         {
             base.OnMouseWheel(e);
 
-            if (document != null)
+            if (document != null && AllowTransforms)
             {
                 PointF op = document.ViewPointToDocPoint(new PointF(e.X, e.Y));
 
