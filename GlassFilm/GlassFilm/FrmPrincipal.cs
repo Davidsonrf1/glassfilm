@@ -80,6 +80,7 @@ namespace GlassFilm
                     //pnlMapa.Visible = true;
                     vvModelo.Visible = true;
                     toolArquivo.Visible = true;
+                    toolCorte.Visible = true;
                 }
             }
             else
@@ -89,6 +90,7 @@ namespace GlassFilm
                 //pnlMapa.Visible = true;
                 vvModelo.Visible = true;
                 toolArquivo.Visible = true;
+                toolCorte.Visible = true;
             }
 
             sel.AtualizaMarcas();
