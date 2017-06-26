@@ -284,6 +284,13 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\zoomduo2.png" />
+    <None Include="Resources\zoomduo1.png" />
+    <None Include="Resources\zoommenos1.png" />
+    <None Include="Resources\zoommais1.png" />
+    <None Include="Resources\zoomduo.png" />
+    <None Include="Resources\zoommenos.png" />
+    <None Include="Resources\zoommais.png" />
     <None Include="Resources\minus.png" />
     <None Include="Resources\add-button-inside-black-circle.png" />
     <None Include="MySql.Data.dll">

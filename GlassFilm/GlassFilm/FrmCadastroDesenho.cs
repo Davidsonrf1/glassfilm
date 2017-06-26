@@ -198,6 +198,7 @@ namespace GlassFilm
         {
             cbModelo.SelectedIndex = -1;
             cbMarca.SelectedIndex = -1;
+            lbAnos.Items.Clear();
             vectorView.Refresh();
 
             EnableControls(true);

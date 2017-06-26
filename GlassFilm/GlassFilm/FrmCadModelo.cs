@@ -19,6 +19,7 @@ namespace GlassFilm
         private string linhaSelecionada = "0";
         public bool iRotinaInterna;
         public string codigoInterno;
+        private string codigoModelo = "";
 
         public FrmCadModelo()
         {
@@ -206,10 +207,14 @@ namespace GlassFilm
             modelo = new Modelo();
             modelo.excluir(txtCodigo.Text);
 
+            ModeloAno ma = new ModeloAno(codigoModelo);
+            ma.excluir(codigoModelo);
+
             controlePanels("Excluir");
             limpaCampos();
             controle.controlaBotoes(toolPrincipal, "Excluir");
             toolStatus.Text = "...";
+            txtCodigo.Clear();
             carregaGridPrincipal();
             tabRegistros.SelectedIndex = 0;
 
@@ -222,6 +227,7 @@ namespace GlassFilm
             controlePanels("Cancelar");
             controle.controlaBotoes(toolPrincipal, "Cancelar");
             toolStatus.Text = "...";
+            txtCodigo.Clear();
 
             tabRegistros.SelectedIndex = 0;
         }
@@ -339,6 +345,9 @@ namespace GlassFilm
             {                
                 cbAnos.Items.RemoveAt(cbAnos.SelectedIndex);
                 cbAnos.Sorted = true;
+
+                if(cbAnos.Items.Count>0)
+                    cbAnos.SelectedIndex = 0;
             }
         }
 
@@ -346,12 +355,23 @@ namespace GlassFilm
         {
             try
             {
-                ModeloAno ma = new ModeloAno(txtCodigo.Text.Trim());
-                ma.excluir(txtCodigo.Text.Trim());
+                if (txtCodigo.Text.Trim().Length == 0)
+                {
+                    codigoModelo = GlassFilm.Class.Comandos.busca_campo("Select max(codigo_modelo) from modelo");
+
+                    if (codigoModelo.Trim().Length == 0)
+                        codigoInterno = "1";
+                }
+                else {
+                    codigoModelo = txtCodigo.Text.Trim();
+                }
+
+                ModeloAno ma = new ModeloAno(codigoModelo);
+                ma.excluir(codigoModelo);
 
                 foreach (string ano in cbAnos.Items)
                 {
-                    ma = new ModeloAno(txtCodigo.Text.Trim(), ano);
+                    ma = new ModeloAno(codigoModelo, ano);
                     ma.gravar();
                 }
                 cbAnos.Items.Clear();
