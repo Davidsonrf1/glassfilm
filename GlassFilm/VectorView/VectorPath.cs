@@ -475,7 +475,7 @@ namespace VectorView
 
                 Color oldColor = linePen.Color;
 
-                if (invalidConstraints)
+                if (invalidConstraints && document.AutoCheckConstraints)
                 {
                     Color ic = Color.FromArgb(128, Color.Red);
 

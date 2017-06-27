@@ -1054,6 +1054,8 @@ namespace VectorView
                 offsetX = (size.Width - bb.Width * s) / 2 + margin *s / 2;
                 offsetY = (size.Height - bb.Height * s) / 2 + margin *s / 2;
             }
+
+            //UpdateLdTamanho();
         }
     }
 }

@@ -53,6 +53,8 @@ namespace GlassFilm
                     break;
                 }
             }
+
+            UpdateLBTamanho();
         }
 
         Filme filmeAtual = null;
@@ -189,6 +191,8 @@ namespace GlassFilm
             }
 
             vvModelo.Refresh();
+
+            UpdateLBTamanho();
         }
 
         void UpdateViewCorte()
@@ -230,6 +234,8 @@ namespace GlassFilm
 
             vvCorte.BringToFront();
             vvCorte.Refresh();
+
+            UpdateLBTamanho();
         }
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -404,6 +410,16 @@ namespace GlassFilm
             vvCorte.AutoFit(VectorFitRegion.CutBox);
         }
 
+        void UpdateLBTamanho()
+        {
+            VectorDocument doc = vvCorte.Document;
+
+            if (doc.CutBox.Width > 0)
+                lbTamanho.Text = string.Format("{0:0.00} X {1:0.00}", doc.CutBox.Height, doc.CutBox.Width);
+            else
+                lbTamanho.Text = "";
+        }
+
         private void vvCorte_SelectionTransformed_1(object sender, VectorEventArgs e)
         {
             //UpdateViewCorte();
@@ -413,6 +429,8 @@ namespace GlassFilm
                 VectorDocument doc = vvCorte.Document;
                 doc.UpdateCutBox();
             }
+
+            UpdateLBTamanho();
         }
 
         private void vvCorte_SelectionMoved(object sender, VectorEventArgs e)
@@ -424,6 +442,8 @@ namespace GlassFilm
                 VectorDocument doc = vvCorte.Document;
                 doc.UpdateCutBox();
             }
+
+            UpdateLBTamanho();
         }
 
         private void cbFilme_SelectedIndexChanged(object sender, EventArgs e)
@@ -439,6 +459,8 @@ namespace GlassFilm
 
                 vvCorte.Refresh();
             }
+
+            UpdateLBTamanho();
         }
 
         private void toolStripButton1_Click(object sender, EventArgs e)
