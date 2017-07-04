@@ -482,7 +482,7 @@ namespace VectorView
             g.ResetTransform();
         }
 
-        bool flipCut = false;
+        bool flipCut = true;
 
         public string ToHPGL()
         {

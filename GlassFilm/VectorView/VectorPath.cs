@@ -1103,7 +1103,7 @@ namespace VectorView
             r.X = minx;
             r.Y = miny;
             r.Width = maxx - minx;
-            r.Height = maxy = miny;
+            r.Height = maxy - miny;
 
             return r;
         }
@@ -1119,15 +1119,13 @@ namespace VectorView
 
             if (flip)
             {
-                RectangleF r = GetPolygonBox(polyList);
-                PointF center = VectorMath.GetBoxCenter(r);
+                float y = document.GetMaxY() / 2;
 
                 foreach (PointF[] pts in poligons)
                 {
                     for (int i = 0; i < pts.Length; i++)
                     {
-                        pts[i].X = center.X + (center.X - pts[i].X);
-                        pts[i].Y = center.Y + (center.Y - pts[i].Y);
+                        pts[i].Y = y + (y - pts[i].Y);
                     }
                 }
 
