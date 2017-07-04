@@ -470,19 +470,37 @@ namespace VectorView
 
                 if (cutFont == null)
                 {
-                    cutFont = new Font("Arial", 18, FontStyle.Regular);
+                    cutFont = new Font("Arial", 18, FontStyle.Bold);
                 }
+
+                g.TextRenderingHint = System.Drawing.Text.TextRenderingHint.AntiAliasGridFit;
 
                 string str = "PLANO DE CORTE";
 
                 SizeF size = g.MeasureString(str, cutFont);
-                g.DrawString(str, cutFont, Brushes.Red, r, sf);
+                g.DrawString(str, cutFont, Brushes.DarkGray, r, sf);
+
+                r.Y = -r.Height;
+                str = "C O M P R I M E N T O";
+
+                size = g.MeasureString(str, cutFont);
+                g.DrawString(str, cutFont, Brushes.Black, r, sf);
+
+                r.Width = cutBox.Height;
+
+                g.TranslateTransform(0, cutBox.Height);
+                g.RotateTransform(-90);
+
+                str = "L A R G U R A";
+                size = g.MeasureString(str, cutFont);
+                g.DrawString(str, cutFont, Brushes.Black, r, sf);
+
             }
 
             g.ResetTransform();
         }
 
-        bool flipCut = true;
+        bool flipCut = false;
 
         public string ToHPGL()
         {
