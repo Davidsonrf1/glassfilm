@@ -27,7 +27,6 @@ namespace VectorView
         bool fillPath = false;
         Color fillColor = Color.Lime;
 
-        bool inCutSheet = false;
         int importCount = 0;
 
         string tag = "";
@@ -162,18 +161,6 @@ namespace VectorView
             }
         }
 
-        public bool InCutSheet
-        {
-            get
-            {
-                return inCutSheet;
-            }
-
-            internal set
-            {
-                inCutSheet = value;
-            }
-        }
 
         public List<PointF[]> OriginalPoligons
         {
@@ -1093,7 +1080,35 @@ namespace VectorView
             centerY = center.Y;
         }
         
-        public string ToHPGL()
+        RectangleF GetPolygonBox(List<PointF[]> polygons)
+        {
+            RectangleF r = new RectangleF();
+
+            float minx = float.MaxValue;
+            float miny = float.MaxValue;
+            float maxx = float.MinValue;
+            float maxy = float.MinValue;
+
+            foreach (PointF[] pts in poligons)
+            {
+                for (int i = 0; i < pts.Length; i++)
+                {
+                    minx = Math.Min(minx, pts[i].X);
+                    miny = Math.Min(miny, pts[i].Y);
+                    maxx = Math.Max(maxx, pts[i].X);
+                    maxy = Math.Max(maxy, pts[i].Y);
+                }                
+            }
+
+            r.X = minx;
+            r.Y = miny;
+            r.Width = maxx - minx;
+            r.Height = maxy = miny;
+
+            return r;
+        }
+
+        public string ToHPGL(bool flip)
         {
             StringBuilder sb = new StringBuilder();
             bool first = true;
@@ -1101,6 +1116,23 @@ namespace VectorView
             PointF hp;
 
             List<PointF[]> polyList = BuildPolygons();
+
+            if (flip)
+            {
+                RectangleF r = GetPolygonBox(polyList);
+                PointF center = VectorMath.GetBoxCenter(r);
+
+                foreach (PointF[] pts in poligons)
+                {
+                    for (int i = 0; i < pts.Length; i++)
+                    {
+                        pts[i].X = center.X + (center.X - pts[i].X);
+                        pts[i].Y = center.Y + (center.Y - pts[i].Y);
+                    }
+                }
+
+                poligons = null;
+            }
 
             Matrix mt = new Matrix();
 

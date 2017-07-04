@@ -210,12 +210,6 @@ namespace VectorView
                 }
                 else
                 {
-                    if (p.InCutSheet && selection.Count > 0)
-                    {
-                        if (!selection[0].InCutSheet)
-                            ClearSelection();
-                    }
-
                     if (selection.Contains(p))
                     {
                         if (allowRotatePath && allowScalePath)

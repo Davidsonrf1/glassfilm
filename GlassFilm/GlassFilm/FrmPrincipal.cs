@@ -162,8 +162,21 @@ namespace GlassFilm
 
         private void button4_Click(object sender, EventArgs e)
         {
+            if (vvModelo.Document == null)
+            {
+                MessageBox.Show("Nenhum desenho selecionado.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
+            if (vvModelo.Document.Paths.Count <= 0)
+            {
+                MessageBox.Show("Nenhum desenho selecionado.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                return;
+            }
+
             if (vvCorte.Document != null)
             {
+
                 if (vvCorte.Document.Paths.Count == 0)
                 {
                     MessageBox.Show("Nenhum desenho na área de corte.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -185,6 +198,9 @@ namespace GlassFilm
 
         void UpdateImportCount()
         {
+            if (vvModelo.Document == null)
+                return;
+
             foreach (VectorPath p in vvModelo.Document.Paths)
             {
                 p.ImportCount = vvCorte.Document.CountSoruce(p);
@@ -193,6 +209,7 @@ namespace GlassFilm
             vvModelo.Refresh();
 
             UpdateLBTamanho();
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
         }
 
         void UpdateViewCorte()
@@ -236,6 +253,8 @@ namespace GlassFilm
             vvCorte.Refresh();
 
             UpdateLBTamanho();
+
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
         }
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
@@ -494,6 +513,21 @@ namespace GlassFilm
                 vvCorte.Document.OffsetY = 20;
                 vvCorte.Refresh();
             }
+        }
+
+        private void splitCorte_Panel2_Resize(object sender, EventArgs e)
+        {
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
+        }
+
+        private void toolCorte_Resize(object sender, EventArgs e)
+        {
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
+        }
+
+        private void FrmPrincipal_Shown(object sender, EventArgs e)
+        {
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
         }
     }
 }

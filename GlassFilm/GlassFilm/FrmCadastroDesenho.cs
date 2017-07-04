@@ -70,57 +70,75 @@ namespace GlassFilm
             UpdateDocInfo();
         }
 
+        bool salvando = false;
+
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            if (lbAnos.CheckedItems.Count <= 0)
-            {
-                MessageBox.Show("Nenhum ano selecionado", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+            if (salvando)
                 return;
-            }
+            salvando = true;
 
-            VectorDocument doc = vectorView.Document;
-
-            pbDesenho.Value = 0;
-            pbDesenho.Maximum = lbAnos.CheckedItems.Count;
-            pbDesenho.Visible = true;
-
-            Application.DoEvents();
-
-            if (doc != null)
+            try
             {
-                if (doc.Paths.Count > 0)
+
+                if (lbAnos.CheckedItems.Count <= 0)
                 {
-                    string svg = doc.ToSVG();
-
-                    foreach (object i in lbAnos.CheckedItems)
-                    {
-                        ModeloAno v = (ModeloAno)i;
-                        DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg);
-
-                        pbDesenho.Value++;
-                        Application.DoEvents();
-                    }
-
-                   // File.WriteAllText("d:\\teste_save.svg", svg);
-
-                    Mensagens.Informacao("Desenho Salvo com Sucesso!");
-                    pbDesenho.Visible = false;
-
-                    toolStripButton1_Click(sender, e);
-                    cbMarca.Focus();
+                    MessageBox.Show("Nenhum ano selecionado", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
                 }
+
+                VectorDocument doc = vectorView.Document;
+
+                pbDesenho.Value = 0;
+                pbDesenho.Maximum = lbAnos.CheckedItems.Count;
+                pbDesenho.Visible = true;
+
+                Application.DoEvents();
+
+                if (doc != null)
+                {
+                    if (doc.Paths.Count > 0)
+                    {
+                        string svg = doc.ToSVG();
+
+                        foreach (object i in lbAnos.CheckedItems)
+                        {
+                            ModeloAno v = (ModeloAno)i;
+                            DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg);
+
+                            pbDesenho.Value++;
+                            Application.DoEvents();
+                        }
+
+                        // File.WriteAllText("d:\\teste_save.svg", svg);
+
+                        Mensagens.Informacao("Desenho Salvo com Sucesso!");
+                        pbDesenho.Visible = false;
+
+                        toolStripButton1_Click(sender, e);
+                        cbMarca.Focus();
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Nenhum desenho carregado!", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                }
+
+                pbDesenho.Visible = false;
+                lbAnos.Items.Clear();
+
+                rbEsquerda.Checked = false;
+                rbDireita.Checked = false;
+                tbEtiqueta.Text = "";
             }
-            else
+            catch
             {
-                MessageBox.Show("Nenhum desenho carregado!", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+
             }
-
-            pbDesenho.Visible = false;
-            lbAnos.Items.Clear();
-
-            rbEsquerda.Checked = false;
-            rbDireita.Checked = false;
-            tbEtiqueta.Text = "";
+            finally
+            {
+                salvando = false;
+            }
         }
 
         private void FrmCadastroDesenho_Load(object sender, EventArgs e)
