@@ -165,7 +165,17 @@ namespace GlassFilm
 
         public PlotterDriver GetPlotterCmdDriver()
         {
-            return new PlotterDMPL();
+            if (Program.Config["PlotterLang"].Equals("HPGL"))
+            {
+                return new PlotterHPGL();
+            }
+
+            if (Program.Config["PlotterLang"].Equals("DMPL") && Debugger.IsAttached )
+            {
+                return new PlotterDMPL();
+            }
+
+            throw new NotImplementedException("Linguagem não implementada");
         }
 
         private void button4_Click(object sender, EventArgs e)
