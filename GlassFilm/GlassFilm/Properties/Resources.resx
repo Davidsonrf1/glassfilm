@@ -136,6 +136,9 @@
   <data name="resizing-tool" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\resizing-tool.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="zoomduo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\zoomduo2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="config" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\config.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -190,6 +193,9 @@
   <data name="tumblr_inline_nn85tpbQkq1rewzq7_500" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\tumblr_inline_nn85tpbQkq1rewzq7_500.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="gear-loading" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\gear-loading.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="logoComputer2" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\logoComputer2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -229,7 +235,7 @@
   <data name="zoommenos1" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\zoommenos1.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="zoomduo2" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\zoomduo2.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  <data name="Gears-icon" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Gears-icon.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

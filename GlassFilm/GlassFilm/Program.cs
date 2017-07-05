@@ -38,6 +38,14 @@ namespace GlassFilm
         public static void InitConfig ()
         {
             config.RegValue("FilmePadrao", "0");
+            config.RegValue("PlotterLang", "HPGL");
+            config.RegValue("PlotterInterface", "PRINTER");
+            config.RegValue("PlotterName", "");
+            config.RegValue("PlotterCOMSpeed", "57600");
+            config.RegValue("PlotterCOMDataBits", "8");
+            config.RegValue("PlotterCOMParity", "N");
+            config.RegValue("PlotterCOMStopBits", "1");
+            config.RegValue("PlotterCOMFollowControl", "0");
         }
 
         /// <summary>
@@ -48,11 +56,10 @@ namespace GlassFilm
         {
             DBManager.InitDB();
 
+            InitConfig();
+
             if (!config.TemConfig())
-            {
-                InitConfig();
                 config.SaveConfig();
-            }
 
             config.LoadConfig();
 

@@ -46,7 +46,7 @@ namespace GlassFilm
             Int32 dwError = 0, dwWritten = 0;
             IntPtr hPrinter = new IntPtr(0);
             DOCINFOA di = new DOCINFOA();
-            bool bSuccess = false; // Assume failure unless you specifically succeed.
+            bool bSuccess = false;
 
             di.pDocName = string.Format("Corte GlassFilm {0:dd}-{0:MM}-{0:yyyy} {0:hh}:{0:mm}:{0:ss}", DateTime.Now);
             di.pDataType = "RAW";
@@ -85,16 +85,13 @@ namespace GlassFilm
             nLength = Convert.ToInt32(fs.Length);
             bytes = br.ReadBytes(nLength);
 
-            // Allocate some unmanaged memory for those bytes.
-            pUnmanagedBytes = Marshal.AllocCoTaskMem(nLength);
-            
-            // Copy the managed byte array into the unmanaged array.
-            Marshal.Copy(bytes, 0, pUnmanagedBytes, nLength);
-            
-            // Send the unmanaged bytes to the printer.
-            bSuccess = SendBytesToPrinter(szPrinterName, pUnmanagedBytes, nLength);
-            
-            // Free the unmanaged memory that you allocated earlier.
+
+            pUnmanagedBytes = Marshal.AllocCoTaskMem(nLength);           
+
+            Marshal.Copy(bytes, 0, pUnmanagedBytes, nLength);            
+
+            bSuccess = SendBytesToPrinter(szPrinterName, pUnmanagedBytes, nLength);            
+
             Marshal.FreeCoTaskMem(pUnmanagedBytes);
             return bSuccess;
         }
@@ -103,12 +100,9 @@ namespace GlassFilm
         {
             IntPtr pBytes;
             Int32 dwCount;
-            // How many characters are in the string?
+
             dwCount = szString.Length;
-            // Assume that the printer is expecting ANSI text, and then convert
-            // the string to ANSI text.
             pBytes = Marshal.StringToCoTaskMemAnsi(szString);
-            // Send the converted ANSI string to the printer.
             SendBytesToPrinter(szPrinterName, pBytes, dwCount);
             Marshal.FreeCoTaskMem(pBytes);
             return true;

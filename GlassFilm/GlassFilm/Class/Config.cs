@@ -46,7 +46,7 @@ namespace GlassFilm.Class
 
             if (valores.TryGetValue(name, out cv))
             {
-                throw new IndexOutOfRangeException("Nome da configuração já definido");
+                return;
             }
 
             cv = new ConfigValue(name, defValue);

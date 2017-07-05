@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Text;
+using VectorView.Plotter;
 
 namespace VectorView
 {
@@ -348,6 +349,7 @@ namespace VectorView
             scans = sl.ToArray();
 
             Matrix mt = new Matrix();
+
             mt.Translate(-center.X, -center.Y);
             mt.TransformPoints(scans);
         }
@@ -1108,50 +1110,22 @@ namespace VectorView
             return r;
         }
 
-        public string ToHPGL()
+        public void GenerateCommands(PlotterDriver driver)
         {
-            StringBuilder sb = new StringBuilder();
-            bool first = true;
-            bool firstPoint = true;
-            PointF hp;
-
             List<PointF[]> polyList = BuildPolygons();
+            poligons = null;
 
-            foreach (PointF[] polyline in polyList)
+            foreach (PointF[] pts in polyList)
             {
-                first = true;
-                firstPoint = true;
-
-                foreach (PointF pt in polyline)
+                for (int i = 0; i < pts.Length; i++)
                 {
-                    PointF p = new PointF(pt.Y, pt.X);
-
-                    if (first)
-                    {
-                        first = false;
-                        hp = GetHPGLPoint(p);
-                        sb.Append(string.Format("PU{0},{1};", hp.X, hp.Y));
-
-                        sb.Append("PD");
-                        continue;
-                    }
-
-                    if (!firstPoint)
-                    {
-                        sb.Append(',');
-                    }
-
-                    firstPoint = false;
-
-                    hp = GetHPGLPoint(p);
-                    sb.Append(string.Format("{0},{1}", hp.X, hp.Y));
+                    float tmp = pts[i].X;
+                    pts[i].X = pts[i].Y;
+                    pts[i].Y = tmp;
                 }
             }
 
-            // Reseta o desenho
-            poligons = null;
-
-            return sb.ToString();
+            driver.AddPolygon(polyList);
         }
     }
 }

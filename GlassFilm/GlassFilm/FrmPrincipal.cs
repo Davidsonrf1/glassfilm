@@ -11,6 +11,9 @@ using GlassFilm.Class;
 using System.IO;
 using VectorView;
 using System.Diagnostics;
+using VectorView.Plotter;
+using System.Drawing.Printing;
+using System.IO.Ports;
 
 namespace GlassFilm
 {
@@ -160,6 +163,11 @@ namespace GlassFilm
             UpdateViewCorte();
         }
 
+        public PlotterDriver GetPlotterCmdDriver()
+        {
+            return new PlotterDMPL();
+        }
+
         private void button4_Click(object sender, EventArgs e)
         {
             if (vvModelo.Document == null)
@@ -174,25 +182,106 @@ namespace GlassFilm
                 return;
             }
 
+            if (!(Program.Config["PlotterInterface"].Equals("SERIAL") || Program.Config["PlotterInterface"].Equals("PRINTER")))
+            {
+                if (MessageBox.Show("Plotter não configurada. Deseja configurar agora?", "ATENÇÃO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    FrmConfigPlotter c = new GlassFilm.FrmConfigPlotter();
+                    c.ShowDialog();
+                }
+                else
+                {
+                    MessageBox.Show("É necessário configurar a plotter antes de continuar", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
+            }
+
             if (vvCorte.Document != null)
             {
-
                 if (vvCorte.Document.Paths.Count == 0)
                 {
                     MessageBox.Show("Nenhum desenho na área de corte.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return;
                 }
 
-                PrintDialog pd = new PrintDialog();
-                if (pd.ShowDialog() == DialogResult.OK)
-                {
-                    string cmds = vvCorte.Document.ToHPGL();
-                    RawPrinterHelper.SendStringToPrinter(pd.PrinterSettings.PrinterName, cmds);
+                string cmds = vvCorte.Document.GeneratePlotterCommands(GetPlotterCmdDriver());
 
-                    File.WriteAllText("teste_CORTE.plt", cmds);
+                if (Program.Config["PlotterInterface"].Equals("PRINTER"))
+                {
+                    PrinterSettings ps = null;
+
+                    foreach (string p in PrinterSettings.InstalledPrinters)
+                    {
+                        if (p.Equals(Program.Config["PlotterName"]))
+                        {
+                            ps = new PrinterSettings();
+                            ps.PrinterName = p;
+                            break;
+                        }
+                    }
+
+                    if (ps == null)
+                    {
+                        PrintDialog pd = new PrintDialog();
+                        if (pd.ShowDialog() == DialogResult.OK)
+                        {
+                            ps = pd.PrinterSettings;
+                            Program.Config["PlotterName"] = ps.PrinterName;
+                        }
+                    }
+
+                    if (ps != null)
+                    {
+                        if (ps.IsValid)
+                        {
+                            RawPrinterHelper.SendStringToPrinter(ps.PrinterName, cmds);
+                        }
+                        else
+                        {
+                            PrintDialog pd = new PrintDialog();
+                            if (pd.ShowDialog() == DialogResult.OK)
+                            {
+                                ps = pd.PrinterSettings;
+                                Program.Config["PlotterName"] = ps.PrinterName;
+
+                                RawPrinterHelper.SendStringToPrinter(ps.PrinterName, cmds);
+                            }
+                        }
+                    }
+                    else
+                    {
+                        MessageBox.Show("Plotter inválda ou não especificada nos parâmetros", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                        return;
+                    }
+                }
+                else if (Program.Config["PlotterInterface"].Equals("SERIAL"))
+                {
+                    try
+                    {
+                        SerialPort port = FrmCadSerial.GetSerialPort();
+
+                        if (port != null)
+                        {
+                            port.Open();    
+                            port.Write(cmds);
+                            port.Close();
+                        }
+                    }
+                    catch
+                    {
+                        MessageBox.Show("Falha ao enviar comandos para a Plotter", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Plotter inválda ou não especificada nos parâmetros", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
                 }
 
-                //vvCorte.AutoFit(VectorFitStyle.Both, true, true);
+                if (Debugger.IsAttached || File.Exists("teste_corte.plt"))
+                {
+                    File.Delete("teste_corte.plt");
+                    File.WriteAllText("teste_corte.plt", cmds);
+                }
             }
         }
 
@@ -528,6 +617,12 @@ namespace GlassFilm
         private void FrmPrincipal_Shown(object sender, EventArgs e)
         {
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            FrmConfigPlotter c = new GlassFilm.FrmConfigPlotter();
+            c.ShowDialog();
         }
     }
 }

@@ -113,6 +113,12 @@
     <Compile Include="FrmCadModelo.Designer.cs">
       <DependentUpon>FrmCadModelo.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmCadSerial.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmCadSerial.Designer.cs">
+      <DependentUpon>FrmCadSerial.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmConfigPlotter.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -152,6 +158,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmCadModelo.resx">
       <DependentUpon>FrmCadModelo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmCadSerial.resx">
+      <DependentUpon>FrmCadSerial.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmConfigPlotter.resx">
       <DependentUpon>FrmConfigPlotter.cs</DependentUpon>
@@ -284,6 +293,8 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Gears-icon.png" />
+    <None Include="Resources\gear-loading.png" />
     <None Include="Resources\zoomduo2.png" />
     <None Include="Resources\zoomduo1.png" />
     <None Include="Resources\zoommenos1.png" />

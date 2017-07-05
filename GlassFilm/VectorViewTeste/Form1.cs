@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using VectorView;
+using VectorView.Plotter;
 
 namespace VectorViewTeste
 {
@@ -148,8 +149,8 @@ namespace VectorViewTeste
 
         private void button2_Click(object sender, EventArgs e)
         {
-            string s = view.Document.ToHPGL();
-            File.WriteAllText(@"D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg", s);
+            string s = view.Document.GeneratePlotterCommands(new PlotterHPGL());
+            File.WriteAllText(@"D:\\COROLLA SEDAN ANO 2009 A 2014 (16).plt", s);
         }
 
         private void button3_Click(object sender, EventArgs e)

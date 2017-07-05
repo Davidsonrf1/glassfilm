@@ -10,6 +10,7 @@ using System.IO;
 using System.Xml;
 using System.Drawing.Drawing2D;
 using System.Globalization;
+using VectorView.Plotter;
 
 namespace VectorView
 {
@@ -487,11 +488,6 @@ namespace VectorView
             g.ResetTransform();
         }
 
-        public string ToHPGL()
-        {
-            return ToHPGL(null, null);
-        }
-
         class PathComparerX : IComparer<VectorPath>
         {
             public int Compare(VectorPath x, VectorPath y)
@@ -508,29 +504,23 @@ namespace VectorView
             paths.Sort(new PathComparerX());
         }
 
-        public string ToHPGL(string sendBefore, string sendAfter)
+        public string GeneratePlotterCommands(PlotterDriver driver)
         {
-            StringBuilder sb = new StringBuilder();
+            return GeneratePlotterCommands(null, null, driver);
+        }
 
-            sb.Append("IN;\nIP;\nSP1;\nPA;\n");
-
-            if (sendBefore != null)
-                sb.Append(sendBefore);
-
+        public string GeneratePlotterCommands(string sendBefore, string sendAfter, PlotterDriver driver)
+        {
             SortPaths();
 
-            foreach (VectorPath s in paths)
+            driver.ClearPolygons();
+
+            foreach (VectorPath p in paths)
             {
-                sb.Append(s.ToHPGL());
-                sb.Append("\n");
+                p.GenerateCommands(driver);
             }
 
-            if (sendAfter != null)
-                sb.Append(sendAfter);
-
-            sb.Append("PU0,0\nSP;");
-
-            return sb.ToString();
+            return driver.GetCmdString(sendBefore, sendAfter);
         }
 
         void ParseSvgElement(SvgElement el)
