@@ -51,6 +51,8 @@
     <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="ConvexHull.cs" />
     <Compile Include="CuttingEntry.cs" />
+    <Compile Include="Plotter\PlotterCmd.cs" />
+    <Compile Include="Plotter\PlotterDriver.cs" />
     <Compile Include="VectorClose.cs" />
     <Compile Include="VectorCubicBezier.cs" />
     <Compile Include="VectorCurve.cs" />

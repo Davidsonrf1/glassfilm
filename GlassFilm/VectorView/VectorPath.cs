@@ -1108,7 +1108,7 @@ namespace VectorView
             return r;
         }
 
-        public string ToHPGL(bool flip)
+        public string ToHPGL()
         {
             StringBuilder sb = new StringBuilder();
             bool first = true;
@@ -1117,36 +1117,15 @@ namespace VectorView
 
             List<PointF[]> polyList = BuildPolygons();
 
-            if (flip)
-            {
-                float y = document.GetMaxY() / 2;
-
-                foreach (PointF[] pts in poligons)
-                {
-                    for (int i = 0; i < pts.Length; i++)
-                    {
-                        pts[i].Y = y + (y - pts[i].Y);
-                    }
-                }
-
-                poligons = null;
-            }
-
-            Matrix mt = new Matrix();
-
-            mt.Translate(document.GetMaxY(), 0);
-            mt.Rotate(90);
-
             foreach (PointF[] polyline in polyList)
             {
                 first = true;
                 firstPoint = true;
 
-                // Move o desenho para a posição ideal de corte
-                mt.TransformPoints(polyline);
-
-                foreach (PointF p in polyline)
+                foreach (PointF pt in polyline)
                 {
+                    PointF p = new PointF(pt.Y, pt.X);
+
                     if (first)
                     {
                         first = false;

@@ -276,19 +276,6 @@ namespace VectorView
             }
         }
 
-        public bool FlipCut
-        {
-            get
-            {
-                return flipCut;
-            }
-
-            set
-            {
-                flipCut = value;
-            }
-        }
-
         public float GetMinX()
         {
             float min = float.MaxValue;
@@ -500,8 +487,6 @@ namespace VectorView
             g.ResetTransform();
         }
 
-        bool flipCut = false;
-
         public string ToHPGL()
         {
             return ToHPGL(null, null);
@@ -536,7 +521,7 @@ namespace VectorView
 
             foreach (VectorPath s in paths)
             {
-                sb.Append(s.ToHPGL(flipCut));
+                sb.Append(s.ToHPGL());
                 sb.Append("\n");
             }
 
