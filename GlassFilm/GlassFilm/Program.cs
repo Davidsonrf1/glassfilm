@@ -57,10 +57,6 @@ namespace GlassFilm
             DBManager.InitDB();
 
             InitConfig();
-
-            if (!config.TemConfig())
-                config.SaveConfig();
-
             config.LoadConfig();
 
             Application.EnableVisualStyles();

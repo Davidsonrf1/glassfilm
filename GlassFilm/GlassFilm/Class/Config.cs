@@ -65,7 +65,7 @@ namespace GlassFilm.Class
 
         public void SaveConfig()
         {
-            List<ConfigValue> cl = new List<Class.ConfigValue>();
+            List<ConfigValue> cl = new List<ConfigValue>();
 
             cl.AddRange(valores.Values);
             DBManager.GravaConfig(cl);
@@ -75,11 +75,14 @@ namespace GlassFilm.Class
         {
             List<ConfigValue> cl = DBManager.CarregaConfig();
 
-            valores.Clear();
+            //valores.Clear();
 
             foreach (ConfigValue c in cl)
             {
-                valores.Add(c.Nome, c);
+                if (valores.ContainsKey(c.Nome))
+                    valores[c.Nome].Valor = c.Valor;
+                else
+                    valores.Add(c.Nome, c);
             }
         }
 

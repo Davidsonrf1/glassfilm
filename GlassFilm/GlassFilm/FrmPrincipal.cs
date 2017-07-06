@@ -174,8 +174,12 @@ namespace GlassFilm
             {
                 return new PlotterDMPL();
             }
+            else
+            {
+                throw new NotImplementedException("Linguagem DMPL não implementada");
+            }
 
-            throw new NotImplementedException("Linguagem não implementada");
+            throw new NotImplementedException("Linguagem " + Program.Config["PlotterLang"] + " não implementada");
         }
 
         private void button4_Click(object sender, EventArgs e)
@@ -214,8 +218,17 @@ namespace GlassFilm
                     return;
                 }
 
-                string cmds = vvCorte.Document.GeneratePlotterCommands(GetPlotterCmdDriver());
+                string cmds = null;
 
+                try
+                {
+                    cmds = vvCorte.Document.GeneratePlotterCommands(GetPlotterCmdDriver());
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show(ex.Message, "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
+                    return;
+                }
                 if (Program.Config["PlotterInterface"].Equals("PRINTER"))
                 {
                     PrinterSettings ps = null;
