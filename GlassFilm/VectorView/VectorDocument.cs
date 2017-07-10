@@ -878,6 +878,115 @@ namespace VectorView
             }
         }
 
+        public void FillPossibleLocations(List<PointF> points, VectorPath src, VectorPath dst)
+        {
+            RectangleF sr = src.GetBoundRect();
+            RectangleF dr = dst.GetBoundRect();
+
+            float hx = sr.Width / 2 + 1;
+            float hy = sr.Height / 2 + 1;
+
+            points.Add(new PointF(dr.Left - hx, dr.Top - hy));
+            points.Add(new PointF(dr.Left, dr.Top - hy));
+            points.Add(new PointF(dr.Left + hx, dr.Top - hy));
+
+            points.Add(new PointF(dr.Left + dr.Width / 2 - hx, dr.Top - hy));
+            points.Add(new PointF(dr.Left + dr.Width / 2, dr.Top - hy));
+            points.Add(new PointF(dr.Left + dr.Width / 2 + hx, dr.Top - hy));
+
+            points.Add(new PointF(dr.Right - hx, dr.Top - hy));
+            points.Add(new PointF(dr.Right, dr.Top - hy));
+            points.Add(new PointF(dr.Right + dr.Width / 2 + hx, dr.Top - hy));
+
+            points.Add(new PointF(dr.Right + hx, dr.Top));
+            points.Add(new PointF(dr.Right + hx, dr.Top + hy));
+
+            points.Add(new PointF(dr.Right + hx, dr.Top + dr.Height / 2 - hy));
+            points.Add(new PointF(dr.Right + hx, dr.Top + dr.Height / 2));
+            points.Add(new PointF(dr.Right + hx, dr.Top + dr.Height / 2 + hy));
+
+            points.Add(new PointF(dr.Right + hx, dr.Bottom - hy));
+            points.Add(new PointF(dr.Right + hx, dr.Bottom));
+            points.Add(new PointF(dr.Right + hx, dr.Bottom + hy));
+
+            points.Add(new PointF(dr.Right, dr.Bottom + hy));
+            points.Add(new PointF(dr.Right - hx, dr.Bottom + hy));
+
+            points.Add(new PointF(dr.Right - dr.Width / 2 + hx, dr.Bottom + hy));
+            points.Add(new PointF(dr.Right - dr.Width / 2, dr.Bottom + hy));
+            points.Add(new PointF(dr.Right - dr.Width / 2 - hx, dr.Bottom + hy));
+
+            points.Add(new PointF(dr.Left + hx, dr.Bottom + hy));
+            points.Add(new PointF(dr.Left, dr.Bottom + hy));
+            points.Add(new PointF(dr.Left - hx, dr.Bottom + hy));
+
+            points.Add(new PointF(dr.Left - hx, dr.Top + dr.Height / 2 - hy));
+            points.Add(new PointF(dr.Left - hx, dr.Top + dr.Height / 2));
+            points.Add(new PointF(dr.Left - hx, dr.Top + dr.Height / 2 + hy));
+        }
+
+        public bool TryVerticalPos(VectorPath p, PointF pt, out float angle, out float maxx)
+        {
+            angle = 0;
+            maxx = float.MinValue;
+
+            RectangleF b = p.GetBoundRect();
+            PointF pos = new PointF(b.X + b.Width/2, b.Y + b.Height / 2);
+
+            p.BeginTransform(pos);
+            
+                        
+
+            p.CancelTransform();
+
+            return false;
+        }
+
+        public void AutoNest(VectorPath path)
+        {
+            RectangleF b = path.GetBoundRect();
+            PointF center = new PointF(b.Width / 2 + 2, b.Height / 2 + 2);
+
+            if (paths.Count == 1)
+            {
+                path.BeginTransform(center);
+
+                if (b.Width < b.Height)
+                {                                       
+                    path.SetOrigin(center);
+                }
+                else
+                {
+                    path.Rotate(90, center);
+                    b = path.GetBoundRect();
+                    center = new PointF(b.Width / 2 + 2, b.Height / 2 + 2);
+                    path.SetOrigin(center);
+                }
+            }
+            else
+            {
+                List<PointF> pts = new List<PointF>();
+
+                foreach (VectorPath p in paths)
+                {
+                    if (p != path)
+                    {
+                        FillPossibleLocations(pts, path, p);
+                    }
+                }
+
+                PointF bestPos = new PointF();
+                float bestAngle = 0;
+                float maxx = 0;
+
+                foreach (PointF pt in pts)
+                {
+
+
+                }
+            }
+        }
+
         public void AutoNest()
         {
             List<VectorPath> pl = new List<VectorPath>();

@@ -957,7 +957,7 @@ namespace VectorView
                 d = document.ImportPath(p);
             }
 
-            document.AutoNest();
+            document.AutoNest(d); 
             Invalidate();
             return d;
         }
@@ -973,11 +973,11 @@ namespace VectorView
             {
                 foreach (VectorPath p in src.Selection())
                 {
-                    document.ImportPath(p);
+                    VectorPath path = document.ImportPath(p);
+                    document.AutoNest(path);
                 }
             }
-
-            document.AutoNest();
+           
             Invalidate();
         }
 
