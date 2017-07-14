@@ -11,13 +11,11 @@ namespace GlassFilm.Class
     {       
         public string getHashMachine()
         {
-            string hd = identifier("Win32_DiskDrive", "Model");
-            string fabricanteID = identifier("Win32_DiskDrive", "Manufacturer");
-            string signature = identifier("Win32_DiskDrive", "Signature");
+            string hd = identifier("Win32_DiskDrive", "Model");            
             string totalHd = identifier("Win32_DiskDrive", "TotalHeads");
             string matherBoard = getMotherBoardID();
 
-            string fmi = hd + fabricanteID + signature + totalHd + matherBoard;
+            string fmi = hd + totalHd + matherBoard;
             
             return criptoMD5(fmi,"tech");            
         }
@@ -52,6 +50,7 @@ namespace GlassFilm.Class
         private string getMotherBoardID()
         {
             string serial = "";
+           
             try
             {
                 ManagementObjectSearcher mos = new ManagementObjectSearcher("SELECT SerialNumber FROM Win32_BaseBoard");
@@ -59,7 +58,7 @@ namespace GlassFilm.Class
 
                 foreach (ManagementObject mo in moc)
                 {
-                    serial = mo["SerialNumber"].ToString();
+                    serial = mo["SerialNumber"].ToString();                 
                 }
                 return serial;
             }
