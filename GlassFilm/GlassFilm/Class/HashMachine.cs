@@ -11,11 +11,12 @@ namespace GlassFilm.Class
     {       
         public string getHashMachine()
         {
-            string hd = identifier("Win32_DiskDrive", "Model");            
-            string totalHd = identifier("Win32_DiskDrive", "TotalHeads");
+            //string hd = identifier("Win32_DiskDrive", "Model");            
+            //string totalHd = identifier("Win32_DiskDrive", "TotalHeads");
             string matherBoard = getMotherBoardID();
 
-            string fmi = hd + totalHd + matherBoard;
+            //string fmi = hd + totalHd + matherBoard;
+            string fmi = matherBoard + 19991;
             
             return criptoMD5(fmi,"tech");            
         }
