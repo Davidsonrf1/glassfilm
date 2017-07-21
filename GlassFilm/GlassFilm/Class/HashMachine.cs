@@ -48,7 +48,7 @@ namespace GlassFilm.Class
             return result;
         }
 
-        private string getMotherBoardID()
+        public string getMotherBoardID()
         {
             string serial = "";
            
