@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.Drawing.Drawing2D;
+using System.Drawing.Imaging;
+using System.Runtime.InteropServices;
 using System.Text;
+using VectorView.Bezier;
 using VectorView.Plotter;
 
 namespace VectorView
@@ -12,106 +14,75 @@ namespace VectorView
 
     public class VectorPath
     {
-        VectorPath source = null;
-
+        float posx, posy;
+        float angle = 0;
+        List<VectorSegment> segments = new List<VectorSegment>();
+        PointF origin = new PointF(0, 0);
+        RectangleF boundRect = new RectangleF();
+        RectangleF limits = new RectangleF();
         VectorDocument document = null;
-        internal VectorPath(VectorDocument doc)
-        {
-            document = doc;
-        }
-
+        List<PointF[]> polygons = null;
+        VectorPathSide side = VectorPathSide.None;
+        string tag = "";
+        PointF testPoint = new PointF();
         float area = 0;
-
-        List<VectorEdge> edges = new List<VectorEdge>();
-        float curX, curY;
-        bool isSelected = false;
-        bool fillPath = false;
-        Color fillColor = Color.Lime;
+        bool testPointInside = false;
+        bool selected = false;
+        bool outOfLimits = false;
 
         int importCount = 0;
 
-        string tag = "";
-        VectorPathSide side = VectorPathSide.None;
+        VectorPath source = null;
 
-        float centerX = 0;
-        float centerY = 0;
+        float width = 0, height = 0;
 
-        public VectorDocument Document
+        List<VectorPath> intersectList = new List<VectorPath>();
+
+        bool drawBoundBox = false;
+        bool drawTestPoint = false;
+        bool drawNormalizedPath = false;
+        bool drawCenterPoint = false;
+        bool drawCurGrid = false;
+        bool fillOnPointInside = false;
+
+        float lastGoodAngle = 0;
+        PointF lastGoodPos = new PointF();
+
+        uint id = 0;
+
+        public float X
         {
             get
             {
-                return document;
-            }
-        }
-
-        public Pen LinePen
-        {
-            get
-            {
-                if (!isSelected)
-                    linePen = Document.NormalLinePen;
-                else
-                    linePen = Document.SelectedLinePen;
-
-                return linePen;
-            }
-        }
-
-        public List<VectorEdge> Edges
-        {
-            get
-            {
-                return edges;
-            }
-        }
-
-        public bool IsSelected
-        {
-            get
-            {
-                return isSelected;
+                return posx;
             }
 
             set
             {
-                isSelected = value;
+                float dx = value - posx;
+                Translate(dx, 0);
             }
         }
 
-        public bool FillPath
+        public float Y
         {
             get
             {
-                return fillPath;
+                return posy;
             }
 
             set
             {
-                fillPath = value;
+                float dy = value - posy;
+                Translate(dy, 0);
             }
         }
 
-        public float Area
+        public RectangleF BoundRect
         {
             get
             {
-                if (area < 0)
-                    ComputeArea(true);
-
-                return area;
-            }
-        }
-
-        public string Tag
-        {
-            get
-            {
-                return tag;
-            }
-
-            set
-            {
-                tag = value;
+                return boundRect;
             }
         }
 
@@ -128,24 +99,199 @@ namespace VectorView
             }
         }
 
-        public VectorPath Source
+        public string Tag
         {
             get
             {
-                return source;
+                return tag;
+            }
+
+            set
+            {
+                tag = value;
+            }
+        }
+
+        public VectorDocument Document
+        {
+            get
+            {
+                return document;
+            }
+        }
+
+        public float Angle
+        {
+            get
+            {
+                return angle;
             }
 
             internal set
             {
-                source = value;
+                angle = value;
             }
         }
 
-        public bool InvalidConstraints
+        public bool DrawTestPoint
         {
             get
             {
-                return invalidConstraints;
+                return drawTestPoint;
+            }
+
+            set
+            {
+                drawTestPoint = value;
+            }
+        }
+
+        public bool DrawNormalizedPath
+        {
+            get
+            {
+                return drawNormalizedPath;
+            }
+
+            set
+            {
+                drawNormalizedPath = value;
+            }
+        }
+
+        public bool DrawCenterPoint
+        {
+            get
+            {
+                return drawCenterPoint;
+            }
+
+            set
+            {
+                drawCenterPoint = value;
+            }
+        }
+
+        public bool DrawBoundBox
+        {
+            get
+            {
+                return drawBoundBox;
+            }
+
+            set
+            {
+                drawBoundBox = value;
+            }
+        }
+
+        public bool DrawCurGrid
+        {
+            get
+            {
+                return drawCurGrid;
+            }
+
+            set
+            {
+                drawCurGrid = value;
+            }
+        }
+
+        public float Area
+        {
+            get
+            {
+                return area;
+            }
+        }
+
+        public bool FillOnPointInside
+        {
+            get
+            {
+                return fillOnPointInside;
+            }
+
+            set
+            {
+                fillOnPointInside = value;
+            }
+        }
+
+        public bool Selected
+        {
+            get
+            {
+                return selected;
+            }
+
+            internal set
+            {
+                selected = value;
+            }
+        }
+
+        public bool TestPointInside
+        {
+            get
+            {
+                return testPointInside;
+            }
+        }
+
+        public RectangleF Limits
+        {
+            get
+            {
+                return limits;
+            }
+        }
+
+        public uint Id
+        {
+            get
+            {
+                return id;
+            }
+
+            internal set
+            {
+                id = value;
+            }
+        }
+
+        public bool IsValidPos
+        {
+            get
+            {
+                return intersectList.Count > 0 || outOfLimits;
+            }
+        }
+
+        public float Width
+        {
+            get
+            {
+                return width;
+            }
+
+            set
+            {
+                width = value;
+            }
+        }
+
+        public float Height
+        {
+            get
+            {
+                return height;
+            }
+
+            set
+            {
+                height = value;
             }
         }
 
@@ -162,86 +308,524 @@ namespace VectorView
             }
         }
 
-
-        public List<PointF[]> OriginalPoligons
+        public VectorPath Source
         {
             get
             {
-                return originalPoligons;
+                return source;
+            }
+
+            set
+            {
+                source = value;
             }
         }
 
-        VectorEdge curStart = null;       
-
-        internal void AddEdge(VectorEdge e)
+        public bool OutOfLimits
         {
-            if (curStart == null)
-                curStart = e;
+            get
+            {
+                return outOfLimits;
+            }
+        }
 
-            e.Path = this;
-            edges.Add(e);
+        public void UpdateGoodPos()
+        {
+            if (!IsValidPos)
+            {
+                lastGoodAngle = angle;
+                lastGoodPos.X = posx;
+                lastGoodPos.Y = posy;
+            }
+        }
+        
+        public void RestoreGoodPos()
+        {
+            angle = lastGoodAngle;
+            SetPos(lastGoodPos.X, lastGoodPos.Y);
+            intersectList.Clear();
+            outOfLimits = false;
+        }
+
+        internal VectorPath(VectorDocument doc)
+        {
+            document = doc;
+        }
+
+        public void SetPos(float x, float y)
+        {
+            posx = x;
+            posy = y;
+        }
+
+        public void Translate(float dx, float dy)
+        {
+            posx += dx;
+            posy += dy;
+        }
+
+        public void Rotate(float angle)
+        {
+            this.angle = angle;
+
+            polygons = null;
+
+            CalcLimits();
+        }
+
+        public List<PointF[]> GetTransfomedPolygons(bool translate=true)
+        {
+            if (polygons == null)
+                BuildPolygons();
+
+            Matrix mt = new Matrix();
+
+            if (translate)
+                mt.Translate(posx, posy);
+
+            mt.Rotate(angle);
+
+            List<PointF[]> poly = new List<PointF[]>();
+
+            foreach (PointF[] pts in polygons)
+            {
+                PointF[] tp = new PointF[pts.Length];
+
+                Array.Copy(pts, tp, pts.Length);
+                mt.TransformPoints(tp);
+
+                poly.Add(tp);
+            }
+
+            return poly;
+        }
+
+        void CalcLimits()
+        {
+            if (polygons == null)
+                BuildPolygons();
+
+            Matrix mt = new Matrix();
+            mt.Rotate(angle);
+
+            List<PointF[]> poly = new List<PointF[]>();
+
+            foreach (PointF[] pts in polygons)
+            {
+                PointF[] tp = new PointF[pts.Length];
+
+                Array.Copy(pts, tp, pts.Length);
+                mt.TransformPoints(tp);
+
+                poly.Add(tp);
+            }
+
+            limits = VectorMath.GetBoundBox(poly);
+
+            width = limits.Width;
+            height = limits.Height;
+        }
+
+        void AddPolyFromList(List<VectorSegment> segs)
+        {
+            if (segs.Count == 0)
+                return;
+
+            if (polygons == null)
+                polygons = new List<PointF[]>();
+
+            List<PointF> pts = new List<PointF>();
+            pts.Add(segs[0].Start);
+
+            foreach (VectorSegment s in segs)
+            {
+                if (pts.Count == 0)
+                {
+                    pts.Add(s.Start);
+                }
+
+                PointF[] segPoints = new PointF[s.Points.Length - 1];
+                Array.Copy(s.Points, 1, segPoints, 0, segPoints.Length);
+
+                pts.AddRange(s.Points);
+            }
+
+            polygons.Add(pts.ToArray());
+        }
+
+        public void BuildPolygons()
+        {
+            if (polygons != null)
+                polygons.Clear();
+
+            List<VectorSegment> curPoly = new List<VectorSegment>();
+
+            foreach (VectorSegment s in segments)
+            {
+                if (s is VectorMoveSegment)
+                {
+                    AddPolyFromList(curPoly);
+                    curPoly.Clear();
+                    continue;
+                }
+
+                curPoly.Add(s);
+            }
+
+            if (curPoly.Count > 0)
+                AddPolyFromList(curPoly);
+        }
+
+        public void Refresh()
+        {
+            foreach (VectorSegment s in segments)
+            {
+                s.ClearPoints();
+            }
+        }        
+
+        public bool IsPointInside(PointF pt, bool onlyBound)
+        {
+            pt.X = pt.X - posx;
+            pt.Y = pt.Y - posy;
+
+            Matrix mt = new Matrix();
+            mt.Rotate(-angle);
+
+            PointF[] pts = new PointF[] { pt };
+            mt.TransformPoints(pts);
+
+            pt.X = pts[0].X;
+            pt.Y = pts[0].Y;
+
+            if ((pt.X >= boundRect.X && pt.X <= boundRect.Right) && (pt.Y >= boundRect.Y && pt.Y <= boundRect.Bottom))
+            {
+                if (onlyBound)
+                    return true;
+                
+                if (map == null)
+                    BuildMap();
+
+                int x = (int)(pt.X - boundRect.X);
+                int y = (int)(pt.Y - boundRect.Y);
+
+                int mapIndex = y * mapW + x;
+
+                if (map[mapIndex] != 0)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        GridEntry curGrid = null;
+        public bool TestDocPoint(PointF docPoint, bool onlyBox = false)
+        {
+            testPointInside = false;
+
+            testPoint.X = docPoint.X - posx;
+            testPoint.Y = docPoint.Y - posy;
+
+            Matrix mt = new Matrix();
+            mt.Rotate(-angle);
+
+            PointF[] pts = new PointF[] { testPoint };
+            mt.TransformPoints(pts);
+
+            testPoint.X = pts[0].X;
+            testPoint.Y = pts[0].Y;
+
+            curGrid = null;
+
+            if ((testPoint.X >= boundRect.X && testPoint.X <= boundRect.Right) && (testPoint.Y >= boundRect.Y && testPoint.Y <= boundRect.Bottom))
+            {
+                if (onlyBox)
+                {
+                    testPointInside = true;
+                    return true;
+                }
+
+                if (map == null)
+                    BuildMap();
+
+                int x = (int)(testPoint.X - boundRect.X);
+                int y = (int)(testPoint.Y - boundRect.Y);
+
+                int mapIndex = y * mapW + x;
+
+                if (map[mapIndex] != 0)
+                {
+                    testPointInside = true;
+                }
+            }
+
+            return testPointInside;
+        }
+
+        public uint GenerateCutShape(uint sheet)
+        {
+            float diagonal = ((float)Math.Sqrt((BoundRect.Width * BoundRect.Width) + (BoundRect.Height * BoundRect.Height))) + 1;
+
+            Bitmap buffer = new Bitmap(((int)diagonal), ((int)diagonal), PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(buffer);
+            float w = diagonal / 2;
+
+            float sa = Angle;
+            float sx = posx;
+            float sy = posy;
+
+            Rectangle box = new Rectangle(0, 0, buffer.Width, buffer.Height);
+
+            uint shape = CutLibWrapper.CreateShape(sheet, (uint)id);
+
+            g.SmoothingMode = SmoothingMode.None;
+
+            SetPos(w, w);
+            SolidBrush fb = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
+            Color cb = Color.FromArgb(0);
+
+            for (int angle = 0; angle < 360; angle++)
+            {
+                Rotate(angle);
+                List<PointF[]> polys = GetTransfomedPolygons();
+
+                g.Clear(cb);
+                foreach (PointF[] pts in polys)
+                {
+                    g.FillPolygon(fillBrush, pts);
+                }
+
+                BitmapData bd = buffer.LockBits(box, ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+
+                CutLibWrapper.AddAngle(sheet, (uint)id, angle, bd.Width, bd.Height, bd.Scan0);
+
+                buffer.UnlockBits(bd);
+            }
+
+            SetPos(sx, sy);
+            Rotate(sa);
+
+            CutLibWrapper.SortAngles(sheet, shape);
+            Angle = sa;
+
+            return shape;
+        }
+
+        public void Normalize()
+        {
+            BuildPolygons();
+
+            RectangleF r = VectorMath.GetBoundBox(polygons);
+            PointF center = new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
+
+            float dx = -center.X;
+            float dy = -center.Y;
+
+            foreach (VectorSegment s in segments)
+            {
+                s.Move(dx, dy);
+            }
+
+            r.X += dx;
+            r.Y += dy;
+
+            boundRect = r;
+
+            polygons = null;
+            BuildPolygons();
+
+            posx = center.X;
+            posy = center.Y;
+        }
+
+        public void BeginPath()
+        {
+            curX = 0;
+            curY = 0;
+            startX = 0;
+            startY = 0;
         }
 
         public void ClosePolygon()
         {
-            if(curStart != null)
-            {
-                VectorClose e = new VectorClose(this, curX, curY, curStart.StartX, curStart.StartY);
-                curX = curStart.StartX;
-                curY = curStart.StartY;
+            VectorLineSegment line = new VectorLineSegment();
 
-                AddEdge(e);
-                curStart = null;
-            }
+            line.Start = new PointF(curX, curY);
+            line.End = new PointF(startX, startY);
 
-            curY = 0;
-            curX = 0;
+            curX = startX;
+            curY = startY;
+
+            segments.Add(line);
         }
 
-        List<PointF[]> originPolygons = null;
-
-        public void ClosePath()
+        class GridLine
         {
-            RectangleF b = GetBoundRect(true);
-            PointF center = VectorMath.GetBoxCenter(b);
+            PointF start, end;
 
-            centerX = center.X;
-            centerY = center.Y;
-
-            BuildPolygons();
-            originPolygons = poligons;
-            poligons = null;
-
-            foreach (PointF[] poly in originPolygons)
+            public PointF End
             {
-                for (int i = 0; i < poly.Length; i++)
+                get
                 {
-                    poly[i].X -= center.X;
-                    poly[i].Y -= center.Y;
+                    return end;
+                }
+
+                set
+                {
+                    end = value;
+                }
+            }
+
+            public PointF Start
+            {
+                get
+                {
+                    return start;
+                }
+
+                set
+                {
+                    start = value;
                 }
             }
         }
 
+        class GridEntry
+        {
+            RectangleF box = new RectangleF();
+            List<GridLine> lines = new List<GridLine>();
+
+            public GridEntry(RectangleF boud, int index, float height)
+            {
+                box.X = boud.X;
+                box.Width = boud.Width;
+                box.Height = height;
+
+                box.Y = boud.Y + height * index;                                
+            }
+
+            public RectangleF Box
+            {
+                get
+                {
+                    return box;
+                }
+            }
+
+            public List<GridLine> Lines
+            {
+                get
+                {
+                    return lines;
+                }
+            }
+
+            public void TestPolygon(PointF[] pts)
+            {
+                PointF start = pts[0];
+
+                for (int i = 1; i < pts.Length; i++)
+                {
+                    PointF end = pts[i];
+
+                    if (VectorMath.LineInsideRect(box, start.X, start.Y, end.X, end.Y))
+                    {
+                        GridLine gl = new GridLine();
+
+                        gl.Start = start;
+                        gl.End = end;
+
+                        lines.Add(gl);
+                    }
+
+                    start = end;                    
+                }
+            }
+        }
+
+        int gridHeight = 10;
+        GridEntry[] grid = null;
+
+        public void BuildGrid()
+        {
+            int gridCount = (int)boundRect.Height / gridHeight + 1;
+            grid = new GridEntry[gridCount];
+
+            if (polygons == null)
+                BuildPolygons();
+
+            for (int i = 0; i < gridCount; i++)
+            {
+                grid[i] = new GridEntry(boundRect, i, gridHeight);
+
+                foreach (PointF[] poly in polygons)
+                {
+                    grid[i].TestPolygon(poly);
+                }
+            }
+        }
+
+        public void ClosePath()
+        {
+            Normalize();
+            BuildPolygons();
+
+            BuildGrid();
+            BuildMap();
+            ComputeArea();
+
+            CalcLimits();
+
+            document.Host.Invalidate();
+        }
+
+        float startX = 0;
+        float startY = 0;
+        float curX = 0;
+        float curY = 0;
+
+        void AddSegment(VectorSegment seg)
+        {
+            segments.Add(seg);
+        }
+
         public void LineTo(float x, float y)
         {
-            VectorEdge e = new VectorEdge(this, curX, curY, x, y);
+            VectorLineSegment line = new VectorLineSegment();
+
+            line.Start = new PointF(curX, curY);
+            line.End = new PointF(x, y);
+
             curX = x;
             curY = y;
 
-            AddEdge(e);
+            AddSegment(line);
         }
 
         public void MoveTo(float x, float y)
         {
-            VectorMove m = new VectorMove(this, x, y, x, y);
+            VectorMoveSegment move = new VectorMoveSegment();
+
+            move.Start = new PointF(curX, curY);
+            move.End = new PointF(x, y);
+
             curX = x;
             curY = y;
-            AddEdge(m);
+
+            startX = x;
+            startY = y;
+
+            AddSegment(move);
         }
 
         public void CurveTo(float x, float y, float c1x, float c1y, float c2x, float c2y)
         {
-            VectorCubicBezier c = new VectorCubicBezier(this, curX, curY, x, y);
+            VectorCubicSegment c = new VectorCubicSegment();
+
+            c.Start = new PointF(curX, curY);
+            c.End = new PointF(x, y);
 
             curX = x;
             curY = y;
@@ -249,313 +833,300 @@ namespace VectorView
             c.Control1 = new PointF(c1x, c1y);
             c.Control2 = new PointF(c2x, c2y);
 
-            AddEdge(c);
+            AddSegment(c);
         }
 
         public void QCurveTo(float x, float y, float cx, float cy)
         {
-            VectorQuadraticBezier c = new VectorQuadraticBezier(this, curX, curY, x, y);
+            VectorQuadraticSegment c = new VectorQuadraticSegment();
+
+            c.Start = new PointF(curX, curY);
+            c.End = new PointF(x, y);
 
             curX = x;
             curY = y;
 
             c.Control = new PointF(cx, cy);
 
-            AddEdge(c);
-        }
-
-        public void CloneSource()
-        {
-            Clone(source);
-        }
-
-        public void Clone(VectorPath source)
-        {
-            if (source == null)
-                return;
-
-            edges.Clear();
-
-            foreach (VectorEdge e in source.Edges)
-            {
-                VectorEdge c = e.Clone();
-                AddEdge(c);
-            }
-
-            Tag = source.Tag;
-            Side = source.Side;
-
-            CopyMetrics(source);
-            ComputeArea(false);
-        }
-
-        class PointComparer : IComparer<PointF>
-        {
-            public int Compare(PointF x, PointF y)
-            {
-                return x.X < y.X ? -1 : x.X == y.X ? 0 : 1;
-            }
-        }
-        
-        float bestAngle = 0;
-        PointF[] scans = null;
-        float scanPrecision = 1;
-
-        internal void CopyMetrics(VectorPath p)
-        {
-            bestAngle = p.bestAngle;
-            scans = new PointF[p.scans.Length];
-            Array.Copy(p.scans, scans, scans.Length);
-
-            scanPrecision = p.scanPrecision;
-        }
-
-        public void ComputeMetrics(float precision = 2)
-        {
-            if (precision <= 0)
-                precision = 1f;
-
-            RectangleF r = GetBoundRect();
-            float y = r.Y;
-
-            PointF center = VectorMath.GetBoxCenter(r);
-            List<PointF> sl = new List<PointF>();
-
-            while (y < r.Bottom)
-            {
-                float h = precision;
-
-                if (y + h > r.Bottom)
-                    h = r.Bottom - y;
-
-                List<PointF> pts = new List<PointF>();
-
-                int ct = CrossPointCount(y, pts);
-                pts.Sort(new PointComparer());
-
-                for (int i = 0; i < pts.Count; i += 2)
-                {
-                    if (pts.Count - i >= 2)
-                    {
-                        sl.Add(new PointF(pts[i].X, y));
-                        sl.Add(new PointF(pts[i + 1].X, y));
-                    }
-                }
-
-                y += precision;
-            }
-
-            scanPrecision = precision;
-            scans = sl.ToArray();
-
-            Matrix mt = new Matrix();
-
-            mt.Translate(-center.X, -center.Y);
-            mt.TransformPoints(scans);
-        }
-
-        public float ComputeArea(bool force, float precision=1)
-        {
-            if (area > 0 && !force)
-                return area;
-
-            area = 0;
-
-            if (scans == null)
-                ComputeMetrics(precision);
-
-            if (scans == null)
-                return 0;
-
-            if (precision <= 0)
-                precision = 1f;
-
-            area = 0;
-
-            float h = ((scans[scans.Length - 1].Y - scans[0].Y) / scans.Length) * scanPrecision;
-
-            for (int i = 0; i < scans.Length; i+=2)
-                area += h * Math.Abs(scans[i + 1].X - scans[i].X);
-            
-            return area;
-        }
-
-        List<PointF>[] horizontalScans = null;
-
-        void BuildHorizontalScans (int numScans = 100)
-        {
-            RectangleF r = GetBoundRect();
-
-            horizontalScans = new List<PointF>[numScans];
-
-            if (poligons == null)
-                BuildPolygons();
-
-            foreach (PointF[] p in poligons)
-            {
-                foreach (PointF pt in p)
-                {
-                    int idx = (int)(pt.X - r.X) / numScans;
-
-                    if (horizontalScans[idx] == null)
-                        horizontalScans[idx] = new List<PointF>();
-
-                    float min = idx * (r.Height / numScans);
-                    float max = (idx+1) * (r.Height / numScans);
-                    
-                    if (pt.Y >= min || pt.Y <= max)
-                    {
-                        //horizontalScans[idx]
-                    }
-                }
-            }
+            AddSegment(c);
         }
 
         Pen linePen = null;
 
-        SolidBrush rSide = null;
-        SolidBrush lSide = null;
-
-        SolidBrush errorBrush = null;
-
-        public void Render(Graphics g)
+        public void RenderPolygons(Graphics g)
         {
-            if (rSide == null)
+            if (testPointInside)
             {
-                rSide = new SolidBrush(Color.FromArgb(85, Color.Blue));
-                lSide = new SolidBrush(Color.FromArgb(85, Color.Green));
+                linePen = document.hilightLine;
             }
-
-            if (!isSelected)
-                linePen = Document.NormalLinePen;
             else
-                linePen = Document.SelectedLinePen;
-
-            if (importCount > 0)
             {
-                linePen.Color = Color.Red;
-                linePen.Width = 3;
+                linePen = document.normalLine;
             }
 
-            if (poligons == null)
+            if (IsValidPos)
+            {
+                linePen = document.errorLine;
+            }
+            else if (selected)
+            {
+                linePen = document.selectedLine;
+            }
+
+            foreach (PointF[] pts in polygons)
+            {
+                if (document.Debbuging && fillOnPointInside && testPointInside)
+                    g.FillPolygon(Brushes.LightBlue, pts);
+
+                g.DrawPolygon(linePen, pts);
+            }
+        }
+
+        byte[] map = null;
+        int mapW = 0, mapH = 0;
+        public void BuildMap()
+        {
+            Bitmap bmp = CreateBitmap();
+
+            BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
+            map = new byte[bmp.Width * bmp.Height];
+
+            mapW = bmp.Width;
+            mapH = bmp.Height;
+          
+            unsafe
+            {
+                int* p = (int*)bd.Scan0.ToPointer();
+
+                for (int i = 0; i < bd.Height; i++)
+                {
+                    for (int j = 0; j < bd.Width; j++)
+                    {
+                        int idx = i * bmp.Width + j;
+                        if (*p != 0)                        
+                            map[idx] = 1;
+                        else       
+                            map[idx] = 0;                       
+
+                        p++;
+                    }
+                }
+            }
+
+            bmp.UnlockBits(bd);
+        }
+
+        public void ComputeArea()
+        {
+            if (map == null)
+                BuildMap();
+
+            area = 0;
+
+            for (int i = 0; i < map.Length; i++)
+            {
+                if (map[i] != 0)
+                    area++;
+            }
+        }
+
+        SolidBrush fillBrush = null;        
+        public Bitmap CreateBitmap()
+        {
+            Bitmap b = new Bitmap((int)boundRect.Width + 1, (int)boundRect.Height + 1, PixelFormat.Format32bppArgb);
+            Graphics g = Graphics.FromImage(b);
+
+            g.SmoothingMode = SmoothingMode.HighQuality;
+
+            RenderSample(g, -boundRect.X, -boundRect.Y);
+
+            return b;
+        }
+
+        public void RenderSample(Graphics g, float x, float y, float angle, float scale)
+        {
+            g.ResetTransform();
+            g.Clear(Color.FromArgb(0));
+
+            if (segments.Count > 0 && polygons.Count == 0)
                 BuildPolygons();
 
-            foreach (PointF[] poly in poligons)
+            g.ScaleTransform(scale, scale);
+            g.TranslateTransform(x, y);
+            g.RotateTransform(angle);            
+
+            if (fillBrush == null)
+                fillBrush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
+
+            foreach (PointF[] pts in polygons)
             {
-                if (Side != VectorPathSide.None || importCount > 0)
+                g.FillPolygon(fillBrush, pts);
+            }
+        }
+
+        public void RenderSample(Graphics g, float x, float y)
+        {
+            g.ResetTransform();
+            g.Clear(Color.FromArgb(0));
+
+            if (segments.Count > 0 && polygons.Count == 0)
+                BuildPolygons();
+
+            g.TranslateTransform(x, y);
+
+            if (fillBrush == null)
+                fillBrush = new SolidBrush(Color.FromArgb(255, 255, 255, 255));
+
+            foreach (PointF[] pts in polygons)
+            {
+                g.FillPolygon(fillBrush, pts);
+            }
+        }
+
+        internal void ImportPath(VectorPath p)
+        {
+            segments.Clear();
+            polygons = null;
+
+            BeginPath();
+
+            foreach (VectorSegment s in p.segments)
+            {
+                if (s is VectorMoveSegment)
+                    MoveTo(s.End.X, s.End.Y);
+
+                if (s is VectorLineSegment)
+                    LineTo(s.End.X, s.End.Y);
+
+                if (s is VectorCubicSegment)
                 {
-                    SolidBrush sb = null;
+                    VectorCubicSegment c = (VectorCubicSegment)s;
+                    CurveTo(c.End.X, c.End.Y, c.Control1.X, c.Control1.Y, c.Control2.X, c.Control2.Y);
+                }
 
-                    if (Side == VectorPathSide.Left)
-                        sb = lSide;
-                    else
-                        sb = rSide;
+                if (s is VectorQuadraticSegment)
+                {
+                    VectorQuadraticSegment q = (VectorQuadraticSegment)s;
+                    QCurveTo(q.End.X, q.End.Y, q.Control.X, q.Control.Y);
+                }
 
-                    Color oldSbColor = sb.Color;
-                    if (importCount > 0)
+                if (s is VectorCloseSegment)
+                    ClosePolygon();
+            }
+
+            ClosePath();
+
+            posx = p.posx + 100;
+            posy = p.posy + 100;
+            id = p.Id;
+        }
+
+        public PointF[] GetBoundPoints()
+        {
+            RectangleF r = BoundRect;
+
+            PointF[] ret = new PointF[4];
+
+            ret[0] = new PointF(r.X, r.Y);
+            ret[1] = new PointF(r.Right, r.Y);
+            ret[2] = new PointF(r.Right, r.Bottom);
+            ret[3] = new PointF(r.X, r.Bottom);
+            
+            Matrix mt = new Matrix();
+
+            mt.Rotate(angle);                        
+            mt.TransformPoints(ret);
+
+            for (int i = 0; i < ret.Length; i++)
+            {
+                ret[i].X += posx;
+                ret[i].Y += posy;
+            }
+
+            return ret;
+        }
+
+        public bool IsBoundInside(VectorPath path)
+        {
+            PointF[] bp = GetBoundPoints();
+
+            foreach (PointF p in bp)
+            {
+                if (path.IsPointInside(p, true))
+                    return true;
+            }
+
+            if (path.IsPointInside(new PointF(posx, posy), true))
+                return true;
+
+            if (IsPointInside(new PointF(path.posx, path.posy), true))
+                return true;
+
+            return false;
+        }
+
+        public void CheckDocumentLimits()
+        {
+            //CalcLimits();
+
+            outOfLimits = false;
+
+            RectangleF lim = new RectangleF(limits.X, limits.Y, limits.Width, limits.Height);
+
+            lim.X += posx;
+            lim.Y += posy;
+
+            if (lim.X <= 0 || lim.Y <= 0)
+                outOfLimits = true;
+
+            if (lim.Bottom >= document.DocHeight)
+                outOfLimits = true;
+        }
+
+        public bool Intersects(VectorPath path)
+        {
+            if (path == this)
+                return false;
+
+            if (polygons == null)
+                BuildPolygons();
+
+            intersectList.Remove(path);
+            path.intersectList.Remove(this);
+
+            if (IsBoundInside(path))
+            {
+                List<PointF[]> tpoly = GetTransfomedPolygons();
+                foreach (PointF[] pts in tpoly)
+                {
+                    foreach (PointF p in pts)
                     {
-                        sb.Color = Color.Black;
+                        if (path.IsPointInside(p, false))
+                        {
+                            intersectList.Add(path);
+                            path.intersectList.Add(this);
+
+                            return true;
+                        }
                     }
-
-                    g.FillPolygon(sb, poly);
-
-                    sb.Color = oldSbColor;
                 }
 
-                Color oldColor = linePen.Color;
-
-                if (invalidConstraints && document.AutoCheckConstraints)
+                tpoly = path.GetTransfomedPolygons();
+                foreach (PointF[] pts in tpoly)
                 {
-                    Color ic = Color.FromArgb(128, Color.Red);
-
-                    if (errorBrush == null)
-                        errorBrush = new SolidBrush(ic);
-
-                    linePen.Color = Color.Red;
-                    g.FillPolygon(errorBrush, poly);
-                }
-
-                g.DrawPolygon(linePen, poly);
-
-                if (linePen.Color != oldColor)
-                    linePen.Color = oldColor;
-            }
-
-            if (Debugger.IsAttached && false)
-            {
-                if (originPolygons != null)
-                {
-                    PointF[] pts = new PointF[originPolygons[0].Length];
-
-                    Array.Copy(originPolygons[0], pts, pts.Length);
-
-                    Matrix mt = new Matrix();
-                    mt.Translate(centerX, centerY);
-                    //mt.Scale(scalex, scaley);
-                    mt.Rotate(angle);
-
-                    mt.TransformPoints(pts);
-
-                    g.DrawPolygon(Pens.Red, pts);
+                    foreach (PointF p in pts)
+                    {
+                        if (IsPointInside(p, false))
+                        {
+                            intersectList.Add(path);
+                            path.intersectList.Add(this);
+                            return true;
+                        }
+                    }
                 }
             }
 
-            if (document.ShowConvexHull)
-            {
-                hull.Render(g);
-            }
-        }
-
-        List<PointF[]> originalPoligons = null;
-        public void BuildOriginalPolygons()
-        {
-            if (source != null)
-            {
-                originalPoligons = source.BuildPolygons();
-                source.poligons = null;
-            }
-        }
-
-        ConvexHull hull = null;
-        List<PointF[]> poligons = null;
-        public virtual List<PointF[]> BuildPolygons()
-        {
-            if (poligons != null)
-                return poligons;
-
-            poligons = new List<PointF[]>();
-
-            List<PointF> pl = null;
-            List<PointF> hl = new List<PointF>();
-
-            hull = new ConvexHull();
-
-            foreach (VectorEdge e in edges)
-            {
-                if (pl == null)
-                {
-                    pl = new List<PointF>();
-                }
-
-                List<PointF> tp = e.GetPoints(false);
-                pl.AddRange(tp);
-
-                if (e is VectorClose)
-                {
-                    hl.AddRange(pl);
-                    poligons.Add(pl.ToArray());
-                    pl = null;
-                }
-            }
-
-            if (pl != null)
-            {
-                hl.AddRange(pl);
-                poligons.Add(pl.ToArray());
-            }
-
-            hull.MakeConvexHull(hl);
-            return poligons;
+            return false;
         }
 
         const int HPGL_UNIT = 40; // 0.025 mm
@@ -569,267 +1140,173 @@ namespace VectorView
             return ret;
         }
 
-        bool invalidConstraints = false;
+        VectorSegment lastSegment = null;
 
-        public void ResetContraints()
+        bool IsSamAsLast(VectorSegment seg)
         {
-            invalidConstraints = false;
-        }
-
-        public bool CheckContraints()
-        {
-            invalidConstraints = false;
-            return !invalidConstraints;
-        }
-
-        internal bool GetDocIntersections(List<VectorPath> intersections)
-        {
-            RectangleF bb = GetBoundRect();
-            intersections.Clear();
-
-            if (hull == null)
-                BuildPolygons();
-
-            foreach (VectorPath p in document.Paths)
-            {
-                if (p == this)
-                    continue;
-
-                if (p.hull == null)
-                    p.BuildPolygons();
-
-                RectangleF pb = p.GetBoundRect();
-                RectangleF ib = RectangleF.Intersect(bb, pb);
-
-                if (!ib.IsEmpty)
-                {
-                    if (hull.Intersecting(p.hull))
-                    {
-                        if (CheckIntersectionContraints(p))
-                            intersections.Add(p);
-                    }
-                }                
-            }
-
-            if (intersections.Count > 0)
-                return true;
-
-            return false;
-        }
-
-        internal bool CheckIntersectionContraints(VectorPath p)
-        {
-            RectangleF mb = GetBoundRect();
-
-            if (p == this)
+            if (lastSegment == null)
                 return false;
 
-            RectangleF pb = p.GetBoundRect();
-            RectangleF ir = new RectangleF();
-
-            if (poligons == null)
-                BuildPolygons();
-
-            ir = RectangleF.Intersect(mb, pb);
-
-            if (!ir.IsEmpty )
-            {
-                // Verifica se algum dos pontos do path atual estão dentro do path testado
-                foreach (PointF[] i in poligons)
-                {
-                    foreach (PointF pt in i)
-                    {
-                        if (pt.Y >= ir.Y && pt.Y <= ir.Bottom)
-                        {
-                            if (p.IsPointInside(pt))
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-
-                if (p.poligons == null)
-                    p.BuildPolygons();
-
-                // Verifica se algum dos pontos do path sendo testado estão dentro do path atual
-                foreach (PointF[] i in p.poligons)
-                {
-                    foreach (PointF pt in i)
-                    {
-                        if (pt.Y >= ir.Y && pt.Y <= ir.Bottom)
-                        {
-                            if (IsPointInside(pt))
-                            {
-                                return true;
-                            }
-                        }
-                    }
-                }
-            }
-
-            return false;
-        }
-
-        internal bool CheckBoundConstraints()
-        {
-            RectangleF r = GetBoundRect();
-
-            if (r.X < 0 || r.Y < 0)            
-                return invalidConstraints = true;            
-
-            if (r.Bottom > document.CutBox.Bottom)
-                return invalidConstraints = true;        
-
-            return true;
-        }
-       
-        RectangleF boundBox = RectangleF.Empty;
-        public RectangleF GetBoundRect(bool force = false)
-        {
-            if (boundBox == RectangleF.Empty || force)
-            {
-                float minx, miny, maxx, maxy;
-
-                minx = float.MaxValue;
-                miny = float.MaxValue;
-                maxx = float.MinValue;
-                maxy = float.MinValue;
-
-                foreach (VectorEdge e in edges)
-                {
-                    if (e is VectorMove)
-                        continue;
-
-                    RectangleF r = e.GetBoundRect();
-
-                    minx = Math.Min(minx, r.X);
-                    miny = Math.Min(miny, r.Y);
-                    maxx = Math.Max(maxx, r.Right);
-                    maxy = Math.Max(maxy, r.Bottom);
-                }
-
-                boundBox = new RectangleF(minx, miny, maxx - minx, maxy - miny);
-            }
-
-            return boundBox;
-        }
-
-        public virtual int CrossPointCount(float hline, List<PointF> crossPoints = null)
-        {
-            int count = 0;
-
-            foreach (VectorEdge e in edges)
-            {
-                count += e.CrossPointCount(hline, crossPoints);
-            }
-
-            return count;
-        }
-
-        public bool IsPointInside(PointF pt)
-        {
-            int cross = 0;
-
-            foreach (VectorEdge e in edges)
-            {
-                List<PointF> pts = new List<PointF>();
-
-                if (e.CrossPointCount(pt.Y, pts) > 0)
-                {
-                    foreach (PointF p in pts)
-                    {
-                        if (p.X < pt.X)
-                            cross++;
-                    }
-                }
-            }
-
-            return cross % 2 == 0 ? false : true;
-        }
-
-        public PointF GetMiddlePoint()
-        {
-            RectangleF r = GetBoundRect();
-
-            return new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
-        }
-
-        VectorEdge lastEdge = null;
-
-        bool IsSamAsLast(VectorEdge edge)
-        {
-            if (lastEdge == null)
-                return false;
-
-            if (lastEdge.Type == VectorEdgeType.Move && edge.Type == VectorEdgeType.Line)
+            if (lastSegment is VectorMoveSegment && seg is VectorLineSegment)
                 return true;
 
-            return lastEdge.Type == edge.Type;
+            return lastSegment.GetType().Equals(seg.GetType());
         }
 
-        void WriteSvgEdge(StringBuilder sb, VectorEdge edge, float ppmx, float ppmy)
+        void WriteSvgSegment(StringBuilder sb, VectorSegment seg, float ppmx, float ppmy)
         {
             int sx, sy, ex, ey;
 
-            sx = (int)Math.Round(edge.StartX * ppmx);
-            sy = (int)Math.Round(edge.StartY * ppmy);
-            ex = (int)Math.Round(edge.EndX * ppmx);
-            ey = (int)Math.Round(edge.EndY * ppmy);
+            Matrix mt = new Matrix();
+            mt.Translate(posx, posy);
+            mt.Rotate(angle);
 
-            switch (edge.Type)
+            PointF[] pts = new PointF[] { seg.Start, seg.End };
+
+            mt.TransformPoints(pts);
+
+            sx = (int)Math.Round(pts[0].X * ppmx);
+            sy = (int)Math.Round(pts[0].Y * ppmy);
+            ex = (int)Math.Round(pts[1].X * ppmx);
+            ey = (int)Math.Round(pts[1].Y * ppmy);
+
+            if (seg is VectorMoveSegment)
             {
-                case VectorEdgeType.Move:
-                    sb.Append(" M");
-                    sb.AppendFormat("{0},{1}", ex, ey);
-                    break;
-                case VectorEdgeType.Line:
-                    if (!IsSamAsLast(edge))
-                        sb.Append(" L");
-                    else
-                        sb.Append(" ");
-
-                    sb.AppendFormat("{0},{1}", ex, ey);
-                    break;
-                case VectorEdgeType.Curve:
-                    if (!IsSamAsLast(edge))
-                        sb.Append(" C");
-                    else
-                        sb.Append(" ");
-
-                    VectorCubicBezier vc = (VectorCubicBezier)edge;
-                    int c1x, c1y, c2x, c2y;
-
-                    c1x = (int)Math.Round(vc.Control1.X * ppmx);
-                    c1y = (int)Math.Round(vc.Control1.Y * ppmy);
-                    c2x = (int)Math.Round(vc.Control2.X * ppmx);
-                    c2y = (int)Math.Round(vc.Control2.Y * ppmy);
-
-                    sb.AppendFormat("{0},{1} {2},{3} {4},{5}", c1x, c1y, c2x, c2y, ex, ey);
-
-                    break;
-                case VectorEdgeType.QCurve:
-                    if (!IsSamAsLast(edge))
-                        sb.Append(" Q");
-                    else
-                        sb.Append(" ");
-
-                    VectorQuadraticBezier qc = (VectorQuadraticBezier)edge;
-                    int cx, cy;
-
-                    cx = (int)Math.Round(qc.Control.X * ppmx);
-                    cy = (int)Math.Round(qc.Control.Y * ppmy);
-
-                    sb.AppendFormat("{0},{1} {2},{3}", cx, cy, ex, ey);
-                    break;
-                case VectorEdgeType.Close:
-                    sb.Append(" Z");
-                    break;
+                sb.Append(" M");
+                sb.AppendFormat("{0},{1}", ex, ey);
             }
 
-            lastEdge = edge;
+            if (seg is VectorLineSegment)
+            {
+                if (!IsSamAsLast(seg))
+                    sb.Append(" L");
+                else
+                    sb.Append(" ");
+
+                sb.AppendFormat("{0},{1}", ex, ey);
+            }
+
+            if (seg is VectorCubicSegment)
+            {
+                if (!IsSamAsLast(seg))
+                    sb.Append(" C");
+                else
+                    sb.Append(" ");
+
+                VectorCubicSegment vc = (VectorCubicSegment)seg;
+                int c1x, c1y, c2x, c2y;
+
+                pts = new PointF[] { vc.Control1, vc.Control2 };
+
+                mt.TransformPoints(pts);
+
+                c1x = (int)Math.Round(pts[0].X * ppmx);
+                c1y = (int)Math.Round(pts[0].Y * ppmy);
+                c2x = (int)Math.Round(pts[1].X * ppmx);
+                c2y = (int)Math.Round(pts[1].Y * ppmy);
+
+                sb.AppendFormat("{0},{1} {2},{3} {4},{5}", c1x, c1y, c2x, c2y, ex, ey);
+            }
+
+            if (seg is VectorQuadraticSegment)
+            {
+                if (!IsSamAsLast(seg))
+                    sb.Append(" Q");
+                else
+                    sb.Append(" ");
+
+                VectorQuadraticSegment qc = (VectorQuadraticSegment)seg;
+                int cx, cy;
+
+                pts = new PointF[] { qc.Control };
+
+                cx = (int)Math.Round(pts[0].X * ppmx);
+                cy = (int)Math.Round(pts[0].Y * ppmy);
+
+                sb.AppendFormat("{0},{1} {2},{3}", cx, cy, ex, ey);
+            }
+
+            if (seg is VectorCloseSegment)
+            {
+                sb.Append(" Z");
+            }
+
+            lastSegment = seg;
         }
-        
+
+        public string BuildScanData()
+        {
+            StringBuilder sb = new StringBuilder();
+            uint sheet = CutLibWrapper.CreateSheet(600);
+
+            int time = Environment.TickCount;
+            uint shape = GenerateCutShape(sheet);
+
+            int time1 = Environment.TickCount - time;
+
+            for (int i = 0; i < 360; i++)
+            {
+                int count = CutLibWrapper.GetSegmentCount(sheet, shape, i);
+
+                CutLibWrapper.ScanData scanData = new CutLibWrapper.ScanData();
+
+                int segLen = Marshal.SizeOf(typeof(CutLibWrapper.SegmentData)) * count;
+
+                scanData.segmentCount = 0;
+                scanData.angle = i;
+                scanData.segments = Marshal.AllocHGlobal(segLen);
+
+                IntPtr scanDataBuffer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CutLibWrapper.ScanData)));
+                Marshal.StructureToPtr(scanData, scanDataBuffer, false);
+                CutLibWrapper.GetScanData(sheet, shape, i, scanDataBuffer, count);
+                scanData = (CutLibWrapper.ScanData)Marshal.PtrToStructure(scanDataBuffer, typeof(CutLibWrapper.ScanData));
+                Marshal.FreeHGlobal(scanDataBuffer);
+
+                byte[] data = new byte[segLen];
+
+                Marshal.Copy(scanData.segments, data, 0, segLen);
+                Marshal.FreeHGlobal(scanData.segments);
+
+                string dataString = Convert.ToBase64String(data);
+                sb.Append(string.Format("\t<scan angle=\"{0}\">{1}</scan>\n", scanData.angle, dataString));
+
+                //byte[] data2 = Convert.FromBase64String(dataString);
+
+                /*
+                unsafe
+                {
+                    byte* p = (byte*)scanData.segments.ToPointer();
+
+                    //Convert.ToBase64String()
+
+                    sb.Append(string.Format("\t<scan angle=\"{0}\" d=\"", scanData.angle));
+
+                    for (int k = 0; k < scanData.segmentCount; k++, p++)
+                    {
+                        if (k > 0)
+                            sb.Append(',');
+
+                        sb.Append(string.Format("{0},{1},{2}", p->line, p->start, p->end));
+                    }
+
+                    sb.Append("\" />\n");
+                }
+                */
+
+            }
+
+            time = Environment.TickCount - time;
+            
+            return sb.ToString();
+        }
+
+        public void WriteScanData(StringBuilder sb)
+        {
+            string data = BuildScanData();
+
+            sb.Append(data);
+        }
+
         public string ToSVGPath(float ppmx, float ppmy)
         {
             StringBuilder sb = new StringBuilder();
@@ -839,293 +1316,158 @@ namespace VectorView
 
             sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag);
 
-            foreach (VectorEdge e in edges)
-                WriteSvgEdge(sb, e, ppmx, ppmy);
+            foreach (VectorSegment e in segments)
+            {
+                WriteSvgSegment(sb, e, ppmx, ppmy);
+            }
 
-            sb.Append("\" \n\t/>");
+            sb.Append("\" \n\t>");
+            
+            WriteScanData(sb);
+
+            sb.Append("</path>");
 
             return sb.ToString();
         }
 
-        PointF transformOrigin = new PointF();
-        Dictionary<VectorEdge, List<PointF>> origins = new Dictionary<VectorEdge, List<PointF>>();
-        PointF[] originalScans = null;
-
-        float oldAngle = 0;
-        
-        public void BeginTransform(PointF origin)
+        public string ToHPGL()
         {
-            origins.Clear();
+            StringBuilder sb = new StringBuilder();
+            bool first = true;
+            bool firstPoint = true;
+            PointF hp;
 
-            oldAngle = angle;
+            List<PointF[]> polyList = GetTransfomedPolygons();
 
-            foreach (VectorEdge e in edges)
+            Matrix mt = new Matrix();
+
+            mt.Translate(document.GetMaxY(), 0);
+            mt.Rotate(90);
+
+            foreach (PointF[] polyline in polyList)
             {
-                List<PointF> pl = new List<PointF>();
-                e.CopyPoints(pl);
-                origins.Add(e, pl);
-            }
+                first = true;
+                firstPoint = true;
 
-            transformOrigin.X = origin.X;
-            transformOrigin.Y = origin.Y;
+                // Move o desenho para a posição ideal de corte
+                mt.TransformPoints(polyline);
 
-            if (scans != null)
-            {
-                originalScans = new PointF[scans.Length];
-                Array.Copy(scans, originalScans, scans.Length);
-            }
-        }
-
-        public void CancelTransform()
-        {
-            if (origins.Count > 0)
-            {
-                foreach (VectorEdge e in edges)
+                foreach (PointF p in polyline)
                 {
-                    e.SetPoints(origins[e]);
-                }
-
-                origins.Clear();
-            }
-
-            angle = oldAngle;
-
-            scans = originalScans;
-            originalScans = null;
-
-            poligons = null;
-
-            AfterTransforms();
-        }
-
-        void Transform(Matrix mt, PointF origin)
-        {
-            foreach (VectorEdge e in edges)
-            {
-                List<PointF> tl = new List<PointF>();
-                List<PointF> o = origins[e];
-
-                foreach (PointF pt in o)
-                {
-                    PointF[] pa = o.ToArray();
-
-                    for (int i = 0; i < pa.Length; i++)
+                    if (first)
                     {
-                        pa[i].X -= origin.X;
-                        pa[i].Y -= origin.Y;
+                        first = false;
+                        hp = GetHPGLPoint(p);
+                        sb.Append(string.Format("PU{0},{1};", hp.X, hp.Y));
+
+                        sb.Append("PD");
+                        continue;
                     }
 
-                    mt.TransformPoints(pa);
-
-                    for (int i = 0; i < pa.Length; i++)
+                    if (!firstPoint)
                     {
-                        pa[i].X += origin.X;
-                        pa[i].Y += origin.Y;
-
-                        tl.Add(pa[i]);
+                        sb.Append(',');
                     }
-                }
 
-                e.SetPoints(tl);
-            }
+                    firstPoint = false;
 
-            poligons = null;
-            AfterTransforms();
-        }
-        
-        void AfterTransforms()
-        {
-            GetBoundRect(true);
-            ComputeArea(true);
-        }
-
-        public void SetOrigin(PointF origin)
-        {
-            RectangleF bb = GetBoundRect();
-            PointF center = VectorMath.GetBoxCenter(bb);
-
-            BeginTransform(origin);
-            Move(origin.X - center.X, origin.Y - center.Y);
-
-            AfterTransforms();
-        }
-
-        public void Flip(bool vertical, bool horizontal)
-        {
-            RectangleF r = GetBoundRect();
-            PointF center = new PointF(r.X + r.Width / 2, r.Y + r.Height / 2);
-
-            BeginTransform(center);
-
-            foreach (VectorEdge e in edges)
-            {
-                List<PointF> tl = new List<PointF>();
-
-                foreach (PointF pt in origins[e])
-                {
-                    float x=pt.X, y=pt.Y;
-
-                    if (horizontal)
-                        x = -(pt.X - transformOrigin.X) + transformOrigin.X;
-
-                    if (vertical)
-                        y = -(pt.Y - transformOrigin.Y) + transformOrigin.Y;
-
-                    tl.Add(new PointF(x, y));
-                }
-
-                e.SetPoints(tl);
-            }
-
-            poligons = null;
-            AfterTransforms();
-        }
-
-        public void Flip()
-        {
-            Flip(true, true);
-        }
-
-        public void VerticalFlip()
-        {
-            Flip(true, false);
-        }
-
-        public void HorizontalFlip()
-        {
-            Flip(false, true);
-        }
-
-        float angle = 0;
-
-        public void Rotate(float a, PointF origin)
-        {
-            Matrix mt = new Matrix();
-            mt.Rotate(a);
-
-            angle = oldAngle + a;
-
-            Transform(mt, origin);
-
-            if (document.AutoCheckConstraints)
-                Check();
-        }
-
-        float scalex = 1;
-        float scaley = 1;
-        public void Scale(float scalex, float scaley, PointF origin)
-        {
-            Matrix mt = new Matrix();
-            mt.Scale(scalex, scaley);
-
-            Transform(mt, origin);
-            this.scalex = scalex;
-            this.scaley = scaley;
-
-            if (originalScans != null && scans != null)
-            {
-                Array.Copy(originalScans, scans, scans.Length);
-                mt.TransformPoints(scans);
-            }
-
-            if (document.AutoCheckConstraints)
-                Check();
-
-            ComputeArea(true);
-        }
-
-        void Check()
-        {
-            //if (!document.AutoCheckConstraints)
-            //    return;
-
-            invalidConstraints = false;
-
-            RectangleF r = GetBoundRect();
-
-            if (r.X < 0 || r.Y < 0)
-                invalidConstraints = true;
-
-            if (r.Bottom > document.CutSize)
-                invalidConstraints = true;
-
-            if (!invalidConstraints)
-            {
-                List<VectorPath> intersections = new List<VectorPath>();
-                if (GetDocIntersections(intersections))
-                {
-                    invalidConstraints = true;
+                    hp = GetHPGLPoint(p);
+                    sb.Append(string.Format("{0},{1}", hp.X, hp.Y));
                 }
             }
+
+            return sb.ToString();
         }
 
-        public void Move(float dx, float dy)
+        public void GenerateCommands(PlotterDriver driver, bool invertXY, bool flip, float flipCenter)
         {
-            foreach (VectorEdge e in edges)
+            List<PointF[]> polyList = GetTransfomedPolygons();
+
+            if (invertXY || flip)
             {
-                List<PointF> tl = new List<PointF>();
-
-                foreach (PointF pt in origins[e])
-                    tl.Add(new PointF(pt.X + dx, pt.Y + dy));
-
-                e.SetPoints(tl);
-            }
-
-            if (document.AutoCheckConstraints)
-                Check();
-
-            poligons = null;
-            AfterTransforms();
-
-            PointF center = VectorMath.GetBoxCenter(boundBox);
-            centerX = center.X;
-            centerY = center.Y;
-        }
-        
-        RectangleF GetPolygonBox(List<PointF[]> polygons)
-        {
-            RectangleF r = new RectangleF();
-
-            float minx = float.MaxValue;
-            float miny = float.MaxValue;
-            float maxx = float.MinValue;
-            float maxy = float.MinValue;
-
-            foreach (PointF[] pts in poligons)
-            {
-                for (int i = 0; i < pts.Length; i++)
+                foreach (PointF[] pts in polyList)
                 {
-                    minx = Math.Min(minx, pts[i].X);
-                    miny = Math.Min(miny, pts[i].Y);
-                    maxx = Math.Max(maxx, pts[i].X);
-                    maxy = Math.Max(maxy, pts[i].Y);
-                }                
-            }
+                    for (int i = 0; i < pts.Length; i++)
+                    {
+                        if (flip)
+                        {
+                            pts[i].Y = flipCenter + (flipCenter - pts[i].Y);
+                        }
 
-            r.X = minx;
-            r.Y = miny;
-            r.Width = maxx - minx;
-            r.Height = maxy - miny;
-
-            return r;
-        }
-
-        public void GenerateCommands(PlotterDriver driver)
-        {
-            List<PointF[]> polyList = BuildPolygons();
-            poligons = null;
-
-            foreach (PointF[] pts in polyList)
-            {
-                for (int i = 0; i < pts.Length; i++)
-                {
-                    float tmp = pts[i].X;
-                    pts[i].X = pts[i].Y;
-                    pts[i].Y = tmp;
+                        if (invertXY)
+                        {
+                            float tmp = pts[i].X;
+                            pts[i].X = pts[i].Y;
+                            pts[i].Y = tmp;
+                        }
+                    }
                 }
             }
 
             driver.AddPolygon(polyList);
+        }
+
+        public void Render(Graphics g)
+        {
+            g.ResetTransform();
+
+            if (segments.Count > 0 && polygons.Count == 0)
+                BuildPolygons();
+
+            g.TranslateTransform(document.OffsetX, document.OffsetY);
+
+            float s;
+
+            s = document.Scale;
+
+            if (s < 0.04f)
+                s = 0.04f;
+
+            g.ScaleTransform(s, s);
+            g.TranslateTransform(posx, posy);
+            g.RotateTransform(angle);
+
+            RenderPolygons(g);
+
+            if (document.Debbuging)
+            {
+                Pen p = new Pen(Color.LightGreen);
+                p.Width = 0.01f;
+                p.DashStyle = DashStyle.DashDotDot;
+
+                if (DrawBoundBox)
+                    g.DrawRectangle(p, boundRect.X, boundRect.Y, boundRect.Width, boundRect.Height);
+
+                if (drawCenterPoint)
+                    document.DrawCircle(g, new PointF(0, 0), 3, Color.DarkGreen);
+
+                if (drawCurGrid && curGrid != null)
+                {
+                    p.Color = Color.OrangeRed;
+                    p.DashStyle = DashStyle.Solid;
+                    g.DrawRectangle(p, curGrid.Box.X, curGrid.Box.Y, curGrid.Box.Width, curGrid.Box.Height);
+
+                    foreach (GridLine gl in curGrid.Lines)
+                    {
+                        Pen pl = new Pen(Color.DarkOliveGreen);
+                        pl.Width = 1;
+
+                        g.DrawLine(pl, gl.Start, gl.End);
+                    }
+                }
+
+                if (drawNormalizedPath)
+                {
+                    g.ResetTransform();
+                    RenderPolygons(g);
+                }
+
+                if (drawTestPoint)
+                {
+                    g.ResetTransform();
+                    document.DrawCircle(g, testPoint, 3, Color.OrangeRed);
+                }
+            }
         }
     }
 }

@@ -80,6 +80,7 @@
             this.toolPrincipal.Size = new System.Drawing.Size(935, 25);
             this.toolPrincipal.TabIndex = 11;
             this.toolPrincipal.Text = "toolStrip1";
+            this.toolPrincipal.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolPrincipal_ItemClicked);
             // 
             // btnSalvar
             // 
@@ -344,25 +345,18 @@
             // 
             // vectorView
             // 
-            this.vectorView.AllowMoveDocument = true;
-            this.vectorView.AllowRotatePath = true;
-            this.vectorView.AllowScalePath = true;
             this.vectorView.AllowTransforms = true;
             this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.vectorView.BackColor = System.Drawing.Color.White;
             this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vectorView.Document = null;
-            this.vectorView.DrawSelecionBox = true;
             this.vectorView.ForeColor = System.Drawing.Color.Black;
             this.vectorView.GridColor = System.Drawing.Color.Green;
             this.vectorView.GridSize = 60;
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
-            this.vectorView.SelctionMargin = 6F;
             this.vectorView.ShowGrid = false;
-            this.vectorView.ShowPointer = false;
             this.vectorView.Size = new System.Drawing.Size(750, 445);
             this.vectorView.TabIndex = 7;
             this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);

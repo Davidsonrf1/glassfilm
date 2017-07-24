@@ -32,12 +32,10 @@ namespace GlassFilm
             sel.CbModelos = cbModelo;
             sel.CbVeiculos = cbAno;
 
-            vvCorte.Document = new VectorDocument();
-            vvCorte.Document.Width = 600;
-            vvCorte.Document.Height = 1520;
-            vvCorte.AllowScalePath = false;
+            vvCorte.Document.DocWidth = 600;
+            vvCorte.Document.DocHeight = 1520;
+
             vvCorte.AllowMoveDocument = true;
-            vvCorte.ShowCutBox = true;
 
             AtualizaFilmes();
 
@@ -138,19 +136,16 @@ namespace GlassFilm
             {
                 ModeloAno m = (ModeloAno)cbAno.SelectedItem;
 
-                vvModelo.Document = null;
+                vvModelo.Document.Clear();
 
                 string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano));
                 if (svg != null)
                 {
-                    vvModelo.Document = new VectorView.VectorDocument();
-
                     vvModelo.AllowTransforms = false;
 
                     vvModelo.Document.LoadSVG(svg);
 
                     vvModelo.AutoFit(VectorFitStyle.Both, true, true);
-                    vvModelo.Document.AutoCheckConstraints = false;
                 }
             }
         }
@@ -184,6 +179,9 @@ namespace GlassFilm
 
         private void button4_Click(object sender, EventArgs e)
         {
+            bool invertXY = false;
+            bool flip = false;
+
             if (vvModelo.Document == null)
             {
                 MessageBox.Show("Nenhum desenho selecionado.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
@@ -222,7 +220,7 @@ namespace GlassFilm
 
                 try
                 {
-                    cmds = vvCorte.Document.GeneratePlotterCommands(GetPlotterCmdDriver());
+                    cmds = vvCorte.Document.GeneratePlotterCommands(GetPlotterCmdDriver(), invertXY, flip);
                 }
                 catch (Exception ex)
                 {
@@ -315,7 +313,7 @@ namespace GlassFilm
 
             foreach (VectorPath p in vvModelo.Document.Paths)
             {
-                p.ImportCount = vvCorte.Document.CountSoruce(p);
+                p.ImportCount = vvCorte.Document.CountSource(p);
             }
 
             vvModelo.Refresh();
@@ -329,12 +327,16 @@ namespace GlassFilm
             vvCorte.ShowGrid = true;
             vvCorte.Width = (int)(vvModelo.Width * 0.75f);
 
+            vvCorte.Document.ShowDocBorder = false;
+            vvCorte.Document.ShowDocInfo = false;
+
             if (vvCorte.Document != null)
             {
                 float w = vvCorte.Document.ViewPointToDocPoint(new PointF(vvCorte.Width, 0)).X;
-                vvCorte.Document.Width = w;
+                vvCorte.Document.DocWidth = w;
 
-                vvCorte.Document.ShowDocBorder = false;
+                vvCorte.Document.ShowDocBorder = true;
+                vvCorte.Document.ShowDocInfo = true;
             }
 
             vvCorte.Left = vvModelo.Left + (vvModelo.Width - vvCorte.Width) / 2;
@@ -351,15 +353,13 @@ namespace GlassFilm
             {
                 if (filmeAtual != null)
                 {
-                    vvCorte.Document.CutSize = filmeAtual.Largura;
+                   
                 }
             }
 
-            vvCorte.Document.AutoFit(vvCorte.ClientRectangle, VectorFitStyle.Both, false, VectorFitRegion.CutBox, 80);
+            vvCorte.Document.AutoFit(vvCorte.ClientRectangle, VectorFitStyle.Both, false, VectorFitRegion.Document, 80);
             vvCorte.Document.OffsetX = 20;
             vvCorte.Document.OffsetY = 20;
-
-            vvCorte.Document.AutoCheckConstraints = true;
 
             vvCorte.BringToFront();
             vvCorte.Refresh();
@@ -374,7 +374,7 @@ namespace GlassFilm
             vvCorte.ImportSelection(vvModelo);
 
             if (vvCorte.Document.Paths.Count == 1)
-                vvCorte.AutoFit(VectorFitRegion.CutBox);
+                vvCorte.AutoFit();
 
             vvCorte.Refresh();
 
@@ -431,11 +431,11 @@ namespace GlassFilm
                 docInfo.Text = "";
                 selInfo.Text = "";
 
-                docInfo.Text = string.Format("Tamanho do Desenho (mm): {3} por {4}", d.Paths.Count, d.OffsetX, d.OffsetY, d.Width, d.Height);
-                RectangleF r = d.GetBoundRect(true);
+                docInfo.Text = string.Format("Tamanho do Desenho (mm): {3} por {4}", d.Paths.Count, d.OffsetX, d.OffsetY, d.DocWidth, d.DocHeight);
+                RectangleF r = d.GetBoundRect();
 
                 float area = 0;
-                foreach (VectorPath p in vvCorte.Selection())
+                foreach (VectorPath p in vvCorte.Document.Selection)
                 {
                     area = p.Area;
                 }
@@ -458,7 +458,7 @@ namespace GlassFilm
 
         private void button3_Click(object sender, EventArgs e)
         {
-            vvCorte.Document.AutoNest();
+            
         }
 
         void AtualizaFilmes()
@@ -538,15 +538,15 @@ namespace GlassFilm
 
         private void vvCorte_Resize(object sender, EventArgs e)
         {
-            vvCorte.AutoFit(VectorFitRegion.CutBox);
+            vvCorte.AutoFit();
         }
 
         void UpdateLBTamanho()
         {
             VectorDocument doc = vvCorte.Document;
 
-            if (doc.CutBox.Width > 0)
-                lbTamanho.Text = string.Format("{0:0.00} X {1:0.00}", doc.CutBox.Height, doc.CutBox.Width);
+            if (doc.DocWidth > 0)
+                lbTamanho.Text = string.Format("{0:0.00} X {1:0.00}", doc.DocHeight, doc.DocWidth);
             else
                 lbTamanho.Text = "";
         }
@@ -558,7 +558,6 @@ namespace GlassFilm
             if (vvCorte.Document != null)
             {
                 VectorDocument doc = vvCorte.Document;
-                doc.UpdateCutBox();
             }
 
             UpdateLBTamanho();
@@ -571,7 +570,6 @@ namespace GlassFilm
             if (vvCorte.Document != null)
             {
                 VectorDocument doc = vvCorte.Document;
-                doc.UpdateCutBox();
             }
 
             UpdateLBTamanho();
@@ -583,7 +581,6 @@ namespace GlassFilm
             {
                 Filme filme = (Filme)cbFilme.SelectedItem;
 
-                vvCorte.Document.CutSize = filme.Largura;
                 Program.Config["FilmePadrao"] = filme.Id.ToString();
 
                 filmeAtual = filme;
@@ -620,7 +617,7 @@ namespace GlassFilm
         {
             if (vvCorte.Document != null)
             {
-                vvCorte.Document.AutoFit(vvCorte.ClientRectangle, VectorFitStyle.Both, false, VectorFitRegion.CutBox, 80);
+                vvCorte.Document.AutoFit(vvCorte.ClientRectangle, VectorFitStyle.Both, false, VectorFitRegion.Document, 80);
                 vvCorte.Document.OffsetX = 20;
                 vvCorte.Document.OffsetY = 20;
                 vvCorte.Refresh();

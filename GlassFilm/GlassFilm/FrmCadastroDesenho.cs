@@ -46,8 +46,6 @@ namespace GlassFilm
                 return;
             }
 
-            vectorView.Document = new VectorView.VectorDocument();
-
             vectorView.AllowTransforms = false;
             vectorView.AllowMoveDocument = false;
             vectorView.AllowTransforms = false;
@@ -62,7 +60,7 @@ namespace GlassFilm
                 vectorView.Document.LoadSVGFromFile(opf.FileName);
                 vectorView.Document.Normalize();
 
-                vectorView.AutoFit();               
+                vectorView.AutoFit();
 
                 EnableControls(false);
             }
@@ -184,7 +182,7 @@ namespace GlassFilm
 
         private void cbMarca_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vectorView.Document = null;
+            vectorView.Document.Clear();
         }
 
         void MontarListaAnos()
@@ -203,7 +201,7 @@ namespace GlassFilm
 
         private void cbModelo_SelectedIndexChanged(object sender, EventArgs e)
         {
-            vectorView.Document = null;
+            vectorView.Document.Clear();
             MontarListaAnos();
         }
 
@@ -237,11 +235,11 @@ namespace GlassFilm
                 docInfo.Text = "";
                 selInfo.Text = "";
                 
-                docInfo.Text = string.Format("Tamanho do Desenho (mm): {3} por {4}", d.Paths.Count, d.OffsetX, d.OffsetY, d.Width, d.Height);
-                RectangleF r = d.GetBoundRect(true);
+                docInfo.Text = string.Format("Tamanho do Desenho (mm): {3} por {4}", d.Paths.Count, d.OffsetX, d.OffsetY, d.DocWidth, d.DocHeight);
+                RectangleF r = d.GetBoundRect();
 
                 float area = 0;
-                foreach (VectorPath p in vectorView.Selection())
+                foreach (VectorPath p in vectorView.Document.Selection)
                 {
                     area = p.Area;
                 }
@@ -263,13 +261,13 @@ namespace GlassFilm
             rbDireita.Checked = false;
             tbEtiqueta.Text = "";
 
-            if (vectorView.SelecionCount == 1)
+            if (vectorView.Document.SelectionCount == 1)
             {
                 rbEsquerda.Enabled = true;
                 rbDireita.Enabled = true;
                 tbEtiqueta.Enabled = true;
 
-                foreach (VectorPath v in vectorView.Selection())
+                foreach (VectorPath v in vectorView.Document.Selection)
                 {
                     curPath = v;
                 }
@@ -353,6 +351,11 @@ namespace GlassFilm
             }
 
             vectorView.Refresh();
+        }
+
+        private void toolPrincipal_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
+        {
+
         }
     }
 }

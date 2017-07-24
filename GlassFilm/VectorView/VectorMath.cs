@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Drawing;
 using System.Drawing.Drawing2D;
 using System.Windows;
@@ -72,6 +73,130 @@ namespace VectorView
             return PointDistance(px, py, x2, y2) + PointDistance(px, py, x1, y1) - PointDistance(x1, y1, x2, y2);
         }
 
+        public static bool LineInsideRect(RectangleF rect, float x1, float y1, float x2, float y2)
+        {
+            if (PointInsideBox(x1, y1, rect) || PointInsideBox(x1, y1, rect))
+                return true;
+
+            if (HorizontalLineCross(rect.Top, x1, y1, x2, y2))
+                return true;
+
+            if (HorizontalLineCross(rect.Bottom, x1, y1, x2, y2))
+                return true;
+
+            if (VerticalLineCross(rect.Left, x1, y1, x2, y2))
+                return true;
+
+            if (VerticalLineCross(rect.Right, x1, y1, x2, y2))
+                return true;
+
+            return false;
+        }
+
+        public static bool HorizontalLineCross(float hline, float x1, float y1, float x2, float y2, out PointF pt)
+        {
+            float mx1, my1, mx2, my2;
+
+            mx1 = Math.Min(x1, x2);
+            my1 = Math.Min(y1, y2);
+            mx2 = Math.Max(x1, x2);
+            my2 = Math.Max(y1, y2);
+
+            pt = new PointF();
+
+            if (hline >= my1 && hline <= my2)
+            {
+                float pos = hline - my1;
+                float ratio = pos / (my2 - my1);
+
+                PointF p = InterpolateLine(mx1, my1, mx2, my2, ratio);
+
+                if (p.X >= mx1 && p.X <= mx2)
+                {
+                    pt.X = p.X;
+                    pt.Y = p.Y;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool HorizontalLineCross(float hline, float x1, float y1, float x2, float y2)
+        {
+            float mx1, my1, mx2, my2;
+
+            mx1 = Math.Min(x1, x2);
+            my1 = Math.Min(y1, y2);
+            mx2 = Math.Max(x1, x2);
+            my2 = Math.Max(y1, y2);
+
+            if (hline >= my1 && hline <= my2)
+            {
+                float pos = hline - my1;
+                float ratio = pos / (my2 - my1);
+
+                PointF p = InterpolateLine(mx1, my1, mx2, my2, ratio);
+
+                if (p.X >= mx1 && p.X <= mx2)
+                    return true;
+            }
+
+            return false;
+        }
+
+        public static bool VerticalLineCross(float vline, float x1, float y1, float x2, float y2, out PointF pt)
+        {
+            float mx1, my1, mx2, my2;
+
+            mx1 = Math.Min(x1, x2);
+            my1 = Math.Min(y1, y2);
+            mx2 = Math.Max(x1, x2);
+            my2 = Math.Max(y1, y2);
+
+            pt = new PointF();
+
+            if (vline >= mx1 && vline <= mx2)
+            {
+                float pos = vline - mx1;
+                float ratio = pos / (mx2 - mx1);
+
+                PointF p = InterpolateLine(mx1, my1, mx2, my2, ratio);
+
+                if (p.X >= mx1 && p.X <= mx2)
+                {
+                    pt.X = p.X;
+                    pt.Y = p.Y;
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        public static bool VerticalLineCross(float vline, float x1, float y1, float x2, float y2)
+        {
+            float mx1, my1, mx2, my2;
+
+            mx1 = Math.Min(x1, x2);
+            my1 = Math.Min(y1, y2);
+            mx2 = Math.Max(x1, x2);
+            my2 = Math.Max(y1, y2);
+
+            if (vline >= mx1 && vline <= mx2)
+            {
+                float pos = vline - mx1;
+                float ratio = pos / (mx2 - mx1);
+
+                PointF p = InterpolateLine(mx1, my1, mx2, my2, ratio);
+
+                if (p.X >= mx1 && p.X <= mx2)
+                    return true;
+            }
+
+            return false;
+        }
+
         public static bool CrossPoint(float hline, PointF a, PointF b, out float x, out float y)
         {
             y = hline;
@@ -96,12 +221,41 @@ namespace VectorView
             return r.Width * r.Height;
         }
 
+        public static bool PointInsideBox(float x, float y, RectangleF r)
+        {
+            if ((x >= r.X && x <= r.Right) && (y >= r.Y && y <= r.Bottom))
+                return true;
+
+            return false;
+        }
+
         public static bool PointInsideBox(PointF pt, RectangleF r)
         {
             if ((pt.X >= r.X && pt.X <= r.Right) && (pt.Y >= r.Y && pt.Y <= r.Bottom))
                 return true;
 
             return false;
+        }
+
+        public static RectangleF GetBoundBox(List<PointF[]> polygons)
+        {
+            float minx = float.MaxValue;
+            float miny = float.MaxValue;
+            float maxx = float.MinValue;
+            float maxy = float.MinValue;
+
+            foreach (PointF[] pts in polygons)
+            {
+                for (int i = 0; i < pts.Length; i++)
+                {
+                    minx = Math.Min(minx, pts[i].X);
+                    miny = Math.Min(miny, pts[i].Y);
+                    maxx = Math.Max(maxx, pts[i].X);
+                    maxy = Math.Max(maxy, pts[i].Y);
+                }
+            }
+
+            return new RectangleF(minx, miny, maxx - minx, maxy - miny);
         }
 
         public static bool RectIntersection(RectangleF r1, RectangleF r2, out RectangleF result)

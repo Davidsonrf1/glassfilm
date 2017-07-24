@@ -444,22 +444,19 @@
             // vvModelo
             // 
             this.vvModelo.AllowMoveDocument = false;
-            this.vvModelo.AllowRotatePath = false;
-            this.vvModelo.AllowScalePath = false;
+
             this.vvModelo.AllowTransforms = false;
             this.vvModelo.BackColor = System.Drawing.Color.White;
             this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvModelo.Document = null;
-            this.vvModelo.DrawSelecionBox = true;
+
             this.vvModelo.GridColor = System.Drawing.Color.Black;
             this.vvModelo.GridSize = 10;
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
-            this.vvModelo.SelctionMargin = 3F;
-            this.vvModelo.ShowCutBox = false;
+
             this.vvModelo.ShowGrid = false;
-            this.vvModelo.ShowPointer = false;
+
             this.vvModelo.Size = new System.Drawing.Size(1329, 189);
             this.vvModelo.TabIndex = 19;
             this.vvModelo.Visible = false;
@@ -593,22 +590,19 @@
             // vvCorte
             // 
             this.vvCorte.AllowMoveDocument = true;
-            this.vvCorte.AllowRotatePath = true;
-            this.vvCorte.AllowScalePath = true;
+
             this.vvCorte.AllowTransforms = true;
             this.vvCorte.BackColor = System.Drawing.Color.White;
             this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
             this.vvCorte.Dock = System.Windows.Forms.DockStyle.Left;
-            this.vvCorte.Document = null;
-            this.vvCorte.DrawSelecionBox = true;
+
             this.vvCorte.GridColor = System.Drawing.Color.Black;
             this.vvCorte.GridSize = 10;
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
-            this.vvCorte.SelctionMargin = 6F;
-            this.vvCorte.ShowCutBox = false;
+
             this.vvCorte.ShowGrid = false;
-            this.vvCorte.ShowPointer = false;
+
             this.vvCorte.Size = new System.Drawing.Size(1302, 152);
             this.vvCorte.TabIndex = 1;
             this.vvCorte.Visible = false;

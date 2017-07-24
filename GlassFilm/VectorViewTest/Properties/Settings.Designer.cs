@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace VectorViewTeste.Properties
+namespace VectorViewTest.Properties
 {
 
 
