@@ -8,7 +8,7 @@
 
 extern "C" {
 
-	CUT_EXPORT unsigned int CUT_API CreateSheet(int size);
+	CUT_EXPORT unsigned int CUT_API CreateSheet(int size); 
 	CUT_EXPORT unsigned int CUT_API CreateShape(unsigned int sheet, unsigned int id);
 	CUT_EXPORT void CUT_API ResetSheet(unsigned int sheet, int size);
 	CUT_EXPORT void CUT_API AddAngle(unsigned int sheet, unsigned int shape, int angle, int width, int height, void* data);
