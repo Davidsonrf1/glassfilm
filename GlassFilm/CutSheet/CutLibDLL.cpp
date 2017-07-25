@@ -185,4 +185,13 @@ extern "C" {
 		}
 	}
 
+	CUT_EXPORT void CUT_API BuildScansFromPolygon(unsigned int sheet, unsigned int shapeId, float width, float height, float* poly, int pointCount)
+	{
+		if (sheet < sheetCount)
+		{
+			CutShape* shape = sheets[sheet]->GetShape(shapeId);
+			shape->BuildScansFromPolygon(width, height, poly, pointCount);
+		}
+	}
+
 }

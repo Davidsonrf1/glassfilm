@@ -2,6 +2,7 @@
 
 #include "CutSegment.h"
 #include "CutSegmentList.h"
+#include "LineList.h"
 
 #define MAX_CUT_LINES 32766
 
@@ -40,6 +41,7 @@ public:
 
 	void Clear();
 	void ScanImageData(int width, int height, void* data);
+	void ScanLineMap(float w, float h, LineList *list);
 	void AddSegment(int line, int start, int end);
 	void Normalize(int width, int height);
 
@@ -58,6 +60,8 @@ public:
 	int GetMiddleMin();
 	int GetMiddleMax();
 	int GetMiddleLen();
+
+
 
 	CutSegmentList** GetSegments();
 };

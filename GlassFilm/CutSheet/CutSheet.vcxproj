@@ -28,7 +28,7 @@
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
     <ConfigurationType>DynamicLibrary</ConfigurationType>
     <UseDebugLibraries>true</UseDebugLibraries>
-    <PlatformToolset>v120</PlatformToolset>
+    <PlatformToolset>v140</PlatformToolset>
     <CharacterSet>Unicode</CharacterSet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
@@ -152,6 +152,7 @@
     <ClInclude Include="CutSegmentList.h" />
     <ClInclude Include="CutSheet.h" />
     <ClInclude Include="CutShape.h" />
+    <ClInclude Include="LineList.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CutLibDLL.cpp" />
@@ -160,6 +161,7 @@
     <ClCompile Include="CutSegmentList.cpp" />
     <ClCompile Include="CutShape.cpp" />
     <ClCompile Include="CutSheet.cpp" />
+    <ClCompile Include="LineList.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

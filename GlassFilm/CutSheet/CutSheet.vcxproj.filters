@@ -33,6 +33,9 @@
     <ClInclude Include="CutLibDLL.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="LineList.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="CutSegment.cpp">
@@ -51,6 +54,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="CutLibDLL.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="LineList.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

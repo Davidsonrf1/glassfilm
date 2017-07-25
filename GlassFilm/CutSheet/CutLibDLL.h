@@ -17,5 +17,6 @@ extern "C" {
 	CUT_EXPORT void CUT_API SortAngles(unsigned int sheet, unsigned int shape);
 	CUT_EXPORT int CUT_API GetSegmentCount(unsigned int sheet, unsigned int shapeId, int angle);
 	CUT_EXPORT void CUT_API GetScanData(unsigned int sheet, unsigned int shapeId, int angle, ScanData* scanData, int count);
+	CUT_EXPORT void CUT_API BuildScansFromPolygon(unsigned int sheet, unsigned int shapeId, float width, float height, float* poly, int pointCount);
 }
 

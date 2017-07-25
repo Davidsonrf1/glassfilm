@@ -44,7 +44,9 @@ namespace VectorViewTest
             vv.ShowGrid = true;
 
             sheet = CutLibWrapper.CreateSheet(600);
-            shape = CutLibWrapper.CreateShape(sheet, 1); 
+            shape = CutLibWrapper.CreateShape(sheet, 1);
+
+            time = Environment.TickCount;
 
             foreach (VectorPath p in vv.Document.DocPaths())
             {
@@ -60,12 +62,13 @@ namespace VectorViewTest
 
                 //cs.GenerateFromPath(p);
 
-                break;
+                //break;
             }
 
-            string svg = path.ToSVGPath(vv.Document.Ppmx, vv.Document.Ppmy);
-            File.WriteAllText("D:\\modPath.svg", svg);
-            
+            time = Environment.TickCount - time;
+
+            MessageBox.Show(time.ToString());
+
             res.x = 123;
             res.y = 321;
 

@@ -307,6 +307,18 @@ CutSegmentList** CutScan::GetSegments()
 	return segments;
 }
 
+void CutScan::ScanLineMap(float w, float h, LineList *list)
+{
+	Clear();
+
+	this->width = width;
+	this->verticalCenter = (int)width / 2;
+
+
+
+	Normalize(w, h);
+}
+
 void CutScan::ScanImageData(int width, int height, void* data)
 {
 	Clear();

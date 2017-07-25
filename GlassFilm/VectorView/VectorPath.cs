@@ -567,6 +567,42 @@ namespace VectorView
         public uint GenerateCutShape(uint sheet)
         {
             float diagonal = ((float)Math.Sqrt((BoundRect.Width * BoundRect.Width) + (BoundRect.Height * BoundRect.Height))) + 1;
+            float w = diagonal / 2;
+
+            uint shape = CutLibWrapper.CreateShape(sheet, (uint)id);
+
+            if (polygons == null)
+                BuildPolygons();
+
+            List<float> polyList = new List<float>();
+
+            int count = 0;
+
+            foreach (PointF[] pts in polygons)
+            {
+                count += pts.Length;
+
+                foreach (PointF p in pts)
+                {
+                    polyList.Add(p.X);
+                    polyList.Add(p.Y);
+                }
+            }
+
+            IntPtr poly = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * count * 2);
+            Marshal.Copy(polyList.ToArray(), 0, poly, polyList.Count);
+
+            CutLibWrapper.BuildScansFromPolygon(sheet, shape, diagonal, diagonal, poly, count);
+
+            Marshal.FreeHGlobal(poly);
+
+            return shape;
+        }
+
+        /*
+        public uint GenerateCutShape(uint sheet)
+        {
+            float diagonal = ((float)Math.Sqrt((BoundRect.Width * BoundRect.Width) + (BoundRect.Height * BoundRect.Height))) + 1;
 
             Bitmap buffer = new Bitmap(((int)diagonal), ((int)diagonal), PixelFormat.Format32bppArgb);
             Graphics g = Graphics.FromImage(buffer);
@@ -612,6 +648,7 @@ namespace VectorView
 
             return shape;
         }
+        */
 
         public void Normalize()
         {
@@ -1234,79 +1271,6 @@ namespace VectorView
             lastSegment = seg;
         }
 
-        public string BuildScanData()
-        {
-            StringBuilder sb = new StringBuilder();
-            uint sheet = CutLibWrapper.CreateSheet(600);
-
-            int time = Environment.TickCount;
-            uint shape = GenerateCutShape(sheet);
-
-            int time1 = Environment.TickCount - time;
-
-            for (int i = 0; i < 360; i++)
-            {
-                int count = CutLibWrapper.GetSegmentCount(sheet, shape, i);
-
-                CutLibWrapper.ScanData scanData = new CutLibWrapper.ScanData();
-
-                int segLen = Marshal.SizeOf(typeof(CutLibWrapper.SegmentData)) * count;
-
-                scanData.segmentCount = 0;
-                scanData.angle = i;
-                scanData.segments = Marshal.AllocHGlobal(segLen);
-
-                IntPtr scanDataBuffer = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(CutLibWrapper.ScanData)));
-                Marshal.StructureToPtr(scanData, scanDataBuffer, false);
-                CutLibWrapper.GetScanData(sheet, shape, i, scanDataBuffer, count);
-                scanData = (CutLibWrapper.ScanData)Marshal.PtrToStructure(scanDataBuffer, typeof(CutLibWrapper.ScanData));
-                Marshal.FreeHGlobal(scanDataBuffer);
-
-                byte[] data = new byte[segLen];
-
-                Marshal.Copy(scanData.segments, data, 0, segLen);
-                Marshal.FreeHGlobal(scanData.segments);
-
-                string dataString = Convert.ToBase64String(data);
-                sb.Append(string.Format("\t<scan angle=\"{0}\">{1}</scan>\n", scanData.angle, dataString));
-
-                //byte[] data2 = Convert.FromBase64String(dataString);
-
-                /*
-                unsafe
-                {
-                    byte* p = (byte*)scanData.segments.ToPointer();
-
-                    //Convert.ToBase64String()
-
-                    sb.Append(string.Format("\t<scan angle=\"{0}\" d=\"", scanData.angle));
-
-                    for (int k = 0; k < scanData.segmentCount; k++, p++)
-                    {
-                        if (k > 0)
-                            sb.Append(',');
-
-                        sb.Append(string.Format("{0},{1},{2}", p->line, p->start, p->end));
-                    }
-
-                    sb.Append("\" />\n");
-                }
-                */
-
-            }
-
-            time = Environment.TickCount - time;
-            
-            return sb.ToString();
-        }
-
-        public void WriteScanData(StringBuilder sb)
-        {
-            string data = BuildScanData();
-
-            sb.Append(data);
-        }
-
         public string ToSVGPath(float ppmx, float ppmy)
         {
             StringBuilder sb = new StringBuilder();
@@ -1321,12 +1285,7 @@ namespace VectorView
                 WriteSvgSegment(sb, e, ppmx, ppmy);
             }
 
-            sb.Append("\" \n\t>");
-            
-            WriteScanData(sb);
-
-            sb.Append("</path>");
-
+            sb.Append("\" />\n\t");
             return sb.ToString();
         }
 
