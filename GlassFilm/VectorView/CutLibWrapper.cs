@@ -66,9 +66,6 @@ namespace VectorView
         public extern static int GetSegmentCount(uint sheet, uint shapeId, int angle);
 
         [DllImport("CutSheet.dll")]
-        public extern static void GetScanData(uint sheet, uint shapeId, int angle, IntPtr scanData, int count);
-
-        [DllImport("CutSheet.dll")]
         public extern static void BuildScansFromPolygon(uint sheet, uint shapeId, float width, float height, IntPtr poly, int pointCount);
     }
 }

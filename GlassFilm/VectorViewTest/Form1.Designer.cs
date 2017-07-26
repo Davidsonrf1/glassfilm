@@ -36,10 +36,9 @@
             this.vv.AllowMoveDocument = false;
             this.vv.AllowTransforms = false;
             this.vv.BackColor = System.Drawing.SystemColors.ButtonHighlight;
-            this.vv.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vv.GridColor = System.Drawing.Color.DarkGray;
             this.vv.GridSize = 8;
-            this.vv.Location = new System.Drawing.Point(0, 0);
+            this.vv.Location = new System.Drawing.Point(422, 189);
             this.vv.Name = "vv";
             this.vv.ShowGrid = false;
             this.vv.Size = new System.Drawing.Size(535, 288);

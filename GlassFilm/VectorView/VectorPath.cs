@@ -447,7 +447,7 @@ namespace VectorView
                 PointF[] segPoints = new PointF[s.Points.Length - 1];
                 Array.Copy(s.Points, 1, segPoints, 0, segPoints.Length);
 
-                pts.AddRange(s.Points);
+                pts.AddRange(segPoints);
             }
 
             polygons.Add(pts.ToArray());

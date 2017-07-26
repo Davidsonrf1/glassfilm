@@ -41,7 +41,7 @@ public:
 
 	void Clear();
 	void ScanImageData(int width, int height, void* data);
-	void ScanLineMap(float w, float h, LineList *list);
+	void ScanLineMap(float w, float h, LineList *list, int mapSize);
 	void AddSegment(int line, int start, int end);
 	void Normalize(int width, int height);
 
@@ -53,7 +53,6 @@ public:
 	int GetWidth();
 	int GetLineCount();
 	int GetSegmentCount();
-	void GetScanData(ScanData* data, int count);
 	int GetAngle() { return angle; }
 	int* GetFirstPos() { return startPos; }
 	bool TestLimits(int x, int y, int top, int left, int bottom);

@@ -24,7 +24,7 @@ CutScan* CutShape::GetSortedScan(int index)
 {
 	if (index >= 0 && index < MAX_ANGLES)
 	{
-		return sortedScans[index];
+		return scans[index];
 	}
 
 	return 0;
@@ -46,27 +46,6 @@ void CutShape::SortAngles()
 	{
 		sortedScans[i] = scans[i];
 	}
-
-	/*
-	for (int i = 0; i < MAX_ANGLES; i++)
-	{
-		CutScan* s = sortedScans[i];
-		int sw = s->GetWidth();
-
-		for (int j = 0; j < MAX_ANGLES; j++)
-		{			
-			CutScan* d = scans[j];
-
-			if (d->GetWidth() >= sw)
-			{
-				//sortedScans[i] = d;
-				//sortedScans[j] = s;
-
-				//s = d;
-			}
-		}
-	}
-	*/
 }
 
 void UpdateMap(LineList* lineMap, LineSegment** segments, int mapCount, float oy)
@@ -79,19 +58,27 @@ void UpdateMap(LineList* lineMap, LineSegment** segments, int mapCount, float oy
 	while (*seg)
 	{
 		LineSegment* s = *seg;
-		s->CalcSlope();
 
 		float t1 = s->GetStart()->y;
 		float t2 = s->GetEnd()->y;
 
-		float y1 = (t1 < t2 ? t1 : t2) + oy;
-		float y2 = (t1 > t2 ? t2 : t1) + oy;
-		
+		float y1 = t1;
+		float y2 = t2;
+
+		if (t1 > t2)
+		{
+			y1 = t2;
+			y2 = t1;
+		}
+
+		y1 += oy;
+		y2 += oy;
+
 		int mapIndex = (int)floor(y1 / LINE_MAP_SIZE);
 
 		do 
 		{
-			if (mapIndex > 0)
+			if (mapIndex >= 0)
 			{
 				lineMap[mapIndex].AddSegment(s);
 			}
@@ -162,8 +149,6 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		if (*pt) 
 		{
 			LineSegment* seg = new LineSegment(last, *pt);
-			seg->CalcSlope();
-
 			segments[si++] = seg;
 			last = *pt;
 		}
@@ -187,11 +172,13 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		CutScan *cs = new CutScan((int)height, i);
 		scans[i] = cs;
 
-		cs->ScanLineMap(this->width, this->height, lineMap);
+		cs->ScanLineMap(this->width, this->height, lineMap, LINE_MAP_SIZE);
 		
 		angle += rad;
     	RotatePoints(angle, points, transformed);
 	}
+
+	SortAngles();
 
 	time = GetTickCount() - time;
 }

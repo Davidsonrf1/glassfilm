@@ -174,17 +174,6 @@ extern "C" {
 		return 0;
 	}
 
-	CUT_EXPORT void CUT_API GetScanData(unsigned int sheet, unsigned int shapeId, int angle, ScanData* scanData, int count)
-	{
-		if (sheet < sheetCount)
-		{
-			CutShape* shape = sheets[sheet]->GetShape(shapeId);
-			CutScan* scan = shape->GetScan(angle);
-
-			scan->GetScanData(scanData, count);
-		}
-	}
-
 	CUT_EXPORT void CUT_API BuildScansFromPolygon(unsigned int sheet, unsigned int shapeId, float width, float height, float* poly, int pointCount)
 	{
 		if (sheet < sheetCount)

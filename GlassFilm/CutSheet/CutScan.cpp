@@ -96,43 +96,6 @@ int CutScan::GetSegmentCount()
 	return count;
 }
 
-void CutScan::GetScanData(ScanData* data, int count)
-{
-	int index = 0;
-	if (data != nullptr)
-	{
-		data->angle = this->angle;
-		data->segmentCount = GetSegmentCount();
-		
-		for (int i = 0; i < lineCount; i++)
-		{
-			CutSegmentList *segs = segments[i];
-
-			if (segs != nullptr)
-			{
-				if (segs->GetCount() > 0)
-				{
-					CutSegment *seg = segs->GetFirst();
-
-					while (seg)
-					{
-						SegmentData *d = &data->segments[index++];
-
-						d->start = seg->GetStart();
-						d->end = seg->GetEnd();
-						d->line = seg->GetLine();
-
-						seg = seg->GetNext();
-
-						if (index >= count && seg != nullptr)
-							return;
-					}
-				}
-			}
-		}
-	}
-}
-
 int CutScan::GetLineCount()
 {
 	return lineCount;
@@ -307,12 +270,37 @@ CutSegmentList** CutScan::GetSegments()
 	return segments;
 }
 
-void CutScan::ScanLineMap(float w, float h, LineList *list)
+void CutScan::ScanLineMap(float w, float h, LineList *map, int mapSize)
 {
 	Clear();
 
 	this->width = width;
 	this->verticalCenter = (int)width / 2;
+
+	float cross[1024];
+
+	int h2 = (int)h / 2;
+
+	for (int i = 0; i < h; i++)
+	{
+		int mapIndex = i / mapSize;		
+		int count = map[mapIndex].FillCrossPoints(cross, 1024, i-h2);
+
+		if (count > 0)
+		{
+			if (count >= 2)
+			{
+				for (int k = 0; k < count; k += 2)
+				{
+					AddSegment(i, (int)cross[i], (int)cross[i + 1]);
+				}
+			}
+			else
+			{
+				AddSegment(i, (int)cross[0], (int)cross[0] + 1);
+			}			
+		}
+	}
 
 	Normalize((int)w, (int)h);
 }

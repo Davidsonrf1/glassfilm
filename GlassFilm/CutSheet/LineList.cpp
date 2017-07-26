@@ -62,9 +62,18 @@ int LineList::FillCrossPoints(float* list, int max, int hline)
 		if (count >= max)
 			break;
 
-		if (seg->HorizontalLineCross((float)hline, &list[count]))
+		int c = 0;
+		float cross1 = 0;
+		float cross2 = 0;
+
+		if (seg->HorizontalLineCross((float)hline, &c,  &cross1, &cross2))
 		{
-			count++;
+			list[count++] = cross1;
+
+			if (c == 2)
+			{
+				list[count++] = cross2;
+			}
 		}
 
 		p++;
@@ -89,56 +98,42 @@ LineSegment::LineSegment(LinePoint* s, LinePoint* e)
 {
 	start = s;
 	end = e;
-
-	CalcSlope();
 }
 
-bool LineSegment::HorizontalLineCross(float hline, float* crossPoint)
+bool LineSegment::HorizontalLineCross(float hline, int* crossCount, float* crossPoint1, float* crossPoint2)
 {
-	float y1 = start->y;
-	float y2 = end->y;
+	*crossPoint1 = 0;
+	*crossPoint2 = 0;
+	*crossCount = 1;
 
-	bool cross = false;
+	float dy = end->y - start->y;
 
-	if (y2 > y1)
+	if (dy != 0)
 	{
-		if (hline >= y1 && hline < y2)
-			cross = true;
-	}
-	else
-	{
-		if (hline > y2 && hline <= y1)
-			cross = true;
-	}
+		*crossPoint1 = ((hline - start->y) / dy) * (end->x - start->x) + start->x;
 
-	if (cross)
-	{
-		float dy = y2 - y1;
-
-		if (dy != 0)
+		if (start->x < end->x)
 		{
-			*crossPoint = ((hline - y1) / dy) * (end->x - start->y);
+			if (*crossPoint1 >= start->x && *crossPoint1 < end->x)
+				return true;
 		}
 		else
 		{
-			*crossPoint = y1;
+			if (*crossPoint1 > end->x && *crossPoint1 <= start->x)
+				return true;
 		}
-	}
-
-	return cross;
-}
-
-void LineSegment::CalcSlope()
-{
-	float dx = start->x - end->x;
-	float dy = start->y - end->y;
-
-	if (dy != 0) 
-	{
-		slope = dx / dy;
 	}
 	else
 	{
-		slope = 0;
+		if (hline == start->y)
+		{
+			*crossPoint1 = start->x;
+			*crossPoint2 = end->y;
+			*crossCount = 2;
+
+			return true;
+		}
 	}
+
+	return false;
 }

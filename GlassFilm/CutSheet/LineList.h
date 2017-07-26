@@ -10,11 +10,9 @@ class LineSegment
 {
 	LinePoint* start = nullptr;
 	LinePoint* end = nullptr;
-	float slope = 0;
 public:
 	LineSegment(LinePoint* s, LinePoint* e);	
-	bool HorizontalLineCross(float hline, float* crossPoint);
-	void CalcSlope();
+	bool HorizontalLineCross(float hline, int* crossCount, float* crossPoint1, float* crossPoint2);
 
 	inline LinePoint* GetStart() { return start; }
 	inline LinePoint* GetEnd() { return end; }

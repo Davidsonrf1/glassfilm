@@ -24,10 +24,10 @@ namespace VectorViewTest
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            // vv.Document.LoadSVGFromFile("d:\\teste_desenho.svg");
+            vv.Document.LoadSVGFromFile("d:\\teste_desenho.svg");
 
             DoubleBuffered = true;
-            vv.Document.LoadSVGFromFile("D:\\PALIO 4 PORTAS  ANO  2011 A  2016.svg");
+            //vv.Document.LoadSVGFromFile("D:\\PALIO 4 PORTAS  ANO  2011 A  2016.svg");
 
             int time = Environment.TickCount;
             File.WriteAllText("D:\\out.svg", vv.Document.ToSVG());
@@ -113,20 +113,21 @@ namespace VectorViewTest
                 path.SetPos(res.x, res.y);
                 path.Rotate(res.angle);                
             }
+            */
 
             res.resultOK = false;
             CutLibWrapper.TestShape(sheet, shape, ref res);
 
-            if (res.resultOK)
+            if (!res.resultOK)
             {
-                CutLibWrapper.Plot(sheet, shape, res.angle, res.x, res.y);
+                CutLibWrapper.Plot(sheet, shape, res.angle, 100, 100);
 
-                path.SetPos(res.x, res.y);
+                path.SetPos(100, 100);
                 path.Rotate(res.angle);
 
                 limits = path.Limits;
             }
-            */
+            
             i = Environment.TickCount - i;
 
             Text = i.ToString();
@@ -156,10 +157,8 @@ namespace VectorViewTest
             {
                 e.Graphics.DrawPolygon(Pens.Yellow, pts);
             }
-
             
-
-            e.Graphics.DrawRectangle(Pens.Orange, limits.X+path.X, limits.Y+path.Y, limits.Width, limits.Height);
+            //e.Graphics.DrawRectangle(Pens.Orange, limits.X+path.X, limits.Y+path.Y, limits.Width, limits.Height);
             e.Graphics.FillEllipse(Brushes.YellowGreen,  path.X-3, path.Y-3, 6, 6);
         }
 
