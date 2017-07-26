@@ -514,28 +514,32 @@ namespace VectorView
             }
         }
 
-        public event VectorEventHandler DocementMoved;
+        public event VectorEventHandler DocumentMoved;
         public virtual void OnDocumentMoved()
         {
-            DocementMoved?.Invoke(this, new VectorEventArgs(document, null));
+            if (DocumentMoved != null)
+                DocumentMoved(this, new VectorEventArgs(document, null));
         }
 
         public event VectorEventHandler SelectionMoved;
         public virtual void OnSelectionMoved()
         {
-            SelectionMoved?.Invoke(this, new VectorEventArgs(document, null));
+            if (SelectionMoved != null)
+                SelectionMoved(this, new VectorEventArgs(document, null));
         }
 
         public event VectorEventHandler SelectionTransformed;
         public virtual void OnSelectionTransformed()
         {
-            SelectionTransformed?.Invoke(this, new VectorEventArgs(document, null));
+            if (SelectionTransformed != null)
+                SelectionTransformed(this, new VectorEventArgs(document, null));
         }
 
         public event VectorEventHandler SelectionChanged;
         public virtual void OnSelectionChanged()
         {
-            SelectionChanged?.Invoke(this, new VectorEventArgs(document, null));
+            if (SelectionChanged != null)
+                SelectionChanged(this, new VectorEventArgs(document, null));
         }
 
         public void AutoFit()

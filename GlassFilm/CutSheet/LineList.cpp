@@ -62,7 +62,7 @@ int LineList::FillCrossPoints(float* list, int max, int hline)
 		if (count >= max)
 			break;
 
-		if (seg->HorizontalLineCross(hline, &list[count]))
+		if (seg->HorizontalLineCross((float)hline, &list[count]))
 		{
 			count++;
 		}

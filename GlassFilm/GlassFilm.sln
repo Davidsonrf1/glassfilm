@@ -6,6 +6,9 @@ MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassFilm", "GlassFilm\GlassFilm.csproj", "{B192C36C-2C74-4EDB-B797-0EE39100F57D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorView", "VectorView\VectorView.csproj", "{21A1BFCB-8990-4777-8545-04EE59C3C3A7}"
+	ProjectSection(ProjectDependencies) = postProject
+		{432546F2-0B1D-412D-8414-A4F7A72E3559} = {432546F2-0B1D-412D-8414-A4F7A72E3559}
+	EndProjectSection
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "CutSheet", "CutSheet\CutSheet.vcxproj", "{432546F2-0B1D-412D-8414-A4F7A72E3559}"
 EndProject

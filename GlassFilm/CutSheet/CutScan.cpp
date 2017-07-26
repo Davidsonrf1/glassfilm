@@ -314,9 +314,7 @@ void CutScan::ScanLineMap(float w, float h, LineList *list)
 	this->width = width;
 	this->verticalCenter = (int)width / 2;
 
-
-
-	Normalize(w, h);
+	Normalize((int)w, (int)h);
 }
 
 void CutScan::ScanImageData(int width, int height, void* data)
