@@ -179,7 +179,7 @@ namespace GlassFilm
 
         private void button4_Click(object sender, EventArgs e)
         {
-            bool invertXY = false;
+            bool invertXY = true;
             bool flip = false;
 
             if (vvModelo.Document == null)

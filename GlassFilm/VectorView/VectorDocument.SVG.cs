@@ -84,11 +84,22 @@ namespace VectorView
 
                 tag = "";
                 side = "";
+                string guidStr = "";
 
                 path.Side = VectorPathSide.None;
 
                 if (p.TryGetAttribute("gf-tag", out tag))
                     path.Tag = Encoding.UTF8.GetString(Convert.FromBase64String(tag));
+
+                try
+                {
+                    if (p.TryGetAttribute("gf-guid", out guidStr))
+                        path.Guid = new Guid(guidStr);
+                }
+                catch
+                {
+
+                }
 
                 if (p.TryGetAttribute("gf-side", out side))
                 {

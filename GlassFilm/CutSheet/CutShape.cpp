@@ -118,7 +118,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 	this->height = height;
 
 	LinePoint** points = new LinePoint*[pointCount + 1];
-	LinePoint** transformed = new LinePoint*[pointCount + 1];
+	LinePoint** original = new LinePoint*[pointCount + 1];
 	
 	float* p = poly;
 	for (int i = 0; i < pointCount; i++)
@@ -129,10 +129,14 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		pt->y = *p++;
 
 		points[i] = pt;
-		transformed[i] = new LinePoint();
+		
+		original[i] = new LinePoint();
+		original[i]->x = pt->x;
+		original[i]->y = pt->y;
 	}
 
 	points[pointCount] = nullptr;
+	original[pointCount] = nullptr;
 
 	LineSegment** segments = new LineSegment*[pointCount];
 	
@@ -175,7 +179,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		cs->ScanLineMap(this->width, this->height, lineMap, LINE_MAP_SIZE);
 		
 		angle += rad;
-    	RotatePoints(angle, points, transformed);
+    	RotatePoints(angle, original, points);
 	}
 
 	SortAngles();

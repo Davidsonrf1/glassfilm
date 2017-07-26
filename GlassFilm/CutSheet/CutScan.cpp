@@ -148,7 +148,7 @@ void CutScan::Normalize(int w, int h)
 				minx = MIN(seg->GetStart(), minx);
 				maxx = MAX(seg->GetEnd(), maxx);
 
-				seg->Normalize(c);
+				seg->Normalize(0);
 				seg->SetLine(segLine);
 			} while (seg = seg->GetNext());
 		}
@@ -226,7 +226,7 @@ void CutScan::Normalize(int w, int h)
 	boxLeft = minx;
 	boxRight = maxx;
 	boxTop = miny;
-	boxBottom = miny;
+	boxBottom = maxy;
 
 	width = boxRight - boxLeft;
 }
@@ -292,7 +292,7 @@ void CutScan::ScanLineMap(float w, float h, LineList *map, int mapSize)
 			{
 				for (int k = 0; k < count; k += 2)
 				{
-					AddSegment(i, (int)cross[i], (int)cross[i + 1]);
+					AddSegment(i, (int)cross[k], (int)cross[k + 1]);
 				}
 			}
 			else

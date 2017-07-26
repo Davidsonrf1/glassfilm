@@ -78,7 +78,6 @@ namespace GlassFilm
 
             try
             {
-
                 if (lbAnos.CheckedItems.Count <= 0)
                 {
                     MessageBox.Show("Nenhum ano selecionado", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);

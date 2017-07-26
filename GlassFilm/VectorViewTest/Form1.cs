@@ -24,10 +24,10 @@ namespace VectorViewTest
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            vv.Document.LoadSVGFromFile("d:\\teste_desenho.svg");
+            //vv.Document.LoadSVGFromFile("d:\\teste_desenho.svg");
 
             DoubleBuffered = true;
-            //vv.Document.LoadSVGFromFile("D:\\PALIO 4 PORTAS  ANO  2011 A  2016.svg");
+            vv.Document.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg");
 
             int time = Environment.TickCount;
             File.WriteAllText("D:\\out.svg", vv.Document.ToSVG());
@@ -62,7 +62,7 @@ namespace VectorViewTest
 
                 //cs.GenerateFromPath(p);
 
-                //break;
+                break;
             }
 
             time = Environment.TickCount - time;
@@ -91,6 +91,7 @@ namespace VectorViewTest
                 path.SetPos(res.x, res.y);
                 path.Rotate(res.angle);
             }
+            */
 
             res.resultOK = false;
             CutLibWrapper.TestShape(sheet, shape, ref res);
@@ -102,6 +103,7 @@ namespace VectorViewTest
                 path.SetPos(res.x, res.y);
                 path.Rotate(res.angle);                
             }
+            
 
             res.resultOK = false;
             CutLibWrapper.TestShape(sheet, shape, ref res);
@@ -113,16 +115,16 @@ namespace VectorViewTest
                 path.SetPos(res.x, res.y);
                 path.Rotate(res.angle);                
             }
-            */
+            
 
             res.resultOK = false;
             CutLibWrapper.TestShape(sheet, shape, ref res);
-
-            if (!res.resultOK)
+            
+            if (res.resultOK)
             {
-                CutLibWrapper.Plot(sheet, shape, res.angle, 100, 100);
+                CutLibWrapper.Plot(sheet, shape, res.angle, res.x, res.y);
 
-                path.SetPos(100, 100);
+                path.SetPos(res.x, res.y);
                 path.Rotate(res.angle);
 
                 limits = path.Limits;
@@ -151,6 +153,10 @@ namespace VectorViewTest
             //e.Graphics.RotateTransform(res.angle);
             //e.Graphics.TranslateTransform(path.X, path.Y-120);
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
+
+            Pen p = new Pen(Color.Yellow);
+            p.LineJoin = System.Drawing.Drawing2D.LineJoin.Miter;
+            p.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
 
             List<PointF[]> poly = path.GetTransfomedPolygons();
             foreach (PointF[] pts in poly)
@@ -181,6 +187,7 @@ namespace VectorViewTest
 
         }
 
+        int angle = 0;
 
         protected override void OnMouseMove(MouseEventArgs e)
         {

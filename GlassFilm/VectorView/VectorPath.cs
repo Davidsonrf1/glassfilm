@@ -30,6 +30,8 @@ namespace VectorView
         bool selected = false;
         bool outOfLimits = false;
 
+        Guid guid;
+
         int importCount = 0;
 
         VectorPath source = null;
@@ -329,6 +331,19 @@ namespace VectorView
             }
         }
 
+        public Guid Guid
+        {
+            get
+            {
+                return guid;
+            }
+
+            set
+            {
+                guid = value;
+            }
+        }
+
         public void UpdateGoodPos()
         {
             if (!IsValidPos)
@@ -350,6 +365,7 @@ namespace VectorView
         internal VectorPath(VectorDocument doc)
         {
             document = doc;
+            guid = Guid.NewGuid();            
         }
 
         public void SetPos(float x, float y)
@@ -1278,7 +1294,7 @@ namespace VectorView
             byte[] bytes = Encoding.UTF8.GetBytes(tag);
             string b64Tag = Convert.ToBase64String(bytes);
 
-            sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag);
+            sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" gf-guid=\"{2}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag, guid.ToString());
 
             foreach (VectorSegment e in segments)
             {

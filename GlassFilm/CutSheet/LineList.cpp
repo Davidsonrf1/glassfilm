@@ -112,6 +112,22 @@ bool LineSegment::HorizontalLineCross(float hline, int* crossCount, float* cross
 	{
 		*crossPoint1 = ((hline - start->y) / dy) * (end->x - start->x) + start->x;
 
+		if (*crossPoint1 == start->x) 
+		{
+			if (start->y < end->y)
+			{
+				if (hline >= start->y && hline < end->y)
+					return true;
+			}
+			else
+			{
+				if (hline > end->y && hline <= start->y)
+					return true;
+			}
+
+			return false;
+		}
+
 		if (start->x < end->x)
 		{
 			if (*crossPoint1 >= start->x && *crossPoint1 < end->x)
