@@ -232,7 +232,7 @@ namespace GlassFilm.Sync
 
             cmd.CommandText = string.Format("select count(*) from {0} where {1}={2}", tbName, tbKey, keyvalue);
             int count = 0;
-            int.TryParse(cmd.ExecuteScalar().ToString(), out count));
+            int.TryParse(cmd.ExecuteScalar().ToString(), out count);
 
             if (count == 0)
             {
