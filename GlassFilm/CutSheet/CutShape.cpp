@@ -14,8 +14,8 @@ void CutShape::AddAngle(int angle, int width, int height, void* data)
 	if (angle >= 0 && angle < MAX_ANGLES)
 	{
 		CutScan *cs = new CutScan(height, angle);
-		scans[angle] = cs;		
-		
+		scans[angle] = cs;
+
 		cs->ScanImageData(width, height, data);
 	}
 }
@@ -30,7 +30,7 @@ CutScan* CutShape::GetSortedScan(int index)
 	return 0;
 }
 
-CutScan* CutShape::GetScan(int angle) 
+CutScan* CutShape::GetScan(int angle)
 {
 	if (angle >= 0 && angle < MAX_ANGLES)
 	{
@@ -76,7 +76,7 @@ void UpdateMap(LineList* lineMap, LineSegment** segments, int mapCount, float oy
 
 		int mapIndex = (int)floor(y1 / LINE_MAP_SIZE);
 
-		do 
+		do
 		{
 			if (mapIndex >= 0)
 			{
@@ -86,7 +86,7 @@ void UpdateMap(LineList* lineMap, LineSegment** segments, int mapCount, float oy
 			mapIndex++;
 
 		} while ((mapIndex * LINE_MAP_SIZE) < y2);
-	
+
 		seg++;
 	}
 }
@@ -119,7 +119,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 
 	LinePoint** points = new LinePoint*[pointCount + 1];
 	LinePoint** original = new LinePoint*[pointCount + 1];
-	
+
 	float* p = poly;
 	for (int i = 0; i < pointCount; i++)
 	{
@@ -129,7 +129,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		pt->y = *p++;
 
 		points[i] = pt;
-		
+
 		original[i] = new LinePoint();
 		original[i]->x = pt->x;
 		original[i]->y = pt->y;
@@ -139,7 +139,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 	original[pointCount] = nullptr;
 
 	LineSegment** segments = new LineSegment*[pointCount];
-	
+
 	LinePoint **pt = points;
 	LinePoint *last = *pt;
 
@@ -150,7 +150,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 	{
 		pt++;
 
-		if (*pt) 
+		if (*pt)
 		{
 			LineSegment* seg = new LineSegment(last, *pt);
 			segments[si++] = seg;
@@ -158,9 +158,7 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		}
 	}
 
-	int time = GetTickCount();
-
-	segments[si] = nullptr;	
+	segments[si] = nullptr;
 
 	int mapCount = (int)(height / LINE_MAP_SIZE) + 1;
 
@@ -177,12 +175,32 @@ void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int
 		scans[i] = cs;
 
 		cs->ScanLineMap(this->width, this->height, lineMap, LINE_MAP_SIZE);
-		
+
 		angle += rad;
-    	RotatePoints(angle, original, points);
+		RotatePoints(angle, original, points);
 	}
 
 	SortAngles();
 
-	time = GetTickCount() - time;
+	for (int i = 0; i < pointCount; i++)
+	{
+		delete points[i];
+		delete original[i];
+	}
+
+	delete[] points;
+	delete[] original;
+	delete[] lineMap;
+
+	LineSegment** seg = segments;
+
+	while (*seg)
+	{
+		if (*seg)
+			delete *seg;
+
+		seg++;
+	}
+
+	delete[] segments;
 }

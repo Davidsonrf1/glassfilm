@@ -311,7 +311,9 @@ namespace GlassFilm
             {
                 ModeloAno ma = (ModeloAno)lbAnos.SelectedItem;
 
-                string svg = DBManager.CarregarDesenho(Convert.ToInt32(ma.Codigo_ano));
+                int codigo_desenho = 0;
+
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(ma.Codigo_ano), out codigo_desenho);
                 if (svg != null)
                 {
                     vectorView.Document.LoadSVG(svg);

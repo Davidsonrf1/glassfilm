@@ -14,6 +14,7 @@ using System.Diagnostics;
 using VectorView.Plotter;
 using System.Drawing.Printing;
 using System.IO.Ports;
+using GlassFilm.Sync;
 
 namespace GlassFilm
 {
@@ -96,6 +97,12 @@ namespace GlassFilm
                 toolCorte.Visible = true;
             }
 
+            SyncManager.SyncTables.AddRange(new string[] { "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
+            SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "CODIGO_DESENHO" });
+
+            SyncManager.CheckTables();
+            SyncManager.Syncronize(Sync.SyncType.Outgoing);
+
             sel.AtualizaMarcas();
             cbMarca.Focus();
         }
@@ -138,7 +145,8 @@ namespace GlassFilm
 
                 vvModelo.Document.Clear();
 
-                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano));
+                int codigo_desenho = 0;
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano), out codigo_desenho);
                 if (svg != null)
                 {
                     vvModelo.AllowTransforms = false;

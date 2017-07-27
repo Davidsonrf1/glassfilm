@@ -219,7 +219,7 @@
             this.btImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btImportar.Image = global::GlassFilm.Properties.Resources.import;
             this.btImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btImportar.Location = new System.Drawing.Point(828, 26);
+            this.btImportar.Location = new System.Drawing.Point(828, 25);
             this.btImportar.Name = "btImportar";
             this.btImportar.Size = new System.Drawing.Size(101, 23);
             this.btImportar.TabIndex = 3;
@@ -345,6 +345,7 @@
             // 
             // vectorView
             // 
+            this.vectorView.AllowMoveDocument = false;
             this.vectorView.AllowTransforms = true;
             this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 

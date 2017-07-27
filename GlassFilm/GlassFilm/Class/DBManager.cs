@@ -40,6 +40,42 @@ namespace GlassFilm.Class
             return count;
         }
 
+        public static bool ColExiste(string tb, string col, SQLiteConnection con)
+        {
+            SQLiteCommand cmd = con.CreateCommand();
+            
+            cmd.CommandText = string.Format("PRAGMA table_info({0})", tb);
+
+            IDataReader dr = cmd.ExecuteReader();
+
+            while(dr.Read())
+            {
+                if (dr["name"].ToString().Equals(col, StringComparison.InvariantCultureIgnoreCase))
+                {
+                    dr.Close();
+                    return true;
+                }
+            }
+
+            dr.Close();
+
+            return false;
+        }
+
+        public static DataTable LoadDataTable(string cmdText, SQLiteConnection con)
+        {
+            SQLiteCommand cmd = con.CreateCommand();
+
+            cmd.CommandText = string.Format(cmdText);
+            DataTable dt = new DataTable();
+
+            IDataReader dr = cmd.ExecuteReader();
+            dt.Load(dr);
+            dr.Close();
+
+            return dt;
+        }
+
         public static List<ConfigValue> CarregaConfig()
         {
             List<ConfigValue> cfg = new List<ConfigValue>();
@@ -171,8 +207,10 @@ namespace GlassFilm.Class
             return lma;
         }
 
-        public static string CarregarDesenho(int veiculo)
+        public static string CarregarDesenho(int veiculo, out int codigo_desenho)
         {
+            codigo_desenho = -1;
+
             SQLiteCommand cmd = _modelConnection.CreateCommand();
 
             cmd.CommandText = "SELECT * FROM DESENHOS WHERE VEICULO = " + veiculo.ToString();

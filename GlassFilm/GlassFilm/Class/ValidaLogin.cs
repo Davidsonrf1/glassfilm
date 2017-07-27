@@ -6,7 +6,6 @@ using System.Data;
 using System.IO;
 using System.Windows.Forms;
 using System.Net;
-using System.Text;
 using Newtonsoft.Json;
 using Newtonsoft;
 using Newtonsoft.Json.Linq;
@@ -95,7 +94,7 @@ namespace GlassFilm.Class
 
         public static User buscaUser()
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sistema.php"));
             var postData = "";
             User user = null;
 
@@ -139,7 +138,7 @@ namespace GlassFilm.Class
 
         public static int verificaLicenca()
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sistema.php"));
             var postData = "";
             int quantidade = 0;
 
@@ -175,7 +174,7 @@ namespace GlassFilm.Class
 
         public static bool atualizaHashUser(string hash)
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sistema.php"));
             var postData = "";
             bool retorno = false;            
 
@@ -214,7 +213,7 @@ namespace GlassFilm.Class
 
         public static void atualizaAcesso()
         {
-            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sistema.php"));
             var postData = "";
             bool retorno = false;
 
