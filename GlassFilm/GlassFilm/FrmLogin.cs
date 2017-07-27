@@ -79,7 +79,9 @@ namespace GlassFilm
                 if (rv.pronto || txtCnpj.Text.Trim().Length == 0)
                 {
                     if (txtCnpj.Text.Trim().Length == 0)
-                        vi.cnpj = buscaCnpj();
+                    {
+                        ValidaLogin.cnpj = buscaCnpj();
+                    }
 
                     rv = vi.inicia();
 
@@ -87,6 +89,8 @@ namespace GlassFilm
                     {
                         if (vi.valida())
                         {
+                            addCnpj();
+                            ConexaoValidaLogin.atualizaAcesso();
                             autorizado = true;
                             this.Close();
                         }

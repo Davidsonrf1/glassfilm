@@ -5,7 +5,7 @@ using System.Text;
 
 namespace GlassFilm.Class
 {
-    class User
+    public class User
     {
         public int id { get; set; }
         public string token { get; set; }

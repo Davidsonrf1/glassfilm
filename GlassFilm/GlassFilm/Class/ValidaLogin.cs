@@ -7,6 +7,11 @@ using MySql.Data.MySqlClient;
 using System.Data;
 using System.IO;
 using System.Windows.Forms;
+using System.Net;
+using System.Text;
+using Newtonsoft.Json;
+using Newtonsoft;
+using Newtonsoft.Json.Linq;
 
 namespace GlassFilm.Class
 {
@@ -14,35 +19,33 @@ namespace GlassFilm.Class
     {                
         private HashMachine hm;       
 
-        private string nome;
-        private string senha;
-        public string cnpj;
+        public static string nome;
+        public static string senha;
+        public static string cnpj;
 
         public ValidaLogin(string nome, string senha, string cnpj = "")
         {
-            this.nome = nome;
-            this.senha = senha;
-            this.cnpj = cnpj;
+            ValidaLogin.nome = nome;
+            ValidaLogin.senha = senha;
+            ValidaLogin.cnpj = cnpj;
         }
 
         public RetornoValidacao inicia()
         {            
             RetornoValidacao rv = new RetornoValidacao();            
+                           
+            Glass.usuario = buscaUsuario();
 
-            if (ConexaoExterna.conectar())
-            {                
-                Glass.usuario = buscaUsuario();
-
-                if (Glass.usuario != null && Glass.usuario.status.Equals("A"))
-                {
-                    rv.pronto = true;
-                }
-                else
-                {
-                    rv.pronto = false;
-                    rv.message = "Usuário e Senha incorretos";
-                }                                                 
+            if (Glass.usuario != null && Glass.usuario.status.Equals("A"))
+            {
+                rv.pronto = true;
             }
+            else
+            {
+                rv.pronto = false;
+                rv.message = "Usuário e Senha incorretos";
+            }                                                 
+            
             return rv;
         }
 
@@ -51,52 +54,21 @@ namespace GlassFilm.Class
             hm = new HashMachine();
             string idMachine = hm.getHashMachine();
             string idLicenca = HashMachine.criptoMD5(Glass.usuario.token + idMachine, "tech");
+            idLicenca = ValidaLogin.sReplace(idLicenca);
 
             return Glass.usuario.licenca.Equals(idLicenca);
         }
 
-        private User buscaUsuario()
+        public User buscaUsuario()
         {
-            string _sql = "SELECT" +
-                            "   cu.id," +
-                            "   cl.token," +
-                            "   cl.licenca," +
-                            "   c.status" +
-                            " FROM" +
-                            "   gf_client_user cu" +
-                            " INNER JOIN gf_client c on cu.id_cliente = c.id" +
-                            " INNER JOIN gf_client_licence cl on cl.id_cliente = c.id" +
-                            " WHERE" +
-                            "   c.cnpj_cpf = '"+this.cnpj+"'" +
-                            "   and cu.login = '"+this.nome+"'" +
-                            "   and cu.senha = '"+ this.senha + "'";
-
-            DataTable dtUser = ConexaoExterna.getDataTable(_sql);
-            User _user = null;
-            foreach (DataRow r in dtUser.Rows)
-            {
-                _user = new User(Convert.ToInt16(r["id"].ToString()), r["token"].ToString(), r["licenca"].ToString(), r["status"].ToString());
-            }
-            return _user;
+            return ConexaoValidaLogin.buscaUser();
         }
 
         public RetornoValidacao verificaLicenca()
         {
             RetornoValidacao rv = new RetornoValidacao();
-
-            string _sql = "SELECT count(*) FROM gf_client_licence cl" +
-                          " INNER JOIN gf_client c on c.id = cl.id_cliente" +
-                          " WHERE c.cnpj_cpf = '" + this.cnpj + "'" +
-                          " and length(cl.licenca) = 0";
-
-            DataTable dtUser = ConexaoExterna.getDataTable(_sql);
-            bool retorno = false;
-            foreach (DataRow r in dtUser.Rows)
-            {
-                retorno = !r[0].ToString().Equals("0");
-            }
-
-            if (retorno)
+           
+            if (ConexaoValidaLogin.verificaLicenca()>0)
             {
                 rv.pronto = true;
                 rv.message = "";
@@ -109,136 +81,171 @@ namespace GlassFilm.Class
 
             return rv;
         }
-    }
 
-    public static class ConexaoExterna
-    {
-        // var de controle do banco de dados
-        private static MySqlConnection con;
-        private static MySqlCommand cmd;
-        private static MySqlDataAdapter da;
-        private static DataTable dt;
-
-        public static MySqlConnection ConexaoBD
+        public static string sReplace(string _string)
         {
-            get { return ConexaoExterna.con; }
-        }        
-
-        // variavel string conexao
-        private static string _stringConexao = "Persist Security Info=False;server=199.217.112.74;database=ativtec_glassfilm;uid=ativtec_glassfil;pwd='PQLz4gQq_Q7W'";
-
-        public static string StringConexao
-        {
-            get { return _stringConexao; }
+            return _string.Replace("+","|");
         }
+    }    
 
-        public static bool conectar()
+    public class ConexaoValidaLogin {
+
+        public static string BUSCA_USUARIO = "buscaUsuario";
+        public static string VERIFICA_LICENCA = "verificaLicenca";
+        public static string ATUALIZA_HASH_USER = "atualizaHashUser";
+        public static string ATUALIZA_ACESSO = "atualizaAcesso";        
+
+        public static User buscaUser()
         {
-            bool conectado = false;
+            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var postData = "";
+            User user = null;
+
+            postData = "tipo=" + BUSCA_USUARIO;
+            postData += "&cnpj=" + ValidaLogin.cnpj;
+            postData += "&name=" + ValidaLogin.nome;
+            postData += "&pass=" + ValidaLogin.senha;
+            postData += "&machine_name=" + Environment.MachineName;
+            postData += "&key=cutfilmecf";                           
+
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
 
             try
             {
-                con = new MySqlConnection(_stringConexao);
+                var response = (HttpWebResponse)request.GetResponse();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd().Replace("[", "").Replace("]", "");
 
-                try
+                if (responseString.Length > 0)
                 {
-                    if (con.State == ConnectionState.Closed)
-                    {
-                        con.Open();
-                        conectado = true;
-                    }
-                }
-                catch
-                {
-                    conectado = false;
+                    user = JsonConvert.DeserializeObject<User>(responseString);
+                    user.licenca = ValidaLogin.sReplace(user.licenca);
                 }
             }
             catch (Exception ex)
             {
                 Logs.Log(ex.Message);
-            }
+                throw;
+            }            
 
-            return conectado;
+            return user;                                  
         }
 
-        public static string Busca_campo(string _sql)
+        public static int verificaLicenca()
         {
-            string retorno = "";
+            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var postData = "";
+            int quantidade = 0;
+
+            postData = "tipo=" + VERIFICA_LICENCA;
+            postData += "&cnpj=" + ValidaLogin.cnpj;            
+            postData += "&key=cutfilmecf";
+
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
 
             try
             {
-                if (conectar())
-                {
-                    da = new MySqlDataAdapter(_sql, con);
-                    dt = new DataTable();
-                    da.Fill(dt);
-
-                    foreach (DataRow linha in dt.Rows)
-                    {
-                        retorno = linha[0].ToString();
-                    }
-                }
+                var response = (HttpWebResponse)request.GetResponse();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd();
+                quantidade = JsonConvert.DeserializeObject<int>(responseString);
             }
             catch (Exception ex)
             {
-                Logs.Log(ex.Message);               
+                Logs.Log(ex.Message);
+                throw;
             }
-            finally
+
+            return quantidade;
+        }
+
+        public static bool atualizaHashUser(string hash)
+        {
+            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var postData = "";
+            bool retorno = false;            
+
+            postData =  "tipo=" + ATUALIZA_HASH_USER;
+            postData += "&licenca=" + ValidaLogin.sReplace(hash);
+            postData += "&machine_name=" + Environment.MachineName;
+            postData += "&token=" + Glass.usuario.token;
+            postData += "&ultimo_acesso=" + DateTime.Now.ToString("dd'/'MM'/'yyyy HH:mm:ss"); ;
+            postData += "&key=cutfilmecf";
+
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
             {
-                da.Dispose();
-                dt.Dispose();
+                stream.Write(data, 0, data.Length);
+            }
+
+            try
+            {
+                var response = (HttpWebResponse)request.GetResponse();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd().Replace("[", "").Replace("]", "");
+                retorno = JsonConvert.DeserializeObject<bool>(responseString);
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+                throw;
             }
 
             return retorno;
         }
 
-        public static DataTable getDataTable(string _sql)
+        public static void atualizaAcesso()
         {
-            DataTable dtRetorno = new DataTable();
-
-            try
-            {
-                if (conectar())
-                {
-                    da = new MySqlDataAdapter(_sql, con);
-                    da.Fill(dtRetorno);
-                }
-            }
-            catch (Exception ex)
-            {
-                Logs.Log(ex.Message);               
-            }
-            finally
-            {
-                da.Dispose();
-                dtRetorno.Dispose();
-            }
-
-            return dtRetorno;
-        }
-
-        public static bool insert(string sql)
-        {
+            var request = (HttpWebRequest)WebRequest.Create("http://www.cutfilm.com.br/glass/serv/sistema.php");
+            var postData = "";
             bool retorno = false;
 
-            if (conectar())
+            postData = "tipo=" + ATUALIZA_ACESSO;            
+            postData += "&token=" + Glass.usuario.token;
+            postData += "&ultimo_acesso=" + DateTime.Now.ToString("dd'/'MM'/'yyyy HH:mm"); ;
+            postData += "&key=cutfilmecf";
+
+            var data = Encoding.ASCII.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
             {
-                cmd = new MySqlCommand();
-                cmd.CommandText = sql;
-                cmd.Connection = ConexaoBD;
-
-                try
-                {
-                    cmd.ExecuteNonQuery();
-                    retorno = true;
-                }
-                catch (Exception ex) {
-
-                    Logs.Log(ex.Message);
-                }                
+                stream.Write(data, 0, data.Length);
             }
 
-            return retorno;
+            try
+            {
+                var response = (HttpWebResponse)request.GetResponse();
+                var responseString = new StreamReader(response.GetResponseStream()).ReadToEnd().Replace("[", "").Replace("]", "");
+                retorno = JsonConvert.DeserializeObject<bool>(responseString);
+            }
+            catch (Exception)
+            {                
+                                
+            }            
         }
     }
 
@@ -268,7 +275,7 @@ namespace GlassFilm.Class
             string idMachine = hm.getHashMachine();
             string idHash = HashMachine.criptoMD5(Glass.usuario.token + idMachine, "tech");           
 
-            if(atualizaHashUser(idHash))
+            if(ConexaoValidaLogin.atualizaHashUser(idHash))
             {
                 rv.pronto = true;
                 rv.message = "Bem vindo";
@@ -280,12 +287,6 @@ namespace GlassFilm.Class
             }
             
             return rv;
-        }
-
-        private static bool atualizaHashUser(string hash)
-        {
-            string _sql = "update gf_client_licence set licenca = '" + hash + "', machine_name = '" + Environment.MachineName + "' where token = '" + Glass.usuario.token + "'";
-            return ConexaoExterna.insert(_sql);
         }        
     }
 
@@ -299,5 +300,5 @@ namespace GlassFilm.Class
             pronto = false;
             message = "";
         }
-    }
+    }    
 }
