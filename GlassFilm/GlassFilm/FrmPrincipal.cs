@@ -405,7 +405,14 @@ namespace GlassFilm
                 VectorPath ip = vvCorte.Document.ImportPath(p);
 
                 nestManager.RegisterPath(ip);
-                nestManager.NestPath(ip);
+                if (nestManager.NestPath(ip))
+                {
+
+                }
+                else
+                {
+
+                }
             }
 
             if (vvCorte.Document.Paths.Count == 1)
