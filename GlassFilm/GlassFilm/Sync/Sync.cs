@@ -147,7 +147,7 @@ namespace GlassFilm.Sync
             request.Method = "POST";
             request.ContentType = "application/json; charset=utf-8";
 
-            string json = string.Format("{\"versaoMinima\": \"{0}\"}", versao);
+            string json = string.Format("{{\"versaoMinima\": \"{0}\"}}", versao);
 
             byte[] data = Encoding.UTF8.GetBytes(json);
             request.ContentLength = data.Length;
@@ -196,7 +196,13 @@ namespace GlassFilm.Sync
 
                 if (responseString.Length > 0)
                 {
-                    
+                    string respJson = "{\"result\":" + responseString + "}";
+                    XmlDocument xdoc = JsonConvert.DeserializeXmlNode(respJson , "table");
+
+                    foreach (XmlNode n in xdoc.DocumentElement.ChildNodes)
+                    {
+                        ConfirmSync(n);
+                    }
                 }
             }
             catch (Exception ex)
@@ -216,6 +222,56 @@ namespace GlassFilm.Sync
                 string tbKey = tbKeys[tbName];
 
                 RestoreTable(n, tbName, tbKey);
+            }
+        }
+
+        static void ConfirmSync(XmlNode node)
+        {
+            string table = "";
+            int id = 0;
+            bool status = false;
+
+            foreach (XmlNode n in node.ChildNodes)
+            {
+
+                if (n.Name.Equals("tabela", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    table = n.InnerText;
+                }
+
+                if (n.Name.Equals("codigo", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    id = int.Parse(n.InnerText);
+                }
+
+                if (n.Name.Equals("inserido", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    status = bool.Parse(n.InnerText);
+                }
+            }
+
+            if (status)
+            {
+                SQLiteConnection con = DBManager._mainConnection;
+
+                if (table.Equals("desenhos", StringComparison.InvariantCultureIgnoreCase))
+                {
+                    con = DBManager._modelConnection;
+                }
+
+                string tbKey = tbKeys[table];
+
+                SQLiteCommand cmd = con.CreateCommand();
+                cmd.CommandText = string.Format("update {0} set sincronizar = 0 where {1} = {2}", table, tbKey, id);
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch
+                {
+                    
+                }
             }
         }
 

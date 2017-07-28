@@ -241,6 +241,8 @@ namespace VectorView
 
         public void LoadSVG(string svg)
         {
+            File.WriteAllText("last_path.svg", svg);
+
             paths.Clear();
 
             XmlDocument xdoc = new XmlDocument();
