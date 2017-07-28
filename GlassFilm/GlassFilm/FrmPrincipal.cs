@@ -101,6 +101,12 @@ namespace GlassFilm
             SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "CODIGO_DESENHO" });
 
             SyncManager.CheckTables();
+            
+            if (Debugger.IsAttached)
+            {
+                SyncManager.Syncronize(SyncType.Outgoing);
+            }
+
             SyncManager.Syncronize(Sync.SyncType.Outgoing);
 
             sel.AtualizaMarcas();

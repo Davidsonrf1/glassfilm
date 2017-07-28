@@ -62,6 +62,42 @@ namespace GlassFilm.Class
             return false;
         }
 
+        public static DbType GetDbType(string type)
+        {
+            if (type.StartsWith("int", StringComparison.InvariantCultureIgnoreCase) ||
+                type.StartsWith("uint", StringComparison.InvariantCultureIgnoreCase)) 
+            {
+                return DbType.Int32;
+            }
+
+            if (type.StartsWith("blob", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return DbType.Binary;
+            }
+
+            return DbType.String;
+        }
+
+        public static Dictionary<string, string> GetTableInfo(string tb, SQLiteConnection con)
+        {
+            SQLiteCommand cmd = con.CreateCommand();
+
+            cmd.CommandText = string.Format("PRAGMA table_info({0})", tb);
+
+            IDataReader dr = cmd.ExecuteReader();
+
+            Dictionary<string, string> ret = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);
+
+            while (dr.Read())
+            {
+                ret.Add(dr["name"].ToString(), dr["type"].ToString());
+            }
+
+            dr.Close();
+
+            return ret;
+        }
+
         public static DataTable LoadDataTable(string cmdText, SQLiteConnection con)
         {
             SQLiteCommand cmd = con.CreateCommand();

@@ -8,6 +8,7 @@ using System.Text;
 using System.Windows.Forms;
 using GlassFilm.Class;
 using VectorView;
+using GlassFilm.Sync;
 
 namespace GlassFilm
 {
@@ -357,6 +358,11 @@ namespace GlassFilm
         private void toolPrincipal_ItemClicked(object sender, ToolStripItemClickedEventArgs e)
         {
 
+        }
+
+        private void toolStripButton2_Click(object sender, EventArgs e)
+        {
+            SyncManager.Syncronize(SyncType.Outgoing);
         }
     }
 }

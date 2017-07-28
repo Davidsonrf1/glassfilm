@@ -64,7 +64,21 @@ namespace GlassFilm.Sync
 
         static void GetTable(string table)
         {
+            table = table.Trim();
+            SQLiteConnection con = DBManager._mainConnection;
 
+            if (table.Equals("desenhos", StringComparison.InvariantCultureIgnoreCase))
+            {
+                table = table.Replace("!", "");
+                con = DBManager._modelConnection;
+            }
+
+            IDbCommand cmd = con.CreateCommand();
+
+            cmd.CommandText = "SELECT MAX (VERSAO) FROM " + table;
+            int versao = int.Parse(cmd.ExecuteScalar().ToString());
+
+            SyncDown(versao);
         }
 
         static string BuildJSONFromRow(DataRow dr)
@@ -158,7 +172,6 @@ namespace GlassFilm.Sync
                 Logs.Log(ex.Message);
                 throw;
             }
-
         }
 
         public static void SyncUp(string json)
@@ -183,6 +196,7 @@ namespace GlassFilm.Sync
 
                 if (responseString.Length > 0)
                 {
+                    
                 }
             }
             catch (Exception ex)
@@ -190,7 +204,6 @@ namespace GlassFilm.Sync
                 Logs.Log(ex.Message);
                 throw;
             }
-
         }
 
         static void RestoreData(string json)
@@ -218,13 +231,14 @@ namespace GlassFilm.Sync
                 con = DBManager._modelConnection;
             }
 
-            string keyvalue = "''";
+            string keyvalue = "";
 
             foreach (XmlNode n in node.ChildNodes)
             {
                 if (n.Name.Equals(tbKey, StringComparison.InvariantCultureIgnoreCase))
                 {
-                    keyvalue = string.Format("'{0}'", n.InnerText);
+                    keyvalue = string.Format("{0}", n.InnerText);
+                    break;
                 }
             }
 
@@ -239,8 +253,7 @@ namespace GlassFilm.Sync
                 StringBuilder sb = new StringBuilder();
 
                 sb.Append("INSERT INTO " + tbName);
-                sb.Append(" VALUES(");
-
+                
                 StringBuilder values = new StringBuilder();
                 StringBuilder names = new StringBuilder();
 
@@ -254,10 +267,74 @@ namespace GlassFilm.Sync
                         names.Append(',');
                     }
 
+                    names.Append(n.Name);
+                    values.Append("@" + n.Name);
+
                     first = false;   
                 }
+
+                sb.Append("(" + names.ToString() + ")");
+                sb.Append(" VALUES(" + values.ToString() + ")");
+
+                cmd.CommandText = sb.ToString();
             }
             else
+            {
+                StringBuilder sb = new StringBuilder();
+
+                sb.Append("UPDATE " + tbName + " SET ");
+
+                bool first = true;
+
+                foreach (XmlNode n in node.ChildNodes)
+                {
+                    if (!first)
+                    {
+                        sb.Append(',');
+                    }
+
+                    sb.Append(n.Name);
+                    sb.Append("=@");
+                    sb.Append(n.Name);
+
+                    first = false;
+                }
+
+                sb.Append(" WHERE " + tbKey + "=@_" + tbKey);
+
+                cmd.CommandText = sb.ToString();
+
+                cmd.Parameters.Add("@_" + tbKey, DbType.Int32).Value = Convert.ToInt32(keyvalue);
+                
+            }
+
+            Dictionary<string, string> tbInfo = DBManager.GetTableInfo(tbName, con);            
+
+            foreach (XmlNode n in node.ChildNodes)
+            {
+                string colType = tbInfo[n.Name];
+                DbType dbType = DBManager.GetDbType(colType);
+
+                if (dbType == DbType.Binary)
+                {
+                    byte[] data = Convert.FromBase64String(n.InnerText);
+                    cmd.Parameters.Add("@" + n.Name, DbType.Binary, data.Length).Value = data;
+                }
+                else if (dbType == DbType.Int32)
+                {
+                    cmd.Parameters.Add("@" + n.Name, dbType).Value = Convert.ToInt32(n.InnerText);
+                }
+                else
+                {
+                    cmd.Parameters.Add("@" + n.Name, dbType).Value = n.InnerText;
+                }
+            }
+
+            try
+            {
+                cmd.ExecuteNonQuery();
+            }
+            catch
             {
 
             }
@@ -286,8 +363,7 @@ namespace GlassFilm.Sync
 
                     while (BuildJSONFromTable(tbName, dt, start, out count, out json))
                     {
-                        RestoreData(json);
-
+                        SyncUp(json);
                         start += count;
                     }
                 }

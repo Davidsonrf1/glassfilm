@@ -287,6 +287,7 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\Settings-Backup-Sync-icon.png" />
     <None Include="Resources\Gears-icon.png" />
     <None Include="Resources\gear-loading.png" />
     <None Include="Resources\zoomduo2.png" />
