@@ -33,6 +33,16 @@ extern "C" {
 		}
 	}
 
+	CUT_EXPORT unsigned int CUT_API DeleteShape(unsigned int sheet, unsigned int id)
+	{
+		if (sheet < sheetCount)
+		{
+			return sheets[sheet]->DeleteShape(id);
+		}
+
+		return 0;
+	}
+
 	CUT_EXPORT unsigned int CUT_API CreateShape(unsigned int sheet, unsigned int id)
 	{
 		if (sheet < sheetCount)

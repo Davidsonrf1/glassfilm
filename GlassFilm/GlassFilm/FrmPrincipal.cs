@@ -61,6 +61,8 @@ namespace GlassFilm
 
         Filme filmeAtual = null;
 
+        NestManager nestManager = null;
+
         private void FrmPrincipal_Load(object sender, EventArgs e)
         {            
             foreach (Control ctrl in this.Controls)
@@ -385,7 +387,26 @@ namespace GlassFilm
 
         private void vvModelo_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            vvCorte.ImportSelection(vvModelo);
+            if (filmeAtual == null)
+            {
+                Mensagens.Atencao("Nenhum filem selecionado!");
+                return;
+            }
+
+            if (nestManager == null)
+            {
+                nestManager = new NestManager(filmeAtual.Largura);
+            }
+
+            //vvCorte.ImportSelection(vvModelo);
+
+            foreach (VectorPath p in vvModelo.Document.Selection)
+            {
+                VectorPath ip = vvCorte.Document.ImportPath(p);
+
+                nestManager.RegisterPath(ip);
+                nestManager.NestPath(ip);
+            }
 
             if (vvCorte.Document.Paths.Count == 1)
                 vvCorte.AutoFit();

@@ -344,6 +344,14 @@ namespace VectorView
             }
         }
 
+        public uint PathID
+        {
+            get
+            {
+                return id;
+            }
+        }
+
         public void UpdateGoodPos()
         {
             if (!IsValidPos)

@@ -42,6 +42,9 @@ namespace VectorView
         public extern static uint CreateShape(uint sheet, uint id);
 
         [DllImport("CutSheet.dll")]
+        public extern static uint DeleteShape(uint sheet, uint id);
+
+        [DllImport("CutSheet.dll")]
         public extern static void ResetSheet(uint sheet, int size);
 
         [DllImport("CutSheet.dll")]

@@ -9,6 +9,27 @@
 
 #define LINE_MAP_SIZE 10
 
+CutShape::CutShape()
+{
+	for (int i = 0; i < MAX_ANGLES; i++)
+	{
+		scans[i] = nullptr;
+		sortedScans[i] = nullptr;
+	}
+}
+
+CutShape::~CutShape()
+{
+	for (int i = 0; i < MAX_ANGLES; i++)
+	{
+		if (scans[i] != nullptr)
+		{
+			scans[i]->Clear();
+			delete scans[i];
+		}
+	}
+}
+
 void CutShape::AddAngle(int angle, int width, int height, void* data)
 {
 	if (angle >= 0 && angle < MAX_ANGLES)

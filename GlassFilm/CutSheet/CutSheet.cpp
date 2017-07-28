@@ -42,6 +42,46 @@ CutShape * CutSheet::GetShape(unsigned id)
 	return nullptr;
 }
 
+int CutSheet::DeleteShape(unsigned int id)
+{
+	ShapeHolder *found = nullptr;
+	ShapeHolder *p = first;
+	ShapeHolder *before = nullptr;
+
+	if (p)
+	{
+		do
+		{
+			if (p->id == id)
+				found = p;
+
+			before = p;
+		} while ((p = p->next) && !found);
+	}
+
+	if (found) 
+	{
+		if (before == nullptr)
+		{
+			first = found->next;
+		}
+		else
+		{
+			before->next = found->next;
+
+			if (before->next == nullptr)
+				last = before;
+		}
+
+		delete found->shape;
+		delete found;
+
+		shapeCount--;
+	}
+
+	return id;
+}
+
 int CutSheet::CreateShape(unsigned int id)
 {
 	ShapeHolder *found = nullptr;

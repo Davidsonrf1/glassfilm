@@ -15,6 +15,9 @@ class CutShape {
 
 	LineSegment** segments = nullptr;
 public:
+	CutShape();
+	~CutShape();
+
 	void AddAngle(int angle, int width, int height, void* data);
 
 	CutScan* GetScan(int angle);

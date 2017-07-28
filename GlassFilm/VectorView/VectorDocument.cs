@@ -152,6 +152,17 @@ namespace VectorView
         static uint curId = 1;
         static string toLock = "";
 
+        public VectorPath GetPathFromSource(VectorPath src)
+        {
+            foreach (VectorPath p in paths)
+            {
+                if (p.Source == src)
+                    return p;
+            }
+
+            return null;
+        }
+
         public VectorPath CreatePath()
         {
             VectorPath path = new VectorPath(this);

@@ -50,6 +50,7 @@ public:
 
 	CutShape* GetShape(unsigned id);
 	int CreateShape(unsigned int id);
+	int DeleteShape(unsigned int id);
 	bool TestShape(CutShape* shape, CutTestResult *res);
 	void Reset(int size);
 

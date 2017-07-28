@@ -50,12 +50,25 @@ CutScan::CutScan(int lines, int angle)
 CutScan::~CutScan()
 {
 	Clear();
+
+	for (int i = 0; i < lineCount; i++)
+	{
+		if (segments[i])
+		{
+			delete segments[i];
+		}
+	}
 }
 
 void CutScan::Clear()
 {
-	for (int i = 0; i < lineCount; i++)
-		if(segments[i]) segments[i]->Clear();
+	for (int i = 0; i < lineCount; i++) 
+	{
+		if (segments[i]) 
+		{
+			segments[i]->Clear();
+		}
+	}
 }
 
 void CutScan::AddSegment(int line, int start, int end)
