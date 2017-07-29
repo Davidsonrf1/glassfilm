@@ -220,7 +220,7 @@ void CutScan::Normalize(int w, int h)
 				minx = MIN(minx, seg->GetStart());
 				maxx = MAX(maxx, seg->GetEnd());
 				miny = MIN(miny, line);
-				maxy = MIN(maxy, line);
+				maxy = MAX(maxy, line);
 
 				lineMax = MAX(lineMax, seg->GetEnd());
 				lineMin = MIN(lineMin, seg->GetStart());

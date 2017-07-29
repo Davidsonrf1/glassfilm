@@ -65,6 +65,8 @@ namespace GlassFilm
                     path.SetPos(res.x, res.y);
                     path.Rotate(res.angle);
 
+                    Plot((uint)cutSheet, shape, res.angle, res.x, res.y);
+
                     return true;
                 }
             }
