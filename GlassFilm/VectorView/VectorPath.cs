@@ -29,6 +29,12 @@ namespace VectorView
         bool testPointInside = false;
         bool selected = false;
         bool outOfLimits = false;
+        bool nested = false;
+
+        string title = "";
+
+        uint sheet = 0;
+        uint shape = 0;
 
         Guid guid;
 
@@ -352,6 +358,58 @@ namespace VectorView
             }
         }
 
+        public bool Nested
+        {
+            get
+            {
+                return nested;
+            }
+
+            set
+            {
+                nested = value;
+            }
+        }
+
+        public uint Sheet
+        {
+            get
+            {
+                return sheet;
+            }
+
+            set
+            {
+                sheet = value;
+            }
+        }
+
+        public uint Shape
+        {
+            get
+            {
+                return shape;
+            }
+
+            set
+            {
+                shape = value;
+            }
+        }
+
+        public string Title
+        {
+            get
+            {
+                return title;
+            }
+
+            set
+            {
+                title = value;
+            }
+        }
+
         public void UpdateGoodPos()
         {
             if (!IsValidPos)
@@ -361,7 +419,18 @@ namespace VectorView
                 lastGoodPos.Y = posy;
             }
         }
-        
+
+        public override string ToString()
+        {
+            if (title != null)
+            {
+                return title;
+            }
+            
+
+            return base.ToString();
+        }
+
         public void RestoreGoodPos()
         {
             angle = lastGoodAngle;
@@ -593,7 +662,7 @@ namespace VectorView
             float diagonal = ((float)Math.Sqrt((BoundRect.Width * BoundRect.Width) + (BoundRect.Height * BoundRect.Height))) + 1;
             float w = diagonal / 2;
 
-            uint shape = CutLibWrapper.CreateShape(sheet, (uint)id);
+            shape = CutLibWrapper.CreateShape(sheet, (uint)id);
 
             if (polygons == null)
                 BuildPolygons();
@@ -619,6 +688,8 @@ namespace VectorView
             CutLibWrapper.BuildScansFromPolygon(sheet, shape, diagonal, diagonal, poly, count);
 
             Marshal.FreeHGlobal(poly);
+
+            this.sheet = sheet;
 
             return shape;
         }

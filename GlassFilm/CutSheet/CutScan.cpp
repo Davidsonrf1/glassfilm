@@ -149,6 +149,9 @@ void CutScan::Normalize(int w, int h)
 	int c = w / 2;
 	int segLine = -c;
 
+	firstLine = LONG_MAX;
+	lastLine = LONG_MIN;
+
 	for (int i = 0; i < lineCount; i++)
 	{
 		int segCount = segments[i]->GetCount();
@@ -156,6 +159,16 @@ void CutScan::Normalize(int w, int h)
 
 		if (seg)
 		{
+			if (segLine < firstLine)
+			{
+				firstLine = segLine;
+			}
+
+			if (segLine > lastLine)
+			{
+				lastLine = segLine;
+			}
+
 			do
 			{
 				minx = MIN(seg->GetStart(), minx);
@@ -257,6 +270,16 @@ int CutScan::GetMiddleMax()
 int CutScan::GetMiddleLen()
 {
 	return middleLen;
+}
+
+int CutScan::GetStartLine(int y)
+{
+	return firstLine + y;
+}
+
+int CutScan::GetLastLine(int y)
+{
+	return lastLine + y;
 }
 
 bool CutScan::TestLimits(int x, int y, int top, int left, int bottom)

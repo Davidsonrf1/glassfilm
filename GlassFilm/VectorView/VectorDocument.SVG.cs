@@ -80,6 +80,15 @@ namespace VectorView
                 SvgPath p = (SvgPath)el;
                 path = CreatePath();
 
+                foreach (SvgElement e in p.Children)
+                {
+                    if (e is SvgTitle)
+                    {
+                        SvgTitle title = (SvgTitle)e;
+                        path.Title = title.Content;
+                    }
+                }
+
                 string tag, side;
 
                 tag = "";

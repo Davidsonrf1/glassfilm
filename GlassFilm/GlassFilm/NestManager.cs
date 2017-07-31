@@ -26,6 +26,19 @@ namespace GlassFilm
             }
         }
 
+        public int CutSheet
+        {
+            get
+            {
+                return cutSheet;
+            }
+
+            set
+            {
+                cutSheet = value;
+            }
+        }
+
         public NestManager(int size)
         {
             ResetSheet(size);

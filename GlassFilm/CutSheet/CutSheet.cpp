@@ -145,7 +145,7 @@ bool CutSheet::TestFullScan(CutScan* scan, int x, int y)
 {
 	int count = scan->GetLineCount();
 	CutSegmentList** segs = scan->GetSegments();
-	int startLine = segs[0]->GetFirst()->GetLine();
+	int startLine = y + segs[0]->GetFirst()->GetLine();
 	int sx, ex;
 
 	if (startLine < 0 || startLine + count >= lines)
@@ -210,7 +210,7 @@ void CutSheet::TestEndSpace(CutShape* shape)
 		{
 			CutScan *scan = shape->GetSortedScan(scanIndex);
 
-			int x = end - scan->GetMiddleMin() + 2;
+			int x = end + (scan->GetWidth() / 2) + 2;
 			int y = i;
 			
 			if (end > 0)
@@ -268,27 +268,60 @@ void CutSheet::TestFreeSpace(CutShape* shape)
 		{
 			for (int angleIndex = 0; angleIndex < MAX_ANGLES; angleIndex++)
 			{
-				CutScan* scan = shape->GetSortedScan(angleIndex);
+				CutScan *scan = shape->GetSortedScan(angleIndex);
 
-				if (CutSegment* seg = free->GetFirst())
+				int startLine = scan->GetStartLine(y);
+				int lastLine = scan->GetLastLine(y);
+				int lcount = scan->GetLineCount();
+
+				bool pass = true;
+
+				if (startLine > 0 && lastLine < lines-1)
 				{
-					while (seg)
-					{
-						if (seg->GetLen() > scan->GetMiddleLen())
-						{
-							x = seg->GetStart() - scan->GetMiddleMin();
+					CutSegment *freeSeg = free->GetFirst();
 
-							if (scan->TestLimits(x, y, 0, 0, lines))
+					bool found = false;
+
+					while (freeSeg && !found)
+					{
+						int x = scan->GetMiddleLen() + 2 + freeSeg->GetStart();
+
+						CutSegmentList* ul = &usedSpace[startLine];
+						CutSegmentList **sl = scan->GetSegments();
+
+						for (int k = 0; k < lcount && pass; k++, sl++, ul++)
+						{
+							CutSegmentList *ssl = *sl;
+							CutSegment* usedSeg = ul->GetFirst();
+
+							if (x == 34 && y == 89 && scan->GetAngle() == 118 && k == 61)
+								int abc = 0;
+
+							while (usedSeg && pass)
 							{
-								if (TestFullScan(scan, x, y))
+								CutSegment *scanSeg = ssl->GetFirst();
+
+								while (scanSeg && pass)
 								{
-									SetResult(scan->GetAngle(), x, y, x + scan->GetRight());
-									return;
+									if (usedSeg->Intersect(scanSeg->GetStart() + x, scanSeg->GetEnd() + x))
+									{
+										pass = false;
+									}
+
+									scanSeg = scanSeg->GetNext();
 								}
+
+								usedSeg = usedSeg->GetNext();
 							}
 						}
 
-						seg = seg->GetNext();
+						if (pass)
+						{
+							SetResult(scan->GetAngle(), x, y, scan->GetRight() + x);
+							found = true;
+						}
+
+						freeSeg = freeSeg->GetNext();
 					}
 				}
 			}
@@ -332,6 +365,8 @@ bool CutSheet::TestShape(CutShape* shape, CutTestResult *res)
 
 void CutSheet::Reset(int size)
 {
+	lines = size;
+
 	if (freeSpace != nullptr)
 		delete[] freeSpace;
 

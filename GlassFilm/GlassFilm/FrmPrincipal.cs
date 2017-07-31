@@ -511,9 +511,74 @@ namespace GlassFilm
             Application.DoEvents();
         }
 
+        public VectorPath GetPathByMaxArea(VectorDocument doc)
+        {
+            VectorPath p = null;
+
+            foreach (VectorPath vi in doc.Paths)
+            {
+                if (!vi.Nested)
+                {
+                    if (p == null)
+                    {
+                        p = vi;
+                    }
+                    else
+                    {
+                        if (vi.Area > p.Area)
+                            p = vi;
+                    }
+                }
+            }
+
+            return p;
+        }
+
+        public void NestPaths(VectorDocument doc, int size)
+        {
+            doc.DocHeight = size;
+
+            foreach (VectorPath pi in doc.Paths)
+            {
+                pi.Nested = false;
+            }
+
+            VectorPath p = null;
+            while ((p = GetPathByMaxArea(doc)) != null)
+            {
+                if (nestManager.NestPath(p))
+                {
+
+                }
+                else
+                {
+
+                }
+                p.Nested = true;
+            }
+        }
+
         private void button3_Click(object sender, EventArgs e)
         {
-            
+            if (filmeAtual == null)
+            {
+                Mensagens.Atencao("Nenhum filme selecionado!");
+                return;
+            }
+
+            if (nestManager == null)
+            {
+                nestManager = new NestManager(filmeAtual.Largura);
+            }
+            else
+            {
+                nestManager.ResetSheet(filmeAtual.Largura);
+            }
+
+            NestPaths(vvCorte.Document, filmeAtual.Largura);
+
+            vvCorte.Refresh();
+            Refresh();
         }
 
         void AtualizaFilmes()

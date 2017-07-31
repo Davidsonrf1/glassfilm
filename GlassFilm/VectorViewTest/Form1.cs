@@ -24,10 +24,10 @@ namespace VectorViewTest
 
         private void Form1_Load(object sender, EventArgs e)
         {
-            //vv.Document.LoadSVGFromFile("d:\\teste_desenho.svg");
+            vv.Document.LoadSVGFromFile("d:\\teste_desenho.svg");
 
             DoubleBuffered = true;
-            vv.Document.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg");
+            //vv.Document.LoadSVGFromFile("D:\\COROLLA SEDAN ANO 2009 A 2014 (16).svg");
 
             int time = Environment.TickCount;
             File.WriteAllText("D:\\out.svg", vv.Document.ToSVG());
@@ -50,24 +50,13 @@ namespace VectorViewTest
 
             foreach (VectorPath p in vv.Document.DocPaths())
             {
-                //p.DrawNormalizedPath = true;
-                //p.DrawTestPoint = true;
-                //p.DrawCenterPoint = true;
-                //p.DrawBoundBox = true;
-                //p.DrawCurGrid = true;
-                //p.FillOnPointInside = true;
-
-                p.GenerateCutShape(sheet);
-                path = p;
-
-                //cs.GenerateFromPath(p);
-
-                break;
+                p.Shape = p.GenerateCutShape(sheet);
+                p.Sheet = sheet;
             }
 
             time = Environment.TickCount - time;
 
-            MessageBox.Show(time.ToString());
+            //MessageBox.Show(time.ToString());
 
             res.x = 123;
             res.y = 321;
@@ -93,43 +82,6 @@ namespace VectorViewTest
             }
             */
 
-            res.resultOK = false;
-            CutLibWrapper.TestShape(sheet, shape, ref res);
-            
-            if (res.resultOK)
-            {
-                CutLibWrapper.Plot(sheet, shape, res.angle, res.x, res.y);
-
-                path.SetPos(res.x, res.y);
-                path.Rotate(res.angle);                
-            }
-            
-
-            res.resultOK = false;
-            CutLibWrapper.TestShape(sheet, shape, ref res);
-
-            if (res.resultOK)
-            {
-                CutLibWrapper.Plot(sheet, shape, res.angle, res.x, res.y);
-
-                path.SetPos(res.x, res.y);
-                path.Rotate(res.angle);                
-            }
-            
-
-            res.resultOK = false;
-            CutLibWrapper.TestShape(sheet, shape, ref res);
-            
-            if (res.resultOK)
-            {
-                CutLibWrapper.Plot(sheet, shape, res.angle, res.x, res.y);
-
-                path.SetPos(res.x, res.y);
-                path.Rotate(res.angle);
-
-                limits = path.Limits;
-            }
-            
             i = Environment.TickCount - i;
 
             Text = i.ToString();
@@ -138,6 +90,61 @@ namespace VectorViewTest
             vv.AutoFit();
 
             //vv.Document.AutoFit(vv.ClientRectangle, VectorFitStyle.Both, true, VectorFitRegion.Document, 100);
+        }
+
+        public VectorPath GetPathByMaxArea(VectorDocument doc)
+        {
+            VectorPath p = null;
+
+            foreach (VectorPath vi in doc.Paths)
+            {
+                if (!vi.Nested)
+                {
+                    if (p == null)
+                    {
+                        p = vi;
+                    }
+                    else
+                    {
+                        if (vi.Area > p.Area)
+                            p = vi;
+                    }
+                }
+            }
+
+            return p;
+        }
+
+        public void NestPaths(VectorDocument doc, int size, uint sheet)
+        {
+            CutLibWrapper.CutTestResult res = new CutLibWrapper.CutTestResult();
+
+            CutLibWrapper.ResetSheet(sheet, size);
+
+            doc.DocHeight = size;
+
+            foreach (VectorPath pi in doc.Paths)
+            {
+                pi.Nested = false;
+            }
+
+            VectorPath p = null;
+
+            while ((p = GetPathByMaxArea(doc)) != null)
+            {
+                res.resultOK = false;
+                CutLibWrapper.TestShape(sheet, p.Shape, ref res);
+
+                if (res.resultOK)
+                {
+                    CutLibWrapper.Plot(sheet, p.Shape, res.angle, res.x, res.y);
+
+                    p.SetPos(res.x, res.y);
+                    p.Rotate(res.angle);
+                }
+
+                p.Nested = true;
+            }
         }
 
         protected override void OnPaint(PaintEventArgs e)
@@ -154,18 +161,6 @@ namespace VectorViewTest
             //e.Graphics.TranslateTransform(path.X, path.Y-120);
             e.Graphics.SmoothingMode = System.Drawing.Drawing2D.SmoothingMode.HighQuality;
 
-            Pen p = new Pen(Color.Yellow);
-            p.LineJoin = System.Drawing.Drawing2D.LineJoin.Miter;
-            p.Alignment = System.Drawing.Drawing2D.PenAlignment.Inset;
-
-            List<PointF[]> poly = path.GetTransfomedPolygons();
-            foreach (PointF[] pts in poly)
-            {
-                e.Graphics.DrawPolygon(Pens.Yellow, pts);
-            }
-            
-            //e.Graphics.DrawRectangle(Pens.Orange, limits.X+path.X, limits.Y+path.Y, limits.Width, limits.Height);
-            e.Graphics.FillEllipse(Brushes.YellowGreen,  path.X-3, path.Y-3, 6, 6);
         }
 
         List<Bitmap> images = new List<Bitmap>();
@@ -192,7 +187,7 @@ namespace VectorViewTest
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
-
+            
             /*
             CutLibWrapper.ResetSheet(sheet, 1280);
             CutLibWrapper.Plot(sheet, shape, angle, 150, 190);
@@ -204,8 +199,8 @@ namespace VectorViewTest
 
             angle = ++angle % 360;
 
-            Refresh();
-            */
+            Refresh();*/
+            
         }
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -226,6 +221,14 @@ namespace VectorViewTest
         private void vv_SelectionChanged(object sender, VectorEventArgs e)
         {
             
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            NestPaths(vv.Document, 150, sheet);
+            vv.Refresh();
+
+            Refresh();
         }
     }
 }

@@ -31,6 +31,8 @@ class CutScan {
 	int middleMin = 0;
 	int middleMax = 0;
 	int middleLen = 0;
+	int firstLine = 0;
+	int lastLine = 0;
 	CutSegmentList* segments[MAX_CUT_LINES];
 	void DeleteSegments();
 
@@ -60,7 +62,8 @@ public:
 	int GetMiddleMax();
 	int GetMiddleLen();
 
-
+	int GetStartLine(int y);
+	int GetLastLine(int y);
 
 	CutSegmentList** GetSegments();
 };
