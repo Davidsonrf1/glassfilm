@@ -108,10 +108,10 @@ namespace GlassFilm
             
             if (Debugger.IsAttached)
             {
-                //SyncManager.Syncronize(SyncType.Outgoing);
+                SyncManager.Syncronize(SyncType.Outgoing);
             }
 
-            SyncManager.Syncronize(Sync.SyncType.Incoming);
+            //SyncManager.Syncronize(Sync.SyncType.Incoming);
 
             sel.AtualizaMarcas();
             cbMarca.Focus();

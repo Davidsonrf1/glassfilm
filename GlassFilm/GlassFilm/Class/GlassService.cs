@@ -8,7 +8,8 @@ namespace GlassFilm.Class
 {
     public static class GlassService
     {
-        private static string serverBaseUrl = "http://www.cutfilm.com.br/glass/serv/";
+        private static string serverBaseUrl = "http://localhost/server/";
+        //private static string serverBaseUrl = "http://www.cutfilm.com.br/glass/serv/";
 
         public static string ServerBaseUrl
         {
@@ -25,6 +26,7 @@ namespace GlassFilm.Class
 
         public static string GetUrl(string url)
         {
+
             return serverBaseUrl + url;
         }
     }

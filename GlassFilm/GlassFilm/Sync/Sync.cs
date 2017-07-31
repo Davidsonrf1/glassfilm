@@ -115,7 +115,12 @@ namespace GlassFilm.Sync
             if (start < dt.Rows.Count)
             {
                 sb.Append("{\n");
-                sb.Append(string.Format("\t\"{0}\": [\n", tbName));
+                sb.Append(string.Format("\t\"{0}\": {{\n", tbName));
+
+                string tbKey = tbKeys[tbName];
+
+                sb.Append(string.Format("\t\"table_key\":\"{0}\",\n", tbKey));
+                sb.Append("\"rows\": [");
 
                 bool first = true;
                 for (int i = start; i < start + 10 && i < dt.Rows.Count; i++)
@@ -131,7 +136,7 @@ namespace GlassFilm.Sync
                     first = false;
                 }
 
-                sb.Append("\n]}\n");
+                sb.Append("\n]}}\n");
                 json = sb.ToString();
 
                 return true;
@@ -142,7 +147,9 @@ namespace GlassFilm.Sync
 
         public static void SyncDown(int versao)
         {
-            var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sync_down.php"));
+            string url = GlassService.GetUrl("sync_down.php");
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
 
             string postData = "";
 
