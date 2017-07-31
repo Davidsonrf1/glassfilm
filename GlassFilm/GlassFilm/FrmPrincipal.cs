@@ -111,7 +111,7 @@ namespace GlassFilm
                 //SyncManager.Syncronize(SyncType.Outgoing);
             }
 
-            //SyncManager.Syncronize(Sync.SyncType.Incoming);
+            SyncManager.Syncronize(Sync.SyncType.Incoming);
 
             sel.AtualizaMarcas();
             cbMarca.Focus();

@@ -144,13 +144,18 @@ namespace GlassFilm.Sync
         {
             var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sync_down.php"));
 
+            string postData = "";
+
+            postData += "&tipo=" + "sync_down";
+            postData += "&pagina=" + 1.ToString();
+            postData += "&versao=" + versao.ToString();
+            postData += "&itens=" + 10.ToString();
+
+            byte[] data = Encoding.UTF8.GetBytes(postData);
+
             request.Method = "POST";
-            request.ContentType = "application/json; charset=utf-8";
-
-            string json = string.Format("{{\"versaoMinima\": \"{0}\"}}", versao);
-
-            byte[] data = Encoding.UTF8.GetBytes(json);
-            request.ContentLength = data.Length;
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;            
 
             using (var stream = request.GetRequestStream())
             {
