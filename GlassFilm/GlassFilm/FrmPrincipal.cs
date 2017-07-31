@@ -52,6 +52,8 @@ namespace GlassFilm
                 {
                     cbFilme.SelectedItem = f;
                     filmeAtual = f;
+
+                    vvCorte.Document.DocHeight = filmeAtual.Largura;
                     break;
                 }
             }
@@ -426,8 +428,19 @@ namespace GlassFilm
 
         private void button2_Click(object sender, EventArgs e)
         {
+            if (nestManager != null)
+            {
+                int size = 1000;
+
+                if (filmeAtual != null)
+                    size = filmeAtual.Largura;
+
+                nestManager.ResetSheet(size);
+            }
+
             vvCorte.Clear();
             vvCorte.Refresh();
+
 
             UpdateImportCount();
 
@@ -626,6 +639,11 @@ namespace GlassFilm
                 Program.Config["FilmePadrao"] = filme.Id.ToString();
 
                 filmeAtual = filme;
+
+                vvCorte.Document.DocHeight = filmeAtual.Largura;
+
+                if (nestManager != null)
+                    nestManager.ResetSheet(filmeAtual.Largura);
 
                 vvCorte.Refresh();
             }
