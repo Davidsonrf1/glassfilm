@@ -36,6 +36,10 @@
             this.cadastrarDesenhoToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.cadastroRoloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlprincipal = new System.Windows.Forms.Panel();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
             this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbFilme = new System.Windows.Forms.ComboBox();
@@ -43,6 +47,7 @@
             this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbTamanho = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -64,19 +69,17 @@
             this.splitCorte = new System.Windows.Forms.SplitContainer();
             this.vvModelo = new VectorView.VectorViewCtr();
             this.toolCorte = new System.Windows.Forms.ToolStrip();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.vvCorte = new VectorView.VectorViewCtr();
+            this.lbStatusSyn = new System.Windows.Forms.ToolStripStatusLabel();
+            this.pbSync = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
             this.status.SuspendLayout();
             this.panel8.SuspendLayout();
@@ -85,7 +88,6 @@
             this.splitCorte.Panel2.SuspendLayout();
             this.splitCorte.SuspendLayout();
             this.toolCorte.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -162,6 +164,67 @@
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.White;
+            this.button1.Image = global::GlassFilm.Properties.Resources.Gears_icon;
+            this.button1.Location = new System.Drawing.Point(1248, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 80);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "Configurar";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(128)))), ((int)(((byte)(44)))));
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
+            this.button4.Location = new System.Drawing.Point(1047, 19);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 80);
+            this.button4.TabIndex = 10;
+            this.button4.Text = "Recortar";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(253)))), ((int)(((byte)(2)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
+            this.button3.Location = new System.Drawing.Point(966, 19);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 80);
+            this.button3.TabIndex = 9;
+            this.button3.Text = "Auto Ajuste";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(152)))), ((int)(((byte)(248)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.Black;
+            this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
+            this.button2.Location = new System.Drawing.Point(885, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 80);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Limpar";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
             // panel3
             // 
             this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
@@ -229,6 +292,17 @@
             this.lbTamanho.Size = new System.Drawing.Size(111, 13);
             this.lbTamanho.TabIndex = 0;
             this.lbTamanho.Text = "16.51inX27.76in -- TO";
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logoComputer3001;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(360, 110);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
             // 
             // panel2
             // 
@@ -383,7 +457,9 @@
             // 
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.docInfo,
-            this.selInfo});
+            this.selInfo,
+            this.lbStatusSyn,
+            this.pbSync});
             this.status.Location = new System.Drawing.Point(0, 545);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(1335, 24);
@@ -444,19 +520,15 @@
             // vvModelo
             // 
             this.vvModelo.AllowMoveDocument = false;
-
             this.vvModelo.AllowTransforms = false;
             this.vvModelo.BackColor = System.Drawing.Color.White;
             this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
-
             this.vvModelo.GridColor = System.Drawing.Color.Black;
             this.vvModelo.GridSize = 10;
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
-
             this.vvModelo.ShowGrid = false;
-
             this.vvModelo.Size = new System.Drawing.Size(1329, 189);
             this.vvModelo.TabIndex = 19;
             this.vvModelo.Visible = false;
@@ -478,78 +550,6 @@
             this.toolCorte.TabIndex = 21;
             this.toolCorte.Visible = false;
             this.toolCorte.Resize += new System.EventHandler(this.toolCorte_Resize);
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.White;
-            this.button1.Image = global::GlassFilm.Properties.Resources.Gears_icon;
-            this.button1.Location = new System.Drawing.Point(1248, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 80);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "Configurar";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(128)))), ((int)(((byte)(44)))));
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
-            this.button4.Location = new System.Drawing.Point(1047, 19);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 80);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "Recortar";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(253)))), ((int)(((byte)(2)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
-            this.button3.Location = new System.Drawing.Point(966, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 80);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Auto Ajuste";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(152)))), ((int)(((byte)(248)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
-            this.button2.Location = new System.Drawing.Point(885, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 80);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Limpar";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logoComputer3001;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(360, 110);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // toolStripButton1
             // 
@@ -590,25 +590,34 @@
             // vvCorte
             // 
             this.vvCorte.AllowMoveDocument = true;
-
             this.vvCorte.AllowTransforms = true;
             this.vvCorte.BackColor = System.Drawing.Color.White;
             this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
             this.vvCorte.Dock = System.Windows.Forms.DockStyle.Left;
-
             this.vvCorte.GridColor = System.Drawing.Color.Black;
             this.vvCorte.GridSize = 10;
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
-
             this.vvCorte.ShowGrid = false;
-
             this.vvCorte.Size = new System.Drawing.Size(1302, 152);
             this.vvCorte.TabIndex = 1;
             this.vvCorte.Visible = false;
             this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
             this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed_1);
             this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
+            // 
+            // lbStatusSyn
+            // 
+            this.lbStatusSyn.Name = "lbStatusSyn";
+            this.lbStatusSyn.Size = new System.Drawing.Size(118, 19);
+            this.lbStatusSyn.Text = "toolStripStatusLabel1";
+            this.lbStatusSyn.Visible = false;
+            this.lbStatusSyn.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
+            // 
+            // pbSync
+            // 
+            this.pbSync.Name = "pbSync";
+            this.pbSync.Size = new System.Drawing.Size(100, 18);
             // 
             // FrmPrincipal
             // 
@@ -641,6 +650,7 @@
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.status.ResumeLayout(false);
@@ -652,7 +662,6 @@
             this.splitCorte.ResumeLayout(false);
             this.toolCorte.ResumeLayout(false);
             this.toolCorte.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -704,5 +713,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.ToolStripStatusLabel lbStatusSyn;
+        private System.Windows.Forms.ToolStripProgressBar pbSync;
     }
 }

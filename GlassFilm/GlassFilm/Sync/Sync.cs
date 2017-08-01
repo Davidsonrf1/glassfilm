@@ -13,12 +13,16 @@ using System.Xml;
 namespace GlassFilm.Sync
 {
     public enum SyncType { Incoming, Outgoing, Both }
-
-    public delegate void UpdateSyncStatus(SynStatus status);
+    public delegate void UpdateSyncStatus(SyncStatus status);
     
-    public class SynStatus
+    public class SyncStatus
     {
         int total=0, atual=0;
+
+        string objeto = "";
+        string acao = "";
+
+        bool show = true;
 
         public int Atual
         {
@@ -43,6 +47,45 @@ namespace GlassFilm.Sync
             set
             {
                 total = value;
+            }
+        }
+
+        public string Objeto
+        {
+            get
+            {
+                return objeto;
+            }
+
+            set
+            {
+                objeto = value;
+            }
+        }
+
+        public string Acao
+        {
+            get
+            {
+                return acao;
+            }
+
+            set
+            {
+                acao = value;
+            }
+        }
+
+        public bool Show
+        {
+            get
+            {
+                return show;
+            }
+
+            set
+            {
+                show = value;
             }
         }
     }
@@ -104,6 +147,31 @@ namespace GlassFilm.Sync
             set
             {
                 syncStatus = value;
+            }
+        }
+
+        static void Status(bool show)
+        {
+            if (syncStatus != null)
+            {
+                SyncStatus status = new SyncStatus();
+                status.Show = show;
+                syncStatus(status);
+            }
+        }
+
+        static void Status(string acao, string objeto, int max, int val)
+        {
+            if (syncStatus != null)
+            {
+                SyncStatus status = new SyncStatus();
+
+                status.Acao = acao;
+                status.Atual = val > max ? max : val;
+                status.Total = max < 0 ? 0 : max; 
+                status.Objeto = objeto;
+
+                syncStatus(status);
             }
         }
 
@@ -518,24 +586,37 @@ namespace GlassFilm.Sync
 
                     IDbCommand cmd = con.CreateCommand();
 
+                    
+
                     cmd.CommandText = string.Format("SELECT count(*) qtd FROM {0} WHERE SINCRONIZAR = 1", tbName);
                     int total = Convert.ToInt32(cmd.ExecuteScalar().ToString());
-  
+
+                    if (total > 0)
+                        Status(true);
+
                     DataTable dt = DBManager.LoadDataTable(string.Format("SELECT * FROM {0} WHERE SINCRONIZAR = 1", tbName), con);
 
                     int count = 0;
                     int start = 0;
                     string json = "";
 
+                    //Status(string.Format("Enviando tabela '{0}'", tbName), tbName, total, 0);
+
                     while (BuildJSONFromTable(tbName, dt, start, out count, out json, con))
                     {
                         SyncUp(json);
                         start += count;
-                    }
+
+                        Status(string.Format("Enviando tabela '{0}'", tbName), tbName, total, start);
+                    }                    
                 }
                 catch (Exception ex)
                 {
                     Logs.Log(ex.Message);
+                }
+                finally
+                {
+                    Status(false);
                 }
             }
         }

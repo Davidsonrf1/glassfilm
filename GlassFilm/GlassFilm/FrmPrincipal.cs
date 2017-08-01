@@ -104,17 +104,50 @@ namespace GlassFilm
             SyncManager.SyncTables.AddRange(new string[] { "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
             SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "VEICULO" });
 
+            SyncManager.SyncStatus = new UpdateSyncStatus(SyncStatusProc);
+
             SyncManager.CheckTables();
             
             if (Debugger.IsAttached)
             {
-                SyncManager.Syncronize(SyncType.Outgoing);
+                //SyncManager.Syncronize(SyncType.Outgoing);
             }
 
             SyncManager.Syncronize(Sync.SyncType.Incoming);
 
             sel.AtualizaMarcas();
             cbMarca.Focus();
+        }
+
+        private void SyncStatusProc(SyncStatus status)
+        {
+            if (status.Show && !pbSync.Visible)
+            {
+                lbStatusSyn.Visible = true;
+                pbSync.Visible = true;
+
+                pbSync.Maximum = 100;
+                pbSync.Value = 0;
+
+                lbStatusSyn.Text = "Sincronizando...";
+            }
+            else
+            {
+                lbStatusSyn.Visible = false;
+                pbSync.Visible = false;
+            }
+
+            if (status.Total > 0)
+            {
+                pbSync.Maximum = status.Total;
+                pbSync.Value = status.Atual;
+
+                lbStatusSyn.Text = "Sincronizando...";
+
+                pbSync.Invalidate();
+            }
+
+            Application.DoEvents();
         }
 
         private void cortadoraToolStripMenuItem_Click(object sender, EventArgs e)
@@ -768,6 +801,11 @@ namespace GlassFilm
         {
             FrmConfigPlotter c = new GlassFilm.FrmConfigPlotter();
             c.ShowDialog();
+        }
+
+        private void toolStripStatusLabel1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
