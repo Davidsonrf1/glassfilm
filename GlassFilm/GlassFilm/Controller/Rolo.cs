@@ -93,8 +93,8 @@ namespace GlassFilm
                 {
                     try
                     {
-                        string _sql = " INSERT INTO ROLO (ID,DESCRICAO,LARGURA) " +
-                                      " VALUES (@id,@descricao,@largura) ";
+                        string _sql = " INSERT INTO ROLO (ID,DESCRICAO,LARGURA, SINCRONIZAR) " +
+                                      " VALUES (@id,@descricao,@largura, 1) ";
 
                         cmd = new SQLiteCommand();
                         cmd.Connection = DBManager._mainConnection;
@@ -123,7 +123,8 @@ namespace GlassFilm
                     {
                         string _sql = " UPDATE ROLO SET " +
                                       "      DESCRICAO = @descricao," +
-                                      "      LARGURA = @largura" +
+                                      "      LARGURA = @largura," +
+                                      "     SINCRONIZAR = 1" +
                                       " WHERE " +
                                       "      Id = @id";
 

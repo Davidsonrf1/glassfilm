@@ -14,11 +14,46 @@ namespace GlassFilm.Sync
 {
     public enum SyncType { Incoming, Outgoing, Both }
 
+    public delegate void UpdateSyncStatus(SynStatus status);
+    
+    public class SynStatus
+    {
+        int total=0, atual=0;
+
+        public int Atual
+        {
+            get
+            {
+                return atual;
+            }
+
+            set
+            {
+                atual = value;
+            }
+        }
+
+        public int Total
+        {
+            get
+            {
+                return total;
+            }
+
+            set
+            {
+                total = value;
+            }
+        }
+    }
+
     public static class SyncManager
     {
         static string syncUrl = "";
         static List<string> syncTables = new List<string>();
         static List<string> synckeys = new List<string>();
+
+        static UpdateSyncStatus syncStatus = null;
 
         public static string SyncUrl
         {
@@ -59,15 +94,25 @@ namespace GlassFilm.Sync
             }
         }
 
-        static string syncStep = "";
-        static string syncObject = "";
+        public static UpdateSyncStatus SyncStatus
+        {
+            get
+            {
+                return syncStatus;
+            }
+
+            set
+            {
+                syncStatus = value;
+            }
+        }
 
         static void GetTable(string table)
         {
             table = table.Trim();
             SQLiteConnection con = DBManager._mainConnection;
 
-            if (table.Equals("desenhos", StringComparison.InvariantCultureIgnoreCase))
+            if (table.Equals("!desenhos", StringComparison.InvariantCultureIgnoreCase))
             {
                 table = table.Replace("!", "");
                 con = DBManager._modelConnection;
@@ -78,14 +123,16 @@ namespace GlassFilm.Sync
             cmd.CommandText = "SELECT MAX (VERSAO) FROM " + table;
             int versao = int.Parse(cmd.ExecuteScalar().ToString());
 
-            SyncDown(versao);
+            SyncDown(table, versao);
         }
 
-        static string BuildJSONFromRow(DataRow dr)
+        static string BuildJSONFromRow(DataRow dr, string tbName, SQLiteConnection con)
         {
             StringBuilder sb = new StringBuilder();
 
             sb.Append("\t\t\t\t{");
+
+            Dictionary<string, string> tbInfo = DBManager.GetTableInfo(tbName, con);
 
             bool first = true;
             foreach (DataColumn c in dr.Table.Columns)
@@ -95,7 +142,25 @@ namespace GlassFilm.Sync
                     sb.Append(", ");
                 }
 
-                sb.Append(string.Format("\n\t\t\t\t\"{0}\": \"{1}\"", c.ColumnName, dr[c.ColumnName].ToString().Replace("\"", "\\\"")));
+                string colType = tbInfo[c.ColumnName];
+                DbType dbType = DBManager.GetDbType(colType);
+
+                string val = "";
+
+                if (dbType == DbType.Binary)
+                {
+                    val = Convert.ToBase64String((byte[])dr[c.ColumnName]);
+                }
+                else if (dbType == DbType.Int32)
+                {
+                    val = dr[c.ColumnName].ToString();
+                }
+                else
+                {
+                    val = dr[c.ColumnName].ToString().Replace("\"", "\\\"");
+                }
+
+                sb.Append(string.Format("\n\t\t\t\t\"{0}\": \"{1}\"", c.ColumnName, val));
 
                 first = false;
             }
@@ -105,7 +170,7 @@ namespace GlassFilm.Sync
             return sb.ToString();
         }
 
-        static bool BuildJSONFromTable(string tbName, DataTable dt, int start, out int count, out string json)
+        static bool BuildJSONFromTable(string tbName, DataTable dt, int start, out int count, out string json, SQLiteConnection con)
         {
             json = "";
             count = 0;
@@ -117,7 +182,12 @@ namespace GlassFilm.Sync
                 sb.Append("{\n");
                 sb.Append(string.Format("\t\"{0}\": {{\n", tbName));
 
-                string tbKey = tbKeys[tbName];
+                string tbKey = "";
+
+                if (!tbKeys.TryGetValue(tbName, out tbKey))
+                {
+                    tbKeys.TryGetValue("!" + tbName, out tbKey);
+                }
 
                 sb.Append(string.Format("\t\"table_key\":\"{0}\",\n", tbKey));
                 sb.Append("\"rows\": [");
@@ -130,7 +200,7 @@ namespace GlassFilm.Sync
                         sb.Append(",\n");
                     }
 
-                    sb.Append(BuildJSONFromRow(dt.Rows[i]));
+                    sb.Append(BuildJSONFromRow(dt.Rows[i], tbName, con));
 
                     count++;
                     first = false;
@@ -145,45 +215,58 @@ namespace GlassFilm.Sync
             return false;
         }
 
-        public static void SyncDown(int versao)
+        public static void SyncDown(string tabela, int versao)
         {
             string url = GlassService.GetUrl("sync_down.php");
 
-            var request = (HttpWebRequest)WebRequest.Create(url);
+            string responseString = "";
+            int pagina = 0;
 
-            string postData = "";
-
-            postData += "&tipo=" + "sync_down";
-            postData += "&pagina=" + 1.ToString();
-            postData += "&versao=" + versao.ToString();
-            postData += "&itens=" + 10.ToString();
-
-            byte[] data = Encoding.UTF8.GetBytes(postData);
-
-            request.Method = "POST";
-            request.ContentType = "application/x-www-form-urlencoded";
-            request.ContentLength = data.Length;            
-
-            using (var stream = request.GetRequestStream())
+            do
             {
-                stream.Write(data, 0, data.Length);
-            }
+                var request = (HttpWebRequest)WebRequest.Create(url);
 
-            try
-            {
-                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-                string responseString = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+                string postData = "";
 
-                if (responseString.Length > 0)
+                postData += "&tipo=" + "sync_down";
+                postData += "&pagina=" + pagina.ToString();
+                postData += "&versao=" + versao.ToString();
+                postData += "&tabela=" + tabela;
+                postData += "&itens=10";
+
+                byte[] data = Encoding.UTF8.GetBytes(postData);
+
+                request.Method = "POST";
+                request.ContentType = "application/x-www-form-urlencoded";
+                request.ContentLength = data.Length;
+
+                using (var stream = request.GetRequestStream())
                 {
-                    RestoreData(responseString);
+                    stream.Write(data, 0, data.Length);
                 }
-            }
-            catch (Exception ex)
-            {
-                Logs.Log(ex.Message);
-                throw;
-            }
+
+                try
+                {
+                    HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                    responseString = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+
+                    if (!responseString.StartsWith("eof"))
+                    {
+                        RestoreData(responseString);
+                    }
+                    else
+                    {
+                        responseString = "";
+                    }
+                }
+                catch (Exception ex)
+                {
+                    Logs.Log(ex.Message);
+                    throw;
+                }
+
+                pagina++;
+            } while (!string.IsNullOrEmpty(responseString.Trim()));
         }
 
         public static void SyncUp(string json)
@@ -231,7 +314,12 @@ namespace GlassFilm.Sync
             foreach (XmlNode n in xdoc.DocumentElement.ChildNodes)
             {
                 string tbName = n.Name;
-                string tbKey = tbKeys[tbName];
+                string tbKey = "";
+
+                if (!tbKeys.TryGetValue(tbName, out tbKey))
+                {
+                    tbKeys.TryGetValue("!" + tbName, out tbKey);
+                }
 
                 RestoreTable(n, tbName, tbKey);
             }
@@ -265,13 +353,17 @@ namespace GlassFilm.Sync
             if (status)
             {
                 SQLiteConnection con = DBManager._mainConnection;
-
+                string tbKey = "";
                 if (table.Equals("desenhos", StringComparison.InvariantCultureIgnoreCase))
                 {
                     con = DBManager._modelConnection;
+                    tbKey = tbKeys["!"+table];
                 }
-
-                string tbKey = tbKeys[table];
+                else
+                {
+                    tbKey = tbKeys[table];
+                }
+                
 
                 SQLiteCommand cmd = con.CreateCommand();
                 cmd.CommandText = string.Format("update {0} set sincronizar = 0 where {1} = {2}", table, tbKey, id);
@@ -388,13 +480,14 @@ namespace GlassFilm.Sync
                     byte[] data = Convert.FromBase64String(n.InnerText);
                     cmd.Parameters.Add("@" + n.Name, DbType.Binary, data.Length).Value = data;
                 }
-                else if (dbType == DbType.Int32)
-                {
-                    cmd.Parameters.Add("@" + n.Name, dbType).Value = Convert.ToInt32(n.InnerText);
-                }
                 else
                 {
-                    cmd.Parameters.Add("@" + n.Name, dbType).Value = n.InnerText;
+                    string val = n.InnerText;
+
+                    if (string.IsNullOrEmpty(val))
+                        val = "null";
+
+                    cmd.Parameters.Add("@" + n.Name, dbType).Value = val;
                 }
             }
 
@@ -423,13 +516,18 @@ namespace GlassFilm.Sync
                         con = DBManager._modelConnection;
                     }
 
+                    IDbCommand cmd = con.CreateCommand();
+
+                    cmd.CommandText = string.Format("SELECT count(*) qtd FROM {0} WHERE SINCRONIZAR = 1", tbName);
+                    int total = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+  
                     DataTable dt = DBManager.LoadDataTable(string.Format("SELECT * FROM {0} WHERE SINCRONIZAR = 1", tbName), con);
 
                     int count = 0;
                     int start = 0;
                     string json = "";
 
-                    while (BuildJSONFromTable(tbName, dt, start, out count, out json))
+                    while (BuildJSONFromTable(tbName, dt, start, out count, out json, con))
                     {
                         SyncUp(json);
                         start += count;

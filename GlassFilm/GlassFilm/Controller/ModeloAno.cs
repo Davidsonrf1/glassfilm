@@ -80,7 +80,7 @@ namespace GlassFilm.Controller
             {
                 try
                 {
-                    string _sql = " INSERT INTO MODELO_ANO (CODIGO_ANO,CODIGO_MODELO,ANO) VALUES (@codigo_ano,@codigo_modelo,@ano) ";
+                    string _sql = " INSERT INTO MODELO_ANO (CODIGO_ANO,CODIGO_MODELO,ANO, SINCRONIZAR) VALUES (@codigo_ano,@codigo_modelo,@ano,1) ";
 
                     cmd = new SQLiteCommand();
                     cmd.Connection = DBManager._mainConnection;

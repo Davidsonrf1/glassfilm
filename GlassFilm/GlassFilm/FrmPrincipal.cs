@@ -102,7 +102,7 @@ namespace GlassFilm
             }
 
             SyncManager.SyncTables.AddRange(new string[] { "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
-            SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "CODIGO_DESENHO" });
+            SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "VEICULO" });
 
             SyncManager.CheckTables();
             
@@ -111,7 +111,7 @@ namespace GlassFilm
                 SyncManager.Syncronize(SyncType.Outgoing);
             }
 
-            //SyncManager.Syncronize(Sync.SyncType.Incoming);
+            SyncManager.Syncronize(Sync.SyncType.Incoming);
 
             sel.AtualizaMarcas();
             cbMarca.Focus();

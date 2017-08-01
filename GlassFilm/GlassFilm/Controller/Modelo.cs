@@ -92,8 +92,8 @@ namespace GlassFilm
                 {
                     try
                     {
-                        string _sql = " INSERT INTO modelo (CODIGO_MODELO,CODIGO_MARCA,MODELO) " +
-                                      " VALUES (@codigo_modelo,@codigo_marca,@modelo) ";
+                        string _sql = " INSERT INTO modelo (CODIGO_MODELO,CODIGO_MARCA,MODELO, SINCRONIZAR) " +
+                                      " VALUES (@codigo_modelo,@codigo_marca,@modelo, 1) ";
 
                         cmd = new SQLiteCommand();
                         cmd.Connection = DBManager._mainConnection;
@@ -125,7 +125,8 @@ namespace GlassFilm
                     {
                         string _sql = " UPDATE modelo SET " +                                      
                                       "      CODIGO_MARCA = @codigo_marca," +                                      
-                                      "      MODELO = @modelo" +
+                                      "      MODELO = @modelo," +
+                                      "      SINCRONIZAR = 1" +
                                       " WHERE " +
                                       "      CODIGO_MODELO = @codigo_modelo";
 
