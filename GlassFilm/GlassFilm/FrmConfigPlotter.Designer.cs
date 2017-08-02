@@ -37,6 +37,8 @@
             this.cbLang = new System.Windows.Forms.ComboBox();
             this.button1 = new System.Windows.Forms.Button();
             this.lbPlotterName = new System.Windows.Forms.Label();
+            this.cbRotate = new System.Windows.Forms.CheckBox();
+            this.cbFlip = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -46,7 +48,7 @@
             this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.btnEntrar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 91);
+            this.panel1.Location = new System.Drawing.Point(0, 108);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(419, 51);
             this.panel1.TabIndex = 8;
@@ -140,19 +142,41 @@
             // lbPlotterName
             // 
             this.lbPlotterName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbPlotterName.Location = new System.Drawing.Point(11, 60);
+            this.lbPlotterName.Location = new System.Drawing.Point(11, 80);
             this.lbPlotterName.Name = "lbPlotterName";
             this.lbPlotterName.Size = new System.Drawing.Size(399, 23);
             this.lbPlotterName.TabIndex = 16;
             this.lbPlotterName.Text = "SELECIONE O NOME OU PORTA DA PLOTTER";
             this.lbPlotterName.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
+            // cbRotate
+            // 
+            this.cbRotate.AutoSize = true;
+            this.cbRotate.Location = new System.Drawing.Point(11, 60);
+            this.cbRotate.Name = "cbRotate";
+            this.cbRotate.Size = new System.Drawing.Size(142, 17);
+            this.cbRotate.TabIndex = 17;
+            this.cbRotate.Text = "Rotacionar Corte em 90º";
+            this.cbRotate.UseVisualStyleBackColor = true;
+            // 
+            // cbFlip
+            // 
+            this.cbFlip.AutoSize = true;
+            this.cbFlip.Location = new System.Drawing.Point(315, 60);
+            this.cbFlip.Name = "cbFlip";
+            this.cbFlip.Size = new System.Drawing.Size(95, 17);
+            this.cbFlip.TabIndex = 18;
+            this.cbFlip.Text = "Espelhar Corte";
+            this.cbFlip.UseVisualStyleBackColor = true;
+            // 
             // FrmConfigPlotter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(419, 142);
+            this.ClientSize = new System.Drawing.Size(419, 159);
+            this.Controls.Add(this.cbFlip);
+            this.Controls.Add(this.cbRotate);
             this.Controls.Add(this.lbPlotterName);
             this.Controls.Add(this.button1);
             this.Controls.Add(this.cbLang);
@@ -168,6 +192,7 @@
             this.Text = "Parâmetros da Cortadora";
             this.panel1.ResumeLayout(false);
             this.ResumeLayout(false);
+            this.PerformLayout();
 
         }
 
@@ -182,5 +207,7 @@
         private System.Windows.Forms.ComboBox cbLang;
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lbPlotterName;
+        private System.Windows.Forms.CheckBox cbRotate;
+        private System.Windows.Forms.CheckBox cbFlip;
     }
 }

@@ -133,6 +133,11 @@ namespace VectorView
 
         public void Clear()
         {
+            foreach (VectorPath p in paths)
+            {
+                p.Imported = false;
+            }
+
             ClearSelection();
             paths.Clear();
             host.Invalidate();
@@ -143,6 +148,11 @@ namespace VectorView
             foreach (VectorPath p in selection)
             {
                 paths.Remove(p);
+
+                if (CountSource(p.Source) == 0)
+                {
+                    p.Source.Imported = false;
+                }
             }
 
             ClearSelection();
@@ -206,6 +216,8 @@ namespace VectorView
             {
                 if (p.IsValidPos)
                     validPosAfterTransform = true;
+
+                p.GenerateCurrentScan();
             }
 
             if (!validPosBeforeTransform && validPosAfterTransform)
@@ -213,8 +225,6 @@ namespace VectorView
                 foreach (VectorPath p in selection)
                 {
                     p.RestoreGoodPos();
-                    
-
                 }
             }
 

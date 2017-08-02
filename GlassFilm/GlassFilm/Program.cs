@@ -46,6 +46,8 @@ namespace GlassFilm
             config.RegValue("PlotterCOMParity", "N");
             config.RegValue("PlotterCOMStopBits", "1");
             config.RegValue("PlotterCOMFollowControl", "0");
+            config.RegValue("RotateCut", "True");
+            config.RegValue("FlipX", "False");
         }
 
         /// <summary>

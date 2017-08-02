@@ -131,6 +131,14 @@ extern "C" {
 		}
 	}
 
+	CUT_EXPORT void CUT_API PlotCurrentScan(unsigned int sheet, unsigned int shape, int x, int y)
+	{
+		if (sheet < sheetCount)
+		{
+			sheets[sheet]->Plot(sheets[sheet]->GetShape(shape)->GetCurrentScan(), x, y);
+		}
+	}
+
 	CUT_EXPORT void CUT_API Plot(unsigned int sheet, unsigned int shape, int angle, int x, int y)
 	{
 		if (sheet < sheetCount)
@@ -182,6 +190,15 @@ extern "C" {
 		}
 
 		return 0;
+	}
+
+	CUT_EXPORT void CUT_API BuildCurrentScan(unsigned int sheet, unsigned int shapeId, float width, float height, float* poly, int pointCount, float angle)
+	{
+		if (sheet < sheetCount)
+		{
+			CutShape* shape = sheets[sheet]->GetShape(shapeId);
+			shape->BuildCurrentScan(width, height, poly, pointCount, angle);
+		}
 	}
 
 	CUT_EXPORT void CUT_API BuildScansFromPolygon(unsigned int sheet, unsigned int shapeId, float width, float height, float* poly, int pointCount)

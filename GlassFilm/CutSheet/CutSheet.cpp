@@ -480,7 +480,7 @@ void CutSheet::Plot(CutShape* shape, int angle, int x, int y)
 	{
 		CutScan* scan = shape->GetScan(angle);
 		Plot(scan, x, y);
-	}
+	} 
 }
 
 void DrawLine(HDC hDC, int sx, int sy, int ex, int ey)

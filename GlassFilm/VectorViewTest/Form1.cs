@@ -17,10 +17,7 @@ namespace VectorViewTest
         uint sheet = 0;
         uint shape = 0;
 
-        VectorPath path = null;
-        CutLibWrapper.CutTestResult res = new CutLibWrapper.CutTestResult();
         public static ImageList imgList = new ImageList();
-        RectangleF limits = new RectangleF();
 
         private void Form1_Load(object sender, EventArgs e)
         {
@@ -58,8 +55,6 @@ namespace VectorViewTest
 
             //MessageBox.Show(time.ToString());
 
-            res.x = 123;
-            res.y = 321;
 
             //pictureBox1.Image = images[0];
             int i = Environment.TickCount;
@@ -181,8 +176,6 @@ namespace VectorViewTest
 
 
         }
-
-        int angle = 0;
 
         protected override void OnMouseMove(MouseEventArgs e)
         {

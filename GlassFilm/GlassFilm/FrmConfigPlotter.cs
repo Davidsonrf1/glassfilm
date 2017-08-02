@@ -20,6 +20,12 @@ namespace GlassFilm
 
             if (!string.IsNullOrEmpty(Program.Config["PlotterName"]))
                 lbPlotterName.Text = Program.Config["PlotterName"];
+
+            cbRotate.Checked = true;
+            cbFlip.Checked = false;
+
+            try { cbRotate.Checked = bool.Parse(Program.Config["RotateCut"]); } catch { }
+            try { cbFlip.Checked = bool.Parse(Program.Config["FlipX"]); } catch { }
         }
 
         public void SetCBValue(ComboBox cb, string value)
@@ -44,6 +50,8 @@ namespace GlassFilm
         {
             Program.Config["PlotterLang"] = cbLang.Text;
             Program.Config["PlotterInterface"] = cbInterface.Text;
+            Program.Config["RotateCut"] = cbRotate.Checked.ToString();
+            Program.Config["FlipX"] = cbFlip.Checked.ToString();
 
             Close();
 

@@ -78,13 +78,27 @@ namespace GlassFilm
                     path.SetPos(res.x, res.y);
                     path.Rotate(res.angle);
 
-                    Plot((uint)cutSheet, shape, res.angle, res.x, res.y);
+                    path.SetAsGoodPos();
+                    path.GenerateCurrentScan();
+
+                    PlotCurrentScan((uint)cutSheet, shape, res.x, res.y);
 
                     return true;
                 }
             }
 
             return false;
+        }
+
+        public void Replot(List<VectorPath> list)
+        {
+            ResetSheet(curSize);
+
+            foreach (VectorPath p in list)
+            {
+                p.GenerateCurrentScan();
+                PlotCurrentScan(p.Sheet, p.Shape, (int)p.X, (int)p.Y);
+            }
         }
 
         public void RegisterPath(VectorPath path)

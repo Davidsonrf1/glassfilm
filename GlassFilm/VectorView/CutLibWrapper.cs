@@ -54,6 +54,9 @@ namespace VectorView
         public extern static void Plot(uint sheet, uint shape, int angle, int x, int y);
 
         [DllImport("CutSheet.dll")]
+        public extern static void PlotCurrentScan(uint sheet, uint shape, int x, int y);          
+
+        [DllImport("CutSheet.dll")]
         public extern static void TestShape(uint sheet, uint shape, ref CutTestResult result);
 
         [DllImport("CutSheet.dll")]
@@ -70,5 +73,9 @@ namespace VectorView
 
         [DllImport("CutSheet.dll")]
         public extern static void BuildScansFromPolygon(uint sheet, uint shapeId, float width, float height, IntPtr poly, int pointCount);
+
+        [DllImport("CutSheet.dll")]
+        public extern static void BuildCurrentScan(uint sheet, uint shapeId, float width, float height, IntPtr poly, int pointCount, float angle);
     }
+
 }

@@ -51,6 +51,11 @@ CutScan* CutShape::GetSortedScan(int index)
 	return 0;
 }
 
+CutScan* CutShape::GetCurrentScan()
+{
+	return curScan;
+}
+
 CutScan* CutShape::GetScan(int angle)
 {
 	if (angle >= 0 && angle < MAX_ANGLES)
@@ -131,6 +136,85 @@ void RotatePoints(float angle, LinePoint** src, LinePoint** dst)
 		sp++;
 		dp++;
 	}
+}
+
+void CutShape::BuildCurrentScan(float width, float height, float* poly, int pointCount, float angle)
+{
+	LinePoint** points = new LinePoint*[pointCount + 1];
+	LinePoint** original = new LinePoint*[pointCount + 1];
+
+	float* p = poly;
+	for (int i = 0; i < pointCount; i++)
+	{
+		LinePoint *pt = new LinePoint();
+
+		pt->x = *p++;
+		pt->y = *p++;
+
+		points[i] = pt;
+
+		original[i] = new LinePoint();
+		original[i]->x = pt->x;
+		original[i]->y = pt->y;
+	}
+
+	points[pointCount] = nullptr;
+	original[pointCount] = nullptr;
+
+	LineSegment** segments = new LineSegment*[pointCount];
+
+	LinePoint **pt = points;
+	LinePoint *last = *pt;
+
+	float oy = height / 2;
+
+	int si = 0;
+	while (*pt)
+	{
+		pt++;
+
+		if (*pt)
+		{
+			LineSegment* seg = new LineSegment(last, *pt);
+			segments[si++] = seg;
+			last = *pt;
+		}
+	}
+
+	segments[si] = nullptr;
+
+	int mapCount = (int)(height / LINE_MAP_SIZE) + 1;
+
+	LineList* lineMap = new LineList[mapCount];
+
+	RotatePoints((float)(angle * M_PI) / 180.0f, original, points);
+	UpdateMap(lineMap, segments, mapCount, oy);
+
+	curScan = new CutScan((int)height, 360);
+
+	curScan->ScanLineMap(this->width, this->height, lineMap, LINE_MAP_SIZE);
+
+	for (int i = 0; i < pointCount; i++)
+	{
+		delete points[i];
+		delete original[i];
+	}
+
+	delete[] points;
+	delete[] original;
+	delete[] lineMap;
+
+	LineSegment** seg = segments;
+
+	while (*seg)
+	{
+		if (*seg)
+			delete *seg;
+
+		seg++;
+	}
+
+	delete[] segments;
 }
 
 void CutShape::BuildScansFromPolygon(float width, float height, float* poly, int pointCount)

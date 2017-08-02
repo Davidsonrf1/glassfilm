@@ -141,12 +141,57 @@ namespace VectorView
             }
         }
 
+        public float DocArea
+        {
+            get
+            {
+                return docArea;
+            }
+        }
+
+        public float UsedArea
+        {
+            get
+            {
+                return usedArea;
+            }
+        }
+
+        public float Efficiency
+        {
+            get
+            {
+                return efficiency;
+            }
+        }
+
         public IEnumerable<VectorPath> DocPaths()
         {
             foreach (VectorPath p in paths)
             {
                 yield return p;
             }
+        }
+
+        float docArea = 0;
+        float usedArea = 0;
+        float efficiency = 0;
+
+        public void CalcMetrics()
+        {
+            float maxx = GetMaxX();
+            docArea = maxx * docHeight;
+
+            usedArea = 0;
+            foreach (VectorPath p in paths)
+            {
+                usedArea += p.Area;
+            }
+
+            if (docArea > 0)
+                efficiency = usedArea / docArea;
+            else
+                efficiency = 0;
         }
 
         static uint curId = 1;
@@ -203,9 +248,6 @@ namespace VectorView
         {
             VectorPath p = CreatePath();
             p.ImportPath(path);
-
-            Host.Refresh();
-
             return p;
         }
 

@@ -40,11 +40,9 @@
             this.button4 = new System.Windows.Forms.Button();
             this.button3 = new System.Windows.Forms.Button();
             this.button2 = new System.Windows.Forms.Button();
-            this.panel3 = new System.Windows.Forms.Panel();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbFilme = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
-            this.panel1 = new System.Windows.Forms.Panel();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbTamanho = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
@@ -62,26 +60,22 @@
             this.label8 = new System.Windows.Forms.Label();
             this.comboBox2 = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.status = new System.Windows.Forms.StatusStrip();
-            this.docInfo = new System.Windows.Forms.ToolStripStatusLabel();
-            this.selInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.panel8 = new System.Windows.Forms.Panel();
             this.splitCorte = new System.Windows.Forms.SplitContainer();
-            this.vvModelo = new VectorView.VectorViewCtr();
             this.toolCorte = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.lbAreaFilme = new System.Windows.Forms.Label();
+            this.lbAreaUsada = new System.Windows.Forms.Label();
+            this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
-            this.lbStatusSyn = new System.Windows.Forms.ToolStripStatusLabel();
-            this.pbSync = new System.Windows.Forms.ToolStripProgressBar();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
-            this.status.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitCorte)).BeginInit();
             this.splitCorte.Panel1.SuspendLayout();
@@ -151,9 +145,7 @@
             this.pnlprincipal.Controls.Add(this.button4);
             this.pnlprincipal.Controls.Add(this.button3);
             this.pnlprincipal.Controls.Add(this.button2);
-            this.pnlprincipal.Controls.Add(this.panel3);
             this.pnlprincipal.Controls.Add(this.groupBox2);
-            this.pnlprincipal.Controls.Add(this.panel1);
             this.pnlprincipal.Controls.Add(this.groupBox1);
             this.pnlprincipal.Controls.Add(this.pictureBox1);
             this.pnlprincipal.Controls.Add(this.panel2);
@@ -163,6 +155,7 @@
             this.pnlprincipal.Size = new System.Drawing.Size(1335, 110);
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
+            this.pnlprincipal.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlprincipal_Paint);
             // 
             // button1
             // 
@@ -186,7 +179,7 @@
             this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button4.ForeColor = System.Drawing.Color.White;
             this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
-            this.button4.Location = new System.Drawing.Point(1047, 19);
+            this.button4.Location = new System.Drawing.Point(1092, 19);
             this.button4.Name = "button4";
             this.button4.Size = new System.Drawing.Size(75, 80);
             this.button4.TabIndex = 10;
@@ -201,7 +194,7 @@
             this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button3.ForeColor = System.Drawing.Color.Black;
             this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
-            this.button3.Location = new System.Drawing.Point(966, 19);
+            this.button3.Location = new System.Drawing.Point(1011, 19);
             this.button3.Name = "button3";
             this.button3.Size = new System.Drawing.Size(75, 80);
             this.button3.TabIndex = 9;
@@ -216,7 +209,7 @@
             this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button2.ForeColor = System.Drawing.Color.Black;
             this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
-            this.button2.Location = new System.Drawing.Point(885, 19);
+            this.button2.Location = new System.Drawing.Point(930, 19);
             this.button2.Name = "button2";
             this.button2.Size = new System.Drawing.Size(75, 80);
             this.button2.TabIndex = 8;
@@ -225,21 +218,13 @@
             this.button2.UseVisualStyleBackColor = false;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel3.Location = new System.Drawing.Point(875, 9);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1, 97);
-            this.panel3.TabIndex = 6;
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cbFilme);
             this.groupBox2.Controls.Add(this.label2);
-            this.groupBox2.Location = new System.Drawing.Point(560, 11);
+            this.groupBox2.Location = new System.Drawing.Point(651, 9);
             this.groupBox2.Name = "groupBox2";
-            this.groupBox2.Size = new System.Drawing.Size(307, 88);
+            this.groupBox2.Size = new System.Drawing.Size(264, 90);
             this.groupBox2.TabIndex = 4;
             this.groupBox2.TabStop = false;
             this.groupBox2.Text = "Mídia";
@@ -253,7 +238,7 @@
             "40 Inch"});
             this.cbFilme.Location = new System.Drawing.Point(61, 40);
             this.cbFilme.Name = "cbFilme";
-            this.cbFilme.Size = new System.Drawing.Size(240, 21);
+            this.cbFilme.Size = new System.Drawing.Size(190, 21);
             this.cbFilme.TabIndex = 1;
             this.cbFilme.SelectedIndexChanged += new System.EventHandler(this.cbFilme_SelectedIndexChanged);
             // 
@@ -266,32 +251,27 @@
             this.label2.TabIndex = 0;
             this.label2.Text = "Largura";
             // 
-            // panel1
-            // 
-            this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel1.Location = new System.Drawing.Point(553, 9);
-            this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(1, 97);
-            this.panel1.TabIndex = 3;
-            // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.lbAreaUsada);
+            this.groupBox1.Controls.Add(this.lbAreaFilme);
             this.groupBox1.Controls.Add(this.lbTamanho);
             this.groupBox1.Location = new System.Drawing.Point(377, 9);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(169, 90);
+            this.groupBox1.Size = new System.Drawing.Size(268, 90);
             this.groupBox1.TabIndex = 2;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Tamanho: ";
             // 
             // lbTamanho
             // 
-            this.lbTamanho.AutoSize = true;
-            this.lbTamanho.Location = new System.Drawing.Point(27, 45);
+            this.lbTamanho.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTamanho.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lbTamanho.Location = new System.Drawing.Point(6, 16);
             this.lbTamanho.Name = "lbTamanho";
-            this.lbTamanho.Size = new System.Drawing.Size(111, 13);
+            this.lbTamanho.Size = new System.Drawing.Size(256, 19);
             this.lbTamanho.TabIndex = 0;
-            this.lbTamanho.Text = "16.51inX27.76in -- TO";
+            this.lbTamanho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
             // 
             // pictureBox1
             // 
@@ -360,7 +340,7 @@
             this.cbModelo.Location = new System.Drawing.Point(377, 26);
             this.cbModelo.MaxDropDownItems = 30;
             this.cbModelo.Name = "cbModelo";
-            this.cbModelo.Size = new System.Drawing.Size(144, 21);
+            this.cbModelo.Size = new System.Drawing.Size(408, 21);
             this.cbModelo.TabIndex = 3;
             // 
             // label10
@@ -405,7 +385,7 @@
             // panel5
             // 
             this.panel5.BackColor = System.Drawing.Color.Gainsboro;
-            this.panel5.Location = new System.Drawing.Point(532, 7);
+            this.panel5.Location = new System.Drawing.Point(796, 7);
             this.panel5.Name = "panel5";
             this.panel5.Size = new System.Drawing.Size(1, 42);
             this.panel5.TabIndex = 7;
@@ -417,7 +397,7 @@
             this.cbAno.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbAno.FormattingEnabled = true;
             this.cbAno.IntegralHeight = false;
-            this.cbAno.Location = new System.Drawing.Point(543, 26);
+            this.cbAno.Location = new System.Drawing.Point(807, 26);
             this.cbAno.MaxDropDownItems = 30;
             this.cbAno.Name = "cbAno";
             this.cbAno.Size = new System.Drawing.Size(89, 21);
@@ -427,7 +407,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(543, 10);
+            this.label8.Location = new System.Drawing.Point(807, 10);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(29, 13);
             this.label8.TabIndex = 2;
@@ -452,38 +432,6 @@
             this.label7.Size = new System.Drawing.Size(31, 13);
             this.label7.TabIndex = 0;
             this.label7.Text = "Tipo:";
-            // 
-            // status
-            // 
-            this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.docInfo,
-            this.selInfo,
-            this.lbStatusSyn,
-            this.pbSync});
-            this.status.Location = new System.Drawing.Point(0, 545);
-            this.status.Name = "status";
-            this.status.Size = new System.Drawing.Size(1335, 24);
-            this.status.TabIndex = 15;
-            this.status.Text = "statusStrip1";
-            // 
-            // docInfo
-            // 
-            this.docInfo.AutoSize = false;
-            this.docInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.docInfo.Name = "docInfo";
-            this.docInfo.Size = new System.Drawing.Size(350, 19);
-            // 
-            // selInfo
-            // 
-            this.selInfo.AutoSize = false;
-            this.selInfo.BorderSides = ((System.Windows.Forms.ToolStripStatusLabelBorderSides)((((System.Windows.Forms.ToolStripStatusLabelBorderSides.Left | System.Windows.Forms.ToolStripStatusLabelBorderSides.Top) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Right) 
-            | System.Windows.Forms.ToolStripStatusLabelBorderSides.Bottom)));
-            this.selInfo.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Bold);
-            this.selInfo.Name = "selInfo";
-            this.selInfo.Size = new System.Drawing.Size(550, 19);
             // 
             // panel8
             // 
@@ -516,24 +464,6 @@
             this.splitCorte.Size = new System.Drawing.Size(1329, 345);
             this.splitCorte.SplitterDistance = 189;
             this.splitCorte.TabIndex = 18;
-            // 
-            // vvModelo
-            // 
-            this.vvModelo.AllowMoveDocument = false;
-            this.vvModelo.AllowTransforms = false;
-            this.vvModelo.BackColor = System.Drawing.Color.White;
-            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvModelo.GridColor = System.Drawing.Color.Black;
-            this.vvModelo.GridSize = 10;
-            this.vvModelo.Location = new System.Drawing.Point(0, 0);
-            this.vvModelo.Name = "vvModelo";
-            this.vvModelo.ShowGrid = false;
-            this.vvModelo.Size = new System.Drawing.Size(1329, 189);
-            this.vvModelo.TabIndex = 19;
-            this.vvModelo.Visible = false;
-            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
-            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
             // 
             // toolCorte
             // 
@@ -587,6 +517,45 @@
             this.toolStripButton3.ToolTipText = "Ajustar na tela";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
+            // lbAreaFilme
+            // 
+            this.lbAreaFilme.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbAreaFilme.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lbAreaFilme.Location = new System.Drawing.Point(6, 40);
+            this.lbAreaFilme.Name = "lbAreaFilme";
+            this.lbAreaFilme.Size = new System.Drawing.Size(256, 19);
+            this.lbAreaFilme.TabIndex = 1;
+            this.lbAreaFilme.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
+            // lbAreaUsada
+            // 
+            this.lbAreaUsada.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbAreaUsada.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lbAreaUsada.Location = new System.Drawing.Point(6, 64);
+            this.lbAreaUsada.Name = "lbAreaUsada";
+            this.lbAreaUsada.Size = new System.Drawing.Size(256, 19);
+            this.lbAreaUsada.TabIndex = 2;
+            this.lbAreaUsada.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbAreaUsada.Click += new System.EventHandler(this.lbAreaUsada_Click);
+            // 
+            // vvModelo
+            // 
+            this.vvModelo.AllowMoveDocument = false;
+            this.vvModelo.AllowTransforms = false;
+            this.vvModelo.BackColor = System.Drawing.Color.White;
+            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvModelo.GridColor = System.Drawing.Color.Black;
+            this.vvModelo.GridSize = 10;
+            this.vvModelo.Location = new System.Drawing.Point(0, 0);
+            this.vvModelo.Name = "vvModelo";
+            this.vvModelo.ShowGrid = false;
+            this.vvModelo.Size = new System.Drawing.Size(1329, 189);
+            this.vvModelo.TabIndex = 19;
+            this.vvModelo.Visible = false;
+            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
+            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
+            // 
             // vvCorte
             // 
             this.vvCorte.AllowMoveDocument = true;
@@ -604,20 +573,8 @@
             this.vvCorte.Visible = false;
             this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
             this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed_1);
+            this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
             this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
-            // 
-            // lbStatusSyn
-            // 
-            this.lbStatusSyn.Name = "lbStatusSyn";
-            this.lbStatusSyn.Size = new System.Drawing.Size(118, 19);
-            this.lbStatusSyn.Text = "toolStripStatusLabel1";
-            this.lbStatusSyn.Visible = false;
-            this.lbStatusSyn.Click += new System.EventHandler(this.toolStripStatusLabel1_Click);
-            // 
-            // pbSync
-            // 
-            this.pbSync.Name = "pbSync";
-            this.pbSync.Size = new System.Drawing.Size(100, 18);
             // 
             // FrmPrincipal
             // 
@@ -626,7 +583,6 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1335, 569);
-            this.Controls.Add(this.status);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
             this.Controls.Add(this.menuStrip1);
@@ -649,12 +605,9 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
-            this.status.ResumeLayout(false);
-            this.status.PerformLayout();
             this.panel8.ResumeLayout(false);
             this.splitCorte.Panel1.ResumeLayout(false);
             this.splitCorte.Panel2.ResumeLayout(false);
@@ -676,11 +629,9 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.GroupBox groupBox1;
         private System.Windows.Forms.Label lbTamanho;
-        private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.GroupBox groupBox2;
         private System.Windows.Forms.ComboBox cbFilme;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Panel panel3;
         private System.Windows.Forms.Button button4;
         private System.Windows.Forms.Button button3;
         private System.Windows.Forms.Button button2;
@@ -700,9 +651,6 @@
         private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastroModeloToolStripMenuItem;
         private System.Windows.Forms.Panel panel4;
-        private System.Windows.Forms.StatusStrip status;
-        private System.Windows.Forms.ToolStripStatusLabel docInfo;
-        private System.Windows.Forms.ToolStripStatusLabel selInfo;
         private System.Windows.Forms.ToolStripMenuItem cadastroRoloToolStripMenuItem;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.SplitContainer splitCorte;
@@ -713,7 +661,7 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.ToolStripButton toolStripButton3;
         private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ToolStripStatusLabel lbStatusSyn;
-        private System.Windows.Forms.ToolStripProgressBar pbSync;
+        private System.Windows.Forms.Label lbAreaUsada;
+        private System.Windows.Forms.Label lbAreaFilme;
     }
 }

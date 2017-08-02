@@ -120,6 +120,8 @@ namespace VectorView
         {
             Document.MoveSelection(dx, dy);
             Invalidate();
+
+            OnSelectionMoved();
         }
 
         protected override void OnResize(EventArgs e)
@@ -360,6 +362,8 @@ namespace VectorView
 
                 document.EndTransform(false);
 
+                OnSelectionMoved();
+
                 return;
             }
 
@@ -370,6 +374,7 @@ namespace VectorView
                 document.DrawSelBox = true;
 
                 document.EndTransform(false);
+                OnSelectionTransformed();
 
                 return;
             }
@@ -488,6 +493,8 @@ namespace VectorView
                     VectorPath path = document.ImportPath(p);
                 }
             }
+
+            
 
             Invalidate();
         }

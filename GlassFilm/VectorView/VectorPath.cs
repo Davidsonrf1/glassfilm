@@ -409,6 +409,15 @@ namespace VectorView
                 title = value;
             }
         }
+        bool imported = false;
+        public bool Imported
+        {
+            get { return imported; }
+            set
+            {
+                imported = value;
+            }
+        }
 
         public void UpdateGoodPos()
         {
@@ -431,12 +440,21 @@ namespace VectorView
             return base.ToString();
         }
 
+        public void SetAsGoodPos()
+        {
+            lastGoodPos.X = posx;
+            lastGoodPos.Y = posy;
+            lastGoodAngle = angle;
+        }
+
         public void RestoreGoodPos()
         {
             angle = lastGoodAngle;
             SetPos(lastGoodPos.X, lastGoodPos.Y);
             intersectList.Clear();
             outOfLimits = false;
+
+            CalcLimits();
         }
 
         internal VectorPath(VectorDocument doc)
@@ -462,7 +480,6 @@ namespace VectorView
             this.angle = angle;
 
             polygons = null;
-
             CalcLimits();
         }
 
@@ -655,6 +672,39 @@ namespace VectorView
             }
 
             return testPointInside;
+        }
+
+        public void GenerateCurrentScan()
+        {
+            float diagonal = ((float)Math.Sqrt((BoundRect.Width * BoundRect.Width) + (BoundRect.Height * BoundRect.Height))) + 1;
+            float w = diagonal / 2;
+
+            shape = CutLibWrapper.CreateShape(sheet, (uint)id);
+
+            if (polygons == null)
+                BuildPolygons();
+
+            List<float> polyList = new List<float>();
+
+            int count = 0;
+
+            foreach (PointF[] pts in polygons)
+            {
+                count += pts.Length;
+
+                foreach (PointF p in pts)
+                {
+                    polyList.Add(p.X);
+                    polyList.Add(p.Y);
+                }
+            }
+
+            IntPtr poly = Marshal.AllocHGlobal(Marshal.SizeOf(typeof(float)) * count * 2);
+            Marshal.Copy(polyList.ToArray(), 0, poly, polyList.Count);
+
+            CutLibWrapper.BuildCurrentScan(sheet, shape, diagonal, diagonal, poly, count, angle);
+
+            Marshal.FreeHGlobal(poly);
         }
 
         public uint GenerateCutShape(uint sheet)
@@ -909,8 +959,6 @@ namespace VectorView
             ComputeArea();
 
             CalcLimits();
-
-            document.Host.Invalidate();
         }
 
         float startX = 0;
@@ -984,9 +1032,23 @@ namespace VectorView
         }
 
         Pen linePen = null;
+        
+        SolidBrush rSide = null;
+        SolidBrush lSide = null;
+
+        void UpdateImportCount()
+        {
+
+        }
 
         public void RenderPolygons(Graphics g)
         {
+            if (rSide == null)
+            {
+                rSide = new SolidBrush(Color.FromArgb(85, Color.Blue));
+                lSide = new SolidBrush(Color.FromArgb(85, Color.Green));
+            }
+
             if (testPointInside)
             {
                 linePen = document.hilightLine;
@@ -1005,8 +1067,34 @@ namespace VectorView
                 linePen = document.selectedLine;
             }
 
+            if (imported)
+            {
+                linePen.Color = Color.Red;
+                linePen.Width = 3;
+            }
+
             foreach (PointF[] pts in polygons)
             {
+                if (Side != VectorPathSide.None && !imported)
+                {
+                    SolidBrush sb = null;
+
+                    if (Side == VectorPathSide.Left)
+                        sb = lSide;
+                    else
+                        sb = rSide;
+
+                    g.FillPolygon(sb, pts);
+                }
+
+                if (imported)
+                {
+                    using (SolidBrush sb = new SolidBrush(Color.Black))
+                    {
+                        g.FillPolygon(sb, pts);
+                    }
+                }
+
                 if (document.Debbuging && fillOnPointInside && testPointInside)
                     g.FillPolygon(Brushes.LightBlue, pts);
 
@@ -1147,6 +1235,11 @@ namespace VectorView
             }
 
             ClosePath();
+
+            p.importCount++;
+
+            source = p;
+            p.Imported = true;
 
             posx = p.posx + 100;
             posy = p.posy + 100;
