@@ -527,16 +527,16 @@ namespace GlassFilm
             }
 
             if (e.KeyCode == Keys.Left)
-                vvCorte.MoveSelecion(-1, 0);
+                vvCorte.MoveSelection(-1, 0);
 
             if (e.KeyCode == Keys.Right)
-                vvCorte.MoveSelecion(+1, 0);
+                vvCorte.MoveSelection(+1, 0);
 
             if (e.KeyCode == Keys.Up)
-                vvCorte.MoveSelecion(0, -1);
+                vvCorte.MoveSelection(0, -1);
 
             if (e.KeyCode == Keys.Left)
-                vvCorte.MoveSelecion(0, +1);
+                vvCorte.MoveSelection(0, +1);
 
             Invalidate();
         }
@@ -671,16 +671,16 @@ namespace GlassFilm
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
             if (keyData == Keys.Left)
-                vvCorte.MoveSelecion(-1, 0);
+                vvCorte.MoveSelection(-1, 0);
 
             if (keyData == Keys.Right)
-                vvCorte.MoveSelecion(+1, 0);
+                vvCorte.MoveSelection(+1, 0);
 
             if (keyData == Keys.Up)
-                vvCorte.MoveSelecion(0, -1);
+                vvCorte.MoveSelection(0, -1);
 
             if (keyData == Keys.Down)
-                vvCorte.MoveSelecion(0, +1);
+                vvCorte.MoveSelection(0, +1);
 
             Invalidate();
 
@@ -847,5 +847,55 @@ namespace GlassFilm
         {
 
         }
+
+        protected override bool ProcessKeyPreview(ref Message m)
+        {
+            return base.ProcessKeyPreview(ref m);
+        }
+
+        protected override void OnMouseDown(MouseEventArgs e)
+        {
+            base.OnMouseDown(e);
+        }
+
+        protected override void OnKeyDown(KeyEventArgs e)
+        {
+            base.OnKeyDown(e);
+        }
+
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+
+
+            if (vvCorte.Document.SelectionCount > 0)
+            {
+                int amount = 4;
+
+                if (e.Modifiers == Keys.Shift)
+                    amount = 1;
+
+                int dx = 0;
+                int dy = 0;
+
+                vvCorte.Document.BeginTransform();
+
+                if (e.KeyCode == Keys.Left)
+                    vvCorte.MoveSelection(-amount, 0);
+
+                if (e.KeyCode == Keys.Right)
+                    vvCorte.MoveSelection(amount, 0);
+
+                if (e.KeyCode == Keys.Up)
+                    vvCorte.MoveSelection(0, -amount);
+
+                if (e.KeyCode == Keys.Down)
+                    vvCorte.MoveSelection(0, amount);
+
+                vvCorte.Document.EndTransform(false);
+            }
+        }
+
     }
 }

@@ -106,6 +106,11 @@ namespace VectorView
             }
         }
 
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+        }
+
         protected override void OnKeyDown(KeyEventArgs e)
         {
             base.OnKeyDown(e);
@@ -116,7 +121,7 @@ namespace VectorView
             document.DeleteSelection();
         }
 
-        public void MoveSelecion(float dx, float dy)
+        public void MoveSelection(float dx, float dy)
         {
             Document.MoveSelection(dx, dy);
             Invalidate();
@@ -572,6 +577,10 @@ namespace VectorView
         {
 
         }
+
+        protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
+        {
+        }
     }
 
     public delegate void VectorEventHandler(object sender, VectorEventArgs e);
@@ -612,5 +621,7 @@ namespace VectorView
                 path = value;
             }
         }
+        
+
     }
 }

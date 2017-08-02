@@ -218,10 +218,29 @@ namespace VectorViewTest
 
         private void button1_Click(object sender, EventArgs e)
         {
-            NestPaths(vv.Document, 150, sheet);
-            vv.Refresh();
+            //NestPaths(vv.Document, 150, sheet);
+           // vv.Refresh();
 
-            Refresh();
+           // Refresh();
+        }
+
+        protected override void OnPreviewKeyDown(PreviewKeyDownEventArgs e)
+        {
+            base.OnPreviewKeyDown(e);
+        }
+
+        protected override bool ProcessKeyPreview(ref Message m)
+        {
+            return base.ProcessKeyPreview(ref m);
+        }
+
+        int count = 0;
+        protected override void OnKeyUp(KeyEventArgs e)
+        {
+            base.OnKeyUp(e);
+
+            Text = count.ToString();
+            count++;
         }
     }
 }
