@@ -89,5 +89,10 @@ namespace GlassFilm
             //MessageBox.Show("Configurações gravadas com sucesso", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Information);
             Close();
         }
+
+        private void btnCancelar_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
     }
 }
