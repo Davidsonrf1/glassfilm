@@ -28,10 +28,12 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.pb = new System.Windows.Forms.ProgressBar();
             this.lbAtualizando = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
+            this.tmrUpdate = new System.Windows.Forms.Timer(this.components);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
@@ -40,6 +42,7 @@
             this.pb.Location = new System.Drawing.Point(-1, 142);
             this.pb.Name = "pb";
             this.pb.Size = new System.Drawing.Size(400, 14);
+            this.pb.Style = System.Windows.Forms.ProgressBarStyle.Continuous;
             this.pb.TabIndex = 0;
             // 
             // lbAtualizando
@@ -60,6 +63,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(400, 143);
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // label1
             // 
@@ -70,6 +74,11 @@
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Sincronizando";
+            // 
+            // tmrUpdate
+            // 
+            this.tmrUpdate.Interval = 10;
+            this.tmrUpdate.Tick += new System.EventHandler(this.tmrUpdate_Tick);
             // 
             // FrmSync
             // 
@@ -88,6 +97,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sincronização";
             this.Load += new System.EventHandler(this.FrmSync_Load);
+            this.Shown += new System.EventHandler(this.FrmSync_Shown);
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
@@ -100,5 +110,6 @@
         private System.Windows.Forms.Label lbAtualizando;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer tmrUpdate;
     }
 }

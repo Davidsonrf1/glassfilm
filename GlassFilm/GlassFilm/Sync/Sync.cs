@@ -23,6 +23,7 @@ namespace GlassFilm.Sync
         string acao = "";
 
         bool show = true;
+        int count = 0;
 
         public int Atual
         {
@@ -88,6 +89,19 @@ namespace GlassFilm.Sync
                 show = value;
             }
         }
+
+        public int Count
+        {
+            get
+            {
+                return count;
+            }
+
+            set
+            {
+                count = value;
+            }
+        }
     }
 
     public static class SyncManager
@@ -150,17 +164,18 @@ namespace GlassFilm.Sync
             }
         }
 
-        static void Status(bool show)
+        static void Status(bool show, int count)
         {
             if (syncStatus != null)
             {
                 SyncStatus status = new SyncStatus();
                 status.Show = show;
+                status.Count = count;
                 syncStatus(status);
             }
         }
 
-        static void Status(string acao, string objeto, int max, int val)
+        static void Status(string acao, string objeto, int max, int val, int count)
         {
             if (syncStatus != null)
             {
@@ -170,6 +185,7 @@ namespace GlassFilm.Sync
                 status.Atual = val > max ? max : val;
                 status.Total = max < 0 ? 0 : max; 
                 status.Objeto = objeto;
+                status.Count = count;
 
                 syncStatus(status);
             }
@@ -192,6 +208,23 @@ namespace GlassFilm.Sync
             int versao = int.Parse(cmd.ExecuteScalar().ToString());
 
             SyncDown(table, versao);
+        }
+
+        static int GetTableVersion(string table)
+        {
+            table = table.Trim();
+            SQLiteConnection con = DBManager._mainConnection;
+
+            if (table.Equals("!desenhos", StringComparison.InvariantCultureIgnoreCase))
+            {
+                table = table.Replace("!", "");
+                con = DBManager._modelConnection;
+            }
+
+            IDbCommand cmd = con.CreateCommand();
+
+            cmd.CommandText = "SELECT MAX (VERSAO) FROM " + table;
+            return int.Parse(cmd.ExecuteScalar().ToString());           
         }
 
         static string BuildJSONFromRow(DataRow dr, string tbName, SQLiteConnection con)
@@ -261,7 +294,7 @@ namespace GlassFilm.Sync
                 sb.Append("\"rows\": [");
 
                 bool first = true;
-                for (int i = start; i < start + 10 && i < dt.Rows.Count; i++)
+                for (int i = start; i < start + 30 && i < dt.Rows.Count; i++)
                 {
                     if (!first)
                     {
@@ -365,6 +398,7 @@ namespace GlassFilm.Sync
                     foreach (XmlNode n in xdoc.DocumentElement.ChildNodes)
                     {
                         ConfirmSync(n);
+                        Status("Enviando dados para o servidor", "", totalSync, syncCount++, 1);
                     }
                 }
             }
@@ -373,6 +407,90 @@ namespace GlassFilm.Sync
                 Logs.Log(ex.Message);
                 throw;
             }
+        }
+
+        static int totalSync = 0;
+        static int syncCount = 0;
+
+        public static Dictionary<string, int> SyncCheck(out int total)
+        {
+            StringBuilder sb = new StringBuilder();
+
+            sb.Append("{\"tabelas\":[");
+            bool first = true;
+            foreach (string table in syncTables)
+            {
+                string tbName = table.Replace("!", "");
+
+                if (!first)
+                {
+                    sb.Append(",");
+                }
+
+                sb.Append(string.Format("{{\"nome\":\"{0}\",\"versao\":\"{1}\"}}", tbName, GetTableVersion(table)));
+
+                first = false;
+            }
+
+            sb.Append("]}");
+
+            string json = sb.ToString();
+
+            var request = (HttpWebRequest)WebRequest.Create(GlassService.GetUrl("sync_check.php"));
+
+            request.Method = "POST";
+            request.ContentType = "application/json; charset=utf-8";
+
+            byte[] data = Encoding.UTF8.GetBytes(json);
+            request.ContentLength = data.Length;
+
+            Dictionary<string, int> ret = new Dictionary<string, int>();
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            total = 0;
+
+            try
+            {
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                string responseString = (new StreamReader(response.GetResponseStream()).ReadToEnd());
+
+                if (responseString.Length > 0)
+                {
+                    XmlDocument xdoc = JsonConvert.DeserializeXmlNode(responseString, "table");
+
+                    foreach (XmlNode n in xdoc.DocumentElement.ChildNodes)
+                    {
+                        string tb = "";
+                        int qtd = 0;
+
+                        foreach (XmlNode nt in n.ChildNodes)
+                        {
+                            if (nt.Name.Equals("NOME", StringComparison.InvariantCultureIgnoreCase))
+                                tb = nt.InnerText;
+
+                            if (nt.Name.Equals("QTD", StringComparison.InvariantCultureIgnoreCase))
+                                int.TryParse(nt.InnerText, out qtd);
+                        }
+
+                        total += qtd;
+
+                        ret.Add(tb, qtd);
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+                throw;
+            }
+
+            syncCount = 0;
+            totalSync = total;
+            return ret;
         }
 
         static void RestoreData(string json)
@@ -562,11 +680,58 @@ namespace GlassFilm.Sync
             try
             {
                 cmd.ExecuteNonQuery();
+                Status("Recebendo atualizações...", tbName, totalSync, syncCount++, 1);
             }
             catch
             {
 
             }
+        }
+
+        public static int GetSendCount(string table)
+        {
+            if (DBManager.conectado())
+            {
+                try
+                {
+                    string tbName = table.Trim();
+                    SQLiteConnection con = DBManager._mainConnection;
+
+                    if (tbName.StartsWith("!"))
+                    {
+                        tbName = tbName.Replace("!", "");
+                        con = DBManager._modelConnection;
+                    }
+
+                    IDbCommand cmd = con.CreateCommand();
+
+                    cmd.CommandText = string.Format("SELECT count(*) qtd FROM {0} WHERE SINCRONIZAR = 1", tbName);
+                    return Convert.ToInt32(cmd.ExecuteScalar().ToString());
+                }
+                catch (Exception ex)
+                {
+                    Logs.Log(ex.Message);
+                }
+                finally
+                {
+                    Status(false, 0);
+                }
+            }
+
+            return 0;
+        }
+
+        public static int GetSendCount()
+        {
+            totalSync = 0;
+            syncCount = 0;
+
+            int count = 0;
+            foreach (string tb in syncTables)
+            {
+                count += GetSendCount(tb);
+            }
+            return totalSync=count;
         }
 
         static void SendTable(string table)
@@ -584,15 +749,13 @@ namespace GlassFilm.Sync
                         con = DBManager._modelConnection;
                     }
 
-                    IDbCommand cmd = con.CreateCommand();
-
-                    
+                    IDbCommand cmd = con.CreateCommand();                    
 
                     cmd.CommandText = string.Format("SELECT count(*) qtd FROM {0} WHERE SINCRONIZAR = 1", tbName);
                     int total = Convert.ToInt32(cmd.ExecuteScalar().ToString());
 
                     if (total > 0)
-                        Status(true);
+                        Status(true, 0);
 
                     DataTable dt = DBManager.LoadDataTable(string.Format("SELECT * FROM {0} WHERE SINCRONIZAR = 1", tbName), con);
 
@@ -600,14 +763,13 @@ namespace GlassFilm.Sync
                     int start = 0;
                     string json = "";
 
-                    //Status(string.Format("Enviando tabela '{0}'", tbName), tbName, total, 0);
+                    Status("Enviando dados para o servidor", tbName, total, start, count);
 
                     while (BuildJSONFromTable(tbName, dt, start, out count, out json, con))
                     {
                         SyncUp(json);
                         start += count;
 
-                        Status(string.Format("Enviando tabela '{0}'", tbName), tbName, total, start);
                     }                    
                 }
                 catch (Exception ex)
@@ -616,7 +778,7 @@ namespace GlassFilm.Sync
                 }
                 finally
                 {
-                    Status(false);
+                    Status(false, 0);
                 }
             }
         }

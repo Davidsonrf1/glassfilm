@@ -362,7 +362,7 @@ namespace GlassFilm
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            SyncManager.Syncronize(SyncType.Outgoing);
+            FrmSync.ShowSync(true, false);
         }
     }
 }

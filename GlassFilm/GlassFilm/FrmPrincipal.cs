@@ -108,15 +108,12 @@ namespace GlassFilm
             SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "VEICULO" });
 
             SyncManager.SyncStatus = new UpdateSyncStatus(SyncStatusProc);
-
             SyncManager.CheckTables();
-            
+
             if (Debugger.IsAttached)
             {
-                SyncManager.Syncronize(SyncType.Outgoing);
+                //SyncManager.Syncronize(SyncType.Outgoing);
             }
-
-            //SyncManager.Syncronize(Sync.SyncType.Incoming);
 
             sel.AtualizaMarcas();
             cbMarca.Focus();
@@ -829,6 +826,8 @@ namespace GlassFilm
         private void FrmPrincipal_Shown(object sender, EventArgs e)
         {
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
+
+            FrmSync.ShowSync(false, true);
         }
 
         private void button1_Click(object sender, EventArgs e)
