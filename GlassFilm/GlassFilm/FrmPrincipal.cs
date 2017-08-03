@@ -117,6 +117,13 @@ namespace GlassFilm
 
             sel.AtualizaMarcas();
             cbMarca.Focus();
+            calculapalavra();
+        }
+
+        private void calculapalavra()
+        {
+            int w = (pnlCalculando.Size.Width/2)- lbCalculando.Size.Width;
+            lbCalculando.Location = new Point(w, lbCalculando.Location.Y);           
         }
 
         private void SyncStatusProc(SyncStatus status)
@@ -615,8 +622,10 @@ namespace GlassFilm
         }
 
         private void button3_Click(object sender, EventArgs e)
-        {
+        {            
             pnlprincipal.Enabled = false;
+            pnlCalculando.Visible = true;
+            Application.DoEvents();
 
             if (filmeAtual == null)
             {
@@ -639,6 +648,7 @@ namespace GlassFilm
             Refresh();
 
             pnlprincipal.Enabled = true;
+            pnlCalculando.Visible = false;            
         }
 
         void AtualizaFilmes()

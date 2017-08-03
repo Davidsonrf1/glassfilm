@@ -44,6 +44,8 @@
             this.cbFilme = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.lbAreaUsada = new System.Windows.Forms.Label();
+            this.lbAreaFilme = new System.Windows.Forms.Label();
             this.lbTamanho = new System.Windows.Forms.Label();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -62,14 +64,14 @@
             this.label7 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.splitCorte = new System.Windows.Forms.SplitContainer();
+            this.vvModelo = new VectorView.VectorViewCtr();
             this.toolCorte = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
-            this.lbAreaFilme = new System.Windows.Forms.Label();
-            this.lbAreaUsada = new System.Windows.Forms.Label();
-            this.vvModelo = new VectorView.VectorViewCtr();
             this.vvCorte = new VectorView.VectorViewCtr();
+            this.pnlCalculando = new System.Windows.Forms.Panel();
+            this.lbCalculando = new System.Windows.Forms.Label();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -82,6 +84,7 @@
             this.splitCorte.Panel2.SuspendLayout();
             this.splitCorte.SuspendLayout();
             this.toolCorte.SuspendLayout();
+            this.pnlCalculando.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -263,10 +266,31 @@
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = " Tamanho: ";
             // 
+            // lbAreaUsada
+            // 
+            this.lbAreaUsada.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbAreaUsada.ForeColor = System.Drawing.Color.DimGray;
+            this.lbAreaUsada.Location = new System.Drawing.Point(6, 64);
+            this.lbAreaUsada.Name = "lbAreaUsada";
+            this.lbAreaUsada.Size = new System.Drawing.Size(256, 19);
+            this.lbAreaUsada.TabIndex = 2;
+            this.lbAreaUsada.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.lbAreaUsada.Click += new System.EventHandler(this.lbAreaUsada_Click);
+            // 
+            // lbAreaFilme
+            // 
+            this.lbAreaFilme.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbAreaFilme.ForeColor = System.Drawing.Color.DimGray;
+            this.lbAreaFilme.Location = new System.Drawing.Point(6, 40);
+            this.lbAreaFilme.Name = "lbAreaFilme";
+            this.lbAreaFilme.Size = new System.Drawing.Size(256, 19);
+            this.lbAreaFilme.TabIndex = 1;
+            this.lbAreaFilme.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            // 
             // lbTamanho
             // 
             this.lbTamanho.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbTamanho.ForeColor = System.Drawing.SystemColors.HotTrack;
+            this.lbTamanho.ForeColor = System.Drawing.Color.DimGray;
             this.lbTamanho.Location = new System.Drawing.Point(6, 16);
             this.lbTamanho.Name = "lbTamanho";
             this.lbTamanho.Size = new System.Drawing.Size(256, 19);
@@ -435,6 +459,7 @@
             // 
             // panel8
             // 
+            this.panel8.BackColor = System.Drawing.Color.White;
             this.panel8.Controls.Add(this.splitCorte);
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(0, 0);
@@ -465,6 +490,24 @@
             this.splitCorte.SplitterDistance = 189;
             this.splitCorte.TabIndex = 18;
             // 
+            // vvModelo
+            // 
+            this.vvModelo.AllowMoveDocument = false;
+            this.vvModelo.AllowTransforms = false;
+            this.vvModelo.BackColor = System.Drawing.Color.White;
+            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvModelo.GridColor = System.Drawing.Color.Black;
+            this.vvModelo.GridSize = 10;
+            this.vvModelo.Location = new System.Drawing.Point(0, 0);
+            this.vvModelo.Name = "vvModelo";
+            this.vvModelo.ShowGrid = false;
+            this.vvModelo.Size = new System.Drawing.Size(1329, 189);
+            this.vvModelo.TabIndex = 19;
+            this.vvModelo.Visible = false;
+            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
+            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
+            // 
             // toolCorte
             // 
             this.toolCorte.AutoSize = false;
@@ -474,7 +517,7 @@
             this.toolStripButton1,
             this.toolStripButton2,
             this.toolStripButton3});
-            this.toolCorte.Location = new System.Drawing.Point(1309, 0);
+            this.toolCorte.Location = new System.Drawing.Point(1282, 0);
             this.toolCorte.Name = "toolCorte";
             this.toolCorte.Size = new System.Drawing.Size(47, 152);
             this.toolCorte.TabIndex = 21;
@@ -517,45 +560,6 @@
             this.toolStripButton3.ToolTipText = "Ajustar na tela";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
-            // lbAreaFilme
-            // 
-            this.lbAreaFilme.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbAreaFilme.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lbAreaFilme.Location = new System.Drawing.Point(6, 40);
-            this.lbAreaFilme.Name = "lbAreaFilme";
-            this.lbAreaFilme.Size = new System.Drawing.Size(256, 19);
-            this.lbAreaFilme.TabIndex = 1;
-            this.lbAreaFilme.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // lbAreaUsada
-            // 
-            this.lbAreaUsada.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.lbAreaUsada.ForeColor = System.Drawing.SystemColors.HotTrack;
-            this.lbAreaUsada.Location = new System.Drawing.Point(6, 64);
-            this.lbAreaUsada.Name = "lbAreaUsada";
-            this.lbAreaUsada.Size = new System.Drawing.Size(256, 19);
-            this.lbAreaUsada.TabIndex = 2;
-            this.lbAreaUsada.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.lbAreaUsada.Click += new System.EventHandler(this.lbAreaUsada_Click);
-            // 
-            // vvModelo
-            // 
-            this.vvModelo.AllowMoveDocument = false;
-            this.vvModelo.AllowTransforms = false;
-            this.vvModelo.BackColor = System.Drawing.Color.White;
-            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvModelo.GridColor = System.Drawing.Color.Black;
-            this.vvModelo.GridSize = 10;
-            this.vvModelo.Location = new System.Drawing.Point(0, 0);
-            this.vvModelo.Name = "vvModelo";
-            this.vvModelo.ShowGrid = false;
-            this.vvModelo.Size = new System.Drawing.Size(1329, 189);
-            this.vvModelo.TabIndex = 19;
-            this.vvModelo.Visible = false;
-            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
-            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
-            // 
             // vvCorte
             // 
             this.vvCorte.AllowMoveDocument = true;
@@ -576,6 +580,29 @@
             this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
             this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
             // 
+            // pnlCalculando
+            // 
+            this.pnlCalculando.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCalculando.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            this.pnlCalculando.Controls.Add(this.lbCalculando);
+            this.pnlCalculando.Location = new System.Drawing.Point(-1, 543);
+            this.pnlCalculando.Name = "pnlCalculando";
+            this.pnlCalculando.Size = new System.Drawing.Size(1337, 26);
+            this.pnlCalculando.TabIndex = 21;
+            this.pnlCalculando.Visible = false;
+            // 
+            // lbCalculando
+            // 
+            this.lbCalculando.AutoSize = true;
+            this.lbCalculando.ForeColor = System.Drawing.Color.White;
+            this.lbCalculando.Location = new System.Drawing.Point(625, 7);
+            this.lbCalculando.Name = "lbCalculando";
+            this.lbCalculando.Size = new System.Drawing.Size(114, 13);
+            this.lbCalculando.TabIndex = 0;
+            this.lbCalculando.Text = "Calculando, aguarde...";
+            this.lbCalculando.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -583,6 +610,7 @@
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             this.ClientSize = new System.Drawing.Size(1335, 569);
+            this.Controls.Add(this.pnlCalculando);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
             this.Controls.Add(this.menuStrip1);
@@ -615,6 +643,8 @@
             this.splitCorte.ResumeLayout(false);
             this.toolCorte.ResumeLayout(false);
             this.toolCorte.PerformLayout();
+            this.pnlCalculando.ResumeLayout(false);
+            this.pnlCalculando.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -663,5 +693,7 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.Label lbAreaUsada;
         private System.Windows.Forms.Label lbAreaFilme;
+        private System.Windows.Forms.Panel pnlCalculando;
+        private System.Windows.Forms.Label lbCalculando;
     }
 }
