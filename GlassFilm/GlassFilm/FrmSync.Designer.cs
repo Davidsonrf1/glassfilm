@@ -28,47 +28,67 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
-            this.lbTotal = new System.Windows.Forms.Label();
-            this.lbInicio = new System.Windows.Forms.Label();
+            this.pb = new System.Windows.Forms.ProgressBar();
+            this.lbAtualizando = new System.Windows.Forms.Label();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this.label1 = new System.Windows.Forms.Label();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
-            // progressBar1
+            // pb
             // 
-            this.progressBar1.Location = new System.Drawing.Point(12, 37);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(418, 23);
-            this.progressBar1.TabIndex = 0;
+            this.pb.Location = new System.Drawing.Point(-1, 142);
+            this.pb.Name = "pb";
+            this.pb.Size = new System.Drawing.Size(400, 14);
+            this.pb.TabIndex = 0;
             // 
-            // lbTotal
+            // lbAtualizando
             // 
-            this.lbTotal.AutoSize = true;
-            this.lbTotal.Location = new System.Drawing.Point(417, 21);
-            this.lbTotal.Name = "lbTotal";
-            this.lbTotal.Size = new System.Drawing.Size(13, 13);
-            this.lbTotal.TabIndex = 1;
-            this.lbTotal.Text = "0";
+            this.lbAtualizando.AutoSize = true;
+            this.lbAtualizando.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(51)))), ((int)(((byte)(51)))), ((int)(((byte)(51)))));
+            this.lbAtualizando.Location = new System.Drawing.Point(5, 124);
+            this.lbAtualizando.Name = "lbAtualizando";
+            this.lbAtualizando.Size = new System.Drawing.Size(59, 13);
+            this.lbAtualizando.TabIndex = 2;
+            this.lbAtualizando.Text = "Iniciando...";
             // 
-            // lbInicio
+            // pictureBox1
             // 
-            this.lbInicio.AutoSize = true;
-            this.lbInicio.Location = new System.Drawing.Point(12, 21);
-            this.lbInicio.Name = "lbInicio";
-            this.lbInicio.Size = new System.Drawing.Size(13, 13);
-            this.lbInicio.TabIndex = 2;
-            this.lbInicio.Text = "0";
+            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logoComputer2;
+            this.pictureBox1.Location = new System.Drawing.Point(-1, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(400, 143);
+            this.pictureBox1.TabIndex = 3;
+            this.pictureBox1.TabStop = false;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(202)))), ((int)(((byte)(200)))), ((int)(((byte)(203)))));
+            this.label1.Location = new System.Drawing.Point(80, 34);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(74, 13);
+            this.label1.TabIndex = 4;
+            this.label1.Text = "Sincronizando";
             // 
             // FrmSync
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(445, 73);
-            this.Controls.Add(this.lbInicio);
-            this.Controls.Add(this.lbTotal);
-            this.Controls.Add(this.progressBar1);
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
+            this.ClientSize = new System.Drawing.Size(400, 155);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.pb);
+            this.Controls.Add(this.lbAtualizando);
+            this.Controls.Add(this.pictureBox1);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.None;
             this.Name = "FrmSync";
+            this.ShowIcon = false;
+            this.ShowInTaskbar = false;
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Sincronização";
             this.Load += new System.EventHandler(this.FrmSync_Load);
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -76,8 +96,9 @@
 
         #endregion
 
-        private System.Windows.Forms.ProgressBar progressBar1;
-        private System.Windows.Forms.Label lbTotal;
-        private System.Windows.Forms.Label lbInicio;
+        private System.Windows.Forms.ProgressBar pb;
+        private System.Windows.Forms.Label lbAtualizando;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.Label label1;
     }
 }
