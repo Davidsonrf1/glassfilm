@@ -85,9 +85,13 @@ namespace GlassFilm
                     pnlFiltroInfo.Visible = true;
                     pnlprincipal.Visible = true;
                     //pnlMapa.Visible = true;
-                    vvModelo.Visible = true;
-                    toolArquivo.Visible = true;
+                    vvModelo.Visible = true;                   
                     toolCorte.Visible = true;
+
+                    if (Glass.usuario.master.Equals("S"))
+                    {
+                        toolArquivo.Visible = true;
+                    }
                 }
             }
             else

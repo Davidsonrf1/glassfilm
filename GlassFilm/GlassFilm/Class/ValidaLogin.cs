@@ -31,7 +31,7 @@ namespace GlassFilm.Class
         {            
             RetornoValidacao rv = new RetornoValidacao();            
                            
-            Glass.usuario = buscaUsuario();
+            Glass.usuario = buscaUsuario();          
 
             if (Glass.usuario != null && Glass.usuario.status.Equals("A"))
             {
