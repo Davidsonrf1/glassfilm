@@ -326,7 +326,7 @@ bool CutSheet::TestShape(CutShape* shape, CutTestResult *res)
 	if (res != nullptr)
 		res->resultOk = false;
 
-	TestFreeSpace(shape);
+	//TestFreeSpace(shape);
 
 	if (!foundPos)
 	{

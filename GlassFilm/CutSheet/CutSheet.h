@@ -33,7 +33,7 @@ class CutSheet {
 	CutSegment *endSpace = nullptr;
 	int* endPos = nullptr;
 
-	int minDist = 00;
+	int minDist = 100;
 	int lines = 1520;
 
 	bool foundPos = false;

@@ -242,5 +242,11 @@ namespace VectorViewTest
             Text = count.ToString();
             count++;
         }
+
+        private void button1_Click_1(object sender, EventArgs e)
+        {
+            NestPaths(vv.Document, 180, sheet);
+            vv.Refresh();
+        }
     }
 }
