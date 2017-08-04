@@ -495,6 +495,9 @@ namespace GlassFilm.Sync
 
         static void RestoreData(string json)
         {
+            if (string.IsNullOrEmpty(json))
+                return;
+
             XmlDocument xdoc = JsonConvert.DeserializeXmlNode(json, "table");
 
             foreach (XmlNode n in xdoc.DocumentElement.ChildNodes)
@@ -783,12 +786,46 @@ namespace GlassFilm.Sync
             }
         }
 
+        static void EliminarRegistros()
+        {
+            SQLiteCommand cmd = DBManager._mainConnection.CreateCommand();
+
+            cmd.CommandText = "SELECT * FROM ELIMINA_REGISTRO WHERE ELIMINADA = 0";
+
+            IDataReader dr = cmd.ExecuteReader();
+            DataTable dt = new DataTable();
+
+            dt.Load(dr);
+            dr.Close();
+
+            Status("Eliminando registros...", "", dt.Rows.Count, 0, 0);
+
+            int val = 0;
+
+            foreach (DataRow row in dt.Rows)
+            {
+                string tb = row["TABELA"].ToString();
+                string cod = row["CODIGO"].ToString();
+                string keyName = tbKeys[tb];
+
+                cmd.CommandText = string.Format("DELETE FROM {0} WHERE {1}={2}", tb, keyName, cod);
+                cmd.ExecuteNonQuery();
+
+                Status("Eliminando registros...", "", dt.Rows.Count, ++val, 1);
+            }
+
+            cmd.CommandText = string.Format("UPDATE ELIMINA_REGISTRO SET ELIMINADA = 1, SINCRONIZAR = 0");
+            cmd.ExecuteNonQuery();
+        }
+
         static void SyncIncoming()
         {
             foreach (string tb in syncTables)
             {
                 GetTable(tb);
             }
+
+            EliminarRegistros();
         }
 
         static void SyncOutgoing()
@@ -801,39 +838,48 @@ namespace GlassFilm.Sync
 
         public static void CheckTables()
         {
+
             foreach (string tb in syncTables)
             {
-                string tbName = tb.Trim();
-                SQLiteConnection con = DBManager._mainConnection;
-
-                if (tbName.StartsWith("!"))
+                try
                 {
-                    tbName = tbName.Replace("!", "");
-                    con = DBManager._modelConnection;
+                    string tbName = tb.Trim();
+                    SQLiteConnection con = DBManager._mainConnection;
+
+                    if (tbName.StartsWith("!"))
+                    {
+                        tbName = tbName.Replace("!", "");
+                        con = DBManager._modelConnection;
+                    }
+
+                    if (!DBManager.ColExiste(tbName, "sincronizar", con))
+                    {
+                        SQLiteCommand cmd = con.CreateCommand();
+
+                        cmd.CommandText = string.Format("alter table {0} add {1} integer default 1", tbName, "sincronizar");
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Format("update {0} set sincronizar = 1", tbName);
+                        cmd.ExecuteNonQuery();
+                    }
+
+                    if (!DBManager.ColExiste(tbName, "versao", con))
+                    {
+                        SQLiteCommand cmd = con.CreateCommand();
+
+                        cmd.CommandText = string.Format("alter table {0} add {1} integer default 0", tbName, "versao");
+                        cmd.ExecuteNonQuery();
+
+                        cmd.CommandText = string.Format("update {0} set versao = 0", tbName);
+                        cmd.ExecuteNonQuery();
+                    }
                 }
-
-                if (!DBManager.ColExiste(tbName, "sincronizar", con))
+                catch
                 {
-                    SQLiteCommand cmd = con.CreateCommand();
 
-                    cmd.CommandText = string.Format("alter table {0} add {1} integer default 1", tbName, "sincronizar");
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText = string.Format("update {0} set sincronizar = 1", tbName);
-                    cmd.ExecuteNonQuery();
-                }
-
-                if (!DBManager.ColExiste(tbName, "versao", con))
-                {
-                    SQLiteCommand cmd = con.CreateCommand();
-
-                    cmd.CommandText = string.Format("alter table {0} add {1} integer default 0", tbName, "versao");
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText = string.Format("update {0} set versao = 0", tbName);
-                    cmd.ExecuteNonQuery();
                 }
             }
+
         }
 
         static Dictionary<string, string> tbKeys = new Dictionary<string, string>(StringComparer.InvariantCultureIgnoreCase);

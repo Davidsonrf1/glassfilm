@@ -2,6 +2,9 @@
 #include "CutSegment.h"
 #include "CutSegmentList.h"
 
+#include <stdlib.h>
+#include <stdio.h>
+
 CutSheet::CutSheet(int size)
 {
 	shapeCount = 0;
@@ -179,6 +182,8 @@ bool CutSheet::TestFullScan(CutScan* scan, int x, int y)
 	return true;
 }
 
+#define _CRT_SECURE_NO_WARNINGS 1
+
 void CutSheet::SetResult(int angle, int x, int y, int maxx)
 {
 	if (result.maxx > maxx)
@@ -188,7 +193,7 @@ void CutSheet::SetResult(int angle, int x, int y, int maxx)
 		result.maxx = maxx;
 		result.angle = angle;
 	}
-	else if (result.maxx == maxx && result.y > y)
+	else if (result.maxx == maxx && y < result.y)
 	{
 		result.x = x;
 		result.y = y;
@@ -210,47 +215,30 @@ void CutSheet::TestEndSpace(CutShape* shape)
 		{
 			CutScan *scan = shape->GetSortedScan(scanIndex);
 
-			int x = end + (scan->GetWidth() / 2) + 2;
+			int x = 0;
 			int y = i;
 			
-			if (end > 0)
-				int a = end;
+			int startLine = scan->GetStartLine(y);
+			int lastLine = scan->GetLastLine(y);
 
-			if (scan->TestLimits(x, y, 0, 0, lines))
+			if (startLine >= 0 && lastLine < lines - 1)
 			{
-				int startLine = scan->GetTop() + y;
+				int* l = endPos + startLine;
+				int* s = scan->GetFirstPos();
 
-				if (startLine >= 0) 
+				while (*s < INT_MAX)
 				{
-					int* l = endPos + startLine;
-					int* s = scan->GetFirstPos();
-
-					int k = 0;
-					bool pass = true;
-					int count = scan->GetLineCount();
-
-					while (k < count)
+					if ((*s)+x <= *l)
 					{
-						if (*s+x <= *l)
-						{
-							pass = false;
-							break;
-						}
-
-						s++, l++, k++;
+						x += *l - ((*s) + x);
 					}
 
-					if (pass) 
-					{
-						SetResult(scan->GetAngle(), x, y, scan->GetRight() + x);
-						anglePass = true;
-					}
+					s++, l++;
 				}
-			}
-		}
 
-		//if (anglePass)
-		//	break;
+    			SetResult(scan->GetAngle(), x, y, scan->GetRight() + x);
+			}			
+		}
 	}
 }
 
@@ -294,9 +282,6 @@ void CutSheet::TestFreeSpace(CutShape* shape)
 							CutSegmentList *ssl = *sl;
 							CutSegment* usedSeg = ul->GetFirst();
 
-							if (x == 34 && y == 89 && scan->GetAngle() == 118 && k == 61)
-								int abc = 0;
-
 							while (usedSeg && pass)
 							{
 								CutSegment *scanSeg = ssl->GetFirst();
@@ -335,6 +320,8 @@ bool CutSheet::TestShape(CutShape* shape, CutTestResult *res)
 	memset(&result, 0, sizeof(result));
 
 	result.maxx = INT_MAX;
+	result.x = INT_MAX;
+	result.y = INT_MIN;
 	
 	if (res != nullptr)
 		res->resultOk = false;

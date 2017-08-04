@@ -161,6 +161,33 @@ namespace GlassFilm.Class
             }
         }
 
+        public static void VerificaTabelasAuxiliares()
+        {
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = "SELECT COUNT(*) FROM ELIMINA_REGISTRO";
+            try
+            {
+                cmd.ExecuteScalar();
+            }
+            catch
+            {
+                cmd.CommandText = "CREATE TABLE ELIMINA_REGISTRO (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, TABELA	TEXT NOT NULL, CODIGO INTEGER NOT NULL, ELIMINADA INTEGER DEFAULT 0)";
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void EliminaRegistro(string tabela, string codigo)
+        {
+            SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+            if (tabela != null && codigo != null)
+            {
+                cmd.CommandText = string.Format("INSERT INTO ELIMINA_REGISTRO (TABELA, CODIGO, SINCRONIZAR) VALUES ('{0}', {1}, 1)", tabela, codigo);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
         public static List<Filme> CarregarRolos()
         {
             List<Filme> rolos = new List<Class.Filme>();

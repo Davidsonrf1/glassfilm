@@ -66,6 +66,8 @@ namespace GlassFilm.Controller
                     cmd.CommandText = "DELETE FROM MODELO_ANO WHERE CODIGO_MODELO = @codigo";
                     cmd.Parameters.Add(new SQLiteParameter("@codigo", codigo));
                     cmd.ExecuteNonQuery();
+
+                    DBManager.EliminaRegistro("MODELO_ANO", codigo);
                 }
                 catch (Exception ex)
                 {

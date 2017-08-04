@@ -77,6 +77,8 @@ namespace GlassFilm
                     cmd.CommandText = "DELETE FROM ROLO WHERE ID = @codigo";
                     cmd.Parameters.Add(new SQLiteParameter("@codigo", codigo));
                     cmd.ExecuteNonQuery();
+
+                    DBManager.EliminaRegistro("ROLO", codigo);
                 }
                 catch (Exception ex)
                 {

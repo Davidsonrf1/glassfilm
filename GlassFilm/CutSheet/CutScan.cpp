@@ -212,7 +212,7 @@ void CutScan::Normalize(int w, int h)
 	miny = LONG_MAX;
 	maxy = LONG_MIN;
 
-	startPos = new int[lineCount];
+	startPos = new int[lineCount + 1];
 
 	for (int i = 0; i < lineCount; i++)
 	{
@@ -248,6 +248,8 @@ void CutScan::Normalize(int w, int h)
 			}
 		}
 	}
+
+	startPos[lineCount] = INT_MAX;
 	
 	boxLeft = minx;
 	boxRight = maxx;

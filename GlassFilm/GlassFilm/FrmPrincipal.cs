@@ -107,8 +107,10 @@ namespace GlassFilm
                 
             }
 
-            SyncManager.SyncTables.AddRange(new string[] { "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
-            SyncManager.Synckeys.AddRange(new string[] { "CODIGO_MODELO", "CODIGO_MARCA", "CODIGO_ANO", "ID", "VEICULO" });
+            DBManager.VerificaTabelasAuxiliares();
+
+            SyncManager.SyncTables.AddRange(new string[] { "ELIMINA_REGISTRO", "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
+            SyncManager.Synckeys.AddRange(new string[] { "ID", "CODIGO_MODELO", "ID", "CODIGO_ANO", "ID", "VEICULO" });
 
             SyncManager.SyncStatus = new UpdateSyncStatus(SyncStatusProc);
             SyncManager.CheckTables();

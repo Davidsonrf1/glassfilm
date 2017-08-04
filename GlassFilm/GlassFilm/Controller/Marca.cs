@@ -79,6 +79,8 @@ namespace GlassFilm
                     cmd.CommandText = "DELETE FROM MARCA WHERE ID = @codigo";
                     cmd.Parameters.Add(new SQLiteParameter("@codigo", codigo));
                     cmd.ExecuteNonQuery();
+
+                    DBManager.EliminaRegistro("MARCA", codigo);
                 }
                 catch (Exception ex)
                 {
