@@ -298,6 +298,13 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\aaa2.png" />
+    <None Include="Resources\aaa.png" />
+    <None Include="Resources\zoom-out.png" />
+    <None Include="Resources\zoom-in %283%29.png" />
+    <None Include="Resources\two-cogwheels-configuration-interface-symbol.png" />
+    <None Include="Resources\log-file-format %281%29.png" />
+    <None Include="Resources\log-file-format.png" />
     <None Include="Resources\Settings-Backup-Sync-icon.png" />
     <None Include="Resources\Gears-icon.png" />
     <None Include="Resources\gear-loading.png" />

@@ -91,6 +91,7 @@ namespace GlassFilm
                     if (Glass.usuario.master.Equals("S"))
                     {
                         toolArquivo.Visible = true;
+                        toollSincronizacao.Visible = true;
                     }
                 }
             }
@@ -100,8 +101,10 @@ namespace GlassFilm
                 pnlprincipal.Visible = true;
                 //pnlMapa.Visible = true;
                 vvModelo.Visible = true;
-                toolArquivo.Visible = true;
                 toolCorte.Visible = true;
+                toolArquivo.Visible = true;
+                toollSincronizacao.Visible = true;
+                
             }
 
             SyncManager.SyncTables.AddRange(new string[] { "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
@@ -240,6 +243,10 @@ namespace GlassFilm
         private void button4_Click(object sender, EventArgs e)
         {
             pnlprincipal.Enabled = false;
+            pnlCalculando.Visible = true;
+            lbCalculando.Text = "Enviando para Corte, Aguarde...";
+            Application.DoEvents();
+
             try
             {
                 bool invertXY = true;
@@ -378,6 +385,7 @@ namespace GlassFilm
             finally
             {
                 pnlprincipal.Enabled = true;
+                pnlCalculando.Visible = false;
             }
         }
 
@@ -459,6 +467,9 @@ namespace GlassFilm
             {
                 Cursor = Cursors.WaitCursor;
                 pnlprincipal.Enabled = false;
+                pnlCalculando.Visible = true;
+                lbCalculando.Text = "Adicionando Peça ao Mapa, Aguarde...";
+                Application.DoEvents();
 
                 VectorPath ip = vvCorte.Document.ImportPath(p);
                 nestManager.RegisterPath(ip);                
@@ -474,6 +485,7 @@ namespace GlassFilm
 
                 Cursor = Cursors.Arrow;
                 pnlprincipal.Enabled = true;
+                pnlCalculando.Visible = false;
                 UpdateDocInfo();
             }
 
@@ -625,11 +637,13 @@ namespace GlassFilm
         {            
             pnlprincipal.Enabled = false;
             pnlCalculando.Visible = true;
+            lbCalculando.Text = "Ajustando Peças no Mapa, Aguarde...";
             Application.DoEvents();
 
             if (filmeAtual == null)
             {
                 Mensagens.Atencao("Nenhum filme selecionado!");
+                pnlCalculando.Visible = false;
                 return;
             }
 
@@ -767,6 +781,9 @@ namespace GlassFilm
             if (cbFilme.SelectedItem != null)
             {
                 pnlprincipal.Enabled = false;
+                pnlCalculando.Visible = true;
+                lbCalculando.Text = "Alterando o Tamanho do Mapa, Aguarde...";
+                Application.DoEvents();
 
                 Filme filme = (Filme)cbFilme.SelectedItem;
 
@@ -785,6 +802,7 @@ namespace GlassFilm
                 }
 
                 pnlprincipal.Enabled = true;
+                pnlCalculando.Visible = false;
 
                 vvCorte.Refresh();
             }
@@ -843,6 +861,7 @@ namespace GlassFilm
         private void button1_Click(object sender, EventArgs e)
         {
             FrmConfigPlotter c = new GlassFilm.FrmConfigPlotter();
+            c.ShowInTaskbar = false;
             c.ShowDialog();
         }
 
@@ -908,7 +927,12 @@ namespace GlassFilm
 
                 vvCorte.Document.EndTransform(false);
             }
-        }
+        }       
 
+        private void toollSincronizacao_Click(object sender, EventArgs e)
+        {
+            if(Mensagens.PeruntaSimNao("Deseja Enviar todas as Alterações para o Servidor?\nTudo enviado será compartilhado com os Clientes.") == DialogResult.Yes)
+                FrmSync.ShowSync(true, false);
+        }
     }
 }
