@@ -15,12 +15,15 @@ using VectorView.Plotter;
 using System.Drawing.Printing;
 using System.IO.Ports;
 using GlassFilm.Sync;
+using System.Threading;
 
 namespace GlassFilm
 {
     public partial class FrmPrincipal : Form
     {
         SeletorVeiculo sel = null;
+        ThreadStart tStart;
+        Thread t;
 
         public FrmPrincipal()
         {
@@ -244,10 +247,8 @@ namespace GlassFilm
 
         private void button4_Click(object sender, EventArgs e)
         {
-            pnlprincipal.Enabled = false;
-            pnlCalculando.Visible = true;
-            lbCalculando.Text = "Enviando para Corte, Aguarde...";
-            Application.DoEvents();
+            pnlprincipal.Enabled = false;           
+            loadpanel("Enviando para Corte, Aguarde...");
 
             try
             {
@@ -289,7 +290,7 @@ namespace GlassFilm
                     {
                         MessageBox.Show("Nenhum desenho na área de corte.", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
-                    }
+                    }                    
 
                     string cmds = null;
 
@@ -327,7 +328,7 @@ namespace GlassFilm
                         }
 
                         if (ps != null)
-                        {
+                        {                           
                             if (ps.IsValid)
                             {
                                 RawPrinterHelper.SendStringToPrinter(ps.PrinterName, cmds);
@@ -343,6 +344,7 @@ namespace GlassFilm
                                     RawPrinterHelper.SendStringToPrinter(ps.PrinterName, cmds);
                                 }
                             }
+                            loadpanelRecortar();
                         }
                         else
                         {
@@ -357,10 +359,11 @@ namespace GlassFilm
                             SerialPort port = FrmCadSerial.GetSerialPort();
 
                             if (port != null)
-                            {
+                            {                                
                                 port.Open();
                                 port.Write(cmds);
                                 port.Close();
+                                loadpanelRecortar();
                             }
                         }
                         catch
@@ -378,7 +381,7 @@ namespace GlassFilm
                         File.Delete("teste_corte.plt");
                         File.WriteAllText("teste_corte.plt", cmds);
                     }
-                }
+                }                
             }
             catch
             {
@@ -468,10 +471,8 @@ namespace GlassFilm
             foreach (VectorPath p in vvModelo.Document.Selection)
             {
                 Cursor = Cursors.WaitCursor;
-                pnlprincipal.Enabled = false;
-                pnlCalculando.Visible = true;
-                lbCalculando.Text = "Adicionando Peça ao Mapa, Aguarde...";
-                Application.DoEvents();
+                pnlprincipal.Enabled = false;                
+                loadpanel("Adicionando Peça ao Mapa, Aguarde...");
 
                 VectorPath ip = vvCorte.Document.ImportPath(p);
                 nestManager.RegisterPath(ip);                
@@ -637,10 +638,8 @@ namespace GlassFilm
 
         private void button3_Click(object sender, EventArgs e)
         {            
-            pnlprincipal.Enabled = false;
-            pnlCalculando.Visible = true;
-            lbCalculando.Text = "Ajustando Peças no Mapa, Aguarde...";
-            Application.DoEvents();
+            pnlprincipal.Enabled = false;            
+            loadpanel("Ajustando Peças no Mapa, Aguarde...");
 
             if (filmeAtual == null)
             {
@@ -782,10 +781,8 @@ namespace GlassFilm
         {
             if (cbFilme.SelectedItem != null)
             {
-                pnlprincipal.Enabled = false;
-                pnlCalculando.Visible = true;
-                lbCalculando.Text = "Alterando o Tamanho do Mapa, Aguarde...";
-                Application.DoEvents();
+                pnlprincipal.Enabled = false;                
+                loadpanel("Alterando o Tamanho do Mapa, Aguarde...");
 
                 Filme filme = (Filme)cbFilme.SelectedItem;
 
@@ -935,6 +932,23 @@ namespace GlassFilm
         {
             if(Mensagens.PeruntaSimNao("Deseja Enviar todas as Alterações para o Servidor?\nTudo enviado será compartilhado com os Clientes.") == DialogResult.Yes)
                 FrmSync.ShowSync(true, false);
+        }        
+
+        private void loadpanel(string desc)
+        {
+            pnlCalculando.Visible = true;
+            pnlCalculando.BackColor = ColorTranslator.FromHtml("#333333");
+            lbCalculando.Text = desc;
+            Application.DoEvents();
+        }
+
+        private void loadpanelRecortar()
+        {
+            pnlCalculando.Visible = true;
+            pnlCalculando.BackColor = ColorTranslator.FromHtml("#2c802c");
+            lbCalculando.Text = "Enviando para corte ...";                                   
+            Application.DoEvents();
+            Thread.Sleep(3000);
         }
     }
 }
