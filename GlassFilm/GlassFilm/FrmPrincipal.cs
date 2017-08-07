@@ -473,7 +473,8 @@ namespace GlassFilm
             foreach (VectorPath p in vvModelo.Document.Selection)
             {
                 Cursor = Cursors.WaitCursor;
-                pnlprincipal.Enabled = false;                
+                pnlprincipal.Enabled = false;
+                vvCorte.Enabled = false;              
                 loadpanel("Adicionando Peça ao Mapa, Aguarde...");
 
                 VectorPath ip = vvCorte.Document.ImportPath(p);
@@ -483,14 +484,18 @@ namespace GlassFilm
                 {
                     vvCorte.Document.Paths.Remove(ip);
                     Mensagens.Atencao("Peça muito grande para ser cortada neste filme!");
+
+                    ip.Source.Imported = false;
+
                     continue;                    
                 }
 
-                Cursor = Cursors.Arrow;
-                pnlprincipal.Enabled = true;
-                pnlCalculando.Visible = false;
                 UpdateDocInfo();
             }
+
+            Cursor = Cursors.Arrow;
+            vvCorte.Enabled = true;
+            pnlprincipal.Enabled = true;
 
             if (vvCorte.Document.Paths.Count == 1)
                 vvCorte.AutoFit();
