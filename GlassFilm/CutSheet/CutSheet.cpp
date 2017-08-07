@@ -221,7 +221,7 @@ void CutSheet::TestEndSpace(CutShape* shape)
 			int startLine = scan->GetStartLine(y);
 			int lastLine = scan->GetLastLine(y);
 
-			if (startLine >= 0 && lastLine < lines - 1)
+			if (startLine >= 1 && lastLine < lines - 2)
 			{
 				int* l = endPos + startLine;
 				int* s = scan->GetFirstPos();
