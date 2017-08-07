@@ -247,6 +247,27 @@ namespace VectorView
             if (movingDoc || document.IsTransforming)
                 return;
 
+            if (e.Button == MouseButtons.Left && document.HitCorner != SelectionHitCorner.None && document.SelectionCount > 0)
+            {
+                if (!AllowTransforms)
+                    return;
+
+
+                document.BeginTransform();
+
+                mouseStart.X = e.X;
+                mouseStart.Y = e.Y;
+
+                rotateCenter = document.DocPointToViewPoint(document.SelCenter);
+
+                rotatingSel = true;
+                startAngle = VectorMath.AngleBetween(rotateCenter, mouseStart);
+
+                curAngle = startAngle;
+
+                return;
+            }
+
             if (document.SelectionCount == 0)
             {
                 if (!AllowTransforms)

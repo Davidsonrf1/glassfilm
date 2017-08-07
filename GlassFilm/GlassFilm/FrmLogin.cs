@@ -243,5 +243,10 @@ namespace GlassFilm
         {
 
         }
+
+        private void pnlToken_Paint(object sender, PaintEventArgs e)
+        {
+
+        }
     }
 }

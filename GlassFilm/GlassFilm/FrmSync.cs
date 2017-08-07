@@ -120,7 +120,6 @@ namespace GlassFilm
         Thread upThread = null;
         Thread updateThread = null;
 
-        bool doSyncDown = false;
         bool doSyncUp = false;
 
         void UpdateProc()

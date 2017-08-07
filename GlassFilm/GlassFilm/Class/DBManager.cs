@@ -6,6 +6,7 @@ using System.Text;
 using System.Data.SQLite;
 using System.Data;
 using System.Data.Common;
+using VectorView;
 
 namespace GlassFilm.Class
 {
@@ -60,6 +61,66 @@ namespace GlassFilm.Class
             dr.Close();
 
             return false;
+        }
+
+        public static void GravaLogCorte(VectorDocument doc)
+        {
+            doc.CalcMetrics();
+            DBManager.GravaLogCorte("Usuário", (int)doc.DocHeight, (int)doc.DocWidth, (int)doc.UsedArea);
+        }
+
+        public static void GravaLogCorte(string usuario, int largura_rolo, int altura_rolo, int area_total)
+        {
+            try
+            {
+                SQLiteCommand cmd = _mainConnection.CreateCommand();
+
+                int area_rolo = largura_rolo * altura_rolo;
+                int eficiencia = area_rolo > 0 ? area_total / area_total : 100;
+
+                SQLiteParameter p;
+
+                cmd.CommandText = "INSERT INTO LOG_CORTE(USUARIO, LARGURA_ROLO_USADO, ALTURA_ROLO_USADO, AREA_ROLO_USADO, AREA_TOTAL_PECAS, EFICIENCIA, DATA, HORA) VALUES(@USUARIO, @LARGURA_ROLO_USADO, @ALTURA_ROLO_USADO, @AREA_ROLO_USADO, @AREA_TOTAL_PECAS, @EFICIENCIA, @DATA, @HORA)";
+
+                p = new SQLiteParameter("USUARIO", DbType.String);
+                p.Value = usuario;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("LARGURA_ROLO_USADO", DbType.Int32);
+                p.Value = largura_rolo;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("ALTURA_ROLO_USADO", DbType.Int32);
+                p.Value = altura_rolo;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("AREA_ROLO_USADO", DbType.Int32);
+                p.Value = area_rolo;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("AREA_TOTAL_PECAS", DbType.Int32);
+                p.Value = area_total;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("EFICIENCIA", DbType.Int32);
+                p.Value = eficiencia;
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("DATA", DbType.String);
+                p.Value = DateTime.Now.ToShortDateString();
+                cmd.Parameters.Add(p);
+
+                p = new SQLiteParameter("HORA", DbType.String);
+                p.Value = DateTime.Now.ToShortTimeString();
+                cmd.Parameters.Add(p);
+
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                Logs.Log("GravaLogCorte(): " + ex.Message);
+            }
+
         }
 
         public static DbType GetDbType(string type)

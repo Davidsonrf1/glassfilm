@@ -22,8 +22,6 @@ namespace GlassFilm
     public partial class FrmPrincipal : Form
     {
         SeletorVeiculo sel = null;
-        ThreadStart tStart;
-        Thread t;
 
         public FrmPrincipal()
         {
@@ -328,7 +326,9 @@ namespace GlassFilm
                         }
 
                         if (ps != null)
-                        {                           
+                        {
+                            DBManager.GravaLogCorte(vvCorte.Document);
+
                             if (ps.IsValid)
                             {
                                 RawPrinterHelper.SendStringToPrinter(ps.PrinterName, cmds);
@@ -356,6 +356,8 @@ namespace GlassFilm
                     {
                         try
                         {
+                            DBManager.GravaLogCorte(vvCorte.Document);
+
                             SerialPort port = FrmCadSerial.GetSerialPort();
 
                             if (port != null)
@@ -366,9 +368,9 @@ namespace GlassFilm
                                 loadpanelRecortar();
                             }
                         }
-                        catch
+                        catch(Exception ex)
                         {
-                            MessageBox.Show("Falha ao enviar comandos para a Plotter", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                            MessageBox.Show("Falha ao enviar comandos para a Plotter\n" + ex.Message, "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Error);
                         }
                     }
                     else
@@ -477,13 +479,11 @@ namespace GlassFilm
                 VectorPath ip = vvCorte.Document.ImportPath(p);
                 nestManager.RegisterPath(ip);                
 
-                if (nestManager.NestPath(ip))
+                if (!nestManager.NestPath(ip))
                 {
-
-                }
-                else
-                {
-
+                    vvCorte.Document.Paths.Remove(ip);
+                    Mensagens.Atencao("Peça muito grande para ser cortada neste filme!");
+                    continue;                    
                 }
 
                 Cursor = Cursors.Arrow;
@@ -906,9 +906,6 @@ namespace GlassFilm
 
                 if (e.Modifiers == Keys.Shift)
                     amount = 1;
-
-                int dx = 0;
-                int dy = 0;
 
                 vvCorte.Document.BeginTransform();
 

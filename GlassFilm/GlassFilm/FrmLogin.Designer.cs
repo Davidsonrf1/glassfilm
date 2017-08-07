@@ -88,6 +88,7 @@
             this.pnlToken.Size = new System.Drawing.Size(352, 99);
             this.pnlToken.TabIndex = 12;
             this.pnlToken.Visible = false;
+            this.pnlToken.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlToken_Paint);
             // 
             // btnCancelarToken
             // 
