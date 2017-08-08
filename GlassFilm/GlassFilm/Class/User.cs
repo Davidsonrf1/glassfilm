@@ -12,14 +12,16 @@ namespace GlassFilm.Class
         public string licenca { get; set; }
         public string status { get; set; }
         public string master { get; set; }
+        public string nome { get; set; }
 
-        public User(int id, string token, string licenca, string status, string master)
+        public User(int id, string token, string licenca, string status, string master, string nome)
         {
             this.id = id;
             this.token = token;
             this.licenca = licenca;
             this.status = status;
             this.master = master;
+            this.nome = nome;
         }
     }
 }

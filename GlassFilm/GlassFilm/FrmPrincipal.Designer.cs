@@ -188,6 +188,7 @@
             this.btnLog.Text = "Log";
             this.btnLog.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
             this.btnLog.UseVisualStyleBackColor = false;
+            this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
             // 
             // button1
             // 

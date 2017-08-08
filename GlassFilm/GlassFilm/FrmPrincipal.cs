@@ -89,13 +89,15 @@ namespace GlassFilm
                     vvModelo.Visible = true;                   
                     toolCorte.Visible = true;
 
-                    if (Glass.usuario.master.Equals("S"))
+                    if (Glass.usuario.master!=null && Glass.usuario.master!="null" && Glass.usuario.master.Equals("S"))
                     {
                         toolArquivo.Visible = true;
                         toollSincronizacao.Visible = true;
                     }
+
+                    Glass.usuario.nome = frm.txtNome.Text;
                 }
-            }
+            }   
             else
             {
                 pnlFiltroInfo.Visible = true;
@@ -108,7 +110,7 @@ namespace GlassFilm
                 
             }
 
-            DBManager.VerificaTabelasAuxiliares();
+    DBManager.VerificaTabelasAuxiliares();
 
             SyncManager.SyncTables.AddRange(new string[] { "ELIMINA_REGISTRO", "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
             SyncManager.Synckeys.AddRange(new string[] { "ID", "CODIGO_MODELO", "ID", "CODIGO_ANO", "ID", "VEICULO" });
@@ -199,6 +201,8 @@ namespace GlassFilm
         {
             if (cbAno.SelectedItem != null)
             {
+                loadpanel("Carregando novo Modelo de Corte...");
+
                 ModeloAno m = (ModeloAno)cbAno.SelectedItem;
 
                 vvModelo.Document.Clear();
@@ -213,6 +217,8 @@ namespace GlassFilm
 
                     vvModelo.AutoFit(VectorFitStyle.Both, true, true);
                 }
+
+                pnlCalculando.Visible = false;
             }
         }
 
@@ -326,9 +332,7 @@ namespace GlassFilm
                         }
 
                         if (ps != null)
-                        {
-                            DBManager.GravaLogCorte(vvCorte.Document);
-
+                        {                            
                             if (ps.IsValid)
                             {
                                 RawPrinterHelper.SendStringToPrinter(ps.PrinterName, cmds);
@@ -345,6 +349,7 @@ namespace GlassFilm
                                 }
                             }
                             loadpanelRecortar();
+                            DBManager.GravaLogCorte(vvCorte.Document, cbMarca.Text, cbModelo.Text, cbAno.Text);
                         }
                         else
                         {
@@ -355,9 +360,7 @@ namespace GlassFilm
                     else if (Program.Config["PlotterInterface"].Equals("SERIAL"))
                     {
                         try
-                        {
-                            DBManager.GravaLogCorte(vvCorte.Document);
-
+                        {                            
                             SerialPort port = FrmCadSerial.GetSerialPort();
 
                             if (port != null)
@@ -366,6 +369,7 @@ namespace GlassFilm
                                 port.Write(cmds);
                                 port.Close();
                                 loadpanelRecortar();
+                                DBManager.GravaLogCorte(vvCorte.Document, cbMarca.Text, cbModelo.Text, cbAno.Text);
                             }
                         }
                         catch(Exception ex)
@@ -491,6 +495,8 @@ namespace GlassFilm
                 }
 
                 UpdateDocInfo();
+                pnlprincipal.Enabled = true;
+                pnlCalculando.Visible = false;
             }
 
             Cursor = Cursors.Arrow;
@@ -938,6 +944,7 @@ namespace GlassFilm
 
         private void loadpanel(string desc)
         {
+            calculapalavra();
             pnlCalculando.Visible = true;
             pnlCalculando.BackColor = ColorTranslator.FromHtml("#333333");
             lbCalculando.Text = desc;
@@ -946,11 +953,19 @@ namespace GlassFilm
 
         private void loadpanelRecortar()
         {
+            calculapalavra();
             pnlCalculando.Visible = true;
             pnlCalculando.BackColor = ColorTranslator.FromHtml("#2c802c");
             lbCalculando.Text = "Enviando para corte ...";                                   
             Application.DoEvents();
             Thread.Sleep(3000);
+        }
+
+        private void btnLog_Click(object sender, EventArgs e)
+        {
+            FrmLog c = new FrmLog();
+            c.ShowInTaskbar = false;
+            c.ShowDialog();
         }
     }
 }

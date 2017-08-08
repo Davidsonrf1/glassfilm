@@ -85,7 +85,7 @@
             this.pnlToken.Controls.Add(this.btnValidarToken);
             this.pnlToken.Location = new System.Drawing.Point(3, 5);
             this.pnlToken.Name = "pnlToken";
-            this.pnlToken.Size = new System.Drawing.Size(352, 99);
+            this.pnlToken.Size = new System.Drawing.Size(351, 99);
             this.pnlToken.TabIndex = 12;
             this.pnlToken.Visible = false;
             this.pnlToken.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlToken_Paint);
@@ -299,7 +299,6 @@
         private System.Windows.Forms.Button btnEntrar;
         private System.Windows.Forms.TextBox txtSenha;
         private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.TextBox txtNome;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.PictureBox pictureBox2;
         private System.Windows.Forms.PictureBox pictureBox3;
@@ -312,6 +311,7 @@
         private System.Windows.Forms.Label lbMensagem;
         private System.Windows.Forms.TextBox txtCnpj;
         private System.Windows.Forms.Label lbCnpjCpf;
+        public System.Windows.Forms.TextBox txtNome;
     }
 }
 

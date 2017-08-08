@@ -92,6 +92,12 @@
     <Compile Include="Controller\Modelo.cs" />
     <Compile Include="Controller\ModeloAno.cs" />
     <Compile Include="Controller\Rolo.cs" />
+    <Compile Include="FrmLog.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmLog.Designer.cs">
+      <DependentUpon>FrmLog.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmSync.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -166,6 +172,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmConfigPlotter.resx">
       <DependentUpon>FrmConfigPlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmLog.resx">
+      <DependentUpon>FrmLog.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
