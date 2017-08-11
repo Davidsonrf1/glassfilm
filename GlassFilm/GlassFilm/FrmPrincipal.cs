@@ -123,6 +123,8 @@ namespace GlassFilm
                 //SyncManager.Syncronize(SyncType.Outgoing);
             }
 
+            
+
             sel.AtualizaMarcas();
             cbMarca.Focus();
             calculapalavra();
@@ -866,6 +868,7 @@ namespace GlassFilm
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
             FrmSync.ShowSync(false, true);
+            sel.AtualizaMarcas();
         }
 
         private void button1_Click(object sender, EventArgs e)

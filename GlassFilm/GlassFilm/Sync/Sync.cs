@@ -205,7 +205,12 @@ namespace GlassFilm.Sync
             IDbCommand cmd = con.CreateCommand();
 
             cmd.CommandText = "SELECT MAX (VERSAO) FROM " + table;
-            int versao = int.Parse(cmd.ExecuteScalar().ToString());
+
+            string ver = cmd.ExecuteScalar().ToString();
+            if (string.IsNullOrEmpty(ver))
+                ver = "0";
+
+            int versao = int.Parse(ver);
 
             SyncDown(table, versao);
         }
@@ -224,7 +229,13 @@ namespace GlassFilm.Sync
             IDbCommand cmd = con.CreateCommand();
 
             cmd.CommandText = "SELECT MAX (VERSAO) FROM " + table;
-            return int.Parse(cmd.ExecuteScalar().ToString());           
+
+            string ver = cmd.ExecuteScalar().ToString();
+
+            if (string.IsNullOrEmpty(ver))
+                ver = "0";
+
+            return int.Parse(ver);           
         }
 
         static string BuildJSONFromRow(DataRow dr, string tbName, SQLiteConnection con)
