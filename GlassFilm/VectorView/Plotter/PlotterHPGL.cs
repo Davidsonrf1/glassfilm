@@ -8,7 +8,7 @@ namespace VectorView.Plotter
 {
     public class PlotterHPGL : PlotterDriver
     {
-        const int HPGL_UNIT = 1;
+        const int HPGL_UNIT = 40; // 0.025mm
         Point GetHPGLPoint(PointF p)
         {
             Point ret = new Point();
@@ -44,7 +44,7 @@ namespace VectorView.Plotter
 
         protected override string Init()
         {
-            return "IN;IP0,0,4000,4000;SC0,100,0,100;\nSP1;";            
+            return "IN;\nIP;\nSP1;";
         }
 
         protected override string Finish()
