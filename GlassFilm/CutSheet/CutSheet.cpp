@@ -184,6 +184,8 @@ bool CutSheet::TestFullScan(CutScan* scan, int x, int y)
 
 #define _CRT_SECURE_NO_WARNINGS 1
 
+bool dontRotateLongDoors = true;
+
 void CutSheet::SetResult(int angle, int x, int y, int maxx)
 {
 	if (result.maxx > maxx)
@@ -221,7 +223,7 @@ void CutSheet::TestEndSpace(CutShape* shape)
 			int startLine = scan->GetStartLine(y);
 			int lastLine = scan->GetLastLine(y);
 
-			if (startLine >= 1 && lastLine < lines - 2)
+			if (startLine >= 6 && lastLine < lines - 6)
 			{
 				int* l = endPos + startLine;
 				int* s = scan->GetFirstPos();
@@ -350,6 +352,8 @@ bool CutSheet::TestShape(CutShape* shape, CutTestResult *res)
 	return false;
 }
 
+#define CUT_MARGIN 15
+
 void CutSheet::Reset(int size)
 {
 	lines = size;
@@ -375,11 +379,11 @@ void CutSheet::Reset(int size)
 	{
 		CutSegment* end = &endSpace[i];
 
-		end->SetStart(0);
+		end->SetStart(CUT_MARGIN);
 		end->SetEnd(INT_MAX);
 		end->SetLine(i);
 
-		endPos[i] = 0;
+		endPos[i] = CUT_MARGIN;
 	}
 }
 
@@ -387,14 +391,25 @@ void CutSheet::Plot(CutScan *scan, int x, int y)
 {
 	CutSegmentList **segs = scan->GetSegments();
 	int count = scan->GetLineCount();
+
+	CutSegmentList *src = segs[0];
+	int destLine = y + src->GetFirst()->GetLine();
+
+	CutSegmentList *firstSeg = src;
+	CutSegmentList *lastSeg = nullptr;
+
+	int firstLine = destLine;
+	int lastLine = 0;
 	
 	for (int i = 0; i < count; i++)
 	{
-		CutSegmentList *src = segs[i];
+		src = segs[i];
+		lastSeg = src;
 
 		if (src->GetCount() > 0)
 		{
-			int destLine = y + src->GetFirst()->GetLine();
+			destLine = y + src->GetFirst()->GetLine();
+			lastLine = destLine;
 
 			if (destLine >= 0 && destLine < lines)
 			{
@@ -403,6 +418,47 @@ void CutSheet::Plot(CutScan *scan, int x, int y)
 				dest->Merge(minDist);
 			}
 		}
+	}
+
+	int margin = CUT_MARGIN / 3;
+
+	for (int i = 0; i < margin; i++)
+	{
+		int destLineMin = firstLine - margin;
+		int destLineMax = lastLine + margin;
+
+		if (destLineMin >= 0)
+		{
+			src = firstSeg;
+
+			destLine = destLineMin;
+
+			if (destLine >= 0 && destLine < lines)
+			{
+				CutSegmentList *dest = usedSpace + destLine;
+
+				src->Plot(dest, x);
+				dest->Merge(minDist);
+			}
+		}
+
+		if (destLineMax < lines)
+		{
+			src = lastSeg;
+
+			destLine = destLineMax;
+
+			if (destLine >= 0 && destLine < lines)
+			{
+				CutSegmentList *dest = usedSpace + destLine;
+
+				src->Plot(dest, x);
+				dest->Merge(minDist);
+			}
+		}
+
+		destLineMin++;
+		destLineMax--;
 	}
 
 	for (int i = 0; i < lines; i++)
@@ -457,7 +513,7 @@ void CutSheet::Plot(CutScan *scan, int x, int y)
 			s = next;
 		}
 
-		endPos[i] = end->GetStart();		
+		endPos[i] = end->GetStart() + CUT_MARGIN/2;		
 	}
 }
 

@@ -121,9 +121,7 @@ namespace GlassFilm
             if (Debugger.IsAttached)
             {
                 //SyncManager.Syncronize(SyncType.Outgoing);
-            }
-
-            
+            }            
 
             sel.AtualizaMarcas();
             cbMarca.Focus();
@@ -587,7 +585,7 @@ namespace GlassFilm
 
                 lbTamanho.Text = string.Format("Largura: {0:0.00}m   Comprimento: {1:0.00}m", d.DocHeight / 1000, d.GetMaxX() / 1000);
                 lbAreaFilme.Text = string.Format("Filme total: {0:0.00}m\xB2", d.DocArea / 1000000);
-                lbAreaUsada.Text = string.Format("Filme usado: {0:0.00}m\xB2  Eficiência: {1:0.00}%", d.UsedArea / 1000000, d.Efficiency);
+                lbAreaUsada.Text = string.Format("Filme usado: {0:0.00}m\xB2  Eficiência: {1:0.00}%", d.UsedArea / 1000000, d.Efficiency*100);
             }
         }
 
@@ -865,6 +863,9 @@ namespace GlassFilm
 
         private void FrmPrincipal_Shown(object sender, EventArgs e)
         {
+            if (Debugger.IsAttached)
+                return;
+
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
             FrmSync.ShowSync(false, true);
