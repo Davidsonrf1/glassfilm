@@ -349,7 +349,7 @@ namespace GlassFilm
                                 }
                             }
                             loadpanelRecortar();
-                            DBManager.GravaLogCorte(vvCorte.Document, cbMarca.Text, cbModelo.Text, cbAno.Text);
+                            DBManager.GravaLogCorte(vvCorte.Document);
                         }
                         else
                         {
@@ -369,7 +369,7 @@ namespace GlassFilm
                                 port.Write(cmds);
                                 port.Close();
                                 loadpanelRecortar();
-                                DBManager.GravaLogCorte(vvCorte.Document, cbMarca.Text, cbModelo.Text, cbAno.Text);
+                                DBManager.GravaLogCorte(vvCorte.Document);
                             }
                         }
                         catch(Exception ex)

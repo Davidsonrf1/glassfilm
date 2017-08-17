@@ -63,13 +63,13 @@ namespace GlassFilm.Class
             return false;
         }
 
-        public static void GravaLogCorte(VectorDocument doc,string marca, string modelo, string ano)
+        public static void GravaLogCorte(VectorDocument doc)
         {
             doc.CalcMetrics();
-            DBManager.GravaLogCorte("Usuário", (int)doc.DocHeight, (int)doc.DocWidth, (int)doc.UsedArea, marca, modelo, ano);
+            DBManager.GravaLogCorte("Usuário", (int)doc.DocHeight, (int)doc.DocWidth, (int)doc.UsedArea);
         }
 
-        public static void GravaLogCorte(string usuario, int largura_rolo, int altura_rolo, int area_total, string marca, string modelo, string ano)
+        public static void GravaLogCorte(string usuario, int largura_rolo, int altura_rolo, int area_total)
         {
             try
             {
@@ -80,7 +80,7 @@ namespace GlassFilm.Class
 
                 SQLiteParameter p;
 
-                cmd.CommandText = "INSERT INTO LOG_CORTE(USUARIO, LARGURA_ROLO_USADO, ALTURA_ROLO_USADO, AREA_ROLO_USADO, AREA_TOTAL_PECAS, EFICIENCIA, DATA, HORA, MARCA, MODELO, ANO) VALUES(@USUARIO, @LARGURA_ROLO_USADO, @ALTURA_ROLO_USADO, @AREA_ROLO_USADO, @AREA_TOTAL_PECAS, @EFICIENCIA, @DATA, @HORA, @MARCA, @MODELO, @ANO)";
+                cmd.CommandText = "INSERT INTO LOG_CORTE(USUARIO, LARGURA_ROLO_USADO, ALTURA_ROLO_USADO, AREA_ROLO_USADO, AREA_TOTAL_PECAS, EFICIENCIA, DATA, HORA) VALUES(@USUARIO, @LARGURA_ROLO_USADO, @ALTURA_ROLO_USADO, @AREA_ROLO_USADO, @AREA_TOTAL_PECAS, @EFICIENCIA, @DATA, @HORA)";
 
                 p = new SQLiteParameter("USUARIO", DbType.String);
                 p.Value = Glass.usuario!=null?Glass.usuario.nome:"Usuário";
@@ -112,18 +112,6 @@ namespace GlassFilm.Class
 
                 p = new SQLiteParameter("HORA", DbType.String);
                 p.Value = DateTime.Now.ToShortTimeString();
-                cmd.Parameters.Add(p);
-
-                p = new SQLiteParameter("MARCA", DbType.String);
-                p.Value = marca;
-                cmd.Parameters.Add(p);
-
-                p = new SQLiteParameter("MODELO", DbType.String);
-                p.Value = modelo;
-                cmd.Parameters.Add(p);
-
-                p = new SQLiteParameter("ANO", DbType.String);
-                p.Value = ano;
                 cmd.Parameters.Add(p);
 
                 cmd.ExecuteNonQuery();
