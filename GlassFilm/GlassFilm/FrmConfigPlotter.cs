@@ -27,7 +27,8 @@ namespace GlassFilm
             try { cbRotate.Checked = bool.Parse(Program.Config["RotateCut"]); } catch { }
             try { cbFlip.Checked = bool.Parse(Program.Config["FlipX"]); } catch { }
             try { cbForceAutoNest.Checked = bool.Parse(Program.Config["forceAutoNest"]); } catch { }
-            
+            try { numMargin.Value = int.Parse(Program.Config["margin"]); } catch { }
+
         }
 
         public void SetCBValue(ComboBox cb, string value)
@@ -55,6 +56,7 @@ namespace GlassFilm
             Program.Config["RotateCut"] = cbRotate.Checked.ToString();
             Program.Config["FlipX"] = cbFlip.Checked.ToString();
             Program.Config["forceAutoNest"] = cbForceAutoNest.Checked.ToString();
+            Program.Config["margin"] = numMargin.Value.ToString();
 
             Close();
 

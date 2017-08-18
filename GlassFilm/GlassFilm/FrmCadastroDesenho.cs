@@ -289,6 +289,7 @@ namespace GlassFilm
                     }
 
                     tbEtiqueta.Text = curPath.Tag;
+                    cbPreferircad.Checked = curPath.ForceAngle;
                 }
             }
             else
@@ -369,7 +370,7 @@ namespace GlassFilm
         {
             if (curPath != null)
             {
-                curPath.ForceAngle = checkBox1.Checked;
+                curPath.ForceAngle = cbPreferircad.Checked;
             }
 
             vectorView.Refresh();

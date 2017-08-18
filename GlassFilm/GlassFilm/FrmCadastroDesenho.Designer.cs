@@ -49,6 +49,7 @@
             this.btImportar = new System.Windows.Forms.Button();
             this.pbDesenho = new System.Windows.Forms.ProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.cbPreferircad = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tbEtiqueta = new System.Windows.Forms.TextBox();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
@@ -57,7 +58,6 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbAnos = new System.Windows.Forms.CheckedListBox();
             this.vectorView = new VectorView.VectorViewCtr();
-            this.checkBox1 = new System.Windows.Forms.CheckBox();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
             this.pnlFiltroInfo.SuspendLayout();
@@ -270,7 +270,7 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.checkBox1);
+            this.panel1.Controls.Add(this.cbPreferircad);
             this.panel1.Controls.Add(this.groupBox3);
             this.panel1.Controls.Add(this.groupBox2);
             this.panel1.Controls.Add(this.groupBox1);
@@ -279,6 +279,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(174, 451);
             this.panel1.TabIndex = 17;
+            // 
+            // cbPreferircad
+            // 
+            this.cbPreferircad.AutoSize = true;
+            this.cbPreferircad.Location = new System.Drawing.Point(6, 300);
+            this.cbPreferircad.Name = "cbPreferircad";
+            this.cbPreferircad.Size = new System.Drawing.Size(157, 17);
+            this.cbPreferircad.TabIndex = 18;
+            this.cbPreferircad.Text = "Preferir Posição Cadastrada";
+            this.cbPreferircad.UseVisualStyleBackColor = true;
+            this.cbPreferircad.CheckStateChanged += new System.EventHandler(this.checkBox1_CheckStateChanged);
             // 
             // groupBox3
             // 
@@ -379,17 +390,6 @@
             this.vectorView.TabIndex = 7;
             this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
             // 
-            // checkBox1
-            // 
-            this.checkBox1.AutoSize = true;
-            this.checkBox1.Location = new System.Drawing.Point(6, 300);
-            this.checkBox1.Name = "checkBox1";
-            this.checkBox1.Size = new System.Drawing.Size(157, 17);
-            this.checkBox1.TabIndex = 18;
-            this.checkBox1.Text = "Preferir Posição Cadastrada";
-            this.checkBox1.UseVisualStyleBackColor = true;
-            this.checkBox1.CheckStateChanged += new System.EventHandler(this.checkBox1_CheckStateChanged);
-            // 
             // FrmCadastroDesenho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -455,6 +455,6 @@
         private System.Windows.Forms.GroupBox groupBox3;
         private System.Windows.Forms.TextBox tbEtiqueta;
         private System.Windows.Forms.ToolStripButton toolStripButton2;
-        private System.Windows.Forms.CheckBox checkBox1;
+        private System.Windows.Forms.CheckBox cbPreferircad;
     }
 }

@@ -469,7 +469,10 @@ namespace GlassFilm
 
             if (nestManager == null)
             {
-                nestManager = new NestManager(filmeAtual.Largura);
+                int margin = 0;
+                try { margin = 2 * int.Parse(Program.Config["margin"]); } catch { }
+
+                nestManager = new NestManager(filmeAtual.Largura - margin);
             }
 
             //vvCorte.ImportSelection(vvModelo);
@@ -536,7 +539,10 @@ namespace GlassFilm
                 if (filmeAtual != null)
                     size = filmeAtual.Largura;
 
-                nestManager.ResetSheet(size);
+                int margin = 0;
+                try { margin = 2 * int.Parse(Program.Config["margin"]); } catch { }
+
+                nestManager.ResetSheet(size - margin);
             }
 
             foreach (VectorPath p in vvCorte.Document.Paths)
@@ -693,7 +699,10 @@ namespace GlassFilm
             }
             else
             {
-                nestManager.ResetSheet(filmeAtual.Largura);
+                int margin = 0;
+                try { margin = 2 * int.Parse(Program.Config["margin"]); } catch { }
+                
+                nestManager.ResetSheet(filmeAtual.Largura - margin);
             }
 
             NestPaths(vvCorte.Document, filmeAtual.Largura);
@@ -832,7 +841,12 @@ namespace GlassFilm
                 vvCorte.Document.DocHeight = filmeAtual.Largura;
 
                 if (nestManager != null)
-                    nestManager.ResetSheet(filmeAtual.Largura);
+                {
+                    int margin = 0;
+                    try { margin = 2 * int.Parse(Program.Config["margin"]); } catch { }
+
+                    nestManager.ResetSheet(filmeAtual.Largura - margin);
+                }
 
                 if (nestManager != null)
                 {

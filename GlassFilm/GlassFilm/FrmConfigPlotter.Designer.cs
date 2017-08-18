@@ -40,7 +40,10 @@
             this.cbRotate = new System.Windows.Forms.CheckBox();
             this.cbFlip = new System.Windows.Forms.CheckBox();
             this.cbForceAutoNest = new System.Windows.Forms.CheckBox();
+            this.numMargin = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numMargin)).BeginInit();
             this.SuspendLayout();
             // 
             // panel1
@@ -49,7 +52,7 @@
             this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.btnEntrar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 129);
+            this.panel1.Location = new System.Drawing.Point(0, 169);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(419, 51);
             this.panel1.TabIndex = 8;
@@ -87,7 +90,7 @@
             this.label1.ForeColor = System.Drawing.Color.Black;
             this.label1.Location = new System.Drawing.Point(11, 36);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(94, 21);
+            this.label1.Size = new System.Drawing.Size(109, 21);
             this.label1.TabIndex = 10;
             this.label1.Text = "Interface";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -99,9 +102,9 @@
             this.cbInterface.Items.AddRange(new object[] {
             "PRINTER",
             "SERIAL"});
-            this.cbInterface.Location = new System.Drawing.Point(111, 36);
+            this.cbInterface.Location = new System.Drawing.Point(126, 36);
             this.cbInterface.Name = "cbInterface";
-            this.cbInterface.Size = new System.Drawing.Size(268, 21);
+            this.cbInterface.Size = new System.Drawing.Size(253, 21);
             this.cbInterface.TabIndex = 11;
             // 
             // label2
@@ -111,7 +114,7 @@
             this.label2.ForeColor = System.Drawing.Color.Black;
             this.label2.Location = new System.Drawing.Point(11, 9);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(94, 20);
+            this.label2.Size = new System.Drawing.Size(109, 21);
             this.label2.TabIndex = 12;
             this.label2.Text = "Linguagem";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
@@ -123,9 +126,9 @@
             this.cbLang.Items.AddRange(new object[] {
             "HPGL",
             "DMPL"});
-            this.cbLang.Location = new System.Drawing.Point(111, 9);
+            this.cbLang.Location = new System.Drawing.Point(126, 9);
             this.cbLang.Name = "cbLang";
-            this.cbLang.Size = new System.Drawing.Size(299, 21);
+            this.cbLang.Size = new System.Drawing.Size(284, 21);
             this.cbLang.TabIndex = 13;
             // 
             // button1
@@ -143,7 +146,7 @@
             // lbPlotterName
             // 
             this.lbPlotterName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbPlotterName.Location = new System.Drawing.Point(11, 100);
+            this.lbPlotterName.Location = new System.Drawing.Point(11, 134);
             this.lbPlotterName.Name = "lbPlotterName";
             this.lbPlotterName.Size = new System.Drawing.Size(399, 23);
             this.lbPlotterName.TabIndex = 16;
@@ -180,12 +183,33 @@
             this.cbForceAutoNest.Text = "Buscar melhor posição para todas as peças";
             this.cbForceAutoNest.UseVisualStyleBackColor = true;
             // 
+            // numMargin
+            // 
+            this.numMargin.Location = new System.Drawing.Point(126, 101);
+            this.numMargin.Name = "numMargin";
+            this.numMargin.Size = new System.Drawing.Size(130, 20);
+            this.numMargin.TabIndex = 20;
+            // 
+            // label3
+            // 
+            this.label3.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.label3.Font = new System.Drawing.Font("Verdana", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label3.ForeColor = System.Drawing.Color.Black;
+            this.label3.Location = new System.Drawing.Point(11, 101);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(109, 20);
+            this.label3.TabIndex = 21;
+            this.label3.Text = "Margem (mm)";
+            this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            // 
             // FrmConfigPlotter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(419, 180);
+            this.ClientSize = new System.Drawing.Size(419, 220);
+            this.Controls.Add(this.label3);
+            this.Controls.Add(this.numMargin);
             this.Controls.Add(this.cbForceAutoNest);
             this.Controls.Add(this.cbFlip);
             this.Controls.Add(this.cbRotate);
@@ -203,6 +227,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Parâmetros da Cortadora";
             this.panel1.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.numMargin)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -222,5 +247,7 @@
         private System.Windows.Forms.CheckBox cbRotate;
         private System.Windows.Forms.CheckBox cbFlip;
         private System.Windows.Forms.CheckBox cbForceAutoNest;
+        private System.Windows.Forms.NumericUpDown numMargin;
+        private System.Windows.Forms.Label label3;
     }
 }

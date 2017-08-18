@@ -49,7 +49,7 @@ namespace GlassFilm
             config.RegValue("RotateCut", "True");
             config.RegValue("FlipX", "False");
             config.RegValue("forceAutoNest", "False");
-
+            config.RegValue("margin", "0");
         }
 
         /// <summary>
