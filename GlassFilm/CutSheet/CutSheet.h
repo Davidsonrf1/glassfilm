@@ -45,13 +45,17 @@ class CutSheet {
 	void TestFreeSpace(CutShape* shape);
 	void TestEndSpace(CutShape* shape);
 	bool TestFullScan(CutScan* scan, int x, int y);
+
+	bool forceAngle = false;
+	int forcedAngle = 0;
+
 public:
 	CutSheet(int size);
 
 	CutShape* GetShape(unsigned id);
 	int CreateShape(unsigned int id);
 	int DeleteShape(unsigned int id);
-	bool TestShape(CutShape* shape, CutTestResult *res);
+	bool TestShape(CutShape* shape, CutTestResult *res, bool forceAngle, int angle);
 	void Reset(int size);
 
 	void Plot(CutScan *scan, int x, int y);

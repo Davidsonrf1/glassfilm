@@ -128,7 +128,7 @@ namespace VectorViewTest
             while ((p = GetPathByMaxArea(doc)) != null)
             {
                 res.resultOK = false;
-                CutLibWrapper.TestShape(sheet, p.Shape, ref res);
+                CutLibWrapper.TestShape(sheet, p.Shape, ref res, true, 0);
 
                 if (res.resultOK)
                 {

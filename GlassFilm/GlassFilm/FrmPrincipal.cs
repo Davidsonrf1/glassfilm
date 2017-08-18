@@ -482,7 +482,22 @@ namespace GlassFilm
                 loadpanel("Adicionando Peça ao Mapa, Aguarde...");
 
                 VectorPath ip = vvCorte.Document.ImportPath(p);
-                nestManager.RegisterPath(ip);                
+                nestManager.RegisterPath(ip);
+
+                bool forceNest = false;
+                try { forceNest = bool.Parse(Program.Config["forceAutoNest"]); } catch { }
+                bool forceAngle = false;
+
+                if (forceNest)
+                {
+                    forceAngle = false; // Isso vai fazer o autonest procurar em todos os ângulos
+                }
+                else
+                {
+                    forceAngle = p.ForceAngle; // Respeita o que está defindo no cadastro.
+                }
+
+                ip.ForceAngle = forceAngle;
 
                 if (!nestManager.NestPath(ip))
                 {
@@ -635,15 +650,28 @@ namespace GlassFilm
             VectorPath p = null;
             while ((p = GetPathByMaxArea(doc)) != null)
             {
-                if (nestManager.NestPath(p))
-                {
+                bool forceNest = false;
+                try { forceNest = bool.Parse(Program.Config["forceAutoNest"]); } catch { }
+                bool forceAngle = false;
+                bool oldForceAngle = p.ForceAngle;
 
+                if (forceNest)
+                {
+                    forceAngle = false; // Isso vai fazer o autonest procurar em todos os ângulos
                 }
                 else
                 {
-
+                    forceAngle = p.ForceAngle; // Respeita o que está defindo no cadastro.
                 }
-                p.Nested = true;
+
+                p.ForceAngle = forceAngle;
+
+                if (nestManager.NestPath(p))
+                {
+                    p.Nested = true;
+                }
+
+                p.ForceAngle = oldForceAngle;
             }
         }
 

@@ -71,7 +71,7 @@ namespace GlassFilm
                 uint shape = pathId[path.PathID];
 
                 CutTestResult res = new CutTestResult();
-                TestShape((uint)cutSheet, shape, ref res);
+                TestShape((uint)cutSheet, shape, ref res, path.ForceAngle, path.ForcedAngle);
 
                 if (res.resultOK)
                 {

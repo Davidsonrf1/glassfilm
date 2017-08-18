@@ -364,5 +364,15 @@ namespace GlassFilm
         {
             FrmSync.ShowSync(true, false);
         }
+
+        private void checkBox1_CheckStateChanged(object sender, EventArgs e)
+        {
+            if (curPath != null)
+            {
+                curPath.ForceAngle = checkBox1.Checked;
+            }
+
+            vectorView.Refresh();
+        }
     }
 }

@@ -40,6 +40,9 @@ namespace VectorView
 
         int importCount = 0;
 
+        bool forceAngle = false;
+        int forcedAngle = 0;
+
         VectorPath source = null;
 
         float width = 0, height = 0;
@@ -416,6 +419,37 @@ namespace VectorView
             set
             {
                 imported = value;
+            }
+        }
+
+        public bool ForceAngle
+        {
+            get
+            {
+                return forceAngle;
+            }
+
+            set
+            {
+                forceAngle = value;
+            }
+        }
+
+        public int ForcedAngle
+        {
+            get
+            {
+                if (width >= height)
+                    forcedAngle = 0;
+                else
+                    forcedAngle = 90;  
+
+                return forcedAngle;
+            }
+
+            set
+            {
+                forcedAngle = value;
             }
         }
 
@@ -1466,7 +1500,7 @@ namespace VectorView
             byte[] bytes = Encoding.UTF8.GetBytes(tag);
             string b64Tag = Convert.ToBase64String(bytes);
 
-            sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" gf-guid=\"{2}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag, guid.ToString());
+            sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" gf-guid=\"{2}\"  gf-forceAngle=\"{3}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag, guid.ToString(), forceAngle);
 
             foreach (VectorSegment e in segments)
             {

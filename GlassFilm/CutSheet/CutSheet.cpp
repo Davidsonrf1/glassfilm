@@ -215,7 +215,16 @@ void CutSheet::TestEndSpace(CutShape* shape)
 
 		for (int scanIndex = 0; scanIndex < MAX_ANGLES; scanIndex++)
 		{
-			CutScan *scan = shape->GetSortedScan(scanIndex);
+			CutScan *scan = nullptr;
+
+			if (this->forceAngle)
+			{
+				scan = shape->GetScan(forcedAngle);
+			}
+			else
+			{
+				scan = shape->GetSortedScan(scanIndex);
+			}
 
 			int x = 0;
 			int y = i;
@@ -239,7 +248,12 @@ void CutSheet::TestEndSpace(CutShape* shape)
 				}
 
     			SetResult(scan->GetAngle(), x, y, scan->GetRight() + x);
-			}			
+			}	
+
+			if (this->forceAngle)
+			{
+				break;
+			}
 		}
 	}
 }
@@ -316,10 +330,13 @@ void CutSheet::TestFreeSpace(CutShape* shape)
 	}
 }
 
-bool CutSheet::TestShape(CutShape* shape, CutTestResult *res)
+bool CutSheet::TestShape(CutShape* shape, CutTestResult *res, bool forceAngle, int angle)
 {
 	foundPos = false;
 	memset(&result, 0, sizeof(result));
+
+	this->forceAngle = forceAngle;
+	this->forcedAngle = angle;
 
 	result.maxx = INT_MAX;
 	result.x = INT_MAX;

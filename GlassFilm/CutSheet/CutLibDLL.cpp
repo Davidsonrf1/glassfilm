@@ -158,7 +158,7 @@ extern "C" {
 		}
 	}
 
-	void CUT_API TestShape(unsigned int sheet, unsigned int shapeId, CutTestResult* result)
+	void CUT_API TestShape(unsigned int sheet, unsigned int shapeId, CutTestResult* result, bool forceAngle, int angle)
 	{
 		if (sheet < sheetCount)
 		{
@@ -166,7 +166,7 @@ extern "C" {
 
 			CutTestResult res;
 			res.resultOk = false;
-			sheets[sheet]->TestShape(shape, &res);
+			sheets[sheet]->TestShape(shape, &res, forceAngle, angle);
 
 			if (res.resultOk) 
 			{

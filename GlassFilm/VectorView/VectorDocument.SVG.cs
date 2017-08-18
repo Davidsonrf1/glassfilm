@@ -119,6 +119,19 @@ namespace VectorView
                         path.Side = VectorPathSide.Right;
                 }
 
+                path.ForceAngle = false;
+                string force = "";
+
+                if (p.TryGetAttribute("gf-forceAngle", out force))
+                {
+                    bool pf = false;
+
+                    if(bool.TryParse(force, out pf))
+                    {
+                        path.ForceAngle = pf;
+                    }
+                }
+
                 float sx, sy, ex, ey;
 
                 foreach (SvgPathSegment seg in p.PathData)

@@ -39,6 +39,7 @@
             this.lbPlotterName = new System.Windows.Forms.Label();
             this.cbRotate = new System.Windows.Forms.CheckBox();
             this.cbFlip = new System.Windows.Forms.CheckBox();
+            this.cbForceAutoNest = new System.Windows.Forms.CheckBox();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -48,7 +49,7 @@
             this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.btnEntrar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel1.Location = new System.Drawing.Point(0, 108);
+            this.panel1.Location = new System.Drawing.Point(0, 129);
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(419, 51);
             this.panel1.TabIndex = 8;
@@ -142,7 +143,7 @@
             // lbPlotterName
             // 
             this.lbPlotterName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.lbPlotterName.Location = new System.Drawing.Point(11, 80);
+            this.lbPlotterName.Location = new System.Drawing.Point(11, 100);
             this.lbPlotterName.Name = "lbPlotterName";
             this.lbPlotterName.Size = new System.Drawing.Size(399, 23);
             this.lbPlotterName.TabIndex = 16;
@@ -169,12 +170,23 @@
             this.cbFlip.Text = "Espelhar Corte";
             this.cbFlip.UseVisualStyleBackColor = true;
             // 
+            // cbForceAutoNest
+            // 
+            this.cbForceAutoNest.AutoSize = true;
+            this.cbForceAutoNest.Location = new System.Drawing.Point(11, 80);
+            this.cbForceAutoNest.Name = "cbForceAutoNest";
+            this.cbForceAutoNest.Size = new System.Drawing.Size(232, 17);
+            this.cbForceAutoNest.TabIndex = 19;
+            this.cbForceAutoNest.Text = "Buscar melhor posição para todas as peças";
+            this.cbForceAutoNest.UseVisualStyleBackColor = true;
+            // 
             // FrmConfigPlotter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(419, 159);
+            this.ClientSize = new System.Drawing.Size(419, 180);
+            this.Controls.Add(this.cbForceAutoNest);
             this.Controls.Add(this.cbFlip);
             this.Controls.Add(this.cbRotate);
             this.Controls.Add(this.lbPlotterName);
@@ -209,5 +221,6 @@
         private System.Windows.Forms.Label lbPlotterName;
         private System.Windows.Forms.CheckBox cbRotate;
         private System.Windows.Forms.CheckBox cbFlip;
+        private System.Windows.Forms.CheckBox cbForceAutoNest;
     }
 }

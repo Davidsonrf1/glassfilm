@@ -57,7 +57,7 @@ namespace VectorView
         public extern static void PlotCurrentScan(uint sheet, uint shape, int x, int y);          
 
         [DllImport("CutSheet.dll")]
-        public extern static void TestShape(uint sheet, uint shape, ref CutTestResult result);
+        public extern static void TestShape(uint sheet, uint shape, ref CutTestResult result, bool forceAngle, int angle);
 
         [DllImport("CutSheet.dll")]
         public extern static void RenderScan(uint sheet, uint shapeId, int angle, int x, int y, IntPtr hDC);
