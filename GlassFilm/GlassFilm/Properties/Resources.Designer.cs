@@ -263,6 +263,16 @@ namespace GlassFilm.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap logocut {
+            get {
+                object obj = ResourceManager.GetObject("logocut", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap magnifying_glass_search_button {
             get {
                 object obj = ResourceManager.GetObject("magnifying-glass-search-button", resourceCulture);

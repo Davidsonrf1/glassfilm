@@ -37,11 +37,6 @@
             this.cadastroRoloToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toollSincronizacao = new System.Windows.Forms.ToolStripMenuItem();
             this.pnlprincipal = new System.Windows.Forms.Panel();
-            this.btnLog = new System.Windows.Forms.Button();
-            this.button1 = new System.Windows.Forms.Button();
-            this.button4 = new System.Windows.Forms.Button();
-            this.button3 = new System.Windows.Forms.Button();
-            this.button2 = new System.Windows.Forms.Button();
             this.groupBox2 = new System.Windows.Forms.GroupBox();
             this.cbFilme = new System.Windows.Forms.ComboBox();
             this.label2 = new System.Windows.Forms.Label();
@@ -49,7 +44,6 @@
             this.lbAreaUsada = new System.Windows.Forms.Label();
             this.lbAreaFilme = new System.Windows.Forms.Label();
             this.lbTamanho = new System.Windows.Forms.Label();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
             this.panel4 = new System.Windows.Forms.Panel();
@@ -68,17 +62,22 @@
             this.splitCorte = new System.Windows.Forms.SplitContainer();
             this.vvModelo = new VectorView.VectorViewCtr();
             this.toolCorte = new System.Windows.Forms.ToolStrip();
+            this.lbCalculando = new System.Windows.Forms.Label();
+            this.pnlCalculando = new System.Windows.Forms.Panel();
+            this.btnLog = new System.Windows.Forms.Button();
+            this.button1 = new System.Windows.Forms.Button();
+            this.button4 = new System.Windows.Forms.Button();
+            this.button3 = new System.Windows.Forms.Button();
+            this.button2 = new System.Windows.Forms.Button();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
             this.vvCorte = new VectorView.VectorViewCtr();
-            this.lbCalculando = new System.Windows.Forms.Label();
-            this.pnlCalculando = new System.Windows.Forms.Panel();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitCorte)).BeginInit();
@@ -87,6 +86,7 @@
             this.splitCorte.SuspendLayout();
             this.toolCorte.SuspendLayout();
             this.pnlCalculando.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -173,86 +173,6 @@
             this.pnlprincipal.Visible = false;
             this.pnlprincipal.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlprincipal_Paint);
             // 
-            // btnLog
-            // 
-            this.btnLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.btnLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(116)))), ((int)(((byte)(116)))));
-            this.btnLog.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.btnLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btnLog.ForeColor = System.Drawing.Color.White;
-            this.btnLog.Image = global::GlassFilm.Properties.Resources.log_file_format__1_;
-            this.btnLog.Location = new System.Drawing.Point(1169, 19);
-            this.btnLog.Name = "btnLog";
-            this.btnLog.Size = new System.Drawing.Size(75, 80);
-            this.btnLog.TabIndex = 12;
-            this.btnLog.Text = "Log";
-            this.btnLog.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.btnLog.UseVisualStyleBackColor = false;
-            this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
-            // 
-            // button1
-            // 
-            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
-            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button1.ForeColor = System.Drawing.Color.Black;
-            this.button1.Image = global::GlassFilm.Properties.Resources.two_cogwheels_configuration_interface_symbol;
-            this.button1.Location = new System.Drawing.Point(1248, 19);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 80);
-            this.button1.TabIndex = 11;
-            this.button1.Text = "Configurar";
-            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button1.UseVisualStyleBackColor = false;
-            this.button1.Click += new System.EventHandler(this.button1_Click);
-            // 
-            // button4
-            // 
-            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(128)))), ((int)(((byte)(44)))));
-            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.Black;
-            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button4.ForeColor = System.Drawing.Color.White;
-            this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
-            this.button4.Location = new System.Drawing.Point(1043, 19);
-            this.button4.Name = "button4";
-            this.button4.Size = new System.Drawing.Size(75, 80);
-            this.button4.TabIndex = 10;
-            this.button4.Text = "Recortar";
-            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button4.UseVisualStyleBackColor = false;
-            this.button4.Click += new System.EventHandler(this.button4_Click);
-            // 
-            // button3
-            // 
-            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(253)))), ((int)(((byte)(2)))));
-            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button3.ForeColor = System.Drawing.Color.Black;
-            this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
-            this.button3.Location = new System.Drawing.Point(962, 19);
-            this.button3.Name = "button3";
-            this.button3.Size = new System.Drawing.Size(75, 80);
-            this.button3.TabIndex = 9;
-            this.button3.Text = "Auto Ajuste";
-            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button3.UseVisualStyleBackColor = false;
-            this.button3.Click += new System.EventHandler(this.button3_Click);
-            // 
-            // button2
-            // 
-            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(152)))), ((int)(((byte)(248)))));
-            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.button2.ForeColor = System.Drawing.Color.Black;
-            this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
-            this.button2.Location = new System.Drawing.Point(881, 19);
-            this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(75, 80);
-            this.button2.TabIndex = 8;
-            this.button2.Text = "Limpar";
-            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
-            this.button2.UseVisualStyleBackColor = false;
-            this.button2.Click += new System.EventHandler(this.button2_Click);
-            // 
             // groupBox2
             // 
             this.groupBox2.Controls.Add(this.cbFilme);
@@ -328,17 +248,6 @@
             this.lbTamanho.Size = new System.Drawing.Size(256, 19);
             this.lbTamanho.TabIndex = 0;
             this.lbTamanho.TextAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            // 
-            // pictureBox1
-            // 
-            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logoComputer3001;
-            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
-            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(360, 110);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
             // 
             // panel2
             // 
@@ -556,6 +465,120 @@
             this.toolCorte.Visible = false;
             this.toolCorte.Resize += new System.EventHandler(this.toolCorte_Resize);
             // 
+            // lbCalculando
+            // 
+            this.lbCalculando.AutoSize = true;
+            this.lbCalculando.ForeColor = System.Drawing.Color.White;
+            this.lbCalculando.Location = new System.Drawing.Point(625, 7);
+            this.lbCalculando.Name = "lbCalculando";
+            this.lbCalculando.Size = new System.Drawing.Size(114, 13);
+            this.lbCalculando.TabIndex = 0;
+            this.lbCalculando.Text = "Calculando, aguarde...";
+            this.lbCalculando.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // pnlCalculando
+            // 
+            this.pnlCalculando.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnlCalculando.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            this.pnlCalculando.Controls.Add(this.lbCalculando);
+            this.pnlCalculando.Location = new System.Drawing.Point(-1, 543);
+            this.pnlCalculando.Name = "pnlCalculando";
+            this.pnlCalculando.Size = new System.Drawing.Size(1337, 26);
+            this.pnlCalculando.TabIndex = 21;
+            this.pnlCalculando.Visible = false;
+            // 
+            // btnLog
+            // 
+            this.btnLog.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnLog.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(116)))), ((int)(((byte)(116)))), ((int)(((byte)(116)))));
+            this.btnLog.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnLog.ForeColor = System.Drawing.Color.White;
+            this.btnLog.Image = global::GlassFilm.Properties.Resources.log_file_format__1_;
+            this.btnLog.Location = new System.Drawing.Point(1169, 19);
+            this.btnLog.Name = "btnLog";
+            this.btnLog.Size = new System.Drawing.Size(75, 80);
+            this.btnLog.TabIndex = 12;
+            this.btnLog.Text = "Log";
+            this.btnLog.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnLog.UseVisualStyleBackColor = false;
+            this.btnLog.Click += new System.EventHandler(this.btnLog_Click);
+            // 
+            // button1
+            // 
+            this.button1.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.button1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(192)))), ((int)(((byte)(128)))));
+            this.button1.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button1.ForeColor = System.Drawing.Color.Black;
+            this.button1.Image = global::GlassFilm.Properties.Resources.two_cogwheels_configuration_interface_symbol;
+            this.button1.Location = new System.Drawing.Point(1248, 19);
+            this.button1.Name = "button1";
+            this.button1.Size = new System.Drawing.Size(75, 80);
+            this.button1.TabIndex = 11;
+            this.button1.Text = "Configurar";
+            this.button1.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button1.UseVisualStyleBackColor = false;
+            this.button1.Click += new System.EventHandler(this.button1_Click);
+            // 
+            // button4
+            // 
+            this.button4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(44)))), ((int)(((byte)(128)))), ((int)(((byte)(44)))));
+            this.button4.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.button4.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button4.ForeColor = System.Drawing.Color.White;
+            this.button4.Image = global::GlassFilm.Properties.Resources.scissors;
+            this.button4.Location = new System.Drawing.Point(1043, 19);
+            this.button4.Name = "button4";
+            this.button4.Size = new System.Drawing.Size(75, 80);
+            this.button4.TabIndex = 10;
+            this.button4.Text = "Recortar";
+            this.button4.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button4.UseVisualStyleBackColor = false;
+            this.button4.Click += new System.EventHandler(this.button4_Click);
+            // 
+            // button3
+            // 
+            this.button3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(253)))), ((int)(((byte)(2)))));
+            this.button3.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button3.ForeColor = System.Drawing.Color.Black;
+            this.button3.Image = global::GlassFilm.Properties.Resources.resizing_tool;
+            this.button3.Location = new System.Drawing.Point(962, 19);
+            this.button3.Name = "button3";
+            this.button3.Size = new System.Drawing.Size(75, 80);
+            this.button3.TabIndex = 9;
+            this.button3.Text = "Auto Ajuste";
+            this.button3.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button3.UseVisualStyleBackColor = false;
+            this.button3.Click += new System.EventHandler(this.button3_Click);
+            // 
+            // button2
+            // 
+            this.button2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(0)))), ((int)(((byte)(152)))), ((int)(((byte)(248)))));
+            this.button2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.button2.ForeColor = System.Drawing.Color.Black;
+            this.button2.Image = global::GlassFilm.Properties.Resources.rubber;
+            this.button2.Location = new System.Drawing.Point(881, 19);
+            this.button2.Name = "button2";
+            this.button2.Size = new System.Drawing.Size(75, 80);
+            this.button2.TabIndex = 8;
+            this.button2.Text = "Limpar";
+            this.button2.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.button2.UseVisualStyleBackColor = false;
+            this.button2.Click += new System.EventHandler(this.button2_Click);
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logocut;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.pictureBox1.Location = new System.Drawing.Point(7, 0);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(360, 110);
+            this.pictureBox1.TabIndex = 0;
+            this.pictureBox1.TabStop = false;
+            // 
             // toolStripButton1
             // 
             this.toolStripButton1.AutoSize = false;
@@ -612,29 +635,6 @@
             this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
             this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
             // 
-            // lbCalculando
-            // 
-            this.lbCalculando.AutoSize = true;
-            this.lbCalculando.ForeColor = System.Drawing.Color.White;
-            this.lbCalculando.Location = new System.Drawing.Point(625, 7);
-            this.lbCalculando.Name = "lbCalculando";
-            this.lbCalculando.Size = new System.Drawing.Size(114, 13);
-            this.lbCalculando.TabIndex = 0;
-            this.lbCalculando.Text = "Calculando, aguarde...";
-            this.lbCalculando.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pnlCalculando
-            // 
-            this.pnlCalculando.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnlCalculando.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            this.pnlCalculando.Controls.Add(this.lbCalculando);
-            this.pnlCalculando.Location = new System.Drawing.Point(-1, 543);
-            this.pnlCalculando.Name = "pnlCalculando";
-            this.pnlCalculando.Size = new System.Drawing.Size(1337, 26);
-            this.pnlCalculando.TabIndex = 21;
-            this.pnlCalculando.Visible = false;
-            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -653,7 +653,7 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "FrmPrincipal";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Computer Cut Brasil - Bem vindo!";
+            this.Text = "Cut Film Brasil- Bem vindo!";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.Load += new System.EventHandler(this.FrmPrincipal_Load);
             this.Shown += new System.EventHandler(this.FrmPrincipal_Shown);
@@ -665,7 +665,6 @@
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.panel8.ResumeLayout(false);
@@ -677,6 +676,7 @@
             this.toolCorte.PerformLayout();
             this.pnlCalculando.ResumeLayout(false);
             this.pnlCalculando.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

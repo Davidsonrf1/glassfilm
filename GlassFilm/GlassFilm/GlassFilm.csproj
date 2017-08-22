@@ -308,6 +308,7 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\logocut.png" />
     <None Include="Resources\aaa2.png" />
     <None Include="Resources\aaa.png" />
     <None Include="Resources\zoom-out.png" />

@@ -33,7 +33,7 @@ namespace GlassFilm
         private void carregaPrincipal()
         {
             string[] nomesColunas = { "Usuário", "Área Rolo", "Área Peças", "Data", "Hora" };
-            int[] tamColunas = { 150, 150, 150, 150, 110, 110, 110};
+            int[] tamColunas = { 150, 150, 150, 150};
             carregamento.carregarGrid(gridPrincipal, "select " +
                                                     "	 usuario," +
                                                     "	 area_rolo_usado," +
