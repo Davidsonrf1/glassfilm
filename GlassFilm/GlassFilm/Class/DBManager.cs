@@ -368,9 +368,9 @@ namespace GlassFilm.Class
                 versao = Convert.ToInt32(cmd.ExecuteScalar().ToString()) + 1;
 
                 cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
-                cmd.ExecuteNonQuery();
+                cmd.ExecuteNonQuery();                
 
-                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO) VALUES (@veic,@versao,@dados,@tamanho)";
+                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR) VALUES (@veic,@versao,@dados,@tamanho, 1)";
                 cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
                 cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
                 cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;

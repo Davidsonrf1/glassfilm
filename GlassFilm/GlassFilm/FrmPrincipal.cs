@@ -905,8 +905,8 @@ namespace GlassFilm
 
         private void FrmPrincipal_Shown(object sender, EventArgs e)
         {
-            if (Debugger.IsAttached)
-                return;
+            //if (Debugger.IsAttached)
+            //    return;
 
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 

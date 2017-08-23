@@ -57,10 +57,11 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logoComputer2;
+            this.pictureBox1.Image = global::GlassFilm.Properties.Resources.logocut;
             this.pictureBox1.Location = new System.Drawing.Point(-1, 0);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(400, 143);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 3;
             this.pictureBox1.TabStop = false;
             this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
@@ -69,11 +70,12 @@
             // 
             this.label1.AutoSize = true;
             this.label1.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(202)))), ((int)(((byte)(200)))), ((int)(((byte)(203)))));
-            this.label1.Location = new System.Drawing.Point(80, 34);
+            this.label1.Location = new System.Drawing.Point(314, 9);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(74, 13);
             this.label1.TabIndex = 4;
             this.label1.Text = "Sincronizando";
+            this.label1.Visible = false;
             // 
             // tmrUpdate
             // 
