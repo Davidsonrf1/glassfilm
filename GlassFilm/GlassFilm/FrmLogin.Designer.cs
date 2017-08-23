@@ -246,7 +246,9 @@
             // 
             // pictureBox1
             // 
-            this.pictureBox1.Image = global::GlassFilm.Properties.Resources.logoComputer2;
+            this.pictureBox1.BackgroundImage = global::GlassFilm.Properties.Resources.logocut;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
+            this.pictureBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pictureBox1.Location = new System.Drawing.Point(3, 7);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(351, 202);
