@@ -1610,6 +1610,9 @@ namespace VectorView
 
             RenderPolygons(g);
 
+            if (!this.forceAngle)
+                document.DrawCircle(g, new PointF(0, 0), 8, Color.DarkOrange);
+
             if (document.Debbuging)
             {
                 Pen p = new Pen(Color.LightGreen);

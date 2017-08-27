@@ -361,7 +361,7 @@ namespace GlassFilm
 
         private void toolStripButton2_Click(object sender, EventArgs e)
         {
-            FrmSync.ShowSync(true, false);
+            FrmSync.ShowSync(true, false, false);
         }
 
         private void checkBox1_CheckStateChanged(object sender, EventArgs e)

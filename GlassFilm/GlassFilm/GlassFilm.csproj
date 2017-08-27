@@ -8,7 +8,7 @@
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>GlassFilm</RootNamespace>
-    <AssemblyName>ComputerCut Brasil</AssemblyName>
+    <AssemblyName>CutFilm</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <TargetFrameworkProfile />
@@ -314,6 +314,12 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="setup\deps\vc_redist.x64.exe" />
+    <None Include="setup\deps\vc_redist.x86.exe" />
+    <None Include="setup\cutfilmsetup.iss" />
+    <None Include="Resources\Sync-Cloud-icon %281%29.png" />
+    <None Include="Resources\Sync-Cloud-icon 32.png" />
+    <None Include="Resources\Sync-Cloud-icon.png" />
     <None Include="Resources\logocut.png" />
     <None Include="Resources\aaa2.png" />
     <None Include="Resources\aaa.png" />

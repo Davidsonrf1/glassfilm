@@ -581,18 +581,6 @@ namespace GlassFilm
                 UpdateDocInfo();
             }
 
-            if (e.KeyCode == Keys.Left)
-                vvCorte.MoveSelection(-1, 0);
-
-            if (e.KeyCode == Keys.Right)
-                vvCorte.MoveSelection(+1, 0);
-
-            if (e.KeyCode == Keys.Up)
-                vvCorte.MoveSelection(0, -1);
-
-            if (e.KeyCode == Keys.Left)
-                vvCorte.MoveSelection(0, +1);
-
             Invalidate();
         }
         
@@ -744,20 +732,7 @@ namespace GlassFilm
 
         protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
         {
-            if (keyData == Keys.Left)
-                vvCorte.MoveSelection(-1, 0);
-
-            if (keyData == Keys.Right)
-                vvCorte.MoveSelection(+1, 0);
-
-            if (keyData == Keys.Up)
-                vvCorte.MoveSelection(0, -1);
-
-            if (keyData == Keys.Down)
-                vvCorte.MoveSelection(0, +1);
-
             Invalidate();
-
             return base.ProcessCmdKey(ref msg, keyData);
         }
 
@@ -910,7 +885,7 @@ namespace GlassFilm
 
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
-            FrmSync.ShowSync(false, true);
+            FrmSync.ShowSync(false, true, false);
             sel.AtualizaMarcas();
         }
 
@@ -970,13 +945,13 @@ namespace GlassFilm
                     vvCorte.MoveSelection(-amount, 0);
 
                 if (e.KeyCode == Keys.Right)
-                    vvCorte.MoveSelection(amount, 0);
+                    vvCorte.MoveSelection(+amount, 0);
 
                 if (e.KeyCode == Keys.Up)
                     vvCorte.MoveSelection(0, -amount);
 
                 if (e.KeyCode == Keys.Down)
-                    vvCorte.MoveSelection(0, amount);
+                    vvCorte.MoveSelection(0, +amount);
 
                 vvCorte.Document.EndTransform(false);
             }
@@ -985,7 +960,7 @@ namespace GlassFilm
         private void toollSincronizacao_Click(object sender, EventArgs e)
         {
             if(Mensagens.PeruntaSimNao("Deseja Enviar todas as Alterações para o Servidor?\nTudo enviado será compartilhado com os Clientes.") == DialogResult.Yes)
-                FrmSync.ShowSync(true, false);
+                FrmSync.ShowSync(true, false, false);
         }        
 
         private void loadpanel(string desc)
@@ -1012,6 +987,21 @@ namespace GlassFilm
             FrmLog c = new FrmLog();
             c.ShowInTaskbar = false;
             c.ShowDialog();
+        }
+
+        private void btnSync_Click(object sender, EventArgs e)
+        {
+            bool force = false;
+
+            if (MessageBox.Show("Deseja forçar a Atualização de todos os dados?\n(Isso poderá levar alguns minutos)", "A T E N Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            {
+                force = true;
+            }
+
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
+
+            FrmSync.ShowSync(false, true, force);
+            sel.AtualizaMarcas();
         }
     }
 }

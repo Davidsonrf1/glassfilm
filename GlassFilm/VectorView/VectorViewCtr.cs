@@ -24,7 +24,7 @@ namespace VectorView
 
         float startOffsetX = 0;
         float startOffsetY = 0;
-
+        
         public VectorViewCtr()
         {
             InitializeComponent();

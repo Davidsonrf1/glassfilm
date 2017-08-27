@@ -373,6 +373,36 @@ namespace GlassFilm.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Sync_Cloud_icon {
+            get {
+                object obj = ResourceManager.GetObject("Sync-Cloud-icon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sync_Cloud_icon__1_ {
+            get {
+                object obj = ResourceManager.GetObject("Sync-Cloud-icon (1)", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap Sync_Cloud_icon_32 {
+            get {
+                object obj = ResourceManager.GetObject("Sync-Cloud-icon 32", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap t {
             get {
                 object obj = ResourceManager.GetObject("t", resourceCulture);

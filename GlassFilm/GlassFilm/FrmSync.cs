@@ -72,6 +72,8 @@ namespace GlassFilm
 
         bool verificado = false;
 
+        bool forceAll = false;
+
         public FrmSync()
         {
             InitializeComponent();
@@ -101,6 +103,19 @@ namespace GlassFilm
             set
             {
                 total = value;
+            }
+        }
+
+        public bool ForceAll
+        {
+            get
+            {
+                return forceAll;
+            }
+
+            set
+            {
+                forceAll = value;
             }
         }
 
@@ -149,7 +164,7 @@ namespace GlassFilm
 
             try
             {
-                syncTables = SyncManager.SyncCheck(out total);
+                syncTables = SyncManager.SyncCheck(out total, forceAll);
 
                 if (total > 0)
                 {
@@ -215,7 +230,7 @@ namespace GlassFilm
 
         bool close = false;
 
-        public static void ShowSync(bool up, bool down)
+        public static void ShowSync(bool up, bool down, bool forceAll)
         {
             try
             {
@@ -223,6 +238,7 @@ namespace GlassFilm
 
                 sync.syncdown = down;
                 sync.syncup = up;
+                sync.ForceAll = forceAll;
 
                 sync.ShowDialog();
             }

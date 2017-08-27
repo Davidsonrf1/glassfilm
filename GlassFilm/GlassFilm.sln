@@ -17,8 +17,6 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorViewTest", "VectorVie
 		{432546F2-0B1D-412D-8414-A4F7A72E3559} = {432546F2-0B1D-412D-8414-A4F7A72E3559}
 	EndProjectSection
 EndProject
-Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CutFilmSetup", "CutFilmSetup\CutFilmSetup.vdproj", "{C75AD115-A8BD-4152-BE69-6B5490417ADE}"
-EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -76,12 +74,6 @@ Global
 		{5FF18418-248B-46AC-A430-764C13991641}.Release|x64.Build.0 = Release|Any CPU
 		{5FF18418-248B-46AC-A430-764C13991641}.Release|x86.ActiveCfg = Release|Any CPU
 		{5FF18418-248B-46AC-A430-764C13991641}.Release|x86.Build.0 = Release|Any CPU
-		{C75AD115-A8BD-4152-BE69-6B5490417ADE}.Debug|Any CPU.ActiveCfg = Debug
-		{C75AD115-A8BD-4152-BE69-6B5490417ADE}.Debug|x64.ActiveCfg = Debug
-		{C75AD115-A8BD-4152-BE69-6B5490417ADE}.Debug|x86.ActiveCfg = Debug
-		{C75AD115-A8BD-4152-BE69-6B5490417ADE}.Release|Any CPU.ActiveCfg = Release
-		{C75AD115-A8BD-4152-BE69-6B5490417ADE}.Release|x64.ActiveCfg = Release
-		{C75AD115-A8BD-4152-BE69-6B5490417ADE}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

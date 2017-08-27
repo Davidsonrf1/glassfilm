@@ -164,6 +164,19 @@ namespace GlassFilm.Sync
             }
         }
 
+        public static bool ForceAll
+        {
+            get
+            {
+                return forceAll;
+            }
+
+            set
+            {
+                forceAll = value;
+            }
+        }
+
         static void Status(bool show, int count)
         {
             if (syncStatus != null)
@@ -211,6 +224,9 @@ namespace GlassFilm.Sync
                 ver = "0";
 
             int versao = int.Parse(ver);
+
+            if (forceAll)
+                versao = 0;
 
             SyncDown(table, versao);
         }
@@ -422,10 +438,13 @@ namespace GlassFilm.Sync
 
         static int totalSync = 0;
         static int syncCount = 0;
+        static bool forceAll = false;
 
-        public static Dictionary<string, int> SyncCheck(out int total)
+        public static Dictionary<string, int> SyncCheck(out int total, bool forceAll)
         {
             StringBuilder sb = new StringBuilder();
+
+            SyncManager.forceAll = forceAll;
 
             sb.Append("{\"tabelas\":[");
             bool first = true;
@@ -438,7 +457,12 @@ namespace GlassFilm.Sync
                     sb.Append(",");
                 }
 
-                sb.Append(string.Format("{{\"nome\":\"{0}\",\"versao\":\"{1}\"}}", tbName, GetTableVersion(table)));
+                int versaoNum = 0;
+
+                if (!forceAll)
+                    versaoNum = GetTableVersion(table);
+
+                sb.Append(string.Format("{{\"nome\":\"{0}\",\"versao\":\"{1}\"}}", tbName, versaoNum));
 
                 first = false;
             }

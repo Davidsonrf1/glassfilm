@@ -64,6 +64,7 @@
             this.toolCorte = new System.Windows.Forms.ToolStrip();
             this.lbCalculando = new System.Windows.Forms.Label();
             this.pnlCalculando = new System.Windows.Forms.Panel();
+            this.btnSync = new System.Windows.Forms.Button();
             this.btnLog = new System.Windows.Forms.Button();
             this.button1 = new System.Windows.Forms.Button();
             this.button4 = new System.Windows.Forms.Button();
@@ -99,7 +100,7 @@
             this.toollSincronizacao});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1335, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1432, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
@@ -156,6 +157,7 @@
             // pnlprincipal
             // 
             this.pnlprincipal.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(248)))), ((int)(((byte)(246)))), ((int)(((byte)(249)))));
+            this.pnlprincipal.Controls.Add(this.btnSync);
             this.pnlprincipal.Controls.Add(this.btnLog);
             this.pnlprincipal.Controls.Add(this.button1);
             this.pnlprincipal.Controls.Add(this.button4);
@@ -168,7 +170,7 @@
             this.pnlprincipal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlprincipal.Location = new System.Drawing.Point(0, 24);
             this.pnlprincipal.Name = "pnlprincipal";
-            this.pnlprincipal.Size = new System.Drawing.Size(1335, 110);
+            this.pnlprincipal.Size = new System.Drawing.Size(1432, 110);
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             this.pnlprincipal.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlprincipal_Paint);
@@ -275,7 +277,7 @@
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 134);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(1335, 65);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(1432, 65);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
             // 
@@ -285,7 +287,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 60);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1335, 5);
+            this.panel4.Size = new System.Drawing.Size(1432, 5);
             this.panel4.TabIndex = 14;
             // 
             // panel7
@@ -405,7 +407,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(0, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1335, 569);
+            this.panel8.Size = new System.Drawing.Size(1432, 569);
             this.panel8.TabIndex = 19;
             // 
             // splitCorte
@@ -427,7 +429,7 @@
             this.splitCorte.Panel2.Controls.Add(this.toolCorte);
             this.splitCorte.Panel2.Controls.Add(this.vvCorte);
             this.splitCorte.Panel2.Resize += new System.EventHandler(this.splitCorte_Panel2_Resize);
-            this.splitCorte.Size = new System.Drawing.Size(1329, 345);
+            this.splitCorte.Size = new System.Drawing.Size(1426, 345);
             this.splitCorte.SplitterDistance = 189;
             this.splitCorte.TabIndex = 18;
             // 
@@ -443,7 +445,7 @@
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
             this.vvModelo.ShowGrid = false;
-            this.vvModelo.Size = new System.Drawing.Size(1329, 189);
+            this.vvModelo.Size = new System.Drawing.Size(1426, 189);
             this.vvModelo.TabIndex = 19;
             this.vvModelo.Visible = false;
             this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
@@ -484,9 +486,26 @@
             this.pnlCalculando.Controls.Add(this.lbCalculando);
             this.pnlCalculando.Location = new System.Drawing.Point(-1, 543);
             this.pnlCalculando.Name = "pnlCalculando";
-            this.pnlCalculando.Size = new System.Drawing.Size(1337, 26);
+            this.pnlCalculando.Size = new System.Drawing.Size(1434, 26);
             this.pnlCalculando.TabIndex = 21;
             this.pnlCalculando.Visible = false;
+            // 
+            // btnSync
+            // 
+            this.btnSync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this.btnSync.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(128)))), ((int)(((byte)(0)))));
+            this.btnSync.FlatAppearance.BorderColor = System.Drawing.Color.Black;
+            this.btnSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btnSync.ForeColor = System.Drawing.Color.White;
+            this.btnSync.Image = global::GlassFilm.Properties.Resources.Sync_Cloud_icon__1_;
+            this.btnSync.Location = new System.Drawing.Point(1185, 19);
+            this.btnSync.Name = "btnSync";
+            this.btnSync.Size = new System.Drawing.Size(75, 80);
+            this.btnSync.TabIndex = 13;
+            this.btnSync.Text = "Syncronizar";
+            this.btnSync.TextAlign = System.Drawing.ContentAlignment.BottomCenter;
+            this.btnSync.UseVisualStyleBackColor = false;
+            this.btnSync.Click += new System.EventHandler(this.btnSync_Click);
             // 
             // btnLog
             // 
@@ -496,7 +515,7 @@
             this.btnLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLog.ForeColor = System.Drawing.Color.White;
             this.btnLog.Image = global::GlassFilm.Properties.Resources.log_file_format__1_;
-            this.btnLog.Location = new System.Drawing.Point(1169, 19);
+            this.btnLog.Location = new System.Drawing.Point(1266, 19);
             this.btnLog.Name = "btnLog";
             this.btnLog.Size = new System.Drawing.Size(75, 80);
             this.btnLog.TabIndex = 12;
@@ -513,7 +532,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.Black;
             this.button1.Image = global::GlassFilm.Properties.Resources.two_cogwheels_configuration_interface_symbol;
-            this.button1.Location = new System.Drawing.Point(1248, 19);
+            this.button1.Location = new System.Drawing.Point(1345, 19);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 80);
             this.button1.TabIndex = 11;
@@ -641,7 +660,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1335, 569);
+            this.ClientSize = new System.Drawing.Size(1432, 569);
             this.Controls.Add(this.pnlCalculando);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
@@ -729,5 +748,6 @@
         private System.Windows.Forms.ToolStripMenuItem toollSincronizacao;
         private System.Windows.Forms.Label lbCalculando;
         private System.Windows.Forms.Panel pnlCalculando;
+        private System.Windows.Forms.Button btnSync;
     }
 }
