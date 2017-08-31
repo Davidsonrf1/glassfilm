@@ -15,9 +15,9 @@ AppSupportURL=http://www.cutfilm.com.br
 AppUpdatesURL=http://www.cutfilm.com.br
 DefaultDirName={pf}\CutFilm
 DisableProgramGroupPage=yes
-OutputDir=C:\Users\Davidson\Source\Repos\glass-film\GlassFilm\setup\out
+OutputDir=..\out
 OutputBaseFilename=CutFilmeSetup
-SetupIconFile=C:\Users\Davidson\Source\Repos\glass-film\GlassFilm\GlassFilm\iconicon.ico
+SetupIconFile=iconicon.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -27,6 +27,9 @@ Name: "brazilianportuguese"; MessagesFile: "compiler:Languages\BrazilianPortugue
 [Tasks]
 Name: "desktopicon"; Description: "{cm:CreateDesktopIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked
 Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescription: "{cm:AdditionalIcons}"; Flags: unchecked; OnlyBelowVersion: 0,6.1
+
+[Dirs]
+Name: {app}; Permissions: users-full
 
 [Files]
 Source: "deps\vc_redist.x86.exe"; DestDir: {tmp}; Flags: deleteafterinstall; AfterInstall: InstallVCPP;
@@ -42,7 +45,7 @@ Source: "..\..\build\Release\System.Data.SQLite.dll"; DestDir: "{app}";
 Source: "..\..\build\Release\VectorView.dll"; DestDir: "{app}"; 
 Source: "..\..\build\Release\BaseLimpa\GlassFilm.db"; DestDir: "{app}";
 Source: "..\..\build\Release\BaseLimpa\Modelos.db"; DestDir: "{app}";       
-Source: "..\..\build\Release\SQLite.Interop.dll"; DestDir: "{app}"; 
+Source: "..\..\build\Release\x86\SQLite.Interop.dll"; DestDir: "{app}"; 
 
 
 

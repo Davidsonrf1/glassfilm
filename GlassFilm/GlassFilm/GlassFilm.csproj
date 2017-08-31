@@ -201,12 +201,8 @@
     <None Include="BaseLimpa\Modelos.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Include="GlassFilm.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
-    <None Include="Modelos.db">
-      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
-    </None>
+    <None Include="GlassFilm.db" />
+    <None Include="Modelos.db" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -314,6 +310,7 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="setup\iconicon.ico" />
     <None Include="setup\deps\vc_redist.x64.exe" />
     <None Include="setup\deps\vc_redist.x86.exe" />
     <None Include="setup\cutfilmsetup.iss" />
