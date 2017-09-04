@@ -217,6 +217,12 @@ namespace GlassFilm.Sync
 
             IDbCommand cmd = con.CreateCommand();
 
+            if (forceAll)
+            {
+                cmd.CommandText = "DELETE FROM " + table;
+                cmd.ExecuteNonQuery();
+            }
+
             cmd.CommandText = "SELECT MAX (VERSAO) FROM " + table;
 
             string ver = cmd.ExecuteScalar().ToString();

@@ -62,6 +62,8 @@ namespace GlassFilm
             {
                 CutLibWrapper.DeleteShape((uint)cutSheet, sp);
             }
+
+            pathId.Clear();
         }
 
         public bool NestPath(VectorPath path)

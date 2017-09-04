@@ -55,31 +55,36 @@ int CutSheet::DeleteShape(unsigned int id)
 	{
 		do
 		{
-			if (p->id == id)
+			if (p->id == id) {
 				found = p;
 
-			before = p;
+				if (before != nullptr) 
+				{
+					if (before != nullptr) 
+					{
+						before->next = found->next;
+					}
+
+					if (before->next == nullptr)
+					{
+						last = before;
+					}
+				}
+				else 
+				{
+					first = found->next;
+				}
+
+				delete found->shape;
+				delete found;
+
+				shapeCount--;
+
+				return id;
+			} 
+			
+     		before = p;
 		} while ((p = p->next) && !found);
-	}
-
-	if (found) 
-	{
-		if (before == nullptr)
-		{
-			first = found->next;
-		}
-		else
-		{
-			before->next = found->next;
-
-			if (before->next == nullptr)
-				last = before;
-		}
-
-		delete found->shape;
-		delete found;
-
-		shapeCount--;
 	}
 
 	return id;

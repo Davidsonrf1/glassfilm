@@ -140,6 +140,9 @@ namespace VectorView
 
             ClearSelection();
             paths.Clear();
+
+
+
             host.Invalidate();
         }
 

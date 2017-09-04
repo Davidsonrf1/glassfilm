@@ -60,6 +60,10 @@ namespace GlassFilm
         {
             DBManager.InitDB();
 
+            Sync.SyncFullDatabase.VerificaAtualizacoes();
+            //Sync.SyncFullDatabase.SendDatabase();
+            Sync.SyncFullDatabase.GetDatabase();
+
             InitConfig();
             config.LoadConfig();
 

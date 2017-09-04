@@ -397,5 +397,11 @@ namespace GlassFilm.Class
             cmd.CommandText = "UPDATE MARCA SET POSSUI_DESENHO = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
             cmd.ExecuteNonQuery();
         }
+
+        public static void CloseDatabases()
+        {
+            _mainConnection.Close();
+            _modelConnection.Close();
+        }
     }
 }

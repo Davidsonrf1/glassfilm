@@ -75,6 +75,7 @@ namespace GlassFilm
         {
             if (salvando)
                 return;
+
             salvando = true;
 
             try

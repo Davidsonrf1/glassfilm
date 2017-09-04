@@ -1141,7 +1141,7 @@ namespace VectorView
         public void BuildMap()
         {
             Bitmap bmp = CreateBitmap();
-
+            
             BitmapData bd = bmp.LockBits(new Rectangle(0, 0, bmp.Width, bmp.Height), ImageLockMode.ReadOnly, PixelFormat.Format32bppArgb);
             map = new byte[bmp.Width * bmp.Height];
 
@@ -1168,6 +1168,7 @@ namespace VectorView
             }
 
             bmp.UnlockBits(bd);
+            bmp.Dispose();
         }
 
         public void ComputeArea()
@@ -1191,7 +1192,6 @@ namespace VectorView
             Graphics g = Graphics.FromImage(b);
 
             g.SmoothingMode = SmoothingMode.HighQuality;
-
             RenderSample(g, -boundRect.X, -boundRect.Y);
 
             return b;

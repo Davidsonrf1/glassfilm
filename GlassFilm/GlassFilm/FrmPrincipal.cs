@@ -534,6 +534,8 @@ namespace GlassFilm
         {
             if (nestManager != null)
             {
+                nestManager.ClearSheet();
+
                 int size = 1000;
 
                 if (filmeAtual != null)
@@ -558,6 +560,9 @@ namespace GlassFilm
             UpdateImportCount();
             UpdateViewCorte();
             UpdateDocInfo();
+
+            GC.Collect();
+            GC.WaitForPendingFinalizers();
         }
 
         private void vvCorte_KeyPress(object sender, KeyPressEventArgs e)
