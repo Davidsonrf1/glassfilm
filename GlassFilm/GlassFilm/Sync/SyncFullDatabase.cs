@@ -43,8 +43,6 @@ namespace GlassFilm.Sync
 
         public static void SendDatabase()
         {
-            DBManager.CloseDatabases();
-
             string file = BuildDbFile();
 
             GeraBackupFTP();
@@ -60,13 +58,10 @@ namespace GlassFilm.Sync
 
             EnviarArquivoFTP(fi.FullName, "CutFilmDB.md5");
             EnviarArquivoFTP(file, "CutFilmDB.zip");
-            DBManager.InitDB();
         }
 
         public static void GetDatabase()
         {
-            DBManager.CloseDatabases();
-
             FileInfo modelosFi = new FileInfo("modelos.db");
             FileInfo glassFi = new FileInfo("GlassFilm.db");
 
@@ -90,28 +85,39 @@ namespace GlassFilm.Sync
 
             }
 
-            modelosFi.Delete();
-            glassFi.Delete();
+            try
+            {
+                modelosFi.Delete();
+                glassFi.Delete();
 
-            BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.zip", "CutFilmDB.zip");
-            BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.md5", "CutFilmDB.md5");
+                BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.zip", "CutFilmDB.zip");
+                BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.md5", "CutFilmDB.md5");
 
-            FileStream fs = File.Open("CutFilmDB.zip", FileMode.Open, FileAccess.ReadWrite);
+                FileStream fs = File.Open("CutFilmDB.zip", FileMode.Open, FileAccess.ReadWrite);
 
-            ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Read);
+                ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Read);
 
-            ZipArchiveEntry ze = za.GetEntry("modelos.db");
-            ze.ExtractToFile(modelosFi.FullName);
+                ZipArchiveEntry ze = za.GetEntry("modelos.db");
+                ze.ExtractToFile(modelosFi.FullName);
 
-            ze = za.GetEntry("GlassFilm.db");
-            ze.ExtractToFile(glassFi.FullName);
-                
-            DBManager.InitDB();
+                ze = za.GetEntry("GlassFilm.db");
+                ze.ExtractToFile(glassFi.FullName);
+
+            }
+            catch (Exception ex)
+            {
+
+            }
         }
 
         public static bool VerificaAtualizacoes()
         {
-            byte[] local = File.ReadAllBytes("CutFilmDB.md5");
+            byte[] local = null;
+
+            if (File.Exists("CutFilmDB.md5"))
+                local = File.ReadAllBytes("CutFilmDB.md5");
+            else
+                local = new byte[] { 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 };
 
             BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.md5", "CutFilmDB.md5.remote");
             byte[] remote = File.ReadAllBytes("CutFilmDB.md5.remote");

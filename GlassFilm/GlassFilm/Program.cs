@@ -58,11 +58,14 @@ namespace GlassFilm
         [STAThread]
         static void Main()
         {
+            //Sync.SyncFullDatabase.GetDatabase();
             DBManager.InitDB();
 
+            /*
             Sync.SyncFullDatabase.VerificaAtualizacoes();
-            //Sync.SyncFullDatabase.SendDatabase();
+            Sync.SyncFullDatabase.SendDatabase();
             Sync.SyncFullDatabase.GetDatabase();
+            */
 
             InitConfig();
             config.LoadConfig();

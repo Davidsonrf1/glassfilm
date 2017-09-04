@@ -164,11 +164,14 @@ namespace GlassFilm
 
             try
             {
-                syncTables = SyncManager.SyncCheck(out total, forceAll);
+                if (Sync.SyncFullDatabase.VerificaAtualizacoes())
+                {
+                    total = 10;
+                }
 
                 if (total > 0)
                 {
-                   // lbAtualizando.Text = "Recebendo atualizações...";
+
                 }
             }
             catch
@@ -190,12 +193,12 @@ namespace GlassFilm
             {
                 while (verificando) Thread.Sleep(10);
 
-                if (syncdown)
+                if (syncdown && total > 0)
                 {
-                    SyncManager.Syncronize(SyncType.Incoming);
+                    SyncFullDatabase.GetDatabase();
                 }
             }
-            catch
+            catch(Exception ex)
             {
 
             }
@@ -214,7 +217,7 @@ namespace GlassFilm
 
                 if (syncup)
                 {
-                    SyncManager.Syncronize(SyncType.Outgoing);
+                    SyncFullDatabase.SendDatabase();
                 }
 
             }
@@ -270,14 +273,10 @@ namespace GlassFilm
                 pb.Style = ProgressBarStyle.Marquee;
                 pb.MarqueeAnimationSpeed = 500;
 
-                if (syncup)
-                {
-                    total = SyncManager.GetSendCount();
-                }
-
                 verificThread = new Thread(VerificaProc);
                 verificThread.Start();
 
+                Thread.Sleep(1000);
                 downThread = new Thread(SyncDownProc);
                 downThread.Start();
 
@@ -286,11 +285,6 @@ namespace GlassFilm
             }
             else
             {
-                if (syncup)
-                {
-                    total = SyncManager.GetSendCount();
-                }
-
                 verificando = false;
                 doSyncUp = true;
 

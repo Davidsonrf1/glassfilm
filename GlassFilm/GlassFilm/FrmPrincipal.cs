@@ -112,6 +112,7 @@ namespace GlassFilm
 
             DBManager.VerificaTabelasAuxiliares();
 
+            /*
             SyncManager.SyncTables.AddRange(new string[] { "ELIMINA_REGISTRO", "MODELO", "MARCA", "MODELO_ANO", "ROLO", "!DESENHOS" });
             SyncManager.Synckeys.AddRange(new string[] { "ID", "CODIGO_MODELO", "ID", "CODIGO_ANO", "ID", "VEICULO" });
 
@@ -122,6 +123,7 @@ namespace GlassFilm
             {
                 //SyncManager.Syncronize(SyncType.Outgoing);
             }            
+            */
 
             sel.AtualizaMarcas();
             cbMarca.Focus();
@@ -890,7 +892,7 @@ namespace GlassFilm
 
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
-            FrmSync.ShowSync(false, true, false);
+            //FrmSync.ShowSync(false, true, false);
             sel.AtualizaMarcas();
         }
 
@@ -964,8 +966,12 @@ namespace GlassFilm
 
         private void toollSincronizacao_Click(object sender, EventArgs e)
         {
+            DBManager.CloseDatabases();
+
             if(Mensagens.PeruntaSimNao("Deseja Enviar todas as Alterações para o Servidor?\nTudo enviado será compartilhado com os Clientes.") == DialogResult.Yes)
                 FrmSync.ShowSync(true, false, false);
+
+            DBManager.InitDB();
         }        
 
         private void loadpanel(string desc)
@@ -996,6 +1002,8 @@ namespace GlassFilm
 
         private void btnSync_Click(object sender, EventArgs e)
         {
+            DBManager.CloseDatabases();
+
             bool force = false;
 
             if (MessageBox.Show("Deseja forçar a Atualização de todos os dados?\n(Isso poderá levar alguns minutos)", "A T E N Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
@@ -1006,6 +1014,9 @@ namespace GlassFilm
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
             FrmSync.ShowSync(false, true, force);
+
+            DBManager.InitDB();
+
             sel.AtualizaMarcas();
         }
     }

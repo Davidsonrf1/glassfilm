@@ -402,6 +402,15 @@ namespace GlassFilm.Class
         {
             _mainConnection.Close();
             _modelConnection.Close();
+
+            _mainConnection.Dispose();
+            _modelConnection.Dispose();
+
+            _mainConnection = null;
+            _modelConnection = null;
+
+            GC.Collect();
+            GC.WaitForFullGCComplete();
         }
     }
 }
