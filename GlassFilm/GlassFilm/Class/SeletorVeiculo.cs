@@ -235,12 +235,14 @@ namespace GlassFilm.Class
             }
         }
 
-        public void AtualizaMarcas()
+        public int AtualizaMarcas()
         {
             Limpar();
 
             marcas = DBManager.CarregarMarcas(listaTodas);
-            PreencheCbMarcas();            
+            PreencheCbMarcas();
+
+            return DBManager.GetNumDesenhos();
         }
     }
 }

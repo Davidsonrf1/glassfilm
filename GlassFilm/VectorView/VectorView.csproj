@@ -59,6 +59,7 @@
     <Compile Include="Bezier\QuadraticBezier.cs" />
     <Compile Include="CutLibWrapper.cs" />
     <Compile Include="CutManager.cs" />
+    <Compile Include="ICrypto.cs" />
     <Compile Include="Plotter\PlotterDMPL.cs" />
     <Compile Include="Plotter\PlotterDriver.cs" />
     <Compile Include="Plotter\PlotterHPGL.cs" />

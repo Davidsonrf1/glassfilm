@@ -7,6 +7,8 @@ using System.Text;
 using System.IO.Compression;
 using GlassFilm.Class;
 using System.Security.Cryptography;
+using System.Data;
+using System.Windows.Forms;
 
 namespace GlassFilm.Sync
 {
@@ -28,7 +30,6 @@ namespace GlassFilm.Sync
                 syncStatus = value;
             }
         }
-
 
         static void Status(bool show, int count)
         {
@@ -86,8 +87,56 @@ namespace GlassFilm.Sync
             return cutFilm.FullName;
         }
 
+        public static void CriptografarBase(ProgressBar pb)
+        {
+            IDbCommand cmd = null;
+
+            if (!DBManager.ColExiste("DESENHOS", "DESENHOC", DBManager._modelConnection))
+            {
+                cmd = DBManager._modelConnection.CreateCommand();
+                cmd.CommandText = "ALTER TABLE DESENHOS ADD DESENHOC TEXT DEFAULT 'N'";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "UPDATE DESENHOS SET DESENHOC = 'N'";
+                cmd.ExecuteNonQuery();
+            }
+
+            cmd = DBManager._modelConnection.CreateCommand();
+
+            cmd.CommandText = "SELECT VEICULO FROM DESENHOS WHERE DESENHOC = 'N'";
+            DataTable tb = new DataTable();
+            IDataReader dr = cmd.ExecuteReader();
+            tb.Load(dr);
+            dr.Close();
+            int codigo_desenho = 0;
+            int count = 0;
+
+            int total = DBManager.GetNumDesenhos();
+
+            pb.Value = 0;
+            pb.Maximum = total;
+
+            foreach (DataRow r in tb.Rows)
+            {
+                int codigo = int.Parse(r["VEICULO"].ToString());
+                string svg = DBManager.CarregarDesenho(codigo, out codigo_desenho);
+                DBManager.SalvarDesenho(codigo, svg);
+
+                count++;
+
+                if (count <= total)
+                    pb.Value = count;
+
+                if (count %10 == 0)
+                    Application.DoEvents();
+            }
+
+            pb.Value = pb.Maximum;
+        }
+
         public static void SendDatabase()
         {
+
             string file = BuildDbFile();
 
             Status("GERANDO BACKUP NO SERVIDOR...", null, 100, 0, 0);

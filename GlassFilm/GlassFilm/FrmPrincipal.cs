@@ -125,7 +125,9 @@ namespace GlassFilm
             }            
             */
 
-            sel.AtualizaMarcas();
+            int numDesenhos = sel.AtualizaMarcas();
+            lbQtde.Text = numDesenhos.ToString() + " desenhos cadastrados";
+
             cbMarca.Focus();
             calculapalavra();
         }
@@ -216,6 +218,9 @@ namespace GlassFilm
                     vvModelo.AllowTransforms = false;
 
                     vvModelo.Document.LoadSVG(svg);
+
+                    int numDesenhos = DBManager.GetNumDesenhos();
+                    lbQtde.Text = numDesenhos.ToString() + " desenhos cadastrados";
 
                     vvModelo.AutoFit(VectorFitStyle.Both, true, true);
                 }
@@ -893,7 +898,8 @@ namespace GlassFilm
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
             //FrmSync.ShowSync(false, true, false);
-            sel.AtualizaMarcas();
+            int numDesenhos = sel.AtualizaMarcas();
+            lbQtde.Text = numDesenhos.ToString() + " desenhos cadastrados";
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -966,6 +972,29 @@ namespace GlassFilm
 
         private void toollSincronizacao_Click(object sender, EventArgs e)
         {
+            string oldCalculando = lbCalculando.Text;
+            lbCalculando.Text = "CRIPTOGRAFANDO A BASE, ISSO PODE DEMORAR ALGUNS MINUTOS. POR FAVOR AGUARDE...";
+            pnlCalculando.Visible = true;
+            pbCalc.Visible = true;
+            lbCalculando.Location = new Point(0, 0);
+            lbCalculando.Width = lbCalculando.Parent.Width;
+
+            Color oldColor = pnlCalculando.BackColor;
+            pnlCalculando.BackColor = Color.WhiteSmoke;
+
+            lbCalculando.Enabled = true;
+
+            this.Enabled = false;
+            SyncFullDatabase.CriptografarBase(pbCalc);
+
+            pnlCalculando.BackColor = oldColor;
+            pnlCalculando.Visible = false;
+            pbCalc.Visible = false; 
+
+            this.Enabled = true;
+
+            lbCalculando.Text = oldCalculando;
+
             DBManager.CloseDatabases();
 
             if(Mensagens.PeruntaSimNao("Deseja Enviar todas as Alterações para o Servidor?\nTudo enviado será compartilhado com os Clientes.") == DialogResult.Yes)
