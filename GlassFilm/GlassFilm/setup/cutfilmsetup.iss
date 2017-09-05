@@ -47,7 +47,8 @@ Source: "..\..\build\Release\BaseLimpa\GlassFilm.db"; DestDir: "{app}";
 Source: "..\..\build\Release\BaseLimpa\Modelos.db"; DestDir: "{app}";       
 Source: "..\..\build\Release\x86\SQLite.Interop.dll"; DestDir: "{app}"; 
 
-
+[UninstallDelete]
+Type: filesandordirs; Name: "{app}\backups"
 
 ; NOTE: Don't use "Flags: ignoreversion" on any shared system files
 
