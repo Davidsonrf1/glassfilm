@@ -14,13 +14,53 @@ namespace GlassFilm.Sync
     {
         static string ftpUser = @"zadmin_zadmin_cutcutbase";
         static string ftpPass = @"q{Ywe<?Scn";
+        static UpdateSyncStatus syncStatus = null;
+
+        public static UpdateSyncStatus SyncStatus
+        {
+            get
+            {
+                return syncStatus;
+            }
+
+            set
+            {
+                syncStatus = value;
+            }
+        }
 
 
-        //static string ftpUser = "⁠⁠⁠⁠⁠zadmin_cutcut";
-        //static string ftpPass = "q{Ywe<?Scn6^yGT";
+        static void Status(bool show, int count)
+        {
+            if (syncStatus != null)
+            {
+                SyncStatus status = new SyncStatus();
+                status.Show = show;
+                status.Count = count;
+                syncStatus(status);
+            }
+        }
+
+        static void Status(string acao, string objeto, int max, int val, int count)
+        {
+            if (syncStatus != null)
+            {
+                SyncStatus status = new SyncStatus();
+
+                status.Acao = acao;
+                status.Atual = val > max ? max : val;
+                status.Total = max < 0 ? 0 : max;
+                status.Objeto = objeto;
+                status.Count = count;
+
+                syncStatus(status);
+            }
+        }
 
         public static string BuildDbFile()
         {
+            Status("EFETUANDO BACKUP...", null, 100, 0, 0);
+
             if (File.Exists("CutFilmDB.zip"))
             {
                 File.Delete("CutFilmDB.zip");
@@ -29,15 +69,20 @@ namespace GlassFilm.Sync
             FileStream fs = File.Open("CutFilmDB.zip", FileMode.Create, FileAccess.ReadWrite);
 
             FileInfo modelosFi = new FileInfo("modelos.db");
+            Status("EFETUANDO BACKUP...", null, 100, 30, 30);
             FileInfo glassFi = new FileInfo("GlassFilm.db");
 
             using (ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Create))
             {
+                Status("EFETUANDO BACKUP...", null, 100, 40, 40);
                 ZipArchiveEntry zem = za.CreateEntryFromFile(modelosFi.FullName, "modelos.db", CompressionLevel.Optimal);
+                Status("EFETUANDO BACKUP...", null, 100, 60, 60);
                 ZipArchiveEntry zeg = za.CreateEntryFromFile(glassFi.FullName, "GlassFilm.db", CompressionLevel.Optimal);
             }
 
             FileInfo cutFilm = new FileInfo("CutFilmDB.zip");
+            Status("EFETUANDO BACKUP...", null, 100, 100, 100);
+
             return cutFilm.FullName;
         }
 
@@ -45,8 +90,11 @@ namespace GlassFilm.Sync
         {
             string file = BuildDbFile();
 
+            Status("GERANDO BACKUP NO SERVIDOR...", null, 100, 0, 0);
             GeraBackupFTP();
+            Status("GERANDO BACKUP NO SERVIDOR...", null, 100, 100, 100);
 
+            Status("ENVIANDO DADOS...", null, 100, 0, 0);
             MD5 md5 = MD5.Create();
 
             byte[] content = File.ReadAllBytes("CutFilmDB.zip");
@@ -57,7 +105,11 @@ namespace GlassFilm.Sync
             FileInfo fi = new FileInfo("CutFilmDB.md5");
 
             EnviarArquivoFTP(fi.FullName, "CutFilmDB.md5");
+            Status("ENVIANDO DADOS...", null, 100, 100, 100);
+
+            Status("ENVIANDO DADOS...", null, 100, 0, 0);
             EnviarArquivoFTP(file, "CutFilmDB.zip");
+            Status("ENVIANDO DADOS...", null, 100, 100, 100);
         }
 
         public static void GetDatabase()
@@ -74,6 +126,25 @@ namespace GlassFilm.Sync
                 if (!Directory.Exists(bkpDir))
                 {
                     Directory.CreateDirectory(bkpDir);
+                }
+
+                try
+                {
+
+                    string[] files = Directory.GetFiles(bkpDir);
+
+                    foreach (string f in files)
+                    {
+                        FileInfo fi = new FileInfo(f);
+                        if (fi.LastAccessTime < DateTime.Now.AddMonths(-1))
+                        {
+                            fi.Delete();
+                        }
+                    }
+                }
+                catch
+                {
+
                 }
 
                 string dest = bkpDir + String.Format("BACKUP_{0:u}_{1}.zip", DateTime.Now, DateTime.Now.Millisecond).Replace(':', '-');
@@ -159,9 +230,14 @@ namespace GlassFilm.Sync
 
         public static void BaixarArquivoFTP(string url, string dest)
         {
+
+            FtpWebResponse response = null;
+            FtpWebRequest request = null;
+
             try
             {
-                FtpWebRequest request = (FtpWebRequest)WebRequest.Create(new Uri(url));
+                
+                request = (FtpWebRequest)WebRequest.Create(new Uri(url));
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
                 request.Credentials = new NetworkCredential(ftpUser, ftpPass);
                 request.UseBinary = true;
@@ -171,24 +247,38 @@ namespace GlassFilm.Sync
                     File.Delete(dest);
                 }
 
-                using (FtpWebResponse response = (FtpWebResponse)request.GetResponse())
+                int max = 0x1FFFFFE;
+
+                using (response = (FtpWebResponse)request.GetResponse())
                 {
+                    Status("RECEBENDO ATUALIZAÇÃO AGUARDE...", null, 100, 0, 0);
+
                     using (Stream rs = response.GetResponseStream())
                     {
                         using (FileStream ws = new FileStream(dest, FileMode.Create))
                         {
                             byte[] buffer = new byte[2048];
                             int bytesRead = rs.Read(buffer, 0, buffer.Length);
+                            int count = 0;
                             while (bytesRead > 0)
                             {
                                 ws.Write(buffer, 0, bytesRead);
                                 bytesRead = rs.Read(buffer, 0, buffer.Length);
+
+                                count += bytesRead;
+
+                                if (count > max)
+                                    count = max;
+
+                                Status("RECEBENDO ATUALIZAÇÃO AGUARDE...", null, max, count, count);
                             }
+
+                            Status("RECEBENDO ATUALIZAÇÃO AGUARDE...", null, 100, 100, 100);
                         }
                     }
                 }
             }
-            catch
+            catch(Exception ex)
             {
                 throw;
             }
@@ -205,6 +295,8 @@ namespace GlassFilm.Sync
                 request.UseBinary = true;
                 request.ContentLength = arquivoInfo.Length;
 
+                Status("ENVIANDO DADOS...", null, (int)arquivoInfo.Length, 0, 0);
+
                 using (FileStream fs = arquivoInfo.OpenRead())
                 {
                     byte[] buffer = new byte[2048];
@@ -217,9 +309,13 @@ namespace GlassFilm.Sync
                             bytes = fs.Read(buffer, 0, buffer.Length);
                             stream.Write(buffer, 0, bytes);
                             bytesSent += bytes;
+
+                            Status("ENVIANDO DADOS...", null, (int)arquivoInfo.Length, bytesSent, bytesSent);
                         }
                     }
                 }
+
+                Status("ENVIANDO DADOS...", null, (int)arquivoInfo.Length, (int)arquivoInfo.Length, (int)arquivoInfo.Length);
             }
             catch (Exception ex)
             {

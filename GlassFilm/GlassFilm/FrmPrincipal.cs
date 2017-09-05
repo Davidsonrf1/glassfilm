@@ -1004,20 +1004,28 @@ namespace GlassFilm
         {
             DBManager.CloseDatabases();
 
-            bool force = false;
-
-            if (MessageBox.Show("Deseja forçar a Atualização de todos os dados?\n(Isso poderá levar alguns minutos)", "A T E N Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+            try
             {
-                force = true;
+                bool force = false;
+
+                if (MessageBox.Show("Deseja efetuar a atualização do sistema?\n(Isso poderá levar alguns minutos)", "A T E N Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    force = true;
+                }
+
+                vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
+
+                FrmSync.ShowSync(false, true, force);
             }
+            catch
+            {
 
-            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
-
-            FrmSync.ShowSync(false, true, force);
-
-            DBManager.InitDB();
-
-            sel.AtualizaMarcas();
+            }
+            finally
+            {
+                DBManager.InitDB();
+                sel.AtualizaMarcas();
+            }            
         }
     }
 }

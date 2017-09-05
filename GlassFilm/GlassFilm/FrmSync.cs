@@ -164,9 +164,18 @@ namespace GlassFilm
 
             try
             {
+                total = 0;
+
                 if (Sync.SyncFullDatabase.VerificaAtualizacoes())
                 {
                     total = 10;
+                }
+                else
+                {
+                    if (MessageBox.Show("O sistema já está atualizado. Deseja baixar os dados mesmo assim?", "A T E N Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                    {
+                        total = 10; 
+                    }
                 }
 
                 if (total > 0)
@@ -261,6 +270,7 @@ namespace GlassFilm
 
             _syncStatus = new UpdateSyncStatus(SyncStatusProc);
             SyncManager.SyncStatus = _syncStatus;
+            SyncFullDatabase.SyncStatus = _syncStatus;
 
             if (syncdown)
             {
