@@ -208,6 +208,9 @@
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
     <None Include="app.config" />
+    <None Include="BaseLimpa\Access.db">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
     <None Include="BaseLimpa\GlassFilm.db">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

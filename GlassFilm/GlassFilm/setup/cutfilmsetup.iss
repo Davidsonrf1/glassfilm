@@ -45,6 +45,7 @@ Source: "..\..\build\Release\System.Data.SQLite.dll"; DestDir: "{app}";
 Source: "..\..\build\Release\VectorView.dll"; DestDir: "{app}"; 
 Source: "..\..\build\Release\BaseLimpa\GlassFilm.db"; DestDir: "{app}";
 Source: "..\..\build\Release\BaseLimpa\Modelos.db"; DestDir: "{app}";       
+Source: "..\..\build\Release\BaseLimpa\Access.db"; DestDir: "{app}";       
 Source: "..\..\build\Release\x86\SQLite.Interop.dll"; DestDir: "{app}"; 
 
 [UninstallDelete]
