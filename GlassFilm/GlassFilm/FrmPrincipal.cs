@@ -97,7 +97,7 @@ namespace GlassFilm
 
                     Glass.usuario.nome = frm.txtNome.Text;
                 }
-            }   
+            }
             else
             {
                 pnlFiltroInfo.Visible = true;
@@ -107,7 +107,7 @@ namespace GlassFilm
                 toolCorte.Visible = true;
                 toolArquivo.Visible = true;
                 toollSincronizacao.Visible = true;
-                
+
             }
 
             DBManager.VerificaTabelasAuxiliares();
@@ -125,8 +125,7 @@ namespace GlassFilm
             }            
             */
 
-            int numDesenhos = sel.AtualizaMarcas();
-            lbQtde.Text = numDesenhos.ToString() + " desenhos cadastrados";
+            lbQtde.Text = sel.AtualizaMarcas() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
 
             cbMarca.Focus();
             calculapalavra();
@@ -218,9 +217,8 @@ namespace GlassFilm
                     vvModelo.AllowTransforms = false;
 
                     vvModelo.Document.LoadSVG(svg);
-
-                    int numDesenhos = DBManager.GetNumDesenhos();
-                    lbQtde.Text = numDesenhos.ToString() + " desenhos cadastrados";
+                    
+                    lbQtde.Text = DBManager.GetNumDesenhos() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
 
                     vvModelo.AutoFit(VectorFitStyle.Both, true, true);
                 }
@@ -897,9 +895,8 @@ namespace GlassFilm
 
             vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
-            //FrmSync.ShowSync(false, true, false);
-            int numDesenhos = sel.AtualizaMarcas();
-            lbQtde.Text = numDesenhos.ToString() + " desenhos cadastrados";
+            //FrmSync.ShowSync(false, true, false);            
+            lbQtde.Text = sel.AtualizaMarcas() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
         }
 
         private void button1_Click(object sender, EventArgs e)

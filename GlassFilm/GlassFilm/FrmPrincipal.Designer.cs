@@ -68,18 +68,18 @@
             this.label7 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.splitCorte = new System.Windows.Forms.SplitContainer();
+            this.pnCript = new System.Windows.Forms.Panel();
+            this.pbCript = new System.Windows.Forms.ProgressBar();
+            this.label1 = new System.Windows.Forms.Label();
+            this.vvModelo = new VectorView.VectorViewCtr();
             this.toolCorte = new System.Windows.Forms.ToolStrip();
             this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.toolStripButton3 = new System.Windows.Forms.ToolStripButton();
+            this.vvCorte = new VectorView.VectorViewCtr();
             this.lbCalculando = new System.Windows.Forms.Label();
             this.pnlCalculando = new System.Windows.Forms.Panel();
-            this.pnCript = new System.Windows.Forms.Panel();
-            this.label1 = new System.Windows.Forms.Label();
-            this.pbCript = new System.Windows.Forms.ProgressBar();
             this.pbCalc = new System.Windows.Forms.ProgressBar();
-            this.vvModelo = new VectorView.VectorViewCtr();
-            this.vvCorte = new VectorView.VectorViewCtr();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -91,9 +91,9 @@
             this.splitCorte.Panel1.SuspendLayout();
             this.splitCorte.Panel2.SuspendLayout();
             this.splitCorte.SuspendLayout();
+            this.pnCript.SuspendLayout();
             this.toolCorte.SuspendLayout();
             this.pnlCalculando.SuspendLayout();
-            this.pnCript.SuspendLayout();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -399,9 +399,9 @@
             // lbQtde
             // 
             this.lbQtde.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbQtde.Location = new System.Drawing.Point(1123, 26);
+            this.lbQtde.Location = new System.Drawing.Point(1157, 9);
             this.lbQtde.Name = "lbQtde";
-            this.lbQtde.Size = new System.Drawing.Size(297, 21);
+            this.lbQtde.Size = new System.Drawing.Size(263, 42);
             this.lbQtde.TabIndex = 15;
             this.lbQtde.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
@@ -558,6 +558,54 @@
             this.splitCorte.SplitterDistance = 189;
             this.splitCorte.TabIndex = 18;
             // 
+            // pnCript
+            // 
+            this.pnCript.BackColor = System.Drawing.Color.Bisque;
+            this.pnCript.Controls.Add(this.pbCript);
+            this.pnCript.Controls.Add(this.label1);
+            this.pnCript.Location = new System.Drawing.Point(383, 8049);
+            this.pnCript.Name = "pnCript";
+            this.pnCript.Size = new System.Drawing.Size(522, 69);
+            this.pnCript.TabIndex = 20;
+            this.pnCript.Visible = false;
+            // 
+            // pbCript
+            // 
+            this.pbCript.Location = new System.Drawing.Point(9, 38);
+            this.pbCript.Name = "pbCript";
+            this.pbCript.Size = new System.Drawing.Size(501, 23);
+            this.pbCript.TabIndex = 2;
+            // 
+            // label1
+            // 
+            this.label1.BackColor = System.Drawing.Color.RoyalBlue;
+            this.label1.Font = new System.Drawing.Font("OCR-B 10 BT", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.ForeColor = System.Drawing.Color.White;
+            this.label1.Location = new System.Drawing.Point(9, 12);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(501, 23);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "Criptografando base, aguarde...";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            // 
+            // vvModelo
+            // 
+            this.vvModelo.AllowMoveDocument = false;
+            this.vvModelo.AllowTransforms = false;
+            this.vvModelo.BackColor = System.Drawing.Color.White;
+            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvModelo.GridColor = System.Drawing.Color.Black;
+            this.vvModelo.GridSize = 10;
+            this.vvModelo.Location = new System.Drawing.Point(0, 0);
+            this.vvModelo.Name = "vvModelo";
+            this.vvModelo.ShowGrid = false;
+            this.vvModelo.Size = new System.Drawing.Size(1426, 189);
+            this.vvModelo.TabIndex = 19;
+            this.vvModelo.Visible = false;
+            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
+            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
+            // 
             // toolCorte
             // 
             this.toolCorte.AutoSize = false;
@@ -610,6 +658,26 @@
             this.toolStripButton3.ToolTipText = "Ajustar na tela";
             this.toolStripButton3.Click += new System.EventHandler(this.toolStripButton3_Click);
             // 
+            // vvCorte
+            // 
+            this.vvCorte.AllowMoveDocument = true;
+            this.vvCorte.AllowTransforms = true;
+            this.vvCorte.BackColor = System.Drawing.Color.White;
+            this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
+            this.vvCorte.Dock = System.Windows.Forms.DockStyle.Left;
+            this.vvCorte.GridColor = System.Drawing.Color.Black;
+            this.vvCorte.GridSize = 10;
+            this.vvCorte.Location = new System.Drawing.Point(0, 0);
+            this.vvCorte.Name = "vvCorte";
+            this.vvCorte.ShowGrid = false;
+            this.vvCorte.Size = new System.Drawing.Size(1302, 152);
+            this.vvCorte.TabIndex = 1;
+            this.vvCorte.Visible = false;
+            this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
+            this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed_1);
+            this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
+            this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
+            // 
             // lbCalculando
             // 
             this.lbCalculando.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -636,36 +704,6 @@
             this.pnlCalculando.TabIndex = 21;
             this.pnlCalculando.Visible = false;
             // 
-            // pnCript
-            // 
-            this.pnCript.BackColor = System.Drawing.Color.Bisque;
-            this.pnCript.Controls.Add(this.pbCript);
-            this.pnCript.Controls.Add(this.label1);
-            this.pnCript.Location = new System.Drawing.Point(383, 8049);
-            this.pnCript.Name = "pnCript";
-            this.pnCript.Size = new System.Drawing.Size(522, 69);
-            this.pnCript.TabIndex = 20;
-            this.pnCript.Visible = false;
-            // 
-            // label1
-            // 
-            this.label1.BackColor = System.Drawing.Color.RoyalBlue;
-            this.label1.Font = new System.Drawing.Font("OCR-B 10 BT", 15.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.ForeColor = System.Drawing.Color.White;
-            this.label1.Location = new System.Drawing.Point(9, 12);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(501, 23);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "Criptografando base, aguarde...";
-            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            // 
-            // pbCript
-            // 
-            this.pbCript.Location = new System.Drawing.Point(9, 38);
-            this.pbCript.Name = "pbCript";
-            this.pbCript.Size = new System.Drawing.Size(501, 23);
-            this.pbCript.TabIndex = 2;
-            // 
             // pbCalc
             // 
             this.pbCalc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -675,44 +713,6 @@
             this.pbCalc.Size = new System.Drawing.Size(1055, 10);
             this.pbCalc.TabIndex = 1;
             this.pbCalc.Visible = false;
-            // 
-            // vvModelo
-            // 
-            this.vvModelo.AllowMoveDocument = false;
-            this.vvModelo.AllowTransforms = false;
-            this.vvModelo.BackColor = System.Drawing.Color.White;
-            this.vvModelo.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vvModelo.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvModelo.GridColor = System.Drawing.Color.Black;
-            this.vvModelo.GridSize = 10;
-            this.vvModelo.Location = new System.Drawing.Point(0, 0);
-            this.vvModelo.Name = "vvModelo";
-            this.vvModelo.ShowGrid = false;
-            this.vvModelo.Size = new System.Drawing.Size(1426, 189);
-            this.vvModelo.TabIndex = 19;
-            this.vvModelo.Visible = false;
-            this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
-            this.vvModelo.Resize += new System.EventHandler(this.vvModelo_Resize);
-            // 
-            // vvCorte
-            // 
-            this.vvCorte.AllowMoveDocument = true;
-            this.vvCorte.AllowTransforms = true;
-            this.vvCorte.BackColor = System.Drawing.Color.White;
-            this.vvCorte.BackgroundImage = global::GlassFilm.Properties.Resources.tracos3;
-            this.vvCorte.Dock = System.Windows.Forms.DockStyle.Left;
-            this.vvCorte.GridColor = System.Drawing.Color.Black;
-            this.vvCorte.GridSize = 10;
-            this.vvCorte.Location = new System.Drawing.Point(0, 0);
-            this.vvCorte.Name = "vvCorte";
-            this.vvCorte.ShowGrid = false;
-            this.vvCorte.Size = new System.Drawing.Size(1302, 152);
-            this.vvCorte.TabIndex = 1;
-            this.vvCorte.Visible = false;
-            this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
-            this.vvCorte.SelectionTransformed += new VectorView.VectorEventHandler(this.vvCorte_SelectionTransformed_1);
-            this.vvCorte.SelectionChanged += new VectorView.VectorEventHandler(this.vvCorte_SelectionChanged);
-            this.vvCorte.Resize += new System.EventHandler(this.vvCorte_Resize);
             // 
             // FrmPrincipal
             // 
@@ -752,11 +752,11 @@
             this.splitCorte.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitCorte)).EndInit();
             this.splitCorte.ResumeLayout(false);
+            this.pnCript.ResumeLayout(false);
             this.toolCorte.ResumeLayout(false);
             this.toolCorte.PerformLayout();
             this.pnlCalculando.ResumeLayout(false);
             this.pnlCalculando.PerformLayout();
-            this.pnCript.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

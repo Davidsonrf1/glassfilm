@@ -63,6 +63,46 @@ namespace GlassFilm
             }
         }
 
+        public void carregarGridLog(DataGridView grid, string _sql, int[] tamanhos = null, string[] HeaderText = null)
+        {
+            try
+            {
+                SQLiteDataAdapter da = new SQLiteDataAdapter(_sql, DBManager._accessDbname);
+                DataTable dt = new DataTable();
+                da.Fill(dt);
+
+                grid.DataSource = dt;
+
+                if (tamanhos != null)
+                {
+                    int i = 0;
+                    foreach (int tam in tamanhos)
+                    {
+                        grid.Columns[i].Width = tam;
+                        i++;
+                    }
+                }
+                else
+                {
+                    grid.Columns[0].Width = 100;
+                }
+
+                if (HeaderText != null)
+                {
+                    int i = 0;
+                    foreach (string dpn in HeaderText)
+                    {
+                        grid.Columns[i].HeaderText = dpn;
+                        i++;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+            }
+        }
+
         /// <summary>
         /// Função que filtra dados de um Grid - Pesquisa dinamica.
         /// </summary>

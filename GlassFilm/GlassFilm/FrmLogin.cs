@@ -199,7 +199,7 @@ namespace GlassFilm
 
                 if (DBManager.conectado())
                 {
-                    SQLiteDataAdapter da = new SQLiteDataAdapter(_sql, DBManager._mainDbName);
+                    SQLiteDataAdapter da = new SQLiteDataAdapter(_sql, DBManager._accessDbname);
                     da.Fill(dt);
 
                     foreach (DataRow l in dt.Rows)
@@ -225,7 +225,7 @@ namespace GlassFilm
                     string _sql = " INSERT INTO EMPRESA (CNPJ_CPF) VALUES (@CNPJ) ";
 
                     SQLiteCommand cmd = new SQLiteCommand();
-                    cmd.Connection = DBManager._mainConnection;
+                    cmd.Connection = DBManager._accessConnection;
                     cmd.CommandText = _sql;                        
 
                     cmd.Parameters.Add(new SQLiteParameter("@CNPJ", txtCnpj.Text.Trim()));                        

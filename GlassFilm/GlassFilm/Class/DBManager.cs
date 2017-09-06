@@ -12,11 +12,13 @@ using System.Reflection;
 namespace GlassFilm.Class
 {
     public static class DBManager
-    {
+    {        
         public static SQLiteConnection _mainConnection = null;
         public static SQLiteConnection _modelConnection = null;
+        public static SQLiteConnection _accessConnection = null;
         public static string _mainDbName = string.Format("Data Source={0};Version=3", "GlassFilm.db");
         public static string _modelDbname = string.Format("Data Source={0};Version=3", "Modelos.db");
+        public static string _accessDbname = string.Format("Data Source={0};Version=3", "Access.db");
 
         public static void InitDB()
         {
@@ -25,6 +27,9 @@ namespace GlassFilm.Class
 
             _modelConnection = new SQLiteConnection(_modelDbname);
             _modelConnection.Open();
+
+            _accessConnection = new SQLiteConnection(_accessDbname);
+            _accessConnection.Open();
         }
 
         public static bool conectado()
@@ -74,7 +79,7 @@ namespace GlassFilm.Class
         {
             try
             {
-                SQLiteCommand cmd = _mainConnection.CreateCommand();
+                SQLiteCommand cmd = _accessConnection.CreateCommand();
 
                 int area_rolo = largura_rolo * altura_rolo;
                 int eficiencia = area_rolo > 0 ? area_total / area_total : 100;
@@ -187,7 +192,7 @@ namespace GlassFilm.Class
             {
                 ConfigValue c = new ConfigValue(Convert.ToInt32(dr["ID"].ToString()), dr["NOME"].ToString(), dr["VALOR_PADRAO"].ToString());
                 c.Valor = dr["VALOR"].ToString();
-                cfg.Add(c);                
+                cfg.Add(c);
             }
 
             dr.Close();
@@ -370,15 +375,43 @@ namespace GlassFilm.Class
             return null;
         }
 
-        public static int GetNumDesenhos()
+        public static string GetNumDesenhos()
         {
             int num = 0;
 
-            SQLiteCommand cmd = _modelConnection.CreateCommand();
-            cmd.CommandText = "select count(*) from desenhos";
-            num = int.Parse(cmd.ExecuteScalar().ToString());
+            try
+            {
+                SQLiteCommand cmd = _modelConnection.CreateCommand();
+                cmd.CommandText = "select count(*) from desenhos";
+                num = int.Parse(cmd.ExecuteScalar().ToString());
+            }
+            catch {}
 
-            return num;
+            return num.ToString();
+        }
+
+        public static string GetNumVeiculoMarca()
+        {
+            int numModelo = 0;
+            int numMarca = 0;
+
+            try
+            {
+                SQLiteCommand cmd = _mainConnection.CreateCommand();
+                cmd.CommandText = "select count(*) from modelo";
+                numModelo = int.Parse(cmd.ExecuteScalar().ToString());
+            }
+            catch { }
+
+            try
+            {
+                SQLiteCommand cmd = _mainConnection.CreateCommand();
+                cmd.CommandText = "select count(*) from marca";
+                numMarca = int.Parse(cmd.ExecuteScalar().ToString());
+            }
+            catch { }
+
+            return string.Format("{0} Veículos de {1} Marcas", numModelo.ToString(), numMarca.ToString());
         }
 
         public static void SalvarDesenho(int codigo_ano, string svg)

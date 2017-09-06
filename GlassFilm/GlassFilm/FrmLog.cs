@@ -34,7 +34,7 @@ namespace GlassFilm
         {
             string[] nomesColunas = { "Usuário", "Área Rolo", "Área Peças", "Data", "Hora" };
             int[] tamColunas = { 150, 150, 150, 150};
-            carregamento.carregarGrid(gridPrincipal, "select " +
+            carregamento.carregarGridLog(gridPrincipal, "select " +
                                                     "	 usuario," +
                                                     "	 area_rolo_usado," +
                                                     "	 area_total_pecas," +                                                    

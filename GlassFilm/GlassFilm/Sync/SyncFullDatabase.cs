@@ -111,7 +111,7 @@ namespace GlassFilm.Sync
             int codigo_desenho = 0;
             int count = 0;
 
-            int total = DBManager.GetNumDesenhos();
+            int total = Convert.ToInt16(DBManager.GetNumDesenhos());
 
             pb.Value = 0;
             pb.Maximum = total;

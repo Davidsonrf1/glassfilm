@@ -235,7 +235,7 @@ namespace GlassFilm.Class
             }
         }
 
-        public int AtualizaMarcas()
+        public string AtualizaMarcas()
         {
             Limpar();
 
