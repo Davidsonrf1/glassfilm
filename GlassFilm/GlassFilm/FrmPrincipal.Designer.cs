@@ -80,6 +80,7 @@
             this.lbCalculando = new System.Windows.Forms.Label();
             this.pnlCalculando = new System.Windows.Forms.Panel();
             this.pbCalc = new System.Windows.Forms.ProgressBar();
+            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -106,7 +107,7 @@
             this.toollSincronizacao});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1432, 24);
+            this.menuStrip1.Size = new System.Drawing.Size(1391, 24);
             this.menuStrip1.TabIndex = 1;
             this.menuStrip1.Text = "Menu";
             // 
@@ -176,7 +177,7 @@
             this.pnlprincipal.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlprincipal.Location = new System.Drawing.Point(0, 24);
             this.pnlprincipal.Name = "pnlprincipal";
-            this.pnlprincipal.Size = new System.Drawing.Size(1432, 110);
+            this.pnlprincipal.Size = new System.Drawing.Size(1391, 110);
             this.pnlprincipal.TabIndex = 4;
             this.pnlprincipal.Visible = false;
             this.pnlprincipal.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlprincipal_Paint);
@@ -189,7 +190,7 @@
             this.btnSync.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnSync.ForeColor = System.Drawing.Color.White;
             this.btnSync.Image = global::GlassFilm.Properties.Resources.Sync_Cloud_icon__1_;
-            this.btnSync.Location = new System.Drawing.Point(1185, 19);
+            this.btnSync.Location = new System.Drawing.Point(1144, 19);
             this.btnSync.Name = "btnSync";
             this.btnSync.Size = new System.Drawing.Size(75, 80);
             this.btnSync.TabIndex = 13;
@@ -206,7 +207,7 @@
             this.btnLog.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.btnLog.ForeColor = System.Drawing.Color.White;
             this.btnLog.Image = global::GlassFilm.Properties.Resources.log_file_format__1_;
-            this.btnLog.Location = new System.Drawing.Point(1266, 19);
+            this.btnLog.Location = new System.Drawing.Point(1225, 19);
             this.btnLog.Name = "btnLog";
             this.btnLog.Size = new System.Drawing.Size(75, 80);
             this.btnLog.TabIndex = 12;
@@ -223,7 +224,7 @@
             this.button1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.button1.ForeColor = System.Drawing.Color.Black;
             this.button1.Image = global::GlassFilm.Properties.Resources.two_cogwheels_configuration_interface_symbol;
-            this.button1.Location = new System.Drawing.Point(1345, 19);
+            this.button1.Location = new System.Drawing.Point(1304, 19);
             this.button1.Name = "button1";
             this.button1.Size = new System.Drawing.Size(75, 80);
             this.button1.TabIndex = 11;
@@ -376,6 +377,7 @@
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.pnlFiltroInfo.Controls.Add(this.linkLabel1);
             this.pnlFiltroInfo.Controls.Add(this.lbQtde);
             this.pnlFiltroInfo.Controls.Add(this.panel4);
             this.pnlFiltroInfo.Controls.Add(this.panel7);
@@ -392,14 +394,14 @@
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 134);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(1432, 65);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(1391, 65);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
             // 
             // lbQtde
             // 
             this.lbQtde.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.lbQtde.Location = new System.Drawing.Point(1157, 9);
+            this.lbQtde.Location = new System.Drawing.Point(1116, 9);
             this.lbQtde.Name = "lbQtde";
             this.lbQtde.Size = new System.Drawing.Size(263, 42);
             this.lbQtde.TabIndex = 15;
@@ -411,7 +413,7 @@
             this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel4.Location = new System.Drawing.Point(0, 60);
             this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1432, 5);
+            this.panel4.Size = new System.Drawing.Size(1391, 5);
             this.panel4.TabIndex = 14;
             // 
             // panel7
@@ -531,7 +533,7 @@
             this.panel8.Dock = System.Windows.Forms.DockStyle.Fill;
             this.panel8.Location = new System.Drawing.Point(0, 0);
             this.panel8.Name = "panel8";
-            this.panel8.Size = new System.Drawing.Size(1432, 569);
+            this.panel8.Size = new System.Drawing.Size(1391, 535);
             this.panel8.TabIndex = 19;
             // 
             // splitCorte
@@ -554,7 +556,7 @@
             this.splitCorte.Panel2.Controls.Add(this.toolCorte);
             this.splitCorte.Panel2.Controls.Add(this.vvCorte);
             this.splitCorte.Panel2.Resize += new System.EventHandler(this.splitCorte_Panel2_Resize);
-            this.splitCorte.Size = new System.Drawing.Size(1426, 345);
+            this.splitCorte.Size = new System.Drawing.Size(1385, 311);
             this.splitCorte.SplitterDistance = 189;
             this.splitCorte.TabIndex = 18;
             // 
@@ -600,7 +602,7 @@
             this.vvModelo.Location = new System.Drawing.Point(0, 0);
             this.vvModelo.Name = "vvModelo";
             this.vvModelo.ShowGrid = false;
-            this.vvModelo.Size = new System.Drawing.Size(1426, 189);
+            this.vvModelo.Size = new System.Drawing.Size(1385, 189);
             this.vvModelo.TabIndex = 19;
             this.vvModelo.Visible = false;
             this.vvModelo.MouseDoubleClick += new System.Windows.Forms.MouseEventHandler(this.vvModelo_MouseDoubleClick);
@@ -615,9 +617,9 @@
             this.toolStripButton1,
             this.toolStripButton2,
             this.toolStripButton3});
-            this.toolCorte.Location = new System.Drawing.Point(1282, 0);
+            this.toolCorte.Location = new System.Drawing.Point(1338, 0);
             this.toolCorte.Name = "toolCorte";
-            this.toolCorte.Size = new System.Drawing.Size(47, 152);
+            this.toolCorte.Size = new System.Drawing.Size(47, 118);
             this.toolCorte.TabIndex = 21;
             this.toolCorte.Visible = false;
             this.toolCorte.Resize += new System.EventHandler(this.toolCorte_Resize);
@@ -670,7 +672,7 @@
             this.vvCorte.Location = new System.Drawing.Point(0, 0);
             this.vvCorte.Name = "vvCorte";
             this.vvCorte.ShowGrid = false;
-            this.vvCorte.Size = new System.Drawing.Size(1302, 152);
+            this.vvCorte.Size = new System.Drawing.Size(1302, 118);
             this.vvCorte.TabIndex = 1;
             this.vvCorte.Visible = false;
             this.vvCorte.SelectionMoved += new VectorView.VectorEventHandler(this.vvCorte_SelectionMoved);
@@ -698,9 +700,9 @@
             this.pnlCalculando.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
             this.pnlCalculando.Controls.Add(this.pbCalc);
             this.pnlCalculando.Controls.Add(this.lbCalculando);
-            this.pnlCalculando.Location = new System.Drawing.Point(-1, 543);
+            this.pnlCalculando.Location = new System.Drawing.Point(-1, 509);
             this.pnlCalculando.Name = "pnlCalculando";
-            this.pnlCalculando.Size = new System.Drawing.Size(1434, 26);
+            this.pnlCalculando.Size = new System.Drawing.Size(1393, 26);
             this.pnlCalculando.TabIndex = 21;
             this.pnlCalculando.Visible = false;
             // 
@@ -710,9 +712,24 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this.pbCalc.Location = new System.Drawing.Point(165, 16);
             this.pbCalc.Name = "pbCalc";
-            this.pbCalc.Size = new System.Drawing.Size(1055, 10);
+            this.pbCalc.Size = new System.Drawing.Size(1014, 10);
             this.pbCalc.TabIndex = 1;
             this.pbCalc.Visible = false;
+            // 
+            // linkLabel1
+            // 
+            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.linkLabel1.LinkColor = System.Drawing.Color.Gray;
+            this.linkLabel1.Location = new System.Drawing.Point(910, 29);
+            this.linkLabel1.Name = "linkLabel1";
+            this.linkLabel1.Size = new System.Drawing.Size(200, 13);
+            this.linkLabel1.TabIndex = 23;
+            this.linkLabel1.TabStop = true;
+            this.linkLabel1.Text = "Desenvolvido por techconsultoria.com.br";
+            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
+            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked_1);
             // 
             // FrmPrincipal
             // 
@@ -720,7 +737,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
-            this.ClientSize = new System.Drawing.Size(1432, 569);
+            this.ClientSize = new System.Drawing.Size(1391, 535);
             this.Controls.Add(this.pnlCalculando);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.pnlprincipal);
@@ -815,5 +832,6 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar pbCript;
         private System.Windows.Forms.ProgressBar pbCalc;
+        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

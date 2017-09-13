@@ -58,33 +58,48 @@ namespace GlassFilm.Sync
             }
         }
 
+
+
         public static string BuildDbFile()
         {
-            Status("EFETUANDO BACKUP...", null, 100, 0, 0);
-
-            if (File.Exists("CutFilmDB.zip"))
+            try
             {
-                File.Delete("CutFilmDB.zip");
+                Status("EFETUANDO BACKUP...", null, 100, 0, 0);
+
+                if (File.Exists("CutFilmDB.zip"))
+                {
+                    File.Delete("CutFilmDB.zip");
+                }
+
+                FileStream fs = File.Open("CutFilmDB.zip", FileMode.Create, FileAccess.ReadWrite);
+
+                FileInfo modelosFi = new FileInfo("modelos.db");
+                Status("EFETUANDO BACKUP...", null, 100, 30, 30);
+                FileInfo glassFi = new FileInfo("GlassFilm.db");
+
+                using (ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Create))
+                {
+                    Status("EFETUANDO BACKUP...", null, 100, 40, 40);
+
+                    File.Copy(modelosFi.FullName, modelosFi.FullName + ".tmp", true);
+                    ZipArchiveEntry zem = za.CreateEntryFromFile(modelosFi.FullName + ".tmp", "modelos.db", CompressionLevel.Optimal);
+                    Status("EFETUANDO BACKUP...", null, 100, 60, 60);
+
+                    File.Copy(glassFi.FullName, glassFi.FullName + ".tmp", true);
+                    ZipArchiveEntry zeg = za.CreateEntryFromFile(glassFi.FullName + ".tmp", "GlassFilm.db", CompressionLevel.Optimal);
+                }
+
+                FileInfo cutFilm = new FileInfo("CutFilmDB.zip");
+                Status("EFETUANDO BACKUP...", null, 100, 100, 100);
+
+                return cutFilm.FullName;
+            }
+            catch (Exception ex)
+            {
+
             }
 
-            FileStream fs = File.Open("CutFilmDB.zip", FileMode.Create, FileAccess.ReadWrite);
-
-            FileInfo modelosFi = new FileInfo("modelos.db");
-            Status("EFETUANDO BACKUP...", null, 100, 30, 30);
-            FileInfo glassFi = new FileInfo("GlassFilm.db");
-
-            using (ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Create))
-            {
-                Status("EFETUANDO BACKUP...", null, 100, 40, 40);
-                ZipArchiveEntry zem = za.CreateEntryFromFile(modelosFi.FullName, "modelos.db", CompressionLevel.Optimal);
-                Status("EFETUANDO BACKUP...", null, 100, 60, 60);
-                ZipArchiveEntry zeg = za.CreateEntryFromFile(glassFi.FullName, "GlassFilm.db", CompressionLevel.Optimal);
-            }
-
-            FileInfo cutFilm = new FileInfo("CutFilmDB.zip");
-            Status("EFETUANDO BACKUP...", null, 100, 100, 100);
-
-            return cutFilm.FullName;
+            return null;
         }
 
         public static void CriptografarBase(ProgressBar pb)
@@ -136,7 +151,6 @@ namespace GlassFilm.Sync
 
         public static void SendDatabase()
         {
-
             string file = BuildDbFile();
 
             Status("GERANDO BACKUP NO SERVIDOR...", null, 100, 0, 0);

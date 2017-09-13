@@ -86,5 +86,10 @@ namespace GlassFilm
             if (!string.IsNullOrEmpty(Program.Config["PlotterName"]))
                 lbPlotterName.Text = Program.Config["PlotterName"];
         }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.techconsultoria.com.br/");
+        }
     }
 }

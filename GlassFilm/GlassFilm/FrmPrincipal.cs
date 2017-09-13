@@ -16,6 +16,7 @@ using System.Drawing.Printing;
 using System.IO.Ports;
 using GlassFilm.Sync;
 using System.Threading;
+using GlassFilm.Validacoes;
 
 namespace GlassFilm
 {
@@ -709,7 +710,9 @@ namespace GlassFilm
             Refresh();
 
             pnlprincipal.Enabled = true;
-            pnlCalculando.Visible = false;            
+            pnlCalculando.Visible = false;
+
+            UpdateDocInfo();
         }
 
         void AtualizaFilmes()
@@ -952,23 +955,43 @@ namespace GlassFilm
                 vvCorte.Document.BeginTransform();
 
                 if (e.KeyCode == Keys.Left)
+                {
                     vvCorte.MoveSelection(-amount, 0);
+                    e.Handled = true;
+                }
 
                 if (e.KeyCode == Keys.Right)
+                {
                     vvCorte.MoveSelection(+amount, 0);
+                    e.Handled = true;
+                }
 
                 if (e.KeyCode == Keys.Up)
+                {
                     vvCorte.MoveSelection(0, -amount);
+                    e.Handled = true;
+                }
 
                 if (e.KeyCode == Keys.Down)
+                {
                     vvCorte.MoveSelection(0, +amount);
+                    e.Handled = true;
+                }
 
                 vvCorte.Document.EndTransform(false);
+                
+                UpdateDocInfo();
             }
         }       
 
         private void toollSincronizacao_Click(object sender, EventArgs e)
         {
+            if (!ValidaInternet.existeInternet())
+            {
+                Mensagens.Atencao("Não existe conexão com a internet");
+                return;
+            }
+
             string oldCalculando = lbCalculando.Text;
             lbCalculando.Text = "CRIPTOGRAFANDO A BASE, ISSO PODE DEMORAR ALGUNS MINUTOS. POR FAVOR AGUARDE...";
             pnlCalculando.Visible = true;
@@ -1052,6 +1075,16 @@ namespace GlassFilm
                 DBManager.InitDB();
                 sel.AtualizaMarcas();
             }            
+        }
+
+        private void linkLabel1_LinkClicked(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.techconsultoria.com.br/");
+        }
+
+        private void linkLabel1_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
+        {
+            System.Diagnostics.Process.Start("http://www.techconsultoria.com.br/");
         }
     }
 }
