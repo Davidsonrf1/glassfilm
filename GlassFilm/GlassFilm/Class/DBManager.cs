@@ -366,7 +366,7 @@ namespace GlassFilm.Class
                 }
                 catch(Exception ex)
                 {
-
+                    Console.Write(ex.Message);
                 }
                 dr.Close();
                 return desenho;

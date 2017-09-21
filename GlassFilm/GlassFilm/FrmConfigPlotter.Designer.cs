@@ -42,7 +42,6 @@
             this.cbForceAutoNest = new System.Windows.Forms.CheckBox();
             this.numMargin = new System.Windows.Forms.NumericUpDown();
             this.label3 = new System.Windows.Forms.Label();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.panel1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.numMargin)).BeginInit();
             this.SuspendLayout();
@@ -50,7 +49,6 @@
             // panel1
             // 
             this.panel1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
-            this.panel1.Controls.Add(this.linkLabel1);
             this.panel1.Controls.Add(this.btnCancelar);
             this.panel1.Controls.Add(this.btnEntrar);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
@@ -204,18 +202,6 @@
             this.label3.Text = "Margem (mm)";
             this.label3.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.ForeColor = System.Drawing.Color.White;
-            this.linkLabel1.Location = new System.Drawing.Point(8, 13);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(224, 23);
-            this.linkLabel1.TabIndex = 4;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Desenvolvido por techconsultoria.com.br";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked);
-            // 
             // FrmConfigPlotter
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -263,6 +249,5 @@
         private System.Windows.Forms.CheckBox cbForceAutoNest;
         private System.Windows.Forms.NumericUpDown numMargin;
         private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

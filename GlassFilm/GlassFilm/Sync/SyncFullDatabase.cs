@@ -96,7 +96,7 @@ namespace GlassFilm.Sync
             }
             catch (Exception ex)
             {
-
+                Console.Write(ex.Message);
             }
 
             return null;
@@ -216,7 +216,7 @@ namespace GlassFilm.Sync
             }
             catch (Exception ex)
             {
-
+                Console.Write(ex.Message);
             }
 
             try
@@ -240,7 +240,7 @@ namespace GlassFilm.Sync
             }
             catch (Exception ex)
             {
-
+                Console.Write(ex.Message);
             }
         }
 
@@ -287,7 +287,7 @@ namespace GlassFilm.Sync
             }
             catch (Exception ex)
             {
-                //throw ex;
+                Console.Write(ex.Message);
             }
         }
 
@@ -343,6 +343,7 @@ namespace GlassFilm.Sync
             }
             catch(Exception ex)
             {
+                Console.Write(ex.Message);
                 throw;
             }
         }
@@ -383,6 +384,7 @@ namespace GlassFilm.Sync
             catch (Exception ex)
             {
                 //throw ex;
+                Console.Write(ex.Message);
             }
         }
     }

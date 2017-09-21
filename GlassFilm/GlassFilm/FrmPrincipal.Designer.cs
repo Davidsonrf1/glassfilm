@@ -80,7 +80,6 @@
             this.lbCalculando = new System.Windows.Forms.Label();
             this.pnlCalculando = new System.Windows.Forms.Panel();
             this.pbCalc = new System.Windows.Forms.ProgressBar();
-            this.linkLabel1 = new System.Windows.Forms.LinkLabel();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -377,7 +376,6 @@
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
-            this.pnlFiltroInfo.Controls.Add(this.linkLabel1);
             this.pnlFiltroInfo.Controls.Add(this.lbQtde);
             this.pnlFiltroInfo.Controls.Add(this.panel4);
             this.pnlFiltroInfo.Controls.Add(this.panel7);
@@ -716,21 +714,6 @@
             this.pbCalc.TabIndex = 1;
             this.pbCalc.Visible = false;
             // 
-            // linkLabel1
-            // 
-            this.linkLabel1.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.linkLabel1.LinkColor = System.Drawing.Color.Gray;
-            this.linkLabel1.Location = new System.Drawing.Point(910, 29);
-            this.linkLabel1.Name = "linkLabel1";
-            this.linkLabel1.Size = new System.Drawing.Size(200, 13);
-            this.linkLabel1.TabIndex = 23;
-            this.linkLabel1.TabStop = true;
-            this.linkLabel1.Text = "Desenvolvido por techconsultoria.com.br";
-            this.linkLabel1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.linkLabel1.LinkClicked += new System.Windows.Forms.LinkLabelLinkClickedEventHandler(this.linkLabel1_LinkClicked_1);
-            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -832,6 +815,5 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.ProgressBar pbCript;
         private System.Windows.Forms.ProgressBar pbCalc;
-        private System.Windows.Forms.LinkLabel linkLabel1;
     }
 }

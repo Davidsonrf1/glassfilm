@@ -1074,6 +1074,8 @@ namespace GlassFilm
             {
                 DBManager.InitDB();
                 sel.AtualizaMarcas();
+
+                lbQtde.Text = DBManager.GetNumDesenhos() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
             }            
         }
 
