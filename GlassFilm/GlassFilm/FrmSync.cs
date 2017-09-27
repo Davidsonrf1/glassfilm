@@ -166,7 +166,7 @@ namespace GlassFilm
             {
                 total = 0;
 
-                if (Sync.SyncFullDatabase.VerificaAtualizacoes())
+                if (Sync.SyncFullDatabase.VerificaAtualizacoesBase())
                 {
                     total = 10;
                 }

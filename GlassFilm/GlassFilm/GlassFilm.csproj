@@ -326,6 +326,9 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\clique_aqui.png" />
+    <None Include="Resources\cliqueaqui1.png" />
+    <None Include="Resources\cliqueaqui.png" />
     <None Include="setup\iconicon.ico" />
     <None Include="setup\deps\vc_redist.x64.exe" />
     <None Include="setup\deps\vc_redist.x86.exe" />

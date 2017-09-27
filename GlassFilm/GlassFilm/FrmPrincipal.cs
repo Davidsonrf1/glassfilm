@@ -111,6 +111,7 @@ namespace GlassFilm
 
             }
 
+
             DBManager.VerificaTabelasAuxiliares();
 
             /*
@@ -900,6 +901,14 @@ namespace GlassFilm
 
             //FrmSync.ShowSync(false, true, false);            
             lbQtde.Text = sel.AtualizaMarcas() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
+
+            if (Sync.SyncFullDatabase.VerificaAtualizacoesSistema())
+            {
+                if (MessageBox.Show("Existe uma atualização do sistema. Deseja obter esta atualização agora?", "A T U A L I Z A Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
+                {
+                    Process.Start("http://www.cutfilm.com.br/instalador/CutFilmeSetup.exe");
+                }
+            }
         }
 
         private void button1_Click(object sender, EventArgs e)

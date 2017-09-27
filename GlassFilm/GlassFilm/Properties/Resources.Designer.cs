@@ -113,6 +113,36 @@ namespace GlassFilm.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap clique_aqui {
+            get {
+                object obj = ResourceManager.GetObject("clique_aqui", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cliqueaqui {
+            get {
+                object obj = ResourceManager.GetObject("cliqueaqui", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap cliqueaqui1 {
+            get {
+                object obj = ResourceManager.GetObject("cliqueaqui1", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap config {
             get {
                 object obj = ResourceManager.GetObject("config", resourceCulture);

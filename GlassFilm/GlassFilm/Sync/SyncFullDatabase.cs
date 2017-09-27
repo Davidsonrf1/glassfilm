@@ -9,6 +9,8 @@ using GlassFilm.Class;
 using System.Security.Cryptography;
 using System.Data;
 using System.Windows.Forms;
+using System.Diagnostics;
+using System.Reflection;
 
 namespace GlassFilm.Sync
 {
@@ -244,7 +246,33 @@ namespace GlassFilm.Sync
             }
         }
 
-        public static bool VerificaAtualizacoes()
+        public static bool VerificaAtualizacoesSistema()
+        {
+            Assembly assembly = Assembly.GetExecutingAssembly();
+            FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
+            string version = fvi.FileVersion;
+
+            string remote = "";
+
+            try
+            {
+                BaixarArquivoFTP("ftp://cutfilm.com.br/instalador/CutFilm.ver", "CutFilm.ver");
+                remote = File.ReadAllText("CutFilm.ver");
+            }
+            catch
+            {
+                return false;
+            }
+
+            if (!version.Equals(remote))
+            {
+                return true;
+            }
+
+            return false;
+        }
+
+        public static bool VerificaAtualizacoesBase()
         {
             byte[] local = null;
 

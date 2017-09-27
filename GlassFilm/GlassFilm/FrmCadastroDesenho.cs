@@ -109,6 +109,25 @@ namespace GlassFilm
                             Application.DoEvents();
                         }
 
+                        if (imageData != null)
+                        {
+                            if(!DBManager.ColExiste("MODELO", "IMAGEM", DBManager._mainConnection))
+                            {
+                                IDbCommand cmd = DBManager.
+
+                                cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
+                                cmd.ExecuteNonQuery();
+
+                                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0)";
+                                cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
+                                cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
+                                cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;
+                                cmd.Parameters.Add("@tamanho", DbType.Int32).Value = svgData.Length;
+
+                                cmd.ExecuteNonQuery();
+                            }
+                        }
+
                         Mensagens.Informacao("Desenho Salvo com Sucesso!");
                         pbDesenho.Visible = false;
 
@@ -202,6 +221,8 @@ namespace GlassFilm
         {
             vectorView.Document.Clear();
             MontarListaAnos();
+
+            imageData = null;
         }
 
         private void btnSair_Click(object sender, EventArgs e)
@@ -373,6 +394,21 @@ namespace GlassFilm
             }
 
             vectorView.Refresh();
+        }
+
+        byte[] imageData = null;
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog ofd = new OpenFileDialog();
+            ofd.DefaultExt = ".png";
+            ofd.Multiselect = false;
+            
+            if (ofd.ShowDialog() == DialogResult.OK)
+            {
+                imageData = File.ReadAllBytes(ofd.FileName);
+                pictureBox1.Image = Image.FromFile(ofd.FileName);
+            }
         }
     }
 }

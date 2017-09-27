@@ -242,6 +242,17 @@ namespace GlassFilm.Class
                 cmd.CommandText = "CREATE TABLE ELIMINA_REGISTRO (ID INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT UNIQUE, TABELA	TEXT NOT NULL, CODIGO INTEGER NOT NULL, ELIMINADA INTEGER DEFAULT 0)";
                 cmd.ExecuteNonQuery();
             }
+
+            if (!ColExiste("DESENHOS", "VISUALIZADO", _modelConnection))
+            {
+                cmd = _modelConnection.CreateCommand();
+
+                cmd.CommandText = "ALTER TABLE DESENHOS ADD VISUALIZADO INT";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = "UPDATE DESENHOS SET VISUALIZADO = 1";
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public static void EliminaRegistro(string tabela, string codigo)
@@ -414,6 +425,35 @@ namespace GlassFilm.Class
             return string.Format("{0} Veículos de {1} Marcas", numModelo.ToString(), numMarca.ToString());
         }
 
+        public static void SalvaImagem(int codigoModelo, byte[] img)
+        {
+            /*
+            SQLiteCommand cmd = _modelConnection.CreateCommand();
+
+            try
+            {
+                cmd.CommandText = "UPDATE MODELO INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0)";
+                cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
+                cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
+                cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;
+                cmd.Parameters.Add("@tamanho", DbType.Int32).Value = svgData.Length;
+
+                cmd.ExecuteNonQuery();
+
+                if (ehBiscoito)
+                {
+                    cmd.CommandText = "UPDATE DESENHOS SET DESENHOC = 'S' WHERE VEICULO = " + codigo_ano.ToString();
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+                tr.Rollback();
+                throw;
+            }
+            */
+        }
+
         public static void SalvarDesenho(int codigo_ano, string svg)
         {
             bool ehBiscoito = false;
@@ -438,7 +478,7 @@ namespace GlassFilm.Class
                 cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
                 cmd.ExecuteNonQuery();                
 
-                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR) VALUES (@veic,@versao,@dados,@tamanho, 1)";
+                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0)";
                 cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
                 cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
                 cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;

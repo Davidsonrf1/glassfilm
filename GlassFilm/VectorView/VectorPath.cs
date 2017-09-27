@@ -1588,6 +1588,9 @@ namespace VectorView
             driver.AddPolygon(polyList);
         }
 
+        Font tagFont = null;
+        SolidBrush tagBrush = null;
+
         public void Render(Graphics g)
         {
             g.ResetTransform();
@@ -1612,6 +1615,17 @@ namespace VectorView
 
             if (!this.forceAngle)
                 document.DrawCircle(g, new PointF(0, 0), 8, Color.DarkOrange);
+
+            if (tag != null)
+            {
+                if (tagFont == null)
+                    tagFont = new Font("Arial", 32);
+
+                if (tagBrush == null)
+                    tagBrush = new SolidBrush(Color.DarkBlue);
+
+                g.DrawString(tag, tagFont, tagBrush, 10, 10);
+            }
 
             if (document.Debbuging)
             {
