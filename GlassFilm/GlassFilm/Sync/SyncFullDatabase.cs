@@ -137,7 +137,7 @@ namespace GlassFilm.Sync
             {
                 int codigo = int.Parse(r["VEICULO"].ToString());
                 string svg = DBManager.CarregarDesenho(codigo, out codigo_desenho);
-                DBManager.SalvarDesenho(codigo, svg);
+                DBManager.SalvarDesenho(codigo, svg, "");
 
                 count++;
 

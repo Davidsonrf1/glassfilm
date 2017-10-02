@@ -103,29 +103,10 @@ namespace GlassFilm
                         foreach (object i in lbAnos.CheckedItems)
                         {
                             ModeloAno v = (ModeloAno)i;
-                            DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg);
+                            DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg, txtObs.Text, imageData);
 
                             pbDesenho.Value++;
                             Application.DoEvents();
-                        }
-
-                        if (imageData != null)
-                        {
-                            if(!DBManager.ColExiste("MODELO", "IMAGEM", DBManager._mainConnection))
-                            {
-                                IDbCommand cmd = DBManager.
-
-                                cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
-                                cmd.ExecuteNonQuery();
-
-                                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0)";
-                                cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
-                                cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
-                                cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;
-                                cmd.Parameters.Add("@tamanho", DbType.Int32).Value = svgData.Length;
-
-                                cmd.ExecuteNonQuery();
-                            }
                         }
 
                         Mensagens.Informacao("Desenho Salvo com Sucesso!");
@@ -344,6 +325,13 @@ namespace GlassFilm
                     vectorView.AutoFit();
                     UpdateDocInfo();
                 }
+
+                Image im = DBManager.CarregarFoto(Convert.ToInt32(ma.Codigo_ano));
+
+                if (im != null)
+                {
+                    pictureBox1.Image = im;
+                }
             }
         }
 
@@ -408,6 +396,78 @@ namespace GlassFilm
             {
                 imageData = File.ReadAllBytes(ofd.FileName);
                 pictureBox1.Image = Image.FromFile(ofd.FileName);
+            }
+        }
+
+        private void btnExportar_Click(object sender, EventArgs e)
+        {
+            if (salvando)
+                return;
+
+            salvando = true;
+
+            try
+            {
+                if (lbAnos.CheckedItems.Count <= 0)
+                {
+                    MessageBox.Show("Nenhum ano selecionado. Selecione um ou mais anos para exportação", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
+
+                VectorDocument doc = vectorView.Document;
+
+                FolderBrowserDialog fbd = new FolderBrowserDialog();
+
+                if (fbd.ShowDialog() == DialogResult.OK)
+                {
+                    pbDesenho.Value = 0;
+                    pbDesenho.Maximum = lbAnos.CheckedItems.Count;
+                    pbDesenho.Visible = true;
+
+                    Application.DoEvents();
+
+                    string baseName = fbd.SelectedPath + "\\" + string.Format("{0}-{1}", cbMarca.Text, cbModelo.Text).Replace('\\', '_');
+
+                    foreach (object i in lbAnos.CheckedItems)
+                    {
+                        ModeloAno v = (ModeloAno)i;
+
+                        int codDesenho = 0;
+
+                        string svg = DBManager.CarregarDesenho(Convert.ToInt32(v.Codigo_ano), out codDesenho);
+
+                        string fname = string.Format("{0} {1}.svg", baseName, v.Ano);
+
+                        if (File.Exists(fname))
+                            File.Delete(fname);
+
+                        File.WriteAllText(fname, svg, Encoding.UTF8);
+
+                        pbDesenho.Value++;
+                        Application.DoEvents();
+                    }
+
+                    Mensagens.Informacao("Desenho Exportado com Sucesso!");
+                    pbDesenho.Visible = false;
+
+                    toolStripButton1_Click(sender, e);
+                    cbMarca.Focus();
+
+                    pbDesenho.Visible = false;
+                    lbAnos.Items.Clear();
+
+                    rbEsquerda.Checked = false;
+                    rbDireita.Checked = false;
+                    tbEtiqueta.Text = "";
+                }
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                salvando = false;
             }
         }
     }

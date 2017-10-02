@@ -105,6 +105,12 @@
     <Compile Include="Controller\Modelo.cs" />
     <Compile Include="Controller\ModeloAno.cs" />
     <Compile Include="Controller\Rolo.cs" />
+    <Compile Include="FrmDetalheView.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmDetalheView.Designer.cs">
+      <DependentUpon>FrmDetalheView.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmLog.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -186,6 +192,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmConfigPlotter.resx">
       <DependentUpon>FrmConfigPlotter.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmDetalheView.resx">
+      <DependentUpon>FrmDetalheView.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLog.resx">
       <DependentUpon>FrmLog.cs</DependentUpon>
@@ -326,6 +335,9 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Resources\no_camera16001.png" />
+    <None Include="Resources\no_camera1600.png" />
+    <None Include="Resources\info-icon.png" />
     <None Include="Resources\clique_aqui.png" />
     <None Include="Resources\cliqueaqui1.png" />
     <None Include="Resources\cliqueaqui.png" />

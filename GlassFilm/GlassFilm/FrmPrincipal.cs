@@ -1097,5 +1097,19 @@ namespace GlassFilm
         {
             System.Diagnostics.Process.Start("http://www.techconsultoria.com.br/");
         }
+
+        private void btnDetalhes_Click(object sender, EventArgs e)
+        {
+            if (cbAno.SelectedItem != null)
+            {
+                ModeloAno m = (ModeloAno)cbAno.SelectedItem;
+
+                FrmDetalheView dv = new FrmDetalheView();
+                dv.CodigoVeculo = Convert.ToInt32(m.Codigo_ano);
+                dv.StartPosition = FormStartPosition.CenterScreen;
+
+                dv.ShowDialog();
+            }
+        }
     }
 }

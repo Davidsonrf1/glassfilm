@@ -30,9 +30,13 @@
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmCadastroDesenho));
             this.toolPrincipal = new System.Windows.Forms.ToolStrip();
+            this.btnSalvar = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator2 = new System.Windows.Forms.ToolStripSeparator();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
             this.toolStripSeparator5 = new System.Windows.Forms.ToolStripSeparator();
+            this.btnSair = new System.Windows.Forms.ToolStripButton();
             this.toolStatus = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
             this.status = new System.Windows.Forms.StatusStrip();
             this.docInfo = new System.Windows.Forms.ToolStripStatusLabel();
             this.selInfo = new System.Windows.Forms.ToolStripStatusLabel();
@@ -42,8 +46,10 @@
             this.cbModelo = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
+            this.btImportar = new System.Windows.Forms.Button();
             this.pbDesenho = new System.Windows.Forms.ProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.cbPreferircad = new System.Windows.Forms.CheckBox();
             this.groupBox3 = new System.Windows.Forms.GroupBox();
             this.tbEtiqueta = new System.Windows.Forms.TextBox();
@@ -53,20 +59,18 @@
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbAnos = new System.Windows.Forms.CheckedListBox();
             this.vectorView = new VectorView.VectorViewCtr();
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.btImportar = new System.Windows.Forms.Button();
-            this.btnSalvar = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
-            this.btnSair = new System.Windows.Forms.ToolStripButton();
-            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.groupBox4 = new System.Windows.Forms.GroupBox();
+            this.txtObs = new System.Windows.Forms.TextBox();
+            this.btnExportar = new System.Windows.Forms.ToolStripButton();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
             this.pnlFiltroInfo.SuspendLayout();
             this.panel1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.groupBox3.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolPrincipal
@@ -79,7 +83,8 @@
             this.toolStripSeparator5,
             this.btnSair,
             this.toolStatus,
-            this.toolStripButton2});
+            this.toolStripButton2,
+            this.btnExportar});
             this.toolPrincipal.Location = new System.Drawing.Point(0, 0);
             this.toolPrincipal.Name = "toolPrincipal";
             this.toolPrincipal.Size = new System.Drawing.Size(935, 25);
@@ -87,15 +92,50 @@
             this.toolPrincipal.Text = "toolStrip1";
             this.toolPrincipal.ItemClicked += new System.Windows.Forms.ToolStripItemClickedEventHandler(this.toolPrincipal_ItemClicked);
             // 
+            // btnSalvar
+            // 
+            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSalvar.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSalvar.Image = ((System.Drawing.Image)(resources.GetObject("btnSalvar.Image")));
+            this.btnSalvar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSalvar.Name = "btnSalvar";
+            this.btnSalvar.Size = new System.Drawing.Size(58, 22);
+            this.btnSalvar.Text = "Salvar";
+            this.btnSalvar.Click += new System.EventHandler(this.btnEntrar_Click);
+            // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
             this.toolStripSeparator2.Size = new System.Drawing.Size(6, 25);
             // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripButton1.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(73, 22);
+            this.toolStripButton1.Text = "Cancelar";
+            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
+            // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
             this.toolStripSeparator5.Size = new System.Drawing.Size(6, 25);
+            // 
+            // btnSair
+            // 
+            this.btnSair.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.btnSair.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
+            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSair.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnSair.Name = "btnSair";
+            this.btnSair.Size = new System.Drawing.Size(46, 22);
+            this.btnSair.Text = "Sair";
+            this.btnSair.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
             // 
             // toolStatus
             // 
@@ -103,6 +143,19 @@
             this.toolStatus.Name = "toolStatus";
             this.toolStatus.Size = new System.Drawing.Size(16, 22);
             this.toolStatus.Text = "...";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
+            this.toolStripButton2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripButton2.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.toolStripButton2.Image = global::GlassFilm.Properties.Resources.Settings_Backup_Sync_icon;
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Margin = new System.Windows.Forms.Padding(0, 1, 60, 2);
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(85, 22);
+            this.toolStripButton2.Text = "Sincronizar";
+            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
             // 
             // status
             // 
@@ -199,6 +252,21 @@
             this.pnlFiltroInfo.TabIndex = 6;
             this.pnlFiltroInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlFiltroInfo_Paint);
             // 
+            // btImportar
+            // 
+            this.btImportar.BackColor = System.Drawing.Color.Gainsboro;
+            this.btImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.btImportar.Image = global::GlassFilm.Properties.Resources.import;
+            this.btImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
+            this.btImportar.Location = new System.Drawing.Point(828, 25);
+            this.btImportar.Name = "btImportar";
+            this.btImportar.Size = new System.Drawing.Size(101, 23);
+            this.btImportar.TabIndex = 3;
+            this.btImportar.Text = "Importar      ";
+            this.btImportar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
+            this.btImportar.UseVisualStyleBackColor = false;
+            this.btImportar.Click += new System.EventHandler(this.btImportar_Click);
+            // 
             // pbDesenho
             // 
             this.pbDesenho.Location = new System.Drawing.Point(6, 520);
@@ -219,6 +287,17 @@
             this.panel1.Name = "panel1";
             this.panel1.Size = new System.Drawing.Size(237, 451);
             this.panel1.TabIndex = 17;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.Image = global::GlassFilm.Properties.Resources.clique_aqui;
+            this.pictureBox1.Location = new System.Drawing.Point(6, 323);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(225, 125);
+            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pictureBox1.TabIndex = 19;
+            this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // cbPreferircad
             // 
@@ -326,83 +405,39 @@
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
             this.vectorView.ShowGrid = false;
-            this.vectorView.Size = new System.Drawing.Size(687, 445);
+            this.vectorView.Size = new System.Drawing.Size(687, 349);
             this.vectorView.TabIndex = 7;
             this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
             // 
-            // pictureBox1
+            // groupBox4
             // 
-            this.pictureBox1.Image = global::GlassFilm.Properties.Resources.clique_aqui;
-            this.pictureBox1.Location = new System.Drawing.Point(6, 323);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(225, 125);
-            this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pictureBox1.TabIndex = 19;
-            this.pictureBox1.TabStop = false;
-            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
+            this.groupBox4.Controls.Add(this.txtObs);
+            this.groupBox4.Location = new System.Drawing.Point(5, 438);
+            this.groupBox4.Name = "groupBox4";
+            this.groupBox4.Size = new System.Drawing.Size(687, 76);
+            this.groupBox4.TabIndex = 18;
+            this.groupBox4.TabStop = false;
+            this.groupBox4.Text = "Observação";
             // 
-            // btImportar
+            // txtObs
             // 
-            this.btImportar.BackColor = System.Drawing.Color.Gainsboro;
-            this.btImportar.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.btImportar.Image = global::GlassFilm.Properties.Resources.import;
-            this.btImportar.ImageAlign = System.Drawing.ContentAlignment.MiddleLeft;
-            this.btImportar.Location = new System.Drawing.Point(828, 25);
-            this.btImportar.Name = "btImportar";
-            this.btImportar.Size = new System.Drawing.Size(101, 23);
-            this.btImportar.TabIndex = 3;
-            this.btImportar.Text = "Importar      ";
-            this.btImportar.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btImportar.UseVisualStyleBackColor = false;
-            this.btImportar.Click += new System.EventHandler(this.btImportar_Click);
+            this.txtObs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtObs.Location = new System.Drawing.Point(3, 16);
+            this.txtObs.Multiline = true;
+            this.txtObs.Name = "txtObs";
+            this.txtObs.Size = new System.Drawing.Size(681, 57);
+            this.txtObs.TabIndex = 0;
             // 
-            // btnSalvar
+            // btnExportar
             // 
-            this.btnSalvar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnSalvar.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSalvar.Image = ((System.Drawing.Image)(resources.GetObject("btnSalvar.Image")));
-            this.btnSalvar.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSalvar.Name = "btnSalvar";
-            this.btnSalvar.Size = new System.Drawing.Size(58, 22);
-            this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.Click += new System.EventHandler(this.btnEntrar_Click);
-            // 
-            // toolStripButton1
-            // 
-            this.toolStripButton1.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripButton1.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
-            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton1.Name = "toolStripButton1";
-            this.toolStripButton1.Size = new System.Drawing.Size(73, 22);
-            this.toolStripButton1.Text = "Cancelar";
-            this.toolStripButton1.Click += new System.EventHandler(this.toolStripButton1_Click);
-            // 
-            // btnSair
-            // 
-            this.btnSair.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.btnSair.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.btnSair.Image = ((System.Drawing.Image)(resources.GetObject("btnSair.Image")));
-            this.btnSair.ImageAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSair.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.btnSair.Name = "btnSair";
-            this.btnSair.Size = new System.Drawing.Size(46, 22);
-            this.btnSair.Text = "Sair";
-            this.btnSair.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            this.btnSair.Click += new System.EventHandler(this.btnSair_Click);
-            // 
-            // toolStripButton2
-            // 
-            this.toolStripButton2.Alignment = System.Windows.Forms.ToolStripItemAlignment.Right;
-            this.toolStripButton2.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.toolStripButton2.ForeColor = System.Drawing.SystemColors.ControlText;
-            this.toolStripButton2.Image = global::GlassFilm.Properties.Resources.Settings_Backup_Sync_icon;
-            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripButton2.Margin = new System.Windows.Forms.Padding(0, 1, 60, 2);
-            this.toolStripButton2.Name = "toolStripButton2";
-            this.toolStripButton2.Size = new System.Drawing.Size(85, 22);
-            this.toolStripButton2.Text = "Sincronizar";
-            this.toolStripButton2.Click += new System.EventHandler(this.toolStripButton2_Click);
+            this.btnExportar.Font = new System.Drawing.Font("Segoe UI", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnExportar.ForeColor = System.Drawing.SystemColors.ControlText;
+            this.btnExportar.Image = ((System.Drawing.Image)(resources.GetObject("btnExportar.Image")));
+            this.btnExportar.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.btnExportar.Name = "btnExportar";
+            this.btnExportar.Size = new System.Drawing.Size(70, 22);
+            this.btnExportar.Text = "Exportar";
+            this.btnExportar.Click += new System.EventHandler(this.btnExportar_Click);
             // 
             // FrmCadastroDesenho
             // 
@@ -410,6 +445,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 555);
             this.ControlBox = false;
+            this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pbDesenho);
             this.Controls.Add(this.status);
@@ -430,12 +466,14 @@
             this.pnlFiltroInfo.PerformLayout();
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.groupBox3.ResumeLayout(false);
             this.groupBox3.PerformLayout();
             this.groupBox2.ResumeLayout(false);
             this.groupBox2.PerformLayout();
             this.groupBox1.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox4.ResumeLayout(false);
+            this.groupBox4.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -472,5 +510,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButton2;
         private System.Windows.Forms.CheckBox cbPreferircad;
         private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.GroupBox groupBox4;
+        private System.Windows.Forms.TextBox txtObs;
+        private System.Windows.Forms.ToolStripButton btnExportar;
     }
 }
