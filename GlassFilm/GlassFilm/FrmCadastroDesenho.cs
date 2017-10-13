@@ -16,6 +16,8 @@ namespace GlassFilm
     {
         SeletorVeiculo sel = null;
 
+        Image noImage = null;
+
         public FrmCadastroDesenho()
         {
             InitializeComponent();
@@ -29,6 +31,8 @@ namespace GlassFilm
             cbModelo.SelectedIndexChanged += cbModelo_SelectedIndexChanged;
 
             vectorView.AllowTransforms = false;
+
+            noImage = pictureBox1.Image;
         }
 
         void EnableControls(bool enable)
@@ -220,6 +224,10 @@ namespace GlassFilm
 
             EnableControls(true);
             vectorView.Clear();
+
+            pictureBox1.Image = noImage;
+            imageData = null;
+            txtObs.Text = "";
         }
 
         private void FrmCadastroDesenho_Resize(object sender, EventArgs e)
@@ -326,12 +334,14 @@ namespace GlassFilm
                     UpdateDocInfo();
                 }
 
-                Image im = DBManager.CarregarFoto(Convert.ToInt32(ma.Codigo_ano));
+                Image im = DBManager.CarregarFoto(Convert.ToInt32(ma.Codigo_ano), out imageData);
 
                 if (im != null)
                 {
                     pictureBox1.Image = im;
                 }
+
+                txtObs.Text = DBManager.CarregarObs(Convert.ToInt32(ma.Codigo_ano));
             }
         }
 
@@ -469,6 +479,89 @@ namespace GlassFilm
             {
                 salvando = false;
             }
+        }
+
+        private void pbDesenho_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void toolStripButton3_Click(object sender, EventArgs e)
+        {
+            if (salvando)
+                return;
+
+            salvando = true;
+
+            try
+            {
+                if (lbAnos.CheckedItems.Count <= 0)
+                {
+                    MessageBox.Show("Nenhum ano selecionado", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                    return;
+                }
+
+                if (MessageBox.Show("Deseja realmente remover o desenho dos anos selecionados?", "ATENÇÃO", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
+                {
+                    return;
+                }
+
+                VectorDocument doc = vectorView.Document;
+
+                pbDesenho.Value = 0;
+                pbDesenho.Maximum = lbAnos.CheckedItems.Count;
+                pbDesenho.Visible = true;
+
+                Application.DoEvents();
+
+                if (doc.Paths.Count > 0)
+                {
+                    string svg = doc.ToSVG();
+
+                    foreach (object i in lbAnos.CheckedItems)
+                    {
+                        ModeloAno v = (ModeloAno)i;
+                        DBManager.RemoverDesenho(Convert.ToInt32(v.Codigo_ano));
+
+                        pbDesenho.Value++;
+                        Application.DoEvents();
+                    }
+
+                    Mensagens.Informacao("Desenho Removido com Sucesso!");
+                    pbDesenho.Visible = false;
+
+                    toolStripButton1_Click(sender, e);
+                    cbMarca.Focus();
+                }
+
+                pbDesenho.Visible = false;
+                lbAnos.Items.Clear();
+
+                rbEsquerda.Checked = false;
+                rbDireita.Checked = false;
+                tbEtiqueta.Text = "";
+            }
+            catch
+            {
+
+            }
+            finally
+            {
+                salvando = false;
+            }
+        }
+
+        private void toolStripButton4_Click(object sender, EventArgs e)
+        {
+            if (MessageBox.Show("Deseja realmente remover a imagem dos anos selecionados?", "ATENÇÃO", MessageBoxButtons.YesNo, MessageBoxIcon.Stop) == DialogResult.No)
+            {
+                return;
+            }
+
+            imageData = null;
+            //btnEntrar_Click(null, null);
+
+            MessageBox.Show("Imagem foi removida. Clique em salvar para evetivar", "Atenção", MessageBoxButtons.OK);
         }
     }
 }

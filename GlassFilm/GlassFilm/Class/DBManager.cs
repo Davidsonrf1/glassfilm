@@ -245,31 +245,52 @@ namespace GlassFilm.Class
                 cmd.ExecuteNonQuery();
             }
 
-            if (!ColExiste("DESENHOS", "VISUALIZADO", _modelConnection))
+            try
             {
-                cmd = _modelConnection.CreateCommand();
+                if (!ColExiste("DESENHOS", "VISUALIZADO", _modelConnection))
+                {
+                    cmd = _modelConnection.CreateCommand();
 
-                cmd.CommandText = "ALTER TABLE DESENHOS ADD VISUALIZADO INT";
-                cmd.ExecuteNonQuery();
+                    cmd.CommandText = "ALTER TABLE DESENHOS ADD VISUALIZADO INT";
+                    cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "UPDATE DESENHOS SET VISUALIZADO = 1";
-                cmd.ExecuteNonQuery();
+                    cmd.CommandText = "UPDATE DESENHOS SET VISUALIZADO = 1";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+
             }
 
-            if (!ColExiste("DESENHOS", "FOTO", _modelConnection))
+            try
             {
-                cmd = _modelConnection.CreateCommand();
+                if (!ColExiste("DESENHOS", "FOTO", _modelConnection))
+                {
+                    cmd = _modelConnection.CreateCommand();
 
-                cmd.CommandText = "ALTER TABLE DESENHOS ADD FOTO BLOB";
-                cmd.ExecuteNonQuery();
+                    cmd.CommandText = "ALTER TABLE DESENHOS ADD FOTO BLOB";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+
             }
 
-            if (!ColExiste("DESENHOS", "OBS", _modelConnection))
+            try
             {
-                cmd = _modelConnection.CreateCommand();
+                if (!ColExiste("DESENHOS", "OBS", _modelConnection))
+                {
+                    cmd = _modelConnection.CreateCommand();
 
-                cmd.CommandText = "ALTER TABLE DESENHOS ADD OBS BLOB";
-                cmd.ExecuteNonQuery();
+                    cmd.CommandText = "ALTER TABLE DESENHOS ADD OBS BLOB";
+                    cmd.ExecuteNonQuery();
+                }
+            }
+            catch
+            {
+
             }
         }
 
@@ -420,12 +441,16 @@ namespace GlassFilm.Class
             return null;
         }
 
-        public static Image CarregarFoto(int veiculo)
+        public static Image CarregarFoto(int veiculo, out byte[] imageData)
         {
+            VerificaTabelasAuxiliares();
+
             SQLiteCommand cmd = _modelConnection.CreateCommand();
 
             cmd.CommandText = "SELECT FOTO FROM DESENHOS WHERE VEICULO = " + veiculo.ToString();
             IDataReader dr = cmd.ExecuteReader();
+
+            imageData = null;
 
             if (dr.Read())
             {
@@ -448,6 +473,14 @@ namespace GlassFilm.Class
                         offset += read;
                         ms.Write(buffer, 0, read);
                     }
+
+                    ms.Flush();
+
+                    imageData = new byte[ms.Length];
+                    ms.Seek(0, SeekOrigin.Begin);
+                    ms.Read(imageData, 0, imageData.Length);
+
+                    ms.Seek(0, SeekOrigin.Begin);
 
                     Image img = Image.FromStream(ms);
 
@@ -577,6 +610,42 @@ namespace GlassFilm.Class
             */
         }
 
+        public static void RemoverDesenho(int codigo_ano)
+        {
+            SQLiteCommand cmd = _modelConnection.CreateCommand();
+            SQLiteTransaction tr = _modelConnection.BeginTransaction();
+
+            try
+            {
+                cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
+                cmd.ExecuteNonQuery();
+            }
+            catch (Exception ex)
+            {
+                tr.Rollback();
+                throw;
+            }
+
+            tr.Commit();
+
+            cmd = _mainConnection.CreateCommand();
+
+            cmd.CommandText = "UPDATE MODELO_ANO SET POSSUI_DESENHO = 0 WHERE CODIGO_ANO = " + codigo_ano.ToString();
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = "UPDATE MODELO SET POSSUI_DESENHO = 0";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = "UPDATE MODELO SET POSSUI_DESENHO = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_DESENHO = 1)";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = "UPDATE MARCA SET POSSUI_DESENHO = 0";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = "UPDATE MARCA SET POSSUI_DESENHO = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
+            cmd.ExecuteNonQuery();
+        }
+
         public static void SalvarDesenho(int codigo_ano, string svg, string obs, byte[] imageData = null)
         {
             bool ehBiscoito = false;
@@ -612,7 +681,7 @@ namespace GlassFilm.Class
                 else
                     cmd.Parameters.Add("@foto", DbType.Binary, 0).Value = DBNull.Value;
 
-                if (imageData != null)
+                if (obs != null)
                 {
                     byte[] obsData = Encoding.UTF8.GetBytes(obs);
 

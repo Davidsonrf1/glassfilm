@@ -24,7 +24,8 @@ namespace GlassFilm
 
         private void FrmImageView_Load(object sender, EventArgs e)
         {
-            Image img = DBManager.CarregarFoto(codigoVeculo);
+            byte[] imageData = null;
+            Image img = DBManager.CarregarFoto(codigoVeculo, out imageData);
 
             if (img != null)
             {

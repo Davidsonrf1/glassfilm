@@ -22,7 +22,7 @@
     <ProjectGuid>{432546F2-0B1D-412D-8414-A4F7A72E3559}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>CutSheet</RootNamespace>
-    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>10.0.15063.0</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
