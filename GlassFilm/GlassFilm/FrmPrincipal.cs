@@ -244,13 +244,9 @@ namespace GlassFilm
                 return new PlotterHPGL();
             }
 
-            if (Program.Config["PlotterLang"].Equals("DMPL") && Debugger.IsAttached )
+            if (Program.Config["PlotterLang"].Equals("DMPL"))
             {
                 return new PlotterDMPL();
-            }
-            else
-            {
-                throw new NotImplementedException("Linguagem DMPL não implementada");
             }
 
             throw new NotImplementedException("Linguagem " + Program.Config["PlotterLang"] + " não implementada");

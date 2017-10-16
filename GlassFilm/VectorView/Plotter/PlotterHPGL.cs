@@ -44,7 +44,7 @@ namespace VectorView.Plotter
 
         protected override string Init()
         {
-            return "IN;\nIP;\nSP1;";
+            return "IN;\nIP;\nSP1;IP0,0,1016,1016;SC0,1016,0,1016;";
         }
 
         protected override string Finish()
