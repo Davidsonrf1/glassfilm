@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GlassFilm.Class;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -32,14 +33,20 @@ namespace GlassFilm
 
         private void carregaPrincipal()
         {
-            string[] nomesColunas = { "Usuário", "Área Rolo", "Área Peças", "Data", "Hora" };
-            int[] tamColunas = { 150, 150, 150, 150};
+            DBManager.CheckLogTable();
+
+            string[] nomesColunas = { "Usuário", "Área Rolo", "Área Peças", "Data", "Hora", "Nome da Peça", "Marca", "Modelo", "Ano" };
+            int[] tamColunas = { 150, 150, 150, 150, 150, 150, 150, 150 };
             carregamento.carregarGridLog(gridPrincipal, "select " +
                                                     "	 usuario," +
                                                     "	 area_rolo_usado," +
                                                     "	 area_total_pecas," +                                                    
                                                     "	 data," +
-                                                    "	 hora" +
+                                                    "	 hora," + 
+                                                    "	 nomePeca," +
+                                                    "	 marca," +
+                                                    "	 modelo," +
+                                                    "	 ano" +
                                                     " from " +
                                                     "	 log_corte order by data desc, hora desc"
                                                     , tamColunas

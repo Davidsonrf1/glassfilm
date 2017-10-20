@@ -119,6 +119,19 @@ namespace VectorView
                         path.Side = VectorPathSide.Right;
                 }
 
+                if (p.TryGetAttribute("gf-nome-peca", out string nomePeca))
+                {
+                    path.NomePeca = "";
+                    try
+                    {
+                        path.NomePeca = Encoding.UTF8.GetString(Convert.FromBase64String(nomePeca));
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
                 path.ForceAngle = false;
                 string force = "";
 

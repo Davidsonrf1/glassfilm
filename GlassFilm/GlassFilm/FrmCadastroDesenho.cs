@@ -131,6 +131,7 @@ namespace GlassFilm
                 rbEsquerda.Checked = false;
                 rbDireita.Checked = false;
                 tbEtiqueta.Text = "";
+                tbNomePeca.Text = "";
             }
             catch
             {
@@ -269,12 +270,14 @@ namespace GlassFilm
             rbEsquerda.Checked = false;
             rbDireita.Checked = false;
             tbEtiqueta.Text = "";
+            tbNomePeca.Text = "";
 
             if (vectorView.Document.SelectionCount == 1)
             {
                 rbEsquerda.Enabled = true;
                 rbDireita.Enabled = true;
                 tbEtiqueta.Enabled = true;
+                tbNomePeca.Enabled = true;
 
                 foreach (VectorPath v in vectorView.Document.Selection)
                 {
@@ -298,6 +301,7 @@ namespace GlassFilm
                     }
 
                     tbEtiqueta.Text = curPath.Tag;
+                    tbNomePeca.Text = curPath.NomePeca;
                     cbPreferircad.Checked = curPath.ForceAngle;
                 }
             }
@@ -306,6 +310,7 @@ namespace GlassFilm
                 rbEsquerda.Enabled = false;
                 rbDireita.Enabled = false;
                 tbEtiqueta.Enabled = false;
+                tbNomePeca.Enabled = false;
             }
         }
 
@@ -369,6 +374,16 @@ namespace GlassFilm
             if (curPath != null)
             {
                 curPath.Tag = tbEtiqueta.Text;
+            }
+
+            vectorView.Refresh();
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            if (curPath != null)
+            {
+                curPath.NomePeca = tbNomePeca.Text;
             }
 
             vectorView.Refresh();
@@ -469,6 +484,7 @@ namespace GlassFilm
                     rbEsquerda.Checked = false;
                     rbDireita.Checked = false;
                     tbEtiqueta.Text = "";
+                    tbNomePeca.Text = "";
                 }
             }
             catch
@@ -540,6 +556,7 @@ namespace GlassFilm
                 rbEsquerda.Checked = false;
                 rbDireita.Checked = false;
                 tbEtiqueta.Text = "";
+                tbNomePeca.Text = "";
             }
             catch
             {
@@ -563,5 +580,6 @@ namespace GlassFilm
 
             MessageBox.Show("Imagem foi removida. Clique em salvar para evetivar", "Atenção", MessageBoxButtons.OK);
         }
+
     }
 }

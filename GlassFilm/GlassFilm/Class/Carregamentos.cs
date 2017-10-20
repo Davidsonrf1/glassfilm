@@ -68,8 +68,15 @@ namespace GlassFilm
             try
             {
                 SQLiteDataAdapter da = new SQLiteDataAdapter(_sql, DBManager._accessDbname);
+
+                IDbCommand cmd = DBManager._accessConnection.CreateCommand();
+                cmd.CommandText = _sql;
+
                 DataTable dt = new DataTable();
-                da.Fill(dt);
+
+                IDataReader dr = cmd.ExecuteReader();
+                dt.Load(dr);
+                dr.Close();
 
                 grid.DataSource = dt;
 

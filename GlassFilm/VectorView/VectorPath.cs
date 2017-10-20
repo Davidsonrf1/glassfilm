@@ -453,6 +453,11 @@ namespace VectorView
             }
         }
 
+        public string NomePeca { get; set; }
+        public string Marca { get; set; }
+        public string Modelo { get; set; }
+        public string Ano { get; set; }
+
         public void UpdateGoodPos()
         {
             if (!IsValidPos)
@@ -1244,6 +1249,11 @@ namespace VectorView
 
             BeginPath();
 
+            Marca = p.Document.Marca;
+            Modelo = p.Document.Modelo;
+            Ano = p.Document.Ano;
+            NomePeca = p.NomePeca;
+
             foreach (VectorSegment s in p.segments)
             {
                 if (s is VectorMoveSegment)
@@ -1500,7 +1510,12 @@ namespace VectorView
             byte[] bytes = Encoding.UTF8.GetBytes(tag);
             string b64Tag = Convert.ToBase64String(bytes);
 
-            sb.AppendFormat("<path gf-side=\"{0}\" gf-tag=\"{1}\" gf-guid=\"{2}\"  gf-forceAngle=\"{3}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag, guid.ToString(), forceAngle);
+            if (NomePeca == null)
+                NomePeca = "";
+
+            string pName = Convert.ToBase64String(Encoding.UTF8.GetBytes(NomePeca));
+
+            sb.AppendFormat("<path gf-nome-peca=\"{4}\" gf-side=\"{0}\" gf-tag=\"{1}\" gf-guid=\"{2}\"  gf-forceAngle=\"{3}\" style=\"fill: none; stroke:#e30016;stroke-width:1\" \n\td=\"", side.ToString().ToLower(), b64Tag, guid.ToString(), forceAngle, pName);
 
             foreach (VectorSegment e in segments)
             {

@@ -35,6 +35,8 @@ namespace VectorView
         float offsetY = 0;
         float scale = 1;
 
+        string marca, modelo, ano;
+
         PointF cursorPos = new PointF();
 
         public VectorViewCtr Host
@@ -164,6 +166,10 @@ namespace VectorView
                 return efficiency;
             }
         }
+
+        public string Marca { get => marca; set => marca = value; }
+        public string Modelo { get => modelo; set => modelo = value; }
+        public string Ano { get => ano; set => ano = value; }
 
         public IEnumerable<VectorPath> DocPaths()
         {

@@ -216,9 +216,20 @@ namespace GlassFilm
                 string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano), out codigo_desenho);
                 if (svg != null)
                 {
+                    string marca = "";
+                    string modelo = "";
+                    string ano = "";
+
+                    marca = cbMarca.Text;
+                    modelo = cbModelo.Text;
+                    ano = cbAno.Text;
+
                     vvModelo.AllowTransforms = false;
 
                     vvModelo.Document.LoadSVG(svg);
+                    vvModelo.Document.Marca = marca;
+                    vvModelo.Document.Modelo = modelo;
+                    vvModelo.Document.Ano = ano;
                     
                     lbQtde.Text = DBManager.GetNumDesenhos() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
 
@@ -352,6 +363,7 @@ namespace GlassFilm
                                 }
                             }
                             loadpanelRecortar();
+
                             DBManager.GravaLogCorte(vvCorte.Document);
                         }
                         else
