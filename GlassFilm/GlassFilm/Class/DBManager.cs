@@ -701,7 +701,7 @@ namespace GlassFilm.Class
             cmd.ExecuteNonQuery();
         }
 
-        public static void SalvarDesenho(int codigo_ano, string svg, string obs, byte[] imageData = null)
+        public static void SalvarDesenho(int codigo_ano, string svg, string obs, int tipo, byte[] imageData = null)
         {
             bool ehBiscoito = false;
             if (ColExiste("DESENHOS", "DESENHOC", _modelConnection))
@@ -710,11 +710,17 @@ namespace GlassFilm.Class
                 ehBiscoito = true;
             }
 
+            SQLiteCommand cmd = _modelConnection.CreateCommand();
+
+            if (!ColExiste("DESENHOS", "TIPO_DESENHO", _modelConnection))
+            {
+                cmd.CommandText = "ALTER TABLE DESENHOS ADD TIPO_DESENHO INT NULL DEFAULT 0";
+                cmd.ExecuteNonQuery();
+            }
+
             byte[] svgData = Encoding.UTF8.GetBytes(svg);
 
             int versao = 0;
-            SQLiteCommand cmd = _modelConnection.CreateCommand();
-
             SQLiteTransaction tr = _modelConnection.BeginTransaction();
 
             try
@@ -725,11 +731,12 @@ namespace GlassFilm.Class
                 cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
                 cmd.ExecuteNonQuery();                
 
-                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO, FOTO, OBS) VALUES (@veic,@versao,@dados,@tamanho, 1, 0, @foto, @obs)";
+                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO, FOTO, OBS, TIPO_DESENHO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0, @foto, @obs, @TIPO_DESENHO)";
                 cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
                 cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
                 cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;
                 cmd.Parameters.Add("@tamanho", DbType.Int32).Value = svgData.Length;
+                cmd.Parameters.Add("@TIPO_DESENHO", DbType.Int32).Value = tipo;
 
                 if (imageData != null)
                     cmd.Parameters.Add("@foto", DbType.Binary, svgData.Length).Value = imageData;

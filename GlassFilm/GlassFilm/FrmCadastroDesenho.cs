@@ -75,7 +75,7 @@ namespace GlassFilm
 
         bool salvando = false;
 
-        private void btnEntrar_Click(object sender, EventArgs e)
+        private void btnGravar_Click(object sender, EventArgs e)
         {
             if (salvando)
                 return;
@@ -96,6 +96,11 @@ namespace GlassFilm
                 pbDesenho.Maximum = lbAnos.CheckedItems.Count;
                 pbDesenho.Visible = true;
 
+                int tipo = 0;
+
+                if (rbPPV.Checked)
+                    tipo = 2;
+
                 Application.DoEvents();
 
                 if (doc != null)
@@ -107,7 +112,7 @@ namespace GlassFilm
                         foreach (object i in lbAnos.CheckedItems)
                         {
                             ModeloAno v = (ModeloAno)i;
-                            DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg, txtObs.Text, imageData);
+                            DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg, txtObs.Text, tipo, imageData);
 
                             pbDesenho.Value++;
                             Application.DoEvents();

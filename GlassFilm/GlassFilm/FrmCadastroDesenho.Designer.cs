@@ -70,6 +70,9 @@
             this.vectorView = new VectorView.VectorViewCtr();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtObs = new System.Windows.Forms.TextBox();
+            this.gbTipo = new System.Windows.Forms.GroupBox();
+            this.rbWindowTint = new System.Windows.Forms.RadioButton();
+            this.rbPPV = new System.Windows.Forms.RadioButton();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
             this.pnlFiltroInfo.SuspendLayout();
@@ -80,6 +83,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
+            this.gbTipo.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolPrincipal
@@ -116,7 +120,7 @@
             this.btnSalvar.Name = "btnSalvar";
             this.btnSalvar.Size = new System.Drawing.Size(58, 22);
             this.btnSalvar.Text = "Salvar";
-            this.btnSalvar.Click += new System.EventHandler(this.btnEntrar_Click);
+            this.btnSalvar.Click += new System.EventHandler(this.btnGravar_Click);
             // 
             // toolStripSeparator2
             // 
@@ -229,7 +233,7 @@
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.docInfo,
             this.selInfo});
-            this.status.Location = new System.Drawing.Point(0, 563);
+            this.status.Location = new System.Drawing.Point(0, 641);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(935, 24);
             this.status.TabIndex = 12;
@@ -336,7 +340,7 @@
             // 
             // pbDesenho
             // 
-            this.pbDesenho.Location = new System.Drawing.Point(5, 550);
+            this.pbDesenho.Location = new System.Drawing.Point(2, 631);
             this.pbDesenho.Name = "pbDesenho";
             this.pbDesenho.Size = new System.Drawing.Size(687, 10);
             this.pbDesenho.TabIndex = 15;
@@ -345,6 +349,7 @@
             // 
             // panel1
             // 
+            this.panel1.Controls.Add(this.gbTipo);
             this.panel1.Controls.Add(this.gbNomePeca);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.cbPreferircad);
@@ -354,7 +359,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(698, 80);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(237, 483);
+            this.panel1.Size = new System.Drawing.Size(237, 561);
             this.panel1.TabIndex = 17;
             // 
             // gbNomePeca
@@ -381,7 +386,7 @@
             this.pictureBox1.Image = global::GlassFilm.Properties.Resources.clique_aqui;
             this.pictureBox1.Location = new System.Drawing.Point(6, 355);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(225, 125);
+            this.pictureBox1.Size = new System.Drawing.Size(225, 140);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
@@ -493,16 +498,16 @@
             this.vectorView.Location = new System.Drawing.Point(5, 83);
             this.vectorView.Name = "vectorView";
             this.vectorView.ShowGrid = false;
-            this.vectorView.Size = new System.Drawing.Size(687, 381);
+            this.vectorView.Size = new System.Drawing.Size(687, 417);
             this.vectorView.TabIndex = 7;
             this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
             // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.txtObs);
-            this.groupBox4.Location = new System.Drawing.Point(5, 468);
+            this.groupBox4.Location = new System.Drawing.Point(5, 506);
             this.groupBox4.Name = "groupBox4";
-            this.groupBox4.Size = new System.Drawing.Size(687, 76);
+            this.groupBox4.Size = new System.Drawing.Size(687, 119);
             this.groupBox4.TabIndex = 18;
             this.groupBox4.TabStop = false;
             this.groupBox4.Text = "Observação";
@@ -513,14 +518,48 @@
             this.txtObs.Location = new System.Drawing.Point(3, 16);
             this.txtObs.Multiline = true;
             this.txtObs.Name = "txtObs";
-            this.txtObs.Size = new System.Drawing.Size(681, 57);
+            this.txtObs.Size = new System.Drawing.Size(681, 100);
             this.txtObs.TabIndex = 0;
+            // 
+            // gbTipo
+            // 
+            this.gbTipo.Controls.Add(this.rbPPV);
+            this.gbTipo.Controls.Add(this.rbWindowTint);
+            this.gbTipo.Location = new System.Drawing.Point(6, 501);
+            this.gbTipo.Name = "gbTipo";
+            this.gbTipo.Size = new System.Drawing.Size(225, 53);
+            this.gbTipo.TabIndex = 19;
+            this.gbTipo.TabStop = false;
+            this.gbTipo.Text = "Tipo";
+            // 
+            // rbWindowTint
+            // 
+            this.rbWindowTint.AutoSize = true;
+            this.rbWindowTint.Checked = true;
+            this.rbWindowTint.Location = new System.Drawing.Point(10, 19);
+            this.rbWindowTint.Name = "rbWindowTint";
+            this.rbWindowTint.Size = new System.Drawing.Size(85, 17);
+            this.rbWindowTint.TabIndex = 0;
+            this.rbWindowTint.TabStop = true;
+            this.rbWindowTint.Text = "Window Tint";
+            this.rbWindowTint.UseVisualStyleBackColor = true;
+            // 
+            // rbPPV
+            // 
+            this.rbPPV.AutoSize = true;
+            this.rbPPV.Location = new System.Drawing.Point(126, 19);
+            this.rbPPV.Name = "rbPPV";
+            this.rbPPV.Size = new System.Drawing.Size(46, 17);
+            this.rbPPV.TabIndex = 1;
+            this.rbPPV.TabStop = true;
+            this.rbPPV.Text = "PPV";
+            this.rbPPV.UseVisualStyleBackColor = true;
             // 
             // FrmCadastroDesenho
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 587);
+            this.ClientSize = new System.Drawing.Size(935, 665);
             this.ControlBox = false;
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.panel1);
@@ -553,6 +592,8 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
+            this.gbTipo.ResumeLayout(false);
+            this.gbTipo.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -600,5 +641,8 @@
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.GroupBox gbNomePeca;
         private System.Windows.Forms.TextBox tbNomePeca;
+        private System.Windows.Forms.GroupBox gbTipo;
+        private System.Windows.Forms.RadioButton rbWindowTint;
+        private System.Windows.Forms.RadioButton rbPPV;
     }
 }

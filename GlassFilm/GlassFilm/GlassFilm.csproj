@@ -117,6 +117,12 @@
     <Compile Include="FrmLog.Designer.cs">
       <DependentUpon>FrmLog.cs</DependentUpon>
     </Compile>
+    <Compile Include="FrmNovosVeiculos.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmNovosVeiculos.Designer.cs">
+      <DependentUpon>FrmNovosVeiculos.cs</DependentUpon>
+    </Compile>
     <Compile Include="FrmSync.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -201,6 +207,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="FrmLogin.resx">
       <DependentUpon>FrmLogin.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="FrmNovosVeiculos.resx">
+      <DependentUpon>FrmNovosVeiculos.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="FrmPrincipal.resx">
       <DependentUpon>FrmPrincipal.cs</DependentUpon>
