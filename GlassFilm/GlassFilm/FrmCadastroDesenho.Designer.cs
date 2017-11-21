@@ -67,12 +67,13 @@
             this.rbEsquerda = new System.Windows.Forms.RadioButton();
             this.groupBox1 = new System.Windows.Forms.GroupBox();
             this.lbAnos = new System.Windows.Forms.CheckedListBox();
-            this.vectorView = new VectorView.VectorViewCtr();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtObs = new System.Windows.Forms.TextBox();
-            this.gbTipo = new System.Windows.Forms.GroupBox();
-            this.rbWindowTint = new System.Windows.Forms.RadioButton();
-            this.rbPPV = new System.Windows.Forms.RadioButton();
+            this.tbDesenho = new System.Windows.Forms.TabControl();
+            this.tabWindowTint = new System.Windows.Forms.TabPage();
+            this.tabPPV = new System.Windows.Forms.TabPage();
+            this.vectorView = new VectorView.VectorViewCtr();
+            this.vvPPV = new VectorView.VectorViewCtr();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
             this.pnlFiltroInfo.SuspendLayout();
@@ -83,7 +84,9 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.gbTipo.SuspendLayout();
+            this.tbDesenho.SuspendLayout();
+            this.tabWindowTint.SuspendLayout();
+            this.tabPPV.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolPrincipal
@@ -349,7 +352,6 @@
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.gbTipo);
             this.panel1.Controls.Add(this.gbNomePeca);
             this.panel1.Controls.Add(this.pictureBox1);
             this.panel1.Controls.Add(this.cbPreferircad);
@@ -483,25 +485,6 @@
             this.lbAnos.TabIndex = 0;
             this.lbAnos.SelectedIndexChanged += new System.EventHandler(this.lbAnos_SelectedValueChanged);
             // 
-            // vectorView
-            // 
-            this.vectorView.AllowMoveDocument = false;
-            this.vectorView.AllowTransforms = true;
-            this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.vectorView.BackColor = System.Drawing.Color.White;
-            this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vectorView.ForeColor = System.Drawing.Color.Black;
-            this.vectorView.GridColor = System.Drawing.Color.Green;
-            this.vectorView.GridSize = 60;
-            this.vectorView.Location = new System.Drawing.Point(5, 83);
-            this.vectorView.Name = "vectorView";
-            this.vectorView.ShowGrid = false;
-            this.vectorView.Size = new System.Drawing.Size(687, 417);
-            this.vectorView.TabIndex = 7;
-            this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
-            // 
             // groupBox4
             // 
             this.groupBox4.Controls.Add(this.txtObs);
@@ -521,39 +504,73 @@
             this.txtObs.Size = new System.Drawing.Size(681, 100);
             this.txtObs.TabIndex = 0;
             // 
-            // gbTipo
+            // tbDesenho
             // 
-            this.gbTipo.Controls.Add(this.rbPPV);
-            this.gbTipo.Controls.Add(this.rbWindowTint);
-            this.gbTipo.Location = new System.Drawing.Point(6, 501);
-            this.gbTipo.Name = "gbTipo";
-            this.gbTipo.Size = new System.Drawing.Size(225, 53);
-            this.gbTipo.TabIndex = 19;
-            this.gbTipo.TabStop = false;
-            this.gbTipo.Text = "Tipo";
+            this.tbDesenho.Controls.Add(this.tabWindowTint);
+            this.tbDesenho.Controls.Add(this.tabPPV);
+            this.tbDesenho.Location = new System.Drawing.Point(8, 86);
+            this.tbDesenho.Name = "tbDesenho";
+            this.tbDesenho.SelectedIndex = 0;
+            this.tbDesenho.Size = new System.Drawing.Size(687, 414);
+            this.tbDesenho.TabIndex = 19;
+            this.tbDesenho.Selected += new System.Windows.Forms.TabControlEventHandler(this.tbDesenho_Selected);
+            this.tbDesenho.TabIndexChanged += new System.EventHandler(this.tbDesenho_TabIndexChanged);
             // 
-            // rbWindowTint
+            // tabWindowTint
             // 
-            this.rbWindowTint.AutoSize = true;
-            this.rbWindowTint.Checked = true;
-            this.rbWindowTint.Location = new System.Drawing.Point(10, 19);
-            this.rbWindowTint.Name = "rbWindowTint";
-            this.rbWindowTint.Size = new System.Drawing.Size(85, 17);
-            this.rbWindowTint.TabIndex = 0;
-            this.rbWindowTint.TabStop = true;
-            this.rbWindowTint.Text = "Window Tint";
-            this.rbWindowTint.UseVisualStyleBackColor = true;
+            this.tabWindowTint.Controls.Add(this.vectorView);
+            this.tabWindowTint.Location = new System.Drawing.Point(4, 22);
+            this.tabWindowTint.Name = "tabWindowTint";
+            this.tabWindowTint.Padding = new System.Windows.Forms.Padding(3);
+            this.tabWindowTint.Size = new System.Drawing.Size(679, 388);
+            this.tabWindowTint.TabIndex = 0;
+            this.tabWindowTint.Text = "Window Tint";
+            this.tabWindowTint.UseVisualStyleBackColor = true;
             // 
-            // rbPPV
+            // tabPPV
             // 
-            this.rbPPV.AutoSize = true;
-            this.rbPPV.Location = new System.Drawing.Point(126, 19);
-            this.rbPPV.Name = "rbPPV";
-            this.rbPPV.Size = new System.Drawing.Size(46, 17);
-            this.rbPPV.TabIndex = 1;
-            this.rbPPV.TabStop = true;
-            this.rbPPV.Text = "PPV";
-            this.rbPPV.UseVisualStyleBackColor = true;
+            this.tabPPV.Controls.Add(this.vvPPV);
+            this.tabPPV.Location = new System.Drawing.Point(4, 22);
+            this.tabPPV.Name = "tabPPV";
+            this.tabPPV.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPPV.Size = new System.Drawing.Size(679, 388);
+            this.tabPPV.TabIndex = 1;
+            this.tabPPV.Text = "PPV";
+            this.tabPPV.UseVisualStyleBackColor = true;
+            // 
+            // vectorView
+            // 
+            this.vectorView.AllowMoveDocument = false;
+            this.vectorView.AllowTransforms = true;
+            this.vectorView.BackColor = System.Drawing.Color.White;
+            this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vectorView.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vectorView.ForeColor = System.Drawing.Color.Black;
+            this.vectorView.GridColor = System.Drawing.Color.Green;
+            this.vectorView.GridSize = 60;
+            this.vectorView.Location = new System.Drawing.Point(3, 3);
+            this.vectorView.Name = "vectorView";
+            this.vectorView.ShowGrid = false;
+            this.vectorView.Size = new System.Drawing.Size(673, 382);
+            this.vectorView.TabIndex = 8;
+            this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
+            // 
+            // vvPPV
+            // 
+            this.vvPPV.AllowMoveDocument = false;
+            this.vvPPV.AllowTransforms = true;
+            this.vvPPV.BackColor = System.Drawing.Color.White;
+            this.vvPPV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.vvPPV.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.vvPPV.ForeColor = System.Drawing.Color.Black;
+            this.vvPPV.GridColor = System.Drawing.Color.Green;
+            this.vvPPV.GridSize = 60;
+            this.vvPPV.Location = new System.Drawing.Point(3, 3);
+            this.vvPPV.Name = "vvPPV";
+            this.vvPPV.ShowGrid = false;
+            this.vvPPV.Size = new System.Drawing.Size(673, 382);
+            this.vvPPV.TabIndex = 9;
+            this.vvPPV.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
             // 
             // FrmCadastroDesenho
             // 
@@ -561,11 +578,11 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 665);
             this.ControlBox = false;
+            this.Controls.Add(this.tbDesenho);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pbDesenho);
             this.Controls.Add(this.status);
-            this.Controls.Add(this.vectorView);
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.toolPrincipal);
             this.MinimizeBox = false;
@@ -592,15 +609,15 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.gbTipo.ResumeLayout(false);
-            this.gbTipo.PerformLayout();
+            this.tbDesenho.ResumeLayout(false);
+            this.tabWindowTint.ResumeLayout(false);
+            this.tabPPV.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
         }
 
         #endregion
-        private VectorView.VectorViewCtr vectorView;
         private System.Windows.Forms.ToolStrip toolPrincipal;
         private System.Windows.Forms.ToolStripButton btnSalvar;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator2;
@@ -641,8 +658,10 @@
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.GroupBox gbNomePeca;
         private System.Windows.Forms.TextBox tbNomePeca;
-        private System.Windows.Forms.GroupBox gbTipo;
-        private System.Windows.Forms.RadioButton rbWindowTint;
-        private System.Windows.Forms.RadioButton rbPPV;
+        private System.Windows.Forms.TabControl tbDesenho;
+        private System.Windows.Forms.TabPage tabWindowTint;
+        private VectorView.VectorViewCtr vectorView;
+        private System.Windows.Forms.TabPage tabPPV;
+        private VectorView.VectorViewCtr vvPPV;
     }
 }

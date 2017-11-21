@@ -55,17 +55,16 @@
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
             this.btnDetalhes = new System.Windows.Forms.Button();
             this.lbQtde = new System.Windows.Forms.Label();
-            this.panel4 = new System.Windows.Forms.Panel();
             this.panel7 = new System.Windows.Forms.Panel();
             this.cbModelo = new System.Windows.Forms.ComboBox();
             this.label10 = new System.Windows.Forms.Label();
-            this.panel6 = new System.Windows.Forms.Panel();
+            this.separador = new System.Windows.Forms.Panel();
             this.cbMarca = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.panel5 = new System.Windows.Forms.Panel();
             this.cbAno = new System.Windows.Forms.ComboBox();
             this.label8 = new System.Windows.Forms.Label();
-            this.comboBox2 = new System.Windows.Forms.ComboBox();
+            this.cbTipo = new System.Windows.Forms.ComboBox();
             this.label7 = new System.Windows.Forms.Label();
             this.panel8 = new System.Windows.Forms.Panel();
             this.splitCorte = new System.Windows.Forms.SplitContainer();
@@ -81,6 +80,11 @@
             this.lbCalculando = new System.Windows.Forms.Label();
             this.pnlCalculando = new System.Windows.Forms.Panel();
             this.pbCalc = new System.Windows.Forms.ProgressBar();
+            this.pnArquitetura = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.numLargura = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numAltura = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
@@ -95,6 +99,9 @@
             this.pnCript.SuspendLayout();
             this.toolCorte.SuspendLayout();
             this.pnlCalculando.SuspendLayout();
+            this.pnArquitetura.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numLargura)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAltura)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -377,24 +384,24 @@
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(238)))), ((int)(((byte)(238)))));
+            this.pnlFiltroInfo.Controls.Add(this.pnArquitetura);
             this.pnlFiltroInfo.Controls.Add(this.btnDetalhes);
             this.pnlFiltroInfo.Controls.Add(this.lbQtde);
-            this.pnlFiltroInfo.Controls.Add(this.panel4);
             this.pnlFiltroInfo.Controls.Add(this.panel7);
             this.pnlFiltroInfo.Controls.Add(this.cbModelo);
             this.pnlFiltroInfo.Controls.Add(this.label10);
-            this.pnlFiltroInfo.Controls.Add(this.panel6);
+            this.pnlFiltroInfo.Controls.Add(this.separador);
             this.pnlFiltroInfo.Controls.Add(this.cbMarca);
             this.pnlFiltroInfo.Controls.Add(this.label9);
             this.pnlFiltroInfo.Controls.Add(this.panel5);
             this.pnlFiltroInfo.Controls.Add(this.cbAno);
             this.pnlFiltroInfo.Controls.Add(this.label8);
-            this.pnlFiltroInfo.Controls.Add(this.comboBox2);
+            this.pnlFiltroInfo.Controls.Add(this.cbTipo);
             this.pnlFiltroInfo.Controls.Add(this.label7);
             this.pnlFiltroInfo.Dock = System.Windows.Forms.DockStyle.Top;
             this.pnlFiltroInfo.Location = new System.Drawing.Point(0, 134);
             this.pnlFiltroInfo.Name = "pnlFiltroInfo";
-            this.pnlFiltroInfo.Size = new System.Drawing.Size(1391, 65);
+            this.pnlFiltroInfo.Size = new System.Drawing.Size(1391, 59);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
             // 
@@ -419,15 +426,6 @@
             this.lbQtde.Size = new System.Drawing.Size(263, 42);
             this.lbQtde.TabIndex = 15;
             this.lbQtde.TextAlign = System.Drawing.ContentAlignment.MiddleRight;
-            // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.LightGray;
-            this.panel4.Dock = System.Windows.Forms.DockStyle.Bottom;
-            this.panel4.Location = new System.Drawing.Point(0, 60);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1391, 5);
-            this.panel4.TabIndex = 14;
             // 
             // panel7
             // 
@@ -458,13 +456,13 @@
             this.label10.TabIndex = 11;
             this.label10.Text = "Modelo:";
             // 
-            // panel6
+            // separador
             // 
-            this.panel6.BackColor = System.Drawing.Color.Gainsboro;
-            this.panel6.Location = new System.Drawing.Point(144, 7);
-            this.panel6.Name = "panel6";
-            this.panel6.Size = new System.Drawing.Size(1, 42);
-            this.panel6.TabIndex = 10;
+            this.separador.BackColor = System.Drawing.Color.Gainsboro;
+            this.separador.Location = new System.Drawing.Point(144, 7);
+            this.separador.Name = "separador";
+            this.separador.Size = new System.Drawing.Size(1, 42);
+            this.separador.TabIndex = 10;
             // 
             // cbMarca
             // 
@@ -519,20 +517,20 @@
             this.label8.TabIndex = 2;
             this.label8.Text = "Ano:";
             // 
-            // comboBox2
+            // cbTipo
             // 
-            this.comboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.comboBox2.Enabled = false;
-            this.comboBox2.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.comboBox2.FormattingEnabled = true;
-            this.comboBox2.Items.AddRange(new object[] {
+            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbTipo.FormattingEnabled = true;
+            this.cbTipo.Items.AddRange(new object[] {
             "Window Tint",
             "PPV",
             "Arquitetura"});
-            this.comboBox2.Location = new System.Drawing.Point(12, 26);
-            this.comboBox2.Name = "comboBox2";
-            this.comboBox2.Size = new System.Drawing.Size(121, 21);
-            this.comboBox2.TabIndex = 1;
+            this.cbTipo.Location = new System.Drawing.Point(12, 26);
+            this.cbTipo.Name = "cbTipo";
+            this.cbTipo.Size = new System.Drawing.Size(121, 21);
+            this.cbTipo.TabIndex = 1;
+            this.cbTipo.SelectedIndexChanged += new System.EventHandler(this.cbTipo_SelectedIndexChanged);
             // 
             // label7
             // 
@@ -733,6 +731,64 @@
             this.pbCalc.TabIndex = 1;
             this.pbCalc.Visible = false;
             // 
+            // pnArquitetura
+            // 
+            this.pnArquitetura.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnArquitetura.Controls.Add(this.numAltura);
+            this.pnArquitetura.Controls.Add(this.label4);
+            this.pnArquitetura.Controls.Add(this.numLargura);
+            this.pnArquitetura.Controls.Add(this.label3);
+            this.pnArquitetura.Location = new System.Drawing.Point(151, 7);
+            this.pnArquitetura.Name = "pnArquitetura";
+            this.pnArquitetura.Size = new System.Drawing.Size(1237, 50);
+            this.pnArquitetura.TabIndex = 17;
+            this.pnArquitetura.Visible = false;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(68, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Largura (mm)";
+            // 
+            // numLargura
+            // 
+            this.numLargura.Location = new System.Drawing.Point(13, 20);
+            this.numLargura.Maximum = new decimal(new int[] {
+            1999999,
+            0,
+            0,
+            0});
+            this.numLargura.Name = "numLargura";
+            this.numLargura.Size = new System.Drawing.Size(120, 20);
+            this.numLargura.TabIndex = 4;
+            this.numLargura.ValueChanged += new System.EventHandler(this.numLargura_ValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(166, 3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Altura (mm)";
+            // 
+            // numAltura
+            // 
+            this.numAltura.Location = new System.Drawing.Point(169, 20);
+            this.numAltura.Maximum = new decimal(new int[] {
+            1999999,
+            0,
+            0,
+            0});
+            this.numAltura.Name = "numAltura";
+            this.numAltura.Size = new System.Drawing.Size(120, 20);
+            this.numAltura.TabIndex = 6;
+            this.numAltura.ValueChanged += new System.EventHandler(this.numLargura_ValueChanged);
+            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -776,6 +832,10 @@
             this.toolCorte.PerformLayout();
             this.pnlCalculando.ResumeLayout(false);
             this.pnlCalculando.PerformLayout();
+            this.pnArquitetura.ResumeLayout(false);
+            this.pnArquitetura.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numLargura)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numAltura)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -800,18 +860,17 @@
         private System.Windows.Forms.Panel panel7;
         private System.Windows.Forms.ComboBox cbModelo;
         private System.Windows.Forms.Label label10;
-        private System.Windows.Forms.Panel panel6;
+        private System.Windows.Forms.Panel separador;
         private System.Windows.Forms.ComboBox cbMarca;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.Panel panel5;
         private System.Windows.Forms.ComboBox cbAno;
         private System.Windows.Forms.Label label8;
-        private System.Windows.Forms.ComboBox comboBox2;
+        private System.Windows.Forms.ComboBox cbTipo;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.ToolStripMenuItem cadastrarDesenhoToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastrarMarcaToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem cadastroModeloToolStripMenuItem;
-        private System.Windows.Forms.Panel panel4;
         private System.Windows.Forms.ToolStripMenuItem cadastroRoloToolStripMenuItem;
         private System.Windows.Forms.Panel panel8;
         private System.Windows.Forms.SplitContainer splitCorte;
@@ -835,5 +894,10 @@
         private System.Windows.Forms.ProgressBar pbCript;
         private System.Windows.Forms.ProgressBar pbCalc;
         private System.Windows.Forms.Button btnDetalhes;
+        private System.Windows.Forms.Panel pnArquitetura;
+        private System.Windows.Forms.Label label3;
+        private System.Windows.Forms.NumericUpDown numAltura;
+        private System.Windows.Forms.Label label4;
+        private System.Windows.Forms.NumericUpDown numLargura;
     }
 }

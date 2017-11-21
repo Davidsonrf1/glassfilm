@@ -13,6 +13,11 @@ using System.IO;
 
 namespace GlassFilm.Class
 {
+    public enum TipoDesenho
+    {
+        WindowTint, PPV, None
+    }
+
     public static class DBManager
     {        
         public static SQLiteConnection _mainConnection = null;
@@ -556,7 +561,7 @@ namespace GlassFilm.Class
             return null;
         }
 
-        public static string CarregarDesenho(int veiculo, out int codigo_desenho)
+        public static string CarregarDesenho(int veiculo, out int codigo_desenho, out string desenhoPpv)
         {
             codigo_desenho = -1;
 
@@ -565,13 +570,19 @@ namespace GlassFilm.Class
             cmd.CommandText = "SELECT * FROM DESENHOS WHERE VEICULO = " + veiculo.ToString();
             IDataReader dr = cmd.ExecuteReader();
 
+            desenhoPpv = null;
+
             if (dr.Read())
             {
                 int len = Convert.ToInt32(dr["TAMANHO"].ToString());
                 byte[] buffer = new byte[len];
                 dr.GetBytes(dr.GetOrdinal("DESENHO"), 0, buffer, 0, len);
-
                 string desenho = Encoding.UTF8.GetString(buffer);
+                
+                len = Convert.ToInt32(dr["TAMANHO_DESENHO_PPV"].ToString());
+                buffer = new byte[len];
+                dr.GetBytes(dr.GetOrdinal("DESENHO_PPV"), 0, buffer, 0, len);
+                string ppv = Encoding.UTF8.GetString(buffer);
 
                 try
                 {
@@ -580,6 +591,7 @@ namespace GlassFilm.Class
                         if (dr["DESENHOC"].ToString().Equals("S"))
                         {
                             desenho = Bolacha(desenho);
+                            ppv = Bolacha(ppv);
                         }
                     }
                 }
@@ -588,9 +600,9 @@ namespace GlassFilm.Class
                     Console.Write(ex.Message);
                 }
 
-
-
                 dr.Close();
+
+                desenhoPpv = ppv;
                 return desenho;
             }            
 
@@ -701,12 +713,31 @@ namespace GlassFilm.Class
             cmd.ExecuteNonQuery();
         }
 
-        public static void SalvarDesenho(int codigo_ano, string svg, string obs, int tipo, byte[] imageData = null)
+        public static object SvgData(string svg, out int len)
+        {
+            len = 0;
+
+            if (svg != null)
+            {
+                byte[] data = Encoding.UTF8.GetBytes(svg);
+                len = data.Length;
+                return data;
+            }
+
+            return DBNull.Value;
+        }
+
+        public static void SalvarDesenho(int codigo_ano, string svgWindowTint, string svgPPV, string obs, byte[] imageData = null)
         {
             bool ehBiscoito = false;
             if (ColExiste("DESENHOS", "DESENHOC", _modelConnection))
             {
-                svg = Biscoito(svg);
+                if(svgWindowTint != null)
+                    svgWindowTint = Biscoito(svgWindowTint);
+
+                if (svgPPV != null)
+                    svgPPV = Biscoito(svgPPV);
+
                 ehBiscoito = true;
             }
 
@@ -718,36 +749,56 @@ namespace GlassFilm.Class
                 cmd.ExecuteNonQuery();
             }
 
-            byte[] svgData = Encoding.UTF8.GetBytes(svg);
+            if (!ColExiste("DESENHOS", "DESENHO_PPV", _modelConnection))
+            {
+                cmd.CommandText = "ALTER TABLE DESENHOS ADD DESENHO_PPV BLOB NULL";
+                cmd.ExecuteNonQuery();
+            }
+
+            if (!ColExiste("DESENHOS", "TAMANHO_DESENHO_PPV", _modelConnection))
+            {
+                cmd.CommandText = "ALTER TABLE DESENHOS ADD TAMANHO_DESENHO_PPV INT NULL DEFAULT 0";
+                cmd.ExecuteNonQuery();
+            }
+
+            object svgData = null;
 
             int versao = 0;
             SQLiteTransaction tr = _modelConnection.BeginTransaction();
 
             try
             {
+                int len = 0;
+
                 cmd.CommandText = "SELECT IFNULL(MAX(VERSAO), 0) VERSAO FROM DESENHOS";
                 versao = Convert.ToInt32(cmd.ExecuteScalar().ToString()) + 1;
 
                 cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
-                cmd.ExecuteNonQuery();                
+                cmd.ExecuteNonQuery();                 
 
-                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO, FOTO, OBS, TIPO_DESENHO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0, @foto, @obs, @TIPO_DESENHO)";
+                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO, FOTO, OBS, TIPO_DESENHO, DESENHO_PPV, TAMANHO_DESENHO_PPV) VALUES (@veic,@versao,@dados,@tamanho, 1, 0, @foto, @obs, @TIPO_DESENHO, @DESENHO_PPV, @TAMANHO_DESENHO_PPV)";
                 cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
                 cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
-                cmd.Parameters.Add("@dados", DbType.Binary, svgData.Length).Value = svgData;
-                cmd.Parameters.Add("@tamanho", DbType.Int32).Value = svgData.Length;
-                cmd.Parameters.Add("@TIPO_DESENHO", DbType.Int32).Value = tipo;
+
+                svgData = SvgData(svgWindowTint, out len);
+                cmd.Parameters.Add("@dados", DbType.Binary, len).Value =  svgData;
+                cmd.Parameters.Add("@tamanho", DbType.Int32).Value = len;
+
+                svgData = SvgData(svgPPV, out len);
+                cmd.Parameters.Add("@DESENHO_PPV", DbType.Binary, len).Value = svgData;
+                cmd.Parameters.Add("@TAMANHO_DESENHO_PPV", DbType.Int32).Value = len;
+
+                cmd.Parameters.Add("@TIPO_DESENHO", DbType.Int32).Value = 0;
 
                 if (imageData != null)
-                    cmd.Parameters.Add("@foto", DbType.Binary, svgData.Length).Value = imageData;
+                    cmd.Parameters.Add("@foto", DbType.Binary, imageData.Length).Value = imageData;
                 else
                     cmd.Parameters.Add("@foto", DbType.Binary, 0).Value = DBNull.Value;
 
                 if (obs != null)
                 {
                     byte[] obsData = Encoding.UTF8.GetBytes(obs);
-
-                    cmd.Parameters.Add("@obs", DbType.Binary, svgData.Length).Value = obsData;
+                    cmd.Parameters.Add("@obs", DbType.Binary, obsData.Length).Value = obsData;
                 }
                 else
                 {

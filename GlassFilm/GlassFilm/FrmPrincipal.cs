@@ -200,7 +200,37 @@ namespace GlassFilm
         {
             Program.ShowDialog(new FrmCadModelo());
             AtualizaCombos();
-        }       
+        }
+
+        string svgPPV = null;
+        string svgWindowtint = null;
+
+        void CarregaSvg(string svg)
+        {
+            vvModelo.Clear();
+
+            if (svg != null)
+            {
+                string marca = "";
+                string modelo = "";
+                string ano = "";
+
+                marca = cbMarca.Text;
+                modelo = cbModelo.Text;
+                ano = cbAno.Text;
+
+                vvModelo.AllowTransforms = false;
+
+                vvModelo.Document.LoadSVG(svg);
+                vvModelo.Document.Marca = marca;
+                vvModelo.Document.Modelo = modelo;
+                vvModelo.Document.Ano = ano;
+
+                lbQtde.Text = DBManager.GetNumDesenhos() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
+
+                vvModelo.AutoFit(VectorFitStyle.Both, true, true);
+            }
+        }
 
         private void cbAno_SelectedIndexChanged(object sender, EventArgs e)
         {
@@ -213,28 +243,15 @@ namespace GlassFilm
                 vvModelo.Document.Clear();
 
                 int codigo_desenho = 0;
-                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano), out codigo_desenho);
-                if (svg != null)
-                {
-                    string marca = "";
-                    string modelo = "";
-                    string ano = "";
 
-                    marca = cbMarca.Text;
-                    modelo = cbModelo.Text;
-                    ano = cbAno.Text;
+                string ppv = null;
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano), out codigo_desenho, out ppv);
 
-                    vvModelo.AllowTransforms = false;
+                svgPPV = ppv;
+                svgWindowtint = svg;
 
-                    vvModelo.Document.LoadSVG(svg);
-                    vvModelo.Document.Marca = marca;
-                    vvModelo.Document.Modelo = modelo;
-                    vvModelo.Document.Ano = ano;
-                    
-                    lbQtde.Text = DBManager.GetNumDesenhos() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
-
-                    vvModelo.AutoFit(VectorFitStyle.Both, true, true);
-                }
+                cbTipo.SelectedIndex = 0;
+                CarregaSvg(svgWindowtint);
 
                 pnlCalculando.Visible = false;
             }
@@ -321,6 +338,7 @@ namespace GlassFilm
                         MessageBox.Show(ex.Message, "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Warning);
                         return;
                     }
+
                     if (Program.Config["PlotterInterface"].Equals("PRINTER"))
                     {
                         PrinterSettings ps = null;
@@ -1119,6 +1137,71 @@ namespace GlassFilm
                 dv.StartPosition = FormStartPosition.CenterScreen;
 
                 dv.ShowDialog();
+            }
+        }
+
+        private void cbTipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            pnArquitetura.Visible = false;
+
+            switch (cbTipo.SelectedIndex)
+            {
+                case 0:
+                    {
+                        CarregaSvg(svgWindowtint);
+                    }
+                    break;
+                case 1:
+                    {
+                        CarregaSvg(svgPPV);
+                    }
+                    break;
+                case 2:
+                    {
+                        vvModelo.Clear();
+                        pnArquitetura.Visible = true;
+                    }
+                    break;
+            }
+        }
+
+        private void numLargura_ValueChanged(object sender, EventArgs e)
+        {
+            vvCorte.Clear();
+
+            int largura = (int)numLargura.Value;
+            int altura = (int)numAltura.Value;
+
+            if (largura * altura > 0)
+            {
+                int l = 10;
+                int t = 10;
+                int r = 10+largura;
+                int b = 10+altura;
+
+                string svga = $"	<svg xmlns:dc=\"http://purl.org/dc/elements/1.1/\" 								                        "
+                            + $"		 xmlns:cc=\"http://creativecommons.org/ns#\" 								                        "
+                            + $"		 xmlns:rdf=\"http://www.w3.org/1999/02/22-rdf-syntax-ns#\" 					                        "
+                            + $"		 xmlns:svg=\"http://www.w3.org/2000/svg\" 									                        "
+                            + $"		 xmlns=\"http://www.w3.org/2000/svg\" 										                        "
+                            + $"		 viewBox=\"0 0 {r+10} {b+10}\" width=\"{r+10}mm\" height=\"{b+10}mm\" version=\"1.1\">	"
+                            + $"	   <path style=\"fill: none; stroke:#e30016;stroke-width:0\" 					                        "
+                            + $"		 d=\" M{l},{t} {r},{t} {r},{b} {l},{b} z\" />											"
+                            + $"	</svg>																			                        ";
+
+                if (Debugger.IsAttached)
+                {
+                    try
+                    {
+                        File.WriteAllText("D:\\svg\\svga.svg", svga);
+                    }
+                    catch
+                    {
+
+                    }
+                }
+
+                CarregaSvg(svga);
             }
         }
     }

@@ -45,6 +45,20 @@ namespace GlassFilm
 
         private void btImportar_Click(object sender, EventArgs e)
         {
+            VectorViewCtr vectorView = null;
+
+            if (tbDesenho.SelectedTab.Equals(tabPPV))
+                vectorView = this.vvPPV;
+
+            if (tbDesenho.SelectedTab.Equals(tabWindowTint))
+                vectorView = this.vectorView;
+
+            if (vectorView == null)
+            {
+                MessageBox.Show("Selecione o tipo de desenho a ser gravado!", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
+                return;
+            }
+
             if (lbAnos.CheckedItems.Count <= 0)
             {
                 MessageBox.Show("Selecione um ou mais anos para importar o desenho", "ATENÇÃO", MessageBoxButtons.OK, MessageBoxIcon.Stop);
@@ -90,40 +104,45 @@ namespace GlassFilm
                     return;
                 }
 
-                VectorDocument doc = vectorView.Document;
+                VectorDocument docCorte = vectorView.Document;
+                VectorDocument docPPV = vvPPV.Document;
 
                 pbDesenho.Value = 0;
                 pbDesenho.Maximum = lbAnos.CheckedItems.Count;
                 pbDesenho.Visible = true;
 
-                int tipo = 0;
-
-                if (rbPPV.Checked)
-                    tipo = 2;
-
                 Application.DoEvents();
 
-                if (doc != null)
+                if (docCorte != null || docPPV != null)
                 {
-                    if (doc.Paths.Count > 0)
+                    string svgWindowTint = null;
+                    string svgPPV = null;
+
+                    if (docCorte != null && docCorte.Paths.Count > 0)
                     {
-                        string svg = doc.ToSVG();
-
-                        foreach (object i in lbAnos.CheckedItems)
-                        {
-                            ModeloAno v = (ModeloAno)i;
-                            DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svg, txtObs.Text, tipo, imageData);
-
-                            pbDesenho.Value++;
-                            Application.DoEvents();
-                        }
-
-                        Mensagens.Informacao("Desenho Salvo com Sucesso!");
-                        pbDesenho.Visible = false;
-
-                        toolStripButton1_Click(sender, e);
-                        cbMarca.Focus();
+                        svgWindowTint = docCorte.ToSVG();
                     }
+
+                    if (docPPV != null && docPPV.Paths.Count > 0)
+                    {
+                        svgPPV = docPPV.ToSVG();
+                    }
+
+                    foreach (object i in lbAnos.CheckedItems)
+                    {
+                        ModeloAno v = (ModeloAno)i;
+
+                        DBManager.SalvarDesenho(Convert.ToInt32(v.Codigo_ano), svgWindowTint, svgPPV, txtObs.Text, imageData);
+
+                        pbDesenho.Value++;
+                        Application.DoEvents();
+                    }
+
+                    Mensagens.Informacao("Desenho Salvo com Sucesso!");
+                    pbDesenho.Visible = false;
+
+                    toolStripButton1_Click(sender, e);
+                    cbMarca.Focus();
                 }
                 else
                 {
@@ -227,9 +246,12 @@ namespace GlassFilm
             cbMarca.SelectedIndex = -1;
             lbAnos.Items.Clear();
             vectorView.Refresh();
+            vvPPV.Refresh();
 
             EnableControls(true);
             vectorView.Clear();
+            vvPPV.Clear();
+
 
             pictureBox1.Image = noImage;
             imageData = null;
@@ -243,8 +265,20 @@ namespace GlassFilm
 
         void UpdateDocInfo()
         {
-            VectorDocument d = vectorView.Document;
+            VectorDocument d = null;
+            VectorViewCtr vectorView = null;
+            
+            if (tbDesenho.SelectedTab == tabWindowTint)
+            {
+                vectorView = this.vectorView;
+            }
+            else
+            {
+                vectorView = vvPPV;
+            }
 
+            d = vectorView.Document;
+            
             if (d != null)
             {
                 docInfo.Text = "";
@@ -276,6 +310,18 @@ namespace GlassFilm
             rbDireita.Checked = false;
             tbEtiqueta.Text = "";
             tbNomePeca.Text = "";
+
+            if (sender == null)
+            {
+                rbEsquerda.Enabled = false;
+                rbDireita.Enabled = false;
+                tbEtiqueta.Enabled = false;
+                tbNomePeca.Enabled = false;
+
+                return;
+            }
+
+            VectorViewCtr vectorView = (VectorViewCtr)sender;
 
             if (vectorView.Document.SelectionCount == 1)
             {
@@ -334,7 +380,19 @@ namespace GlassFilm
 
                 int codigo_desenho = 0;
 
-                string svg = DBManager.CarregarDesenho(Convert.ToInt32(ma.Codigo_ano), out codigo_desenho);
+                string ppv = null;
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(ma.Codigo_ano), out codigo_desenho, out ppv);
+
+                tbDesenho.SelectedTab = tabWindowTint;
+
+                if (svg != null)
+                {
+                    vvPPV.Document.LoadSVG(svg);
+                    vvPPV.AllowTransforms = false;
+
+                    vvPPV.AutoFit();
+                }               
+
                 if (svg != null)
                 {
                     vectorView.Document.LoadSVG(svg);
@@ -464,7 +522,8 @@ namespace GlassFilm
 
                         int codDesenho = 0;
 
-                        string svg = DBManager.CarregarDesenho(Convert.ToInt32(v.Codigo_ano), out codDesenho);
+                        string ppv = null;
+                        string svg = DBManager.CarregarDesenho(Convert.ToInt32(v.Codigo_ano), out codDesenho, out ppv);
 
                         string fname = string.Format("{0} {1}.svg", baseName, v.Ano);
 
@@ -472,6 +531,16 @@ namespace GlassFilm
                             File.Delete(fname);
 
                         File.WriteAllText(fname, svg, Encoding.UTF8);
+
+                        if (ppv != null)
+                        {
+                            fname = string.Format("{0} {1}-ppv.svg", baseName, v.Ano);
+
+                            if (File.Exists(fname))
+                                File.Delete(fname);
+
+                            File.WriteAllText(fname, ppv, Encoding.UTF8);
+                        }
 
                         pbDesenho.Value++;
                         Application.DoEvents();
@@ -586,5 +655,17 @@ namespace GlassFilm
             MessageBox.Show("Imagem foi removida. Clique em salvar para evetivar", "Atenção", MessageBoxButtons.OK);
         }
 
+        private void tbDesenho_TabIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void tbDesenho_Selected(object sender, TabControlEventArgs e)
+        {
+            vectorView.Document.ClearSelection();
+            vvPPV.Document.ClearSelection();
+
+            vectorView_SelectionChanged(null, null);
+        }
     }
 }

@@ -136,8 +136,9 @@ namespace GlassFilm.Sync
             foreach (DataRow r in tb.Rows)
             {
                 int codigo = int.Parse(r["VEICULO"].ToString());
-                string svg = DBManager.CarregarDesenho(codigo, out codigo_desenho);
-                DBManager.SalvarDesenho(codigo, svg, "");
+                string ppv = null;
+                string svg = DBManager.CarregarDesenho(codigo, out codigo_desenho, out ppv);
+                DBManager.SalvarDesenho(codigo, svg, null, null);
 
                 count++;
 
