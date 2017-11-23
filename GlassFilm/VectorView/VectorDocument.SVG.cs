@@ -278,6 +278,9 @@ namespace VectorView
         {
             paths.Clear();
 
+            if (string.IsNullOrWhiteSpace(svg))
+                return;
+
             XmlDocument xdoc = new XmlDocument();
             xdoc.XmlResolver = null;
             xdoc.LoadXml(svg);

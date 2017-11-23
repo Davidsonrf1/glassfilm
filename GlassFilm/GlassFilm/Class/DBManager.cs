@@ -677,9 +677,16 @@ namespace GlassFilm.Class
                     else
                         len = Convert.ToInt32(dr["TAMANHO_DESENHO_PPV"].ToString());
 
-                    buffer = new byte[len];
-                    dr.GetBytes(ord, 0, buffer, 0, len);
-                    desenho = Encoding.UTF8.GetString(buffer);
+                    try
+                    {
+                        buffer = new byte[len];
+                        dr.GetBytes(ord, 0, buffer, 0, len);
+                        desenho = Encoding.UTF8.GetString(buffer);
+                    }
+                    catch
+                    {
+                        desenho = "";
+                    }
                 }
 
                 try
@@ -792,6 +799,7 @@ namespace GlassFilm.Class
 
             cmd = _mainConnection.CreateCommand();
 
+            // Window tint
             cmd.CommandText = "UPDATE MODELO_ANO SET POSSUI_DESENHO = 0 WHERE CODIGO_ANO = " + codigo_ano.ToString();
             cmd.ExecuteNonQuery();
 
@@ -805,6 +813,22 @@ namespace GlassFilm.Class
             cmd.ExecuteNonQuery();
 
             cmd.CommandText = "UPDATE MARCA SET POSSUI_DESENHO = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
+            cmd.ExecuteNonQuery();
+            
+            // PPV
+            cmd.CommandText = $"UPDATE MODELO_ANO SET POSSUI_PPV = 0 WHERE CODIGO_ANO = {codigo_ano}";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = 0";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_PPV = 1)";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = 0 ";
+            cmd.ExecuteNonQuery();
+
+            cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_PPV = 1)";
             cmd.ExecuteNonQuery();
         }
 
@@ -978,13 +1002,13 @@ namespace GlassFilm.Class
                 cmd.CommandText = $"UPDATE MODELO SET POSSUI_DESENHO = 0";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = $"UPDATE MODELO SET POSSUI_DESENHO = {possui} WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_DESENHO = 1)";
+                cmd.CommandText = $"UPDATE MODELO SET POSSUI_DESENHO = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_DESENHO = 1)";
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = $"UPDATE MARCA SET POSSUI_DESENHO = 0";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = $"UPDATE MARCA SET POSSUI_DESENHO = {possui} WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
+                cmd.CommandText = $"UPDATE MARCA SET POSSUI_DESENHO = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
                 cmd.ExecuteNonQuery();
             }
 
@@ -998,13 +1022,13 @@ namespace GlassFilm.Class
                 cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = 0";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = {possui} WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_PPV = 1)";
+                cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_PPV = 1)";
                 cmd.ExecuteNonQuery();
 
                 cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = 0 ";
                 cmd.ExecuteNonQuery();
 
-                cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = {possui} WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_PPV = 1)";
+                cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_PPV = 1)";
                 cmd.ExecuteNonQuery();
             }
         }

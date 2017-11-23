@@ -558,17 +558,14 @@ namespace GlassFilm
                     return;
                 }
 
-                VectorDocument doc = vectorView.Document;
-
                 pbDesenho.Value = 0;
                 pbDesenho.Maximum = lbAnos.CheckedItems.Count;
                 pbDesenho.Visible = true;
 
                 Application.DoEvents();
 
-                if (doc.Paths.Count > 0)
+                try
                 {
-                    string svg = doc.ToSVG();
 
                     foreach (object i in lbAnos.CheckedItems)
                     {
@@ -585,7 +582,10 @@ namespace GlassFilm
                     toolStripButton1_Click(sender, e);
                     cbMarca.Focus();
                 }
+                catch
+                {
 
+                }
                 pbDesenho.Visible = false;
                 lbAnos.Items.Clear();
 

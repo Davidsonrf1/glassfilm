@@ -66,12 +66,13 @@
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this.imagem.BackColor = System.Drawing.Color.White;
+            this.imagem.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.imagem.Image = global::GlassFilm.Properties.Resources.no_camera16001;
             this.imagem.InitialImage = global::GlassFilm.Properties.Resources.no_camera16001;
-            this.imagem.Location = new System.Drawing.Point(0, 0);
+            this.imagem.Location = new System.Drawing.Point(-3, 0);
             this.imagem.Name = "imagem";
             this.imagem.Size = new System.Drawing.Size(622, 424);
-            this.imagem.SizeMode = System.Windows.Forms.PictureBoxSizeMode.CenterImage;
+            this.imagem.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.imagem.TabIndex = 0;
             this.imagem.TabStop = false;
             // 
@@ -82,8 +83,11 @@
             this.ClientSize = new System.Drawing.Size(622, 574);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.imagem);
+            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
+            this.MaximizeBox = false;
             this.MinimizeBox = false;
             this.Name = "FrmDetalheView";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.Text = "Visualização de Imagem";
             this.Load += new System.EventHandler(this.FrmImageView_Load);
             this.groupBox1.ResumeLayout(false);
