@@ -30,10 +30,14 @@ namespace GlassFilm
 
             sel = new SeletorVeiculo();
             sel.ListaTodas = false;
+            sel.TipoDesenho = TipoDesenho.WindowTint;
+
+            cbTipo.SelectedIndex = 0;
 
             sel.CbMarcas = cbMarca;
             sel.CbModelos = cbModelo;
             sel.CbVeiculos = cbAno;
+            sel.CbTipo = cbTipo;
 
             vvCorte.Document.DocWidth = 600;
             vvCorte.Document.DocHeight = 1520;
@@ -244,14 +248,8 @@ namespace GlassFilm
 
                 int codigo_desenho = 0;
 
-                string ppv = null;
-                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano), out codigo_desenho, out ppv);
-
-                svgPPV = ppv;
-                svgWindowtint = svg;
-
-                cbTipo.SelectedIndex = 0;
-                CarregaSvg(svgWindowtint);
+                string svg = DBManager.CarregarDesenho(Convert.ToInt32(m.Codigo_ano), out codigo_desenho, sel.TipoDesenho);
+                CarregaSvg(svg);
 
                 pnlCalculando.Visible = false;
             }
@@ -920,12 +918,7 @@ namespace GlassFilm
 
         private void FrmPrincipal_Shown(object sender, EventArgs e)
         {
-            //if (Debugger.IsAttached)
-            //    return;
-
-            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
-
-            //FrmSync.ShowSync(false, true, false);            
+            vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;           
             lbQtde.Text = sel.AtualizaMarcas() + " desenhos cadastrados sendo\n" + DBManager.GetNumVeiculoMarca();
 
             if (Sync.SyncFullDatabase.VerificaAtualizacoesSistema())
@@ -933,8 +926,11 @@ namespace GlassFilm
                 if (MessageBox.Show("Existe uma atualização do sistema. Deseja obter esta atualização agora?", "A T U A L I Z A Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.Yes)
                 {
                     Process.Start("http://www.cutfilm.com.br/instalador/CutFilmeSetup.exe");
+                    Application.Exit();
                 }
             }
+
+            FrmNovosVeiculos.MostraAtualizacoes();
         }
 
         private void button1_Click(object sender, EventArgs e)
@@ -1086,6 +1082,8 @@ namespace GlassFilm
 
         private void btnSync_Click(object sender, EventArgs e)
         {
+            bool possuiDesenhos = FrmNovosVeiculos.PossuiDesenhos();
+
             DBManager.CloseDatabases();
 
             try
@@ -1100,6 +1098,9 @@ namespace GlassFilm
                 vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;
 
                 FrmSync.ShowSync(false, true, force);
+
+                if (possuiDesenhos && !force)
+                    FrmNovosVeiculos.MostraAtualizacoes();
             }
             catch
             {
@@ -1123,7 +1124,7 @@ namespace GlassFilm
 
         private void linkLabel1_LinkClicked_1(object sender, LinkLabelLinkClickedEventArgs e)
         {
-            System.Diagnostics.Process.Start("http://www.techconsultoria.com.br/");
+            Process.Start("http://www.techconsultoria.com.br/");
         }
 
         private void btnDetalhes_Click(object sender, EventArgs e)
@@ -1144,16 +1145,21 @@ namespace GlassFilm
         {
             pnArquitetura.Visible = false;
 
+            sel.Limpar();
+            sel.TipoDesenho = TipoDesenho.WindowTint;
+
             switch (cbTipo.SelectedIndex)
             {
                 case 0:
                     {
-                        CarregaSvg(svgWindowtint);
+                        sel.TipoDesenho = TipoDesenho.WindowTint;
+                        vvModelo.Clear();
                     }
                     break;
                 case 1:
                     {
-                        CarregaSvg(svgPPV);
+                        sel.TipoDesenho = TipoDesenho.PPV;
+                        vvModelo.Clear();
                     }
                     break;
                 case 2:
@@ -1203,6 +1209,12 @@ namespace GlassFilm
 
                 CarregaSvg(svga);
             }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+            FrmNovosVeiculos novos = new FrmNovosVeiculos();
+            novos.ShowDialog();
         }
     }
 }

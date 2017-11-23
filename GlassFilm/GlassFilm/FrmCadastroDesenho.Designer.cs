@@ -69,13 +69,15 @@
             this.lbAnos = new System.Windows.Forms.CheckedListBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtObs = new System.Windows.Forms.TextBox();
-            this.tbDesenho = new System.Windows.Forms.TabControl();
-            this.tabWindowTint = new System.Windows.Forms.TabPage();
-            this.tabPPV = new System.Windows.Forms.TabPage();
+            this.panel3 = new System.Windows.Forms.Panel();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
+            this.lbTipo = new System.Windows.Forms.Label();
+            this.cbTipo = new System.Windows.Forms.ComboBox();
             this.vectorView = new VectorView.VectorViewCtr();
-            this.vvPPV = new VectorView.VectorViewCtr();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
+            this.panel2.SuspendLayout();
             this.pnlFiltroInfo.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbNomePeca.SuspendLayout();
@@ -84,9 +86,7 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.tbDesenho.SuspendLayout();
-            this.tabWindowTint.SuspendLayout();
-            this.tabPPV.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolPrincipal
@@ -265,7 +265,7 @@
             // 
             this.label9.AutoSize = true;
             this.label9.ForeColor = System.Drawing.Color.White;
-            this.label9.Location = new System.Drawing.Point(12, 10);
+            this.label9.Location = new System.Drawing.Point(148, 10);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(40, 13);
             this.label9.TabIndex = 8;
@@ -276,7 +276,7 @@
             this.cbMarca.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbMarca.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbMarca.FormattingEnabled = true;
-            this.cbMarca.Location = new System.Drawing.Point(12, 26);
+            this.cbMarca.Location = new System.Drawing.Point(151, 26);
             this.cbMarca.Name = "cbMarca";
             this.cbMarca.Size = new System.Drawing.Size(200, 21);
             this.cbMarca.TabIndex = 0;
@@ -286,7 +286,7 @@
             // 
             this.label10.AutoSize = true;
             this.label10.ForeColor = System.Drawing.Color.White;
-            this.label10.Location = new System.Drawing.Point(223, 10);
+            this.label10.Location = new System.Drawing.Point(364, 10);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(45, 13);
             this.label10.TabIndex = 11;
@@ -297,15 +297,16 @@
             this.cbModelo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.cbModelo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
             this.cbModelo.FormattingEnabled = true;
-            this.cbModelo.Location = new System.Drawing.Point(227, 26);
+            this.cbModelo.Location = new System.Drawing.Point(367, 26);
             this.cbModelo.Name = "cbModelo";
-            this.cbModelo.Size = new System.Drawing.Size(595, 21);
+            this.cbModelo.Size = new System.Drawing.Size(455, 21);
             this.cbModelo.TabIndex = 1;
             // 
             // panel2
             // 
             this.panel2.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel2.Location = new System.Drawing.Point(220, 7);
+            this.panel2.Controls.Add(this.panel3);
+            this.panel2.Location = new System.Drawing.Point(357, 7);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(1, 42);
             this.panel2.TabIndex = 16;
@@ -313,6 +314,9 @@
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
+            this.pnlFiltroInfo.Controls.Add(this.cbTipo);
+            this.pnlFiltroInfo.Controls.Add(this.lbTipo);
+            this.pnlFiltroInfo.Controls.Add(this.panel4);
             this.pnlFiltroInfo.Controls.Add(this.btImportar);
             this.pnlFiltroInfo.Controls.Add(this.panel2);
             this.pnlFiltroInfo.Controls.Add(this.cbModelo);
@@ -388,7 +392,7 @@
             this.pictureBox1.Image = global::GlassFilm.Properties.Resources.clique_aqui;
             this.pictureBox1.Location = new System.Drawing.Point(6, 355);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(225, 140);
+            this.pictureBox1.Size = new System.Drawing.Size(225, 203);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pictureBox1.TabIndex = 19;
             this.pictureBox1.TabStop = false;
@@ -504,39 +508,53 @@
             this.txtObs.Size = new System.Drawing.Size(681, 100);
             this.txtObs.TabIndex = 0;
             // 
-            // tbDesenho
+            // panel3
             // 
-            this.tbDesenho.Controls.Add(this.tabWindowTint);
-            this.tbDesenho.Controls.Add(this.tabPPV);
-            this.tbDesenho.Location = new System.Drawing.Point(8, 86);
-            this.tbDesenho.Name = "tbDesenho";
-            this.tbDesenho.SelectedIndex = 0;
-            this.tbDesenho.Size = new System.Drawing.Size(687, 414);
-            this.tbDesenho.TabIndex = 19;
-            this.tbDesenho.Selected += new System.Windows.Forms.TabControlEventHandler(this.tbDesenho_Selected);
-            this.tbDesenho.TabIndexChanged += new System.EventHandler(this.tbDesenho_TabIndexChanged);
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel3.Location = new System.Drawing.Point(-213, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1, 42);
+            this.panel3.TabIndex = 17;
             // 
-            // tabWindowTint
+            // panel4
             // 
-            this.tabWindowTint.Controls.Add(this.vectorView);
-            this.tabWindowTint.Location = new System.Drawing.Point(4, 22);
-            this.tabWindowTint.Name = "tabWindowTint";
-            this.tabWindowTint.Padding = new System.Windows.Forms.Padding(3);
-            this.tabWindowTint.Size = new System.Drawing.Size(679, 388);
-            this.tabWindowTint.TabIndex = 0;
-            this.tabWindowTint.Text = "Window Tint";
-            this.tabWindowTint.UseVisualStyleBackColor = true;
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel4.Controls.Add(this.panel5);
+            this.panel4.Location = new System.Drawing.Point(144, 6);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1, 42);
+            this.panel4.TabIndex = 17;
             // 
-            // tabPPV
+            // panel5
             // 
-            this.tabPPV.Controls.Add(this.vvPPV);
-            this.tabPPV.Location = new System.Drawing.Point(4, 22);
-            this.tabPPV.Name = "tabPPV";
-            this.tabPPV.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPPV.Size = new System.Drawing.Size(679, 388);
-            this.tabPPV.TabIndex = 1;
-            this.tabPPV.Text = "PPV";
-            this.tabPPV.UseVisualStyleBackColor = true;
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel5.Location = new System.Drawing.Point(-213, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1, 42);
+            this.panel5.TabIndex = 17;
+            // 
+            // lbTipo
+            // 
+            this.lbTipo.AutoSize = true;
+            this.lbTipo.ForeColor = System.Drawing.Color.White;
+            this.lbTipo.Location = new System.Drawing.Point(12, 10);
+            this.lbTipo.Name = "lbTipo";
+            this.lbTipo.Size = new System.Drawing.Size(31, 13);
+            this.lbTipo.TabIndex = 18;
+            this.lbTipo.Text = "Tipo:";
+            // 
+            // cbTipo
+            // 
+            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbTipo.FormattingEnabled = true;
+            this.cbTipo.Items.AddRange(new object[] {
+            "Window Tint",
+            "PPV"});
+            this.cbTipo.Location = new System.Drawing.Point(15, 26);
+            this.cbTipo.Name = "cbTipo";
+            this.cbTipo.Size = new System.Drawing.Size(122, 21);
+            this.cbTipo.TabIndex = 19;
             // 
             // vectorView
             // 
@@ -544,33 +562,15 @@
             this.vectorView.AllowTransforms = true;
             this.vectorView.BackColor = System.Drawing.Color.White;
             this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vectorView.Dock = System.Windows.Forms.DockStyle.Fill;
             this.vectorView.ForeColor = System.Drawing.Color.Black;
             this.vectorView.GridColor = System.Drawing.Color.Green;
             this.vectorView.GridSize = 60;
-            this.vectorView.Location = new System.Drawing.Point(3, 3);
+            this.vectorView.Location = new System.Drawing.Point(0, 86);
             this.vectorView.Name = "vectorView";
             this.vectorView.ShowGrid = false;
-            this.vectorView.Size = new System.Drawing.Size(673, 382);
-            this.vectorView.TabIndex = 8;
+            this.vectorView.Size = new System.Drawing.Size(695, 414);
+            this.vectorView.TabIndex = 20;
             this.vectorView.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
-            // 
-            // vvPPV
-            // 
-            this.vvPPV.AllowMoveDocument = false;
-            this.vvPPV.AllowTransforms = true;
-            this.vvPPV.BackColor = System.Drawing.Color.White;
-            this.vvPPV.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.vvPPV.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.vvPPV.ForeColor = System.Drawing.Color.Black;
-            this.vvPPV.GridColor = System.Drawing.Color.Green;
-            this.vvPPV.GridSize = 60;
-            this.vvPPV.Location = new System.Drawing.Point(3, 3);
-            this.vvPPV.Name = "vvPPV";
-            this.vvPPV.ShowGrid = false;
-            this.vvPPV.Size = new System.Drawing.Size(673, 382);
-            this.vvPPV.TabIndex = 9;
-            this.vvPPV.SelectionChanged += new VectorView.VectorEventHandler(this.vectorView_SelectionChanged);
             // 
             // FrmCadastroDesenho
             // 
@@ -578,7 +578,7 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(935, 665);
             this.ControlBox = false;
-            this.Controls.Add(this.tbDesenho);
+            this.Controls.Add(this.vectorView);
             this.Controls.Add(this.groupBox4);
             this.Controls.Add(this.panel1);
             this.Controls.Add(this.pbDesenho);
@@ -595,6 +595,7 @@
             this.toolPrincipal.PerformLayout();
             this.status.ResumeLayout(false);
             this.status.PerformLayout();
+            this.panel2.ResumeLayout(false);
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
             this.panel1.ResumeLayout(false);
@@ -609,9 +610,7 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.tbDesenho.ResumeLayout(false);
-            this.tabWindowTint.ResumeLayout(false);
-            this.tabPPV.ResumeLayout(false);
+            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -658,10 +657,11 @@
         private System.Windows.Forms.ToolStripButton toolStripButton4;
         private System.Windows.Forms.GroupBox gbNomePeca;
         private System.Windows.Forms.TextBox tbNomePeca;
-        private System.Windows.Forms.TabControl tbDesenho;
-        private System.Windows.Forms.TabPage tabWindowTint;
+        private System.Windows.Forms.Panel panel3;
+        private System.Windows.Forms.Panel panel4;
+        private System.Windows.Forms.Panel panel5;
+        private System.Windows.Forms.ComboBox cbTipo;
+        private System.Windows.Forms.Label lbTipo;
         private VectorView.VectorViewCtr vectorView;
-        private System.Windows.Forms.TabPage tabPPV;
-        private VectorView.VectorViewCtr vvPPV;
     }
 }

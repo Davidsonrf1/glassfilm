@@ -9,10 +9,12 @@ namespace GlassFilm.Class
     public class SeletorVeiculo
     {
         bool listaTodas = false;
+        TipoDesenho tipoDesenho = TipoDesenho.None;
 
         ComboBox cbMarcas = null;
         ComboBox cbModelos = null;
         ComboBox cbVeiculos = null;
+        ComboBox cbTipo = null;
 
         List<Marca> marcas = new List<Marca>();
         List<Modelo> modelos = new List<Modelo>();
@@ -77,6 +79,25 @@ namespace GlassFilm.Class
             }
         }
 
+        public ComboBox CbTipo
+        {
+            get
+            {
+                return cbTipo;
+            }
+
+            set
+            {
+                if (cbTipo != null)
+                    cbTipo.SelectedIndexChanged -= CbTipo_SelectedIndexChanged;
+
+                cbTipo = value;
+                
+                if (cbTipo != null)
+                    cbTipo.SelectedIndexChanged += CbTipo_SelectedIndexChanged;
+            }
+        }
+
         public ComboBox CbVeiculos
         {
             get
@@ -114,6 +135,19 @@ namespace GlassFilm.Class
             }
         }
 
+        public TipoDesenho TipoDesenho
+        {
+            get
+            {
+                return tipoDesenho;
+            }
+
+            set
+            {
+                tipoDesenho = value;
+            }
+        }
+
         void PreencheCbModelos()
         {
             if (cbModelos != null)
@@ -123,7 +157,7 @@ namespace GlassFilm.Class
 
                 if (marcaAtual != null)
                 {
-                    modelos = DBManager.CarregarModelos(marcaAtual.Id, listaTodas);
+                    modelos = DBManager.CarregarModelos(marcaAtual.Id, listaTodas, tipoDesenho);
 
                     foreach (Modelo m in modelos)
                     {
@@ -131,6 +165,21 @@ namespace GlassFilm.Class
                     }
                 }
             }            
+        }
+
+        private void CbTipo_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            switch (cbTipo.SelectedIndex)
+            {
+                case 0:                    
+                        tipoDesenho = TipoDesenho.WindowTint;                    
+                    break;
+                case 1:                    
+                        tipoDesenho = TipoDesenho.PPV;                    
+                    break;
+            }
+
+            AtualizaMarcas();
         }
 
         private void CbModelos_SelectedIndexChanged(object sender, EventArgs e)
@@ -163,7 +212,7 @@ namespace GlassFilm.Class
 
                 if (modeloAtual != null)
                 {
-                    modeloAno = DBManager.CarregaModeloANO(modeloAtual.Id);
+                    modeloAno = DBManager.CarregaModeloANO(modeloAtual.Id, listaTodas, tipoDesenho);
                     foreach (ModeloAno m in modeloAno)
                     {
                         cbVeiculos.Items.Add(m);
@@ -239,7 +288,7 @@ namespace GlassFilm.Class
         {
             Limpar();
 
-            marcas = DBManager.CarregarMarcas(listaTodas);
+            marcas = DBManager.CarregarMarcas(listaTodas, tipoDesenho);
             PreencheCbMarcas();
 
             return DBManager.GetNumDesenhos();

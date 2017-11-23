@@ -344,6 +344,7 @@
     <None Include="Resources\logoComputer3001.png" />
   </ItemGroup>
   <ItemGroup>
+    <EmbeddedResource Include="Resources\atualiza.html" />
     <None Include="Resources\export-icon.png" />
     <None Include="Resources\no_camera16001.png" />
     <None Include="Resources\no_camera1600.png" />

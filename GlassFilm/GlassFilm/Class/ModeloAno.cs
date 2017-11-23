@@ -16,6 +16,7 @@ namespace GlassFilm.Class
             this.codigo_ano = codigo_ano;
             this.codigo_modelo = codigo_modelo;
             this.ano = ano;
+
         }
 
         public string Codigo_ano

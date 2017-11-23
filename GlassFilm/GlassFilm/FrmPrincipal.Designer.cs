@@ -53,6 +53,11 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel2 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
+            this.pnArquitetura = new System.Windows.Forms.Panel();
+            this.numAltura = new System.Windows.Forms.NumericUpDown();
+            this.label4 = new System.Windows.Forms.Label();
+            this.numLargura = new System.Windows.Forms.NumericUpDown();
+            this.label3 = new System.Windows.Forms.Label();
             this.btnDetalhes = new System.Windows.Forms.Button();
             this.lbQtde = new System.Windows.Forms.Label();
             this.panel7 = new System.Windows.Forms.Panel();
@@ -80,17 +85,15 @@
             this.lbCalculando = new System.Windows.Forms.Label();
             this.pnlCalculando = new System.Windows.Forms.Panel();
             this.pbCalc = new System.Windows.Forms.ProgressBar();
-            this.pnArquitetura = new System.Windows.Forms.Panel();
-            this.label3 = new System.Windows.Forms.Label();
-            this.numLargura = new System.Windows.Forms.NumericUpDown();
-            this.label4 = new System.Windows.Forms.Label();
-            this.numAltura = new System.Windows.Forms.NumericUpDown();
             this.menuStrip1.SuspendLayout();
             this.pnlprincipal.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.pnlFiltroInfo.SuspendLayout();
+            this.pnArquitetura.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAltura)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLargura)).BeginInit();
             this.panel8.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitCorte)).BeginInit();
             this.splitCorte.Panel1.SuspendLayout();
@@ -99,9 +102,6 @@
             this.pnCript.SuspendLayout();
             this.toolCorte.SuspendLayout();
             this.pnlCalculando.SuspendLayout();
-            this.pnArquitetura.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numLargura)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numAltura)).BeginInit();
             this.SuspendLayout();
             // 
             // menuStrip1
@@ -372,6 +372,7 @@
             this.pictureBox1.Size = new System.Drawing.Size(360, 110);
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
+            this.pictureBox1.Click += new System.EventHandler(this.pictureBox1_Click);
             // 
             // panel2
             // 
@@ -404,6 +405,64 @@
             this.pnlFiltroInfo.Size = new System.Drawing.Size(1391, 59);
             this.pnlFiltroInfo.TabIndex = 5;
             this.pnlFiltroInfo.Visible = false;
+            // 
+            // pnArquitetura
+            // 
+            this.pnArquitetura.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.pnArquitetura.Controls.Add(this.numAltura);
+            this.pnArquitetura.Controls.Add(this.label4);
+            this.pnArquitetura.Controls.Add(this.numLargura);
+            this.pnArquitetura.Controls.Add(this.label3);
+            this.pnArquitetura.Location = new System.Drawing.Point(151, 7);
+            this.pnArquitetura.Name = "pnArquitetura";
+            this.pnArquitetura.Size = new System.Drawing.Size(1237, 50);
+            this.pnArquitetura.TabIndex = 17;
+            this.pnArquitetura.Visible = false;
+            // 
+            // numAltura
+            // 
+            this.numAltura.Location = new System.Drawing.Point(169, 20);
+            this.numAltura.Maximum = new decimal(new int[] {
+            1999999,
+            0,
+            0,
+            0});
+            this.numAltura.Name = "numAltura";
+            this.numAltura.Size = new System.Drawing.Size(120, 20);
+            this.numAltura.TabIndex = 6;
+            this.numAltura.ValueChanged += new System.EventHandler(this.numLargura_ValueChanged);
+            // 
+            // label4
+            // 
+            this.label4.AutoSize = true;
+            this.label4.Location = new System.Drawing.Point(166, 3);
+            this.label4.Name = "label4";
+            this.label4.Size = new System.Drawing.Size(59, 13);
+            this.label4.TabIndex = 5;
+            this.label4.Text = "Altura (mm)";
+            // 
+            // numLargura
+            // 
+            this.numLargura.Location = new System.Drawing.Point(13, 20);
+            this.numLargura.Maximum = new decimal(new int[] {
+            1999999,
+            0,
+            0,
+            0});
+            this.numLargura.Name = "numLargura";
+            this.numLargura.Size = new System.Drawing.Size(120, 20);
+            this.numLargura.TabIndex = 4;
+            this.numLargura.ValueChanged += new System.EventHandler(this.numLargura_ValueChanged);
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(10, 3);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(68, 13);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "Largura (mm)";
             // 
             // btnDetalhes
             // 
@@ -731,64 +790,6 @@
             this.pbCalc.TabIndex = 1;
             this.pbCalc.Visible = false;
             // 
-            // pnArquitetura
-            // 
-            this.pnArquitetura.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.pnArquitetura.Controls.Add(this.numAltura);
-            this.pnArquitetura.Controls.Add(this.label4);
-            this.pnArquitetura.Controls.Add(this.numLargura);
-            this.pnArquitetura.Controls.Add(this.label3);
-            this.pnArquitetura.Location = new System.Drawing.Point(151, 7);
-            this.pnArquitetura.Name = "pnArquitetura";
-            this.pnArquitetura.Size = new System.Drawing.Size(1237, 50);
-            this.pnArquitetura.TabIndex = 17;
-            this.pnArquitetura.Visible = false;
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(10, 3);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(68, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "Largura (mm)";
-            // 
-            // numLargura
-            // 
-            this.numLargura.Location = new System.Drawing.Point(13, 20);
-            this.numLargura.Maximum = new decimal(new int[] {
-            1999999,
-            0,
-            0,
-            0});
-            this.numLargura.Name = "numLargura";
-            this.numLargura.Size = new System.Drawing.Size(120, 20);
-            this.numLargura.TabIndex = 4;
-            this.numLargura.ValueChanged += new System.EventHandler(this.numLargura_ValueChanged);
-            // 
-            // label4
-            // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(166, 3);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(59, 13);
-            this.label4.TabIndex = 5;
-            this.label4.Text = "Altura (mm)";
-            // 
-            // numAltura
-            // 
-            this.numAltura.Location = new System.Drawing.Point(169, 20);
-            this.numAltura.Maximum = new decimal(new int[] {
-            1999999,
-            0,
-            0,
-            0});
-            this.numAltura.Name = "numAltura";
-            this.numAltura.Size = new System.Drawing.Size(120, 20);
-            this.numAltura.TabIndex = 6;
-            this.numAltura.ValueChanged += new System.EventHandler(this.numLargura_ValueChanged);
-            // 
             // FrmPrincipal
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -822,6 +823,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
+            this.pnArquitetura.ResumeLayout(false);
+            this.pnArquitetura.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.numAltura)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.numLargura)).EndInit();
             this.panel8.ResumeLayout(false);
             this.splitCorte.Panel1.ResumeLayout(false);
             this.splitCorte.Panel2.ResumeLayout(false);
@@ -832,10 +837,6 @@
             this.toolCorte.PerformLayout();
             this.pnlCalculando.ResumeLayout(false);
             this.pnlCalculando.PerformLayout();
-            this.pnArquitetura.ResumeLayout(false);
-            this.pnArquitetura.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this.numLargura)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.numAltura)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

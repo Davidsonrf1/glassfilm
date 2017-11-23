@@ -30,14 +30,12 @@
         {
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbVisualizado = new System.Windows.Forms.CheckBox();
-            this.button1 = new System.Windows.Forms.Button();
-            this.lvUpdate = new System.Windows.Forms.ListView();
+            this.webBrowser1 = new System.Windows.Forms.WebBrowser();
             this.panel1.SuspendLayout();
             this.SuspendLayout();
             // 
             // panel1
             // 
-            this.panel1.Controls.Add(this.button1);
             this.panel1.Controls.Add(this.cbVisualizado);
             this.panel1.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.panel1.Location = new System.Drawing.Point(0, 345);
@@ -56,36 +54,29 @@
     "es)";
             this.cbVisualizado.UseVisualStyleBackColor = true;
             // 
-            // button1
+            // webBrowser1
             // 
-            this.button1.Location = new System.Drawing.Point(879, 7);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
-            this.button1.TabIndex = 1;
-            this.button1.Text = "OK";
-            this.button1.UseVisualStyleBackColor = true;
-            // 
-            // lvUpdate
-            // 
-            this.lvUpdate.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.lvUpdate.Location = new System.Drawing.Point(0, 0);
-            this.lvUpdate.Name = "lvUpdate";
-            this.lvUpdate.Size = new System.Drawing.Size(963, 339);
-            this.lvUpdate.TabIndex = 2;
-            this.lvUpdate.UseCompatibleStateImageBehavior = false;
+            this.webBrowser1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.webBrowser1.Location = new System.Drawing.Point(0, 0);
+            this.webBrowser1.MinimumSize = new System.Drawing.Size(20, 20);
+            this.webBrowser1.Name = "webBrowser1";
+            this.webBrowser1.Size = new System.Drawing.Size(963, 345);
+            this.webBrowser1.TabIndex = 2;
             // 
             // FrmNovosVeiculos
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(963, 382);
-            this.Controls.Add(this.lvUpdate);
+            this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.panel1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedToolWindow;
+            this.MinimizeBox = false;
             this.Name = "FrmNovosVeiculos";
-            this.Text = "Novas atualizações";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Atualização CUT FILM";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FrmNovosVeiculos_FormClosing);
+            this.Load += new System.EventHandler(this.FrmNovosVeiculos_Load);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.ResumeLayout(false);
@@ -95,7 +86,6 @@
         #endregion
         private System.Windows.Forms.Panel panel1;
         private System.Windows.Forms.CheckBox cbVisualizado;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.ListView lvUpdate;
+        private System.Windows.Forms.WebBrowser webBrowser1;
     }
 }

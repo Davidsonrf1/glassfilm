@@ -11,6 +11,7 @@ using System.Data;
 using System.Windows.Forms;
 using System.Diagnostics;
 using System.Reflection;
+using System.Threading.Tasks;
 
 namespace GlassFilm.Sync
 {
@@ -136,9 +137,8 @@ namespace GlassFilm.Sync
             foreach (DataRow r in tb.Rows)
             {
                 int codigo = int.Parse(r["VEICULO"].ToString());
-                string ppv = null;
-                string svg = DBManager.CarregarDesenho(codigo, out codigo_desenho, out ppv);
-                DBManager.SalvarDesenho(codigo, svg, null, null);
+                string svg = DBManager.CarregarDesenho(codigo, out codigo_desenho, TipoDesenho.WindowTint);
+                DBManager.SalvarDesenho(codigo, svg, null, TipoDesenho.WindowTint, null);
 
                 count++;
 
@@ -251,21 +251,21 @@ namespace GlassFilm.Sync
         {
             Assembly assembly = Assembly.GetExecutingAssembly();
             FileVersionInfo fvi = FileVersionInfo.GetVersionInfo(assembly.Location);
-            string version = fvi.FileVersion;
+            string version = fvi.FileVersion.Replace(".", "");
 
             string remote = "";
 
             try
             {
                 BaixarArquivoFTP("ftp://cutfilm.com.br/instalador/CutFilm.ver", "CutFilm.ver");
-                remote = File.ReadAllText("CutFilm.ver");
+                remote = File.ReadAllText("CutFilm.ver").Replace(".", "");
             }
             catch
             {
                 return false;
             }
 
-            if (!version.Equals(remote))
+            if (Convert.ToInt32(version) < Convert.ToInt32(remote))
             {
                 return true;
             }

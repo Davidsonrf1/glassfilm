@@ -352,6 +352,29 @@ namespace GlassFilm.Class
             {
 
             }
+
+            try
+            {
+                cmd = _modelConnection.CreateCommand();
+
+                AddIfNotExists("DESENHOS", "TIPO_DESENHO", "INT NULL DEFAULT 0", cmd);
+                AddIfNotExists("DESENHOS", "DESENHO_PPV", "DESENHO_PPV BLOB NULL", cmd);
+                AddIfNotExists("DESENHOS", "TAMANHO_DESENHO_PPV", "INT NULL DEFAULT 0", cmd);
+
+                cmd = _mainConnection.CreateCommand();
+
+                AddIfNotExists("MODELO_ANO", "VERSAO_MODELO", "INT NULL DEFAULT 0", cmd);
+                AddIfNotExists("MODELO_ANO", "POSSUI_PPV", "INT NULL DEFAULT 0", cmd);
+                AddIfNotExists("MODELO", "POSSUI_PPV", "INT NULL DEFAULT 0", cmd);
+                AddIfNotExists("MARCA", "POSSUI_PPV", "INT NULL DEFAULT 0", cmd);
+
+                cmd = _accessConnection.CreateCommand();
+                AddIfNotExists("EMPRESA", "VERSAO_ATUAL_DESENHOS", "INT NULL DEFAULT 0", cmd);
+            }
+            catch
+            {
+                
+            }
         }
 
         public static void EliminaRegistro(string tabela, string codigo)
@@ -381,11 +404,26 @@ namespace GlassFilm.Class
             return rolos;
         }
 
-        public static List<Marca> CarregarMarcas(bool todas = false)
+        public static List<Marca> CarregarMarcas(bool todas, TipoDesenho tipoDesenho)
         {
             SQLiteCommand cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "SELECT * FROM MARCA " + (!todas ? "WHERE POSSUI_DESENHO = 1" : "") + (!todas ? " AND " : " WHERE ") + "(SELECT CODIGO_MODELO FROM MODELO WHERE CODIGO_MARCA = MARCA.CODIGO_MARCA)>0 ORDER BY MARCA";
+            string filtro = "WHERE 1=1 ";
+
+            if (!todas)
+            {
+                switch (tipoDesenho)
+                {
+                    case TipoDesenho.WindowTint:
+                        filtro += " AND POSSUI_DESENHO = 1 ";
+                        break;
+                    case TipoDesenho.PPV:
+                        filtro += " AND POSSUI_PPV = 1 ";
+                        break;
+                }
+            }
+
+            cmd.CommandText = $"SELECT * FROM MARCA {filtro} AND (SELECT CODIGO_MODELO FROM MODELO WHERE CODIGO_MARCA = MARCA.CODIGO_MARCA)>0 ORDER BY MARCA";
             IDataReader dr = cmd.ExecuteReader();
 
             List<Marca> marcas = new List<Marca>();
@@ -397,11 +435,26 @@ namespace GlassFilm.Class
             return marcas;
         }
 
-        public static List<Modelo> CarregarModelos(int marca, bool todos = false)
+        public static List<Modelo> CarregarModelos(int marca, bool todos, TipoDesenho tipoDesenho)
         {
             SQLiteCommand cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "SELECT * FROM MODELO WHERE CODIGO_MARCA = " + marca.ToString() + (!todos ? " AND POSSUI_DESENHO = 1" : "") + " ORDER BY MODELO";
+            string filtro = "WHERE CODIGO_MARCA = " + marca.ToString();
+
+            if (!todos)
+            {
+                switch (tipoDesenho)
+                {
+                    case TipoDesenho.WindowTint:
+                        filtro += " AND POSSUI_DESENHO = 1 ";
+                        break;
+                    case TipoDesenho.PPV:
+                        filtro += " AND POSSUI_PPV = 1 ";
+                        break;
+                }
+            }
+
+            cmd.CommandText = $"SELECT * FROM MODELO {filtro} ORDER BY MODELO";
             IDataReader dr = cmd.ExecuteReader();
 
             List<Modelo> modelos = new List<Class.Modelo>();
@@ -413,11 +466,26 @@ namespace GlassFilm.Class
             return modelos;
         }
 
-        public static List<Veiculo> CarregarVeiculos(int modelo, bool todos = false)
+        public static List<Veiculo> CarregarVeiculos(int modelo, bool todos, TipoDesenho tipoDesenho)
         {
             SQLiteCommand cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "SELECT * FROM VEICULO WHERE CODIGO_MODELO = " + modelo.ToString() + (!todos ? " AND POSSUI_DESENHO = 1" : "") + " ORDER BY ANO";
+            string filtro = "WHERE CODIGO_MODELO = " + modelo;
+
+            if (!todos)
+            {
+                switch (tipoDesenho)
+                {
+                    case TipoDesenho.WindowTint:
+                        filtro += " AND POSSUI_DESENHO = 1 ";
+                        break;
+                    case TipoDesenho.PPV:
+                        filtro += " AND POSSUI_PPV = 1 ";
+                        break;
+                }
+            }
+
+            cmd.CommandText = $"SELECT * FROM VEICULO {filtro} ORDER BY ANO";
             IDataReader dr = cmd.ExecuteReader();
 
             List<Veiculo> veiculos = new List<Class.Veiculo>();
@@ -429,11 +497,26 @@ namespace GlassFilm.Class
             return veiculos;
         }
 
-        public static List<ModeloAno> CarregaModeloANO(int modelo)
+        public static List<ModeloAno> CarregaModeloANO(int modelo, bool todos, TipoDesenho tipoDesenho)
         {
             SQLiteCommand cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "SELECT * FROM MODELO_ANO WHERE CODIGO_MODELO = " + modelo.ToString() + " ORDER BY ANO ASC";
+            string filtro = "WHERE CODIGO_MODELO = " + modelo;
+
+            if (!todos)
+            {
+                switch (tipoDesenho)
+                {
+                    case TipoDesenho.WindowTint:
+                        filtro += " AND POSSUI_DESENHO = 1 ";
+                        break;
+                    case TipoDesenho.PPV:
+                        filtro += " AND POSSUI_PPV = 1 ";
+                        break;
+                }
+            }
+
+            cmd.CommandText = $"SELECT * FROM MODELO_ANO {filtro} ORDER BY ANO ASC";
             IDataReader dr = cmd.ExecuteReader();
 
             List<ModeloAno> lma = new List<ModeloAno>();
@@ -561,7 +644,7 @@ namespace GlassFilm.Class
             return null;
         }
 
-        public static string CarregarDesenho(int veiculo, out int codigo_desenho, out string desenhoPpv)
+        public static string CarregarDesenho(int veiculo, out int codigo_desenho, TipoDesenho tipo)
         {
             codigo_desenho = -1;
 
@@ -570,19 +653,34 @@ namespace GlassFilm.Class
             cmd.CommandText = "SELECT * FROM DESENHOS WHERE VEICULO = " + veiculo.ToString();
             IDataReader dr = cmd.ExecuteReader();
 
-            desenhoPpv = null;
-
             if (dr.Read())
             {
-                int len = Convert.ToInt32(dr["TAMANHO"].ToString());
-                byte[] buffer = new byte[len];
-                dr.GetBytes(dr.GetOrdinal("DESENHO"), 0, buffer, 0, len);
-                string desenho = Encoding.UTF8.GetString(buffer);
-                
-                len = Convert.ToInt32(dr["TAMANHO_DESENHO_PPV"].ToString());
-                buffer = new byte[len];
-                dr.GetBytes(dr.GetOrdinal("DESENHO_PPV"), 0, buffer, 0, len);
-                string ppv = Encoding.UTF8.GetString(buffer);
+                int ord = 0;
+                byte[] buffer;
+                string desenho = null;
+                int len = 0;
+
+                if (tipo == TipoDesenho.WindowTint)
+                {
+                    ord = dr.GetOrdinal("DESENHO");
+                }
+
+                if (tipo == TipoDesenho.PPV)
+                {
+                    ord = dr.GetOrdinal("DESENHO_PPV");
+                }
+
+                if (!dr.IsDBNull(ord))
+                {
+                    if(tipo == TipoDesenho.WindowTint)
+                        len = Convert.ToInt32(dr["TAMANHO"].ToString());
+                    else
+                        len = Convert.ToInt32(dr["TAMANHO_DESENHO_PPV"].ToString());
+
+                    buffer = new byte[len];
+                    dr.GetBytes(ord, 0, buffer, 0, len);
+                    desenho = Encoding.UTF8.GetString(buffer);
+                }
 
                 try
                 {
@@ -590,8 +688,7 @@ namespace GlassFilm.Class
                     {
                         if (dr["DESENHOC"].ToString().Equals("S"))
                         {
-                            desenho = Bolacha(desenho);
-                            ppv = Bolacha(ppv);
+                            desenho = desenho != null ? Bolacha(desenho): null;
                         }
                     }
                 }
@@ -601,8 +698,6 @@ namespace GlassFilm.Class
                 }
 
                 dr.Close();
-
-                desenhoPpv = ppv;
                 return desenho;
             }            
 
@@ -687,7 +782,7 @@ namespace GlassFilm.Class
                 cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
                 cmd.ExecuteNonQuery();
             }
-            catch (Exception ex)
+            catch
             {
                 tr.Rollback();
                 throw;
@@ -727,43 +822,53 @@ namespace GlassFilm.Class
             return DBNull.Value;
         }
 
-        public static void SalvarDesenho(int codigo_ano, string svgWindowTint, string svgPPV, string obs, byte[] imageData = null)
+        public static void AddIfNotExists(string table, string column, string colDef, SQLiteCommand cmd)
+        {
+            if (!ColExiste(table, column, cmd.Connection))
+            {
+                cmd.CommandText = $"ALTER TABLE {table} ADD {column} {colDef}";
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public static void AddIfNotExists(string table, string column, string cmdStr, SQLiteConnection con)
+        {
+            SQLiteCommand c = con.CreateCommand();
+            AddIfNotExists(table, column, cmdStr, c);
+        }
+
+        public static void RemoverAno(int codigo_ano)
+        {
+
+        }
+
+        public static void SalvarDesenho(int codigo_ano, string svg, string obs, TipoDesenho tipo, byte[] imageData = null)
         {
             bool ehBiscoito = false;
             if (ColExiste("DESENHOS", "DESENHOC", _modelConnection))
             {
-                if(svgWindowTint != null)
-                    svgWindowTint = Biscoito(svgWindowTint);
-
-                if (svgPPV != null)
-                    svgPPV = Biscoito(svgPPV);
+                if(svg != null)
+                    svg = Biscoito(svg);
 
                 ehBiscoito = true;
             }
 
-            SQLiteCommand cmd = _modelConnection.CreateCommand();
+            SQLiteCommand cmd = null;
 
-            if (!ColExiste("DESENHOS", "TIPO_DESENHO", _modelConnection))
-            {
-                cmd.CommandText = "ALTER TABLE DESENHOS ADD TIPO_DESENHO INT NULL DEFAULT 0";
-                cmd.ExecuteNonQuery();
-            }
+            cmd = _mainConnection.CreateCommand();
 
-            if (!ColExiste("DESENHOS", "DESENHO_PPV", _modelConnection))
-            {
-                cmd.CommandText = "ALTER TABLE DESENHOS ADD DESENHO_PPV BLOB NULL";
-                cmd.ExecuteNonQuery();
-            }
+            int versaoModelo = 0;
+            cmd.CommandText = "SELECT IFNULL(MAX(VERSAO_MODELO), 0) VERSAO FROM MODELO_ANO";
+            versaoModelo = Convert.ToInt32(cmd.ExecuteScalar().ToString()) + 1;
 
-            if (!ColExiste("DESENHOS", "TAMANHO_DESENHO_PPV", _modelConnection))
-            {
-                cmd.CommandText = "ALTER TABLE DESENHOS ADD TAMANHO_DESENHO_PPV INT NULL DEFAULT 0";
-                cmd.ExecuteNonQuery();
-            }
+            //cmd.CommandText = $"UPDATE MODELO_ANO SET VERSAO_MODELO = {versaoModelo}";
+            //cmd.ExecuteNonQuery();
 
             object svgData = null;
 
             int versao = 0;
+
+            cmd = _modelConnection.CreateCommand();
             SQLiteTransaction tr = _modelConnection.BeginTransaction();
 
             try
@@ -773,44 +878,82 @@ namespace GlassFilm.Class
                 cmd.CommandText = "SELECT IFNULL(MAX(VERSAO), 0) VERSAO FROM DESENHOS";
                 versao = Convert.ToInt32(cmd.ExecuteScalar().ToString()) + 1;
 
-                cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
-                cmd.ExecuteNonQuery();                 
-
-                cmd.CommandText = "INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, SINCRONIZAR, VISUALIZADO, FOTO, OBS, TIPO_DESENHO, DESENHO_PPV, TAMANHO_DESENHO_PPV) VALUES (@veic,@versao,@dados,@tamanho, 1, 0, @foto, @obs, @TIPO_DESENHO, @DESENHO_PPV, @TAMANHO_DESENHO_PPV)";
-                cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
-                cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
-
-                svgData = SvgData(svgWindowTint, out len);
-                cmd.Parameters.Add("@dados", DbType.Binary, len).Value =  svgData;
-                cmd.Parameters.Add("@tamanho", DbType.Int32).Value = len;
-
-                svgData = SvgData(svgPPV, out len);
-                cmd.Parameters.Add("@DESENHO_PPV", DbType.Binary, len).Value = svgData;
-                cmd.Parameters.Add("@TAMANHO_DESENHO_PPV", DbType.Int32).Value = len;
-
-                cmd.Parameters.Add("@TIPO_DESENHO", DbType.Int32).Value = 0;
-
-                if (imageData != null)
-                    cmd.Parameters.Add("@foto", DbType.Binary, imageData.Length).Value = imageData;
-                else
-                    cmd.Parameters.Add("@foto", DbType.Binary, 0).Value = DBNull.Value;
-
-                if (obs != null)
+                if (svg == null)
                 {
-                    byte[] obsData = Encoding.UTF8.GetBytes(obs);
-                    cmd.Parameters.Add("@obs", DbType.Binary, obsData.Length).Value = obsData;
-                }
-                else
-                {
-                    cmd.Parameters.Add("@obs", DbType.Binary, 0).Value = DBNull.Value;
-                }
-                
-                cmd.ExecuteNonQuery();
-
-                if (ehBiscoito)
-                {
-                    cmd.CommandText = "UPDATE DESENHOS SET DESENHOC = 'S' WHERE VEICULO = " + codigo_ano.ToString();
+                    cmd.CommandText = "DELETE FROM DESENHOS WHERE VEICULO = " + codigo_ano.ToString();
                     cmd.ExecuteNonQuery();
+                }
+                else
+                {
+                    cmd.CommandText = $"select count(*) from DESENHOS where veiculo = {codigo_ano}";
+                    int count = 0;
+
+                    try
+                    {
+                        count = Convert.ToInt32(cmd.ExecuteScalar());
+                    }
+                    catch
+                    {
+                        count = 0;
+                    }
+
+                    string colDesenho = "";
+                    string colTamanho = "";
+                    switch (tipo)
+                    {
+                        case TipoDesenho.WindowTint:
+                            colDesenho = "DESENHO";
+                            colTamanho = "TAMANHO";
+                            break;
+                        case TipoDesenho.PPV:
+                            colDesenho = "DESENHO_PPV";
+                            colTamanho = "TAMANHO_DESENHO_PPV";
+                            break;
+                    }
+
+                    if (count > 0)
+                    {
+                        cmd.CommandText = $"UPDATE DESENHOS SET VEICULO=@veic, VERSAO=@versao, {colDesenho}=@dados, {colTamanho} = @tamanho, SINCRONIZAR=1, VISUALIZADO=0, FOTO=@foto, OBS=@obs, TIPO_DESENHO=@TIPO_DESENHO WHERE VEICULO = {codigo_ano}";
+                    }
+                    else
+                    {
+                        if (tipo == TipoDesenho.PPV)
+                            cmd.CommandText = $"INSERT INTO DESENHOS (VEICULO, VERSAO, DESENHO, TAMANHO, {colDesenho}, {colTamanho}, SINCRONIZAR, VISUALIZADO, FOTO, OBS, TIPO_DESENHO) VALUES (@veic,@versao,' ', 0, @dados,@tamanho, 1, 0, @foto, @obs, @TIPO_DESENHO)";
+                        else
+                            cmd.CommandText = $"INSERT INTO DESENHOS (VEICULO, VERSAO, {colDesenho}, {colTamanho}, SINCRONIZAR, VISUALIZADO, FOTO, OBS, TIPO_DESENHO) VALUES (@veic,@versao,@dados,@tamanho, 1, 0, @foto, @obs, @TIPO_DESENHO)";
+                    }
+
+                    cmd.Parameters.Add("@veic", DbType.Int32).Value = codigo_ano;
+                    cmd.Parameters.Add("@versao", DbType.Int32).Value = versao;
+
+                    svgData = SvgData(svg, out len);
+                    cmd.Parameters.Add("@dados", DbType.Binary, len).Value = svgData;
+                    cmd.Parameters.Add("@tamanho", DbType.Int32).Value = len;
+
+                    cmd.Parameters.Add("@TIPO_DESENHO", DbType.Int32).Value = 0;
+
+                    if (imageData != null)
+                        cmd.Parameters.Add("@foto", DbType.Binary, imageData.Length).Value = imageData;
+                    else
+                        cmd.Parameters.Add("@foto", DbType.Binary, 0).Value = DBNull.Value;
+
+                    if (obs != null)
+                    {
+                        byte[] obsData = Encoding.UTF8.GetBytes(obs);
+                        cmd.Parameters.Add("@obs", DbType.Binary, obsData.Length).Value = obsData;
+                    }
+                    else
+                    {
+                        cmd.Parameters.Add("@obs", DbType.Binary, 0).Value = DBNull.Value;
+                    }
+
+                    cmd.ExecuteNonQuery();
+
+                    if (ehBiscoito)
+                    {
+                        cmd.CommandText = "UPDATE DESENHOS SET DESENHOC = 'S' WHERE VEICULO = " + codigo_ano.ToString();
+                        cmd.ExecuteNonQuery();
+                    }
                 }
             }
             catch (Exception ex)
@@ -823,14 +966,47 @@ namespace GlassFilm.Class
 
             cmd = _mainConnection.CreateCommand();
 
-            cmd.CommandText = "UPDATE MODELO_ANO SET POSSUI_DESENHO = 1 WHERE CODIGO_ANO = " + codigo_ano.ToString();
-            cmd.ExecuteNonQuery();
+            string possui = "1";
 
-            cmd.CommandText = "UPDATE MODELO SET POSSUI_DESENHO = 1 WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_DESENHO = 1)";
-            cmd.ExecuteNonQuery();
+            if (tipo == TipoDesenho.WindowTint)
+            {
+                possui = svg != null ? "1" : "0";
 
-            cmd.CommandText = "UPDATE MARCA SET POSSUI_DESENHO = 1 WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
-            cmd.ExecuteNonQuery();
+                cmd.CommandText = $"UPDATE MODELO_ANO SET VERSAO_MODELO = {versaoModelo}, POSSUI_DESENHO = {possui} WHERE CODIGO_ANO = {codigo_ano}";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MODELO SET POSSUI_DESENHO = 0";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MODELO SET POSSUI_DESENHO = {possui} WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_DESENHO = 1)";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MARCA SET POSSUI_DESENHO = 0";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MARCA SET POSSUI_DESENHO = {possui} WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_DESENHO = 1)";
+                cmd.ExecuteNonQuery();
+            }
+
+            if (tipo == TipoDesenho.PPV)
+            {
+                possui = svg != null ? "1" : "0";
+
+                cmd.CommandText = $"UPDATE MODELO_ANO SET VERSAO_MODELO = {versaoModelo}, POSSUI_PPV = {possui} WHERE CODIGO_ANO = {codigo_ano}";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = 0";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MODELO SET POSSUI_PPV = {possui} WHERE CODIGO_MODELO IN (SELECT CODIGO_MODELO FROM MODELO_ANO WHERE POSSUI_PPV = 1)";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = 0 ";
+                cmd.ExecuteNonQuery();
+
+                cmd.CommandText = $"UPDATE MARCA SET POSSUI_PPV = {possui} WHERE CODIGO_MARCA IN (SELECT CODIGO_MARCA FROM MODELO WHERE POSSUI_PPV = 1)";
+                cmd.ExecuteNonQuery();
+            }
         }
 
         public static void CloseDatabases()
