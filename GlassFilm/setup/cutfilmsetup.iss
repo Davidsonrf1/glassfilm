@@ -15,9 +15,9 @@ AppSupportURL=http://www.cutfilm.com.br
 AppUpdatesURL=http://www.cutfilm.com.br
 DefaultDirName={pf}\CutFilm
 DisableProgramGroupPage=yes
-OutputDir=C:\Users\Davidson\Source\Repos\glass-film\GlassFilm\setup\out
+OutputDir=C:\Users\Usuário\Source\Repos\glass-film\GlassFilm\setup\out
 OutputBaseFilename=CutFilmeSetup
-SetupIconFile=C:\Users\Davidson\Source\Repos\glass-film\GlassFilm\GlassFilm\iconicon.ico
+SetupIconFile=C:\Users\Usuário\Source\Repos\glass-film\GlassFilm\GlassFilm\iconicon.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -42,7 +42,8 @@ Source: "..\build\Release\System.Data.SQLite.dll"; DestDir: "{app}";
 Source: "..\build\Release\VectorView.dll"; DestDir: "{app}"; 
 Source: "..\build\Release\BaseLimpa\GlassFilm.db"; DestDir: "{app}";
 Source: "..\build\Release\BaseLimpa\Modelos.db"; DestDir: "{app}";       
-Source: "..\build\Release\SQLite.Interop.dll"; DestDir: "{app}"; 
+Source: "..\build\Release\BaseLimpa\Access.db"; DestDir: "{app}";   
+Source: "..\build\Release\x86\SQLite.Interop.dll"; DestDir: "{app}"; 
 
 
 
