@@ -15,9 +15,9 @@ AppSupportURL=http://www.cutfilm.com.br
 AppUpdatesURL=http://www.cutfilm.com.br
 DefaultDirName={pf}\CutFilm
 DisableProgramGroupPage=yes
-OutputDir=C:\Users\Usuário\Source\Repos\glass-film\GlassFilm\setup\out
+OutputDir=out
 OutputBaseFilename=CutFilmeSetup
-SetupIconFile=C:\Users\Usuário\Source\Repos\glass-film\GlassFilm\GlassFilm\iconicon.ico
+SetupIconFile=..\GlassFilm\iconicon.ico
 Compression=lzma
 SolidCompression=yes
 
@@ -32,14 +32,14 @@ Name: "quicklaunchicon"; Description: "{cm:CreateQuickLaunchIcon}"; GroupDescrip
 Source: "deps\vc_redist.x86.exe"; DestDir: {tmp}; Flags: deleteafterinstall; AfterInstall: InstallVCPP;
 
 Source: "..\build\Release\CutFilm.exe"; DestDir: "{app}"; Flags: ignoreversion
-Source: "..\build\Release\CutSheet.dll"; DestDir: "{app}"; 
+Source: "..\build\Release\CutSheet.dll"; DestDir: "{app}"; Flags: ignoreversion
 Source: "..\build\Release\EntityFramework.dll"; DestDir: "{app}"; 
 Source: "..\build\Release\EntityFramework.SqlServer.dll"; DestDir: "{app}";
 Source: "..\build\Release\MySql.Data.dll"; DestDir: "{app}"; 
 Source: "..\build\Release\Newtonsoft.Json.dll"; DestDir: "{app}"; 
 Source: "..\build\Release\Svg.dll"; DestDir: "{app}"; 
 Source: "..\build\Release\System.Data.SQLite.dll"; DestDir: "{app}"; 
-Source: "..\build\Release\VectorView.dll"; DestDir: "{app}"; 
+Source: "..\build\Release\VectorView.dll"; DestDir: "{app}";  Flags: ignoreversion
 Source: "..\build\Release\BaseLimpa\GlassFilm.db"; DestDir: "{app}";
 Source: "..\build\Release\BaseLimpa\Modelos.db"; DestDir: "{app}";       
 Source: "..\build\Release\BaseLimpa\Access.db"; DestDir: "{app}";   
