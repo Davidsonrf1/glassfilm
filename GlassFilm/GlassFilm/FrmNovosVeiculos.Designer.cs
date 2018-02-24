@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FrmNovosVeiculos));
             this.panel1 = new System.Windows.Forms.Panel();
             this.cbVisualizado = new System.Windows.Forms.CheckBox();
             this.webBrowser1 = new System.Windows.Forms.WebBrowser();
@@ -70,6 +71,7 @@
             this.ClientSize = new System.Drawing.Size(963, 382);
             this.Controls.Add(this.webBrowser1);
             this.Controls.Add(this.panel1);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimizeBox = false;
             this.Name = "FrmNovosVeiculos";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;

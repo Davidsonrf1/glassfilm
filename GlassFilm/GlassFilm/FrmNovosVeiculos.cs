@@ -89,23 +89,23 @@ namespace GlassFilm
             {
                 Logs.Log(ex.Message);
             }
-
-            cmd = DBManager._mainConnection.CreateCommand();
-            cmd.CommandText = "SELECT IFNULL(MAX(VERSAO_MODELO), 0) VERSAO_MODELO FROM MODELO_ANO";
-            int versaoModelos = 0;
-
+            
             try
             {
+                cmd = DBManager._mainConnection.CreateCommand();
+                cmd.CommandText = "SELECT IFNULL(MAX(VERSAO_MODELO), 0) VERSAO_MODELO FROM MODELO_ANO";
+                int versaoModelos = 0;
+
                 versaoModelos = Convert.ToInt32(cmd.ExecuteScalar().ToString());
+
+                cmd = DBManager._accessConnection.CreateCommand();
+                cmd.CommandText = $"UPDATE EMPRESA SET VERSAO_ATUAL_DESENHOS = {versaoModelos}";
+                cmd.ExecuteNonQuery();
             }
-            catch
+            catch(Exception ex)
             {
-
-            }
-
-            cmd = DBManager._accessConnection.CreateCommand();
-            cmd.CommandText = $"UPDATE EMPRESA SET VERSAO_ATUAL_DESENHOS = {versaoModelos}";
-            cmd.ExecuteNonQuery();
+                Logs.Log(ex.Message);
+            }            
         }
 
         public string MontarLista()

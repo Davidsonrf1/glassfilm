@@ -193,6 +193,7 @@ namespace GlassFilm
             controle.controlaBotoes(toolPrincipal, "Salvar");
             limpaCampos();
             controlePanels("Salvar");
+
             carregaGridPrincipal();
             tabRegistros.SelectedIndex = 0;
 
@@ -366,14 +367,28 @@ namespace GlassFilm
                     codigoModelo = txtCodigo.Text.Trim();
                 }
 
+                string inAno = "";
+                foreach (string ano in cbAnos.Items)
+                {
+                    inAno += ano + ",";
+                }
+
+                inAno = inAno.Substring(0, inAno.Length - 1);
+
                 ModeloAno ma = new ModeloAno(codigoModelo);
-                ma.excluir(codigoModelo);
+                ma.excluir(codigoModelo, inAno);
 
                 foreach (string ano in cbAnos.Items)
                 {
-                    ma = new ModeloAno(codigoModelo, ano);
-                    ma.gravar();
+                    int existeAno = Convert.ToInt32(GlassFilm.Class.Comandos.busca_campo("SELECT COUNT(*) FROM MODELO_ANO WHERE CODIGO_MODELO = " + codigoModelo + " AND ANO = " + ano));
+
+                    if (existeAno==0)
+                    {
+                        ma = new ModeloAno(codigoModelo, ano);
+                        ma.gravar();
+                    }
                 }
+
                 cbAnos.Items.Clear();
                 return true;
             }

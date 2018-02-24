@@ -49,6 +49,38 @@ namespace GlassFilm.Class
             }           
 
             return retorno;
-        }       
+        }
+
+        public static string busca_campo(string _sql, string banco)
+        {
+            string retorno = "";
+            SQLiteDataAdapter da;
+            DataTable dt;
+
+            try
+            {
+                if (DBManager.conectado())
+                {
+                    da = new SQLiteDataAdapter(_sql, banco);
+                    dt = new DataTable();
+                    da.Fill(dt);
+
+                    foreach (DataRow item in dt.Rows)
+                    {
+                        retorno = item[0].ToString();
+                    }
+
+                    da.Dispose();
+                    dt.Dispose();
+                }
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+                Mensagens.Informacao(ex.Message);
+            }
+
+            return retorno;
+        }
     }
 }

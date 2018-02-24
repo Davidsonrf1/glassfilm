@@ -328,7 +328,7 @@ namespace GlassFilm.Sync
 
             try
             {
-                
+
                 request = (FtpWebRequest)WebRequest.Create(new Uri(url));
                 request.Method = WebRequestMethods.Ftp.DownloadFile;
                 request.Credentials = new NetworkCredential(ftpUser, ftpPass);

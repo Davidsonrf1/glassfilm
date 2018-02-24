@@ -52,7 +52,12 @@
             this.label10 = new System.Windows.Forms.Label();
             this.cbModelo = new System.Windows.Forms.ComboBox();
             this.panel2 = new System.Windows.Forms.Panel();
+            this.panel3 = new System.Windows.Forms.Panel();
             this.pnlFiltroInfo = new System.Windows.Forms.Panel();
+            this.cbTipo = new System.Windows.Forms.ComboBox();
+            this.lbTipo = new System.Windows.Forms.Label();
+            this.panel4 = new System.Windows.Forms.Panel();
+            this.panel5 = new System.Windows.Forms.Panel();
             this.btImportar = new System.Windows.Forms.Button();
             this.pbDesenho = new System.Windows.Forms.ProgressBar();
             this.panel1 = new System.Windows.Forms.Panel();
@@ -69,16 +74,12 @@
             this.lbAnos = new System.Windows.Forms.CheckedListBox();
             this.groupBox4 = new System.Windows.Forms.GroupBox();
             this.txtObs = new System.Windows.Forms.TextBox();
-            this.panel3 = new System.Windows.Forms.Panel();
-            this.panel4 = new System.Windows.Forms.Panel();
-            this.panel5 = new System.Windows.Forms.Panel();
-            this.lbTipo = new System.Windows.Forms.Label();
-            this.cbTipo = new System.Windows.Forms.ComboBox();
             this.vectorView = new VectorView.VectorViewCtr();
             this.toolPrincipal.SuspendLayout();
             this.status.SuspendLayout();
             this.panel2.SuspendLayout();
             this.pnlFiltroInfo.SuspendLayout();
+            this.panel4.SuspendLayout();
             this.panel1.SuspendLayout();
             this.gbNomePeca.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -86,7 +87,6 @@
             this.groupBox2.SuspendLayout();
             this.groupBox1.SuspendLayout();
             this.groupBox4.SuspendLayout();
-            this.panel4.SuspendLayout();
             this.SuspendLayout();
             // 
             // toolPrincipal
@@ -236,7 +236,7 @@
             this.status.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.docInfo,
             this.selInfo});
-            this.status.Location = new System.Drawing.Point(0, 641);
+            this.status.Location = new System.Drawing.Point(0, 664);
             this.status.Name = "status";
             this.status.Size = new System.Drawing.Size(935, 24);
             this.status.TabIndex = 12;
@@ -311,6 +311,14 @@
             this.panel2.Size = new System.Drawing.Size(1, 42);
             this.panel2.TabIndex = 16;
             // 
+            // panel3
+            // 
+            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel3.Location = new System.Drawing.Point(-213, 0);
+            this.panel3.Name = "panel3";
+            this.panel3.Size = new System.Drawing.Size(1, 42);
+            this.panel3.TabIndex = 17;
+            // 
             // pnlFiltroInfo
             // 
             this.pnlFiltroInfo.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(67)))), ((int)(((byte)(65)))), ((int)(((byte)(68)))));
@@ -329,6 +337,46 @@
             this.pnlFiltroInfo.Size = new System.Drawing.Size(935, 55);
             this.pnlFiltroInfo.TabIndex = 6;
             this.pnlFiltroInfo.Paint += new System.Windows.Forms.PaintEventHandler(this.pnlFiltroInfo_Paint);
+            // 
+            // cbTipo
+            // 
+            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this.cbTipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.cbTipo.FormattingEnabled = true;
+            this.cbTipo.Items.AddRange(new object[] {
+            "Window Tint",
+            "PPV"});
+            this.cbTipo.Location = new System.Drawing.Point(15, 26);
+            this.cbTipo.Name = "cbTipo";
+            this.cbTipo.Size = new System.Drawing.Size(122, 21);
+            this.cbTipo.TabIndex = 19;
+            // 
+            // lbTipo
+            // 
+            this.lbTipo.AutoSize = true;
+            this.lbTipo.ForeColor = System.Drawing.Color.White;
+            this.lbTipo.Location = new System.Drawing.Point(12, 10);
+            this.lbTipo.Name = "lbTipo";
+            this.lbTipo.Size = new System.Drawing.Size(31, 13);
+            this.lbTipo.TabIndex = 18;
+            this.lbTipo.Text = "Tipo:";
+            // 
+            // panel4
+            // 
+            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel4.Controls.Add(this.panel5);
+            this.panel4.Location = new System.Drawing.Point(144, 6);
+            this.panel4.Name = "panel4";
+            this.panel4.Size = new System.Drawing.Size(1, 42);
+            this.panel4.TabIndex = 17;
+            // 
+            // panel5
+            // 
+            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
+            this.panel5.Location = new System.Drawing.Point(-213, 0);
+            this.panel5.Name = "panel5";
+            this.panel5.Size = new System.Drawing.Size(1, 42);
+            this.panel5.TabIndex = 17;
             // 
             // btImportar
             // 
@@ -365,7 +413,7 @@
             this.panel1.Dock = System.Windows.Forms.DockStyle.Right;
             this.panel1.Location = new System.Drawing.Point(698, 80);
             this.panel1.Name = "panel1";
-            this.panel1.Size = new System.Drawing.Size(237, 561);
+            this.panel1.Size = new System.Drawing.Size(237, 584);
             this.panel1.TabIndex = 17;
             // 
             // gbNomePeca
@@ -389,6 +437,8 @@
             // 
             // pictureBox1
             // 
+            this.pictureBox1.BackColor = System.Drawing.Color.White;
+            this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this.pictureBox1.Image = global::GlassFilm.Properties.Resources.clique_aqui;
             this.pictureBox1.Location = new System.Drawing.Point(6, 355);
             this.pictureBox1.Name = "pictureBox1";
@@ -491,6 +541,9 @@
             // 
             // groupBox4
             // 
+            this.groupBox4.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.groupBox4.Controls.Add(this.txtObs);
             this.groupBox4.Location = new System.Drawing.Point(5, 506);
             this.groupBox4.Name = "groupBox4";
@@ -501,65 +554,21 @@
             // 
             // txtObs
             // 
-            this.txtObs.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.txtObs.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtObs.Location = new System.Drawing.Point(3, 16);
             this.txtObs.Multiline = true;
             this.txtObs.Name = "txtObs";
             this.txtObs.Size = new System.Drawing.Size(681, 100);
             this.txtObs.TabIndex = 0;
             // 
-            // panel3
-            // 
-            this.panel3.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel3.Location = new System.Drawing.Point(-213, 0);
-            this.panel3.Name = "panel3";
-            this.panel3.Size = new System.Drawing.Size(1, 42);
-            this.panel3.TabIndex = 17;
-            // 
-            // panel4
-            // 
-            this.panel4.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel4.Controls.Add(this.panel5);
-            this.panel4.Location = new System.Drawing.Point(144, 6);
-            this.panel4.Name = "panel4";
-            this.panel4.Size = new System.Drawing.Size(1, 42);
-            this.panel4.TabIndex = 17;
-            // 
-            // panel5
-            // 
-            this.panel5.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(239)))), ((int)(((byte)(239)))), ((int)(((byte)(239)))));
-            this.panel5.Location = new System.Drawing.Point(-213, 0);
-            this.panel5.Name = "panel5";
-            this.panel5.Size = new System.Drawing.Size(1, 42);
-            this.panel5.TabIndex = 17;
-            // 
-            // lbTipo
-            // 
-            this.lbTipo.AutoSize = true;
-            this.lbTipo.ForeColor = System.Drawing.Color.White;
-            this.lbTipo.Location = new System.Drawing.Point(12, 10);
-            this.lbTipo.Name = "lbTipo";
-            this.lbTipo.Size = new System.Drawing.Size(31, 13);
-            this.lbTipo.TabIndex = 18;
-            this.lbTipo.Text = "Tipo:";
-            // 
-            // cbTipo
-            // 
-            this.cbTipo.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this.cbTipo.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
-            this.cbTipo.FormattingEnabled = true;
-            this.cbTipo.Items.AddRange(new object[] {
-            "Window Tint",
-            "PPV"});
-            this.cbTipo.Location = new System.Drawing.Point(15, 26);
-            this.cbTipo.Name = "cbTipo";
-            this.cbTipo.Size = new System.Drawing.Size(122, 21);
-            this.cbTipo.TabIndex = 19;
-            // 
             // vectorView
             // 
             this.vectorView.AllowMoveDocument = false;
             this.vectorView.AllowTransforms = true;
+            this.vectorView.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.vectorView.BackColor = System.Drawing.Color.White;
             this.vectorView.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.vectorView.ForeColor = System.Drawing.Color.Black;
@@ -576,7 +585,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(935, 665);
+            this.ClientSize = new System.Drawing.Size(935, 688);
             this.ControlBox = false;
             this.Controls.Add(this.vectorView);
             this.Controls.Add(this.groupBox4);
@@ -586,6 +595,7 @@
             this.Controls.Add(this.pnlFiltroInfo);
             this.Controls.Add(this.toolPrincipal);
             this.MinimizeBox = false;
+            this.MinimumSize = new System.Drawing.Size(951, 704);
             this.Name = "FrmCadastroDesenho";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Cadastro de Desenhos";
@@ -598,6 +608,7 @@
             this.panel2.ResumeLayout(false);
             this.pnlFiltroInfo.ResumeLayout(false);
             this.pnlFiltroInfo.PerformLayout();
+            this.panel4.ResumeLayout(false);
             this.panel1.ResumeLayout(false);
             this.panel1.PerformLayout();
             this.gbNomePeca.ResumeLayout(false);
@@ -610,7 +621,6 @@
             this.groupBox1.ResumeLayout(false);
             this.groupBox4.ResumeLayout(false);
             this.groupBox4.PerformLayout();
-            this.panel4.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 

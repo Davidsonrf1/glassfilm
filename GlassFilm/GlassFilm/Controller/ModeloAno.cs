@@ -76,6 +76,27 @@ namespace GlassFilm.Controller
             }
         }
 
+        public void excluir(string codigo, string incodigo)
+        {
+            if (DBManager.conectado())
+            {
+                try
+                {
+                    cmd = new SQLiteCommand();
+                    cmd.Connection = DBManager._mainConnection;
+                    cmd.CommandText = "DELETE FROM MODELO_ANO WHERE CODIGO_MODELO = @codigo AND ANO NOT IN ("+ incodigo + ")";
+                    cmd.Parameters.Add(new SQLiteParameter("@codigo", codigo));
+                    cmd.ExecuteNonQuery();
+
+                    DBManager.EliminaRegistro("MODELO_ANO", codigo);
+                }
+                catch (Exception ex)
+                {
+                    Logs.Log(ex.Message);
+                }
+            }
+        }
+
         public void gravar()
         {            
             if (DBManager.conectado())
@@ -105,6 +126,51 @@ namespace GlassFilm.Controller
                     Logs.Log(ex.Message);
                 }
             }                       
+        }
+
+        public void resetar()
+        {
+            if (DBManager.conectado())
+            {               
+                try
+                {
+                    //// preciso saber o codigo do ano
+                    string codigo_ano = Comandos.busca_campo("select codigo_ano from modelo_ano where codigo_modelo = " + codigo_modelo + " and ano = " + ano);
+                    //Comandos.busca_campo("delete from modelo_ano where codigo_modelo = " + codigo_modelo + " and ano = " + ano);
+
+                    string _sql = " INSERT INTO MODELO_ANO (CODIGO_ANO,CODIGO_MODELO,ANO, SINCRONIZAR) VALUES (@codigo_ano,@codigo_modelo,@ano,1) ";
+
+                    cmd = new SQLiteCommand();
+                    cmd.Connection = DBManager._mainConnection;
+                    cmd.CommandText = _sql;
+
+                    string ultCodigo = Comandos.busca_campo("SELECT MAX(CODIGO_ANO)+1 FROM MODELO_ANO");
+                    if (ultCodigo.Length == 0)
+                    {
+                        ultCodigo = "1";
+                    }
+
+                    cmd.Parameters.Add(new SQLiteParameter("@codigo_ano", ultCodigo));
+                    cmd.Parameters.Add(new SQLiteParameter("@codigo_modelo", this.codigo_modelo));
+                    cmd.Parameters.Add(new SQLiteParameter("@ano", this.ano));
+
+                    cmd.ExecuteNonQuery();
+
+                    //if (codigo_ano.Length > 0)
+                    //{
+                    //    int existeDesenho = Convert.ToInt32(Comandos.busca_campo("select count(*) as qtd from desenhos where veiculo = " + codigo_ano, DBManager._modelDbname));
+
+                    //    if (existeDesenho > 0)
+                    //    {
+                    //        Comandos.busca_campo("update desenhos set veiculo = " + ultCodigo + " where veiculo = " + codigo_ano, DBManager._modelDbname);
+                    //    }
+                    //}
+                }
+                catch (Exception ex)
+                {
+                    Logs.Log(ex.Message);
+                }
+            }                            
         }
 
         public override string ToString()
