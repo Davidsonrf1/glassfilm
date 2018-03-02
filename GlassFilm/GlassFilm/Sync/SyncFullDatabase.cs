@@ -220,6 +220,7 @@ namespace GlassFilm.Sync
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
+                Logs.Log("GetDatabase");
             }
 
             try
@@ -230,20 +231,37 @@ namespace GlassFilm.Sync
                 BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.zip", "CutFilmDB.zip");
                 BaixarArquivoFTP("ftp://cutfilm.com.br/glass/serv/db/CutFilmDB.md5", "CutFilmDB.md5");
 
-                FileStream fs = File.Open("CutFilmDB.zip", FileMode.Open, FileAccess.ReadWrite);
+                //FileStream fs = File.Open("CutFilmDB.zip", FileMode.Open, FileAccess.ReadWrite);
 
-                ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Read);
+                //ZipArchive za = new ZipArchive(fs, ZipArchiveMode.Read);
 
-                ZipArchiveEntry ze = za.GetEntry("modelos.db");
-                ze.ExtractToFile(modelosFi.FullName);
+                //ZipArchiveEntry ze = za.GetEntry("modelos.db");
+                //ze.ExtractToFile(modelosFi.FullName);
 
-                ze = za.GetEntry("GlassFilm.db");
-                ze.ExtractToFile(glassFi.FullName);
+                //ze = za.GetEntry("GlassFilm.db");
+                //ze.ExtractToFile(glassFi.FullName);
+
+                FileInfo cutfilmzip = new FileInfo("CutFilmDB.zip");                
+
+                string zipPath = cutfilmzip.FullName;
+                string extractPath = cutfilmzip.DirectoryName;
+
+                using (ZipArchive archive = ZipFile.OpenRead(zipPath))
+                {
+                    foreach (ZipArchiveEntry entry in archive.Entries)
+                    {
+                        if (entry.FullName.EndsWith(".db", StringComparison.OrdinalIgnoreCase))
+                        {
+                            entry.ExtractToFile(Path.Combine(extractPath, entry.FullName), true);
+                        }
+                    }
+                }
 
             }
             catch (Exception ex)
             {
                 Console.Write(ex.Message);
+                Logs.Log("GetDatabase");
             }
         }
 

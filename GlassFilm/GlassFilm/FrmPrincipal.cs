@@ -1092,7 +1092,8 @@ namespace GlassFilm
 
                 if (MessageBox.Show("Deseja efetuar a atualização do sistema?\n(Isso poderá levar alguns minutos)", "A T E N Ç Ã O", MessageBoxButtons.YesNo, MessageBoxIcon.Question) == DialogResult.No)
                 {
-                    force = true;
+                    //force = true;
+                    return;
                 }
 
                 vvCorte.Width = splitCorte.Panel2.Width - toolCorte.Width;

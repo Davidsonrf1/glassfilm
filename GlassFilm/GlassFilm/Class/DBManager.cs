@@ -851,7 +851,15 @@ namespace GlassFilm.Class
             if (!ColExiste(table, column, cmd.Connection))
             {
                 cmd.CommandText = $"ALTER TABLE {table} ADD {column} {colDef}";
-                cmd.ExecuteNonQuery();
+
+                try
+                {
+                    cmd.ExecuteNonQuery();
+                }
+                catch (Exception ex)
+                {
+                    Logs.Log("Erro AddIfNotExists ->" + table);
+                }                
             }
         }
 
