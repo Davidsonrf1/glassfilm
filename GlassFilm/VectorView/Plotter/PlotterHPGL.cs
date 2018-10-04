@@ -50,7 +50,7 @@ namespace VectorView.Plotter
 
         protected override string Finish()
         {
-            return "PU;PA0,0;";
+            return "PU;PA0,0;"; // <<== Precisa remover esse comando (eu acho), https://en.wikipedia.org/wiki/HP-GL
         }
     }
 }
