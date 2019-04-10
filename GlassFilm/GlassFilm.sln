@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
-VisualStudioVersion = 15.0.26730.16
+VisualStudioVersion = 15.0.27130.2027
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "GlassFilm", "GlassFilm\GlassFilm.csproj", "{B192C36C-2C74-4EDB-B797-0EE39100F57D}"
 EndProject
@@ -16,6 +16,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VectorViewTest", "VectorVie
 	ProjectSection(ProjectDependencies) = postProject
 		{432546F2-0B1D-412D-8414-A4F7A72E3559} = {432546F2-0B1D-412D-8414-A4F7A72E3559}
 	EndProjectSection
+EndProject
+Project("{54435603-DBB4-11D2-8724-00A0C9A8B90C}") = "CutFilmSetup", "CutFilmSetup\CutFilmSetup.vdproj", "{1C554EF5-88C9-46AD-A73B-EBC7015D6216}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -74,6 +76,12 @@ Global
 		{5FF18418-248B-46AC-A430-764C13991641}.Release|x64.Build.0 = Release|Any CPU
 		{5FF18418-248B-46AC-A430-764C13991641}.Release|x86.ActiveCfg = Release|Any CPU
 		{5FF18418-248B-46AC-A430-764C13991641}.Release|x86.Build.0 = Release|Any CPU
+		{1C554EF5-88C9-46AD-A73B-EBC7015D6216}.Debug|Any CPU.ActiveCfg = Debug
+		{1C554EF5-88C9-46AD-A73B-EBC7015D6216}.Debug|x64.ActiveCfg = Debug
+		{1C554EF5-88C9-46AD-A73B-EBC7015D6216}.Debug|x86.ActiveCfg = Debug
+		{1C554EF5-88C9-46AD-A73B-EBC7015D6216}.Release|Any CPU.ActiveCfg = Release
+		{1C554EF5-88C9-46AD-A73B-EBC7015D6216}.Release|x64.ActiveCfg = Release
+		{1C554EF5-88C9-46AD-A73B-EBC7015D6216}.Release|x86.ActiveCfg = Release
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

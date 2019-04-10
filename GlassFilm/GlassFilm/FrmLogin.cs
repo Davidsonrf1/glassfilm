@@ -7,7 +7,9 @@ using System.Data;
 using System.Data.SQLite;
 using System.Diagnostics;
 using System.Drawing;
+using System.IO;
 using System.Linq;
+using System.Net;
 using System.Text;
 using System.Windows.Forms;
 
@@ -15,7 +17,7 @@ namespace GlassFilm
 {
     public partial class FrmLogin : Form
     {
-        public bool autorizado = false;
+        public bool autorizado = false;        
 
         public FrmLogin()
         {
@@ -29,11 +31,11 @@ namespace GlassFilm
                 lbCnpjCpf.Visible = false;
             }
 
-            if (Debugger.IsAttached)
-            {
-                autorizado = true;
-                this.Close();
-            }
+            //if (Debugger.IsAttached)
+            //{
+            //    autorizado = true;
+            //    this.Close();
+            //}
         }
 
         private void btnCancelar_Click(object sender, EventArgs e)
@@ -44,12 +46,12 @@ namespace GlassFilm
 
         private void btnEntrar_Click(object sender, EventArgs e)
         {
-            if (Debugger.IsAttached)
-            {
-                autorizado = true;
-                Close();
-                return;
-            }
+            //if (Debugger.IsAttached)
+            //{
+            //    autorizado = true;
+            //    Close();
+            //    return;
+            //}
 
             if (txtNome.Text.Trim().Length == 0 || txtSenha.Text.Trim().Length == 0)
             {
@@ -69,7 +71,7 @@ namespace GlassFilm
             if (ValidaInternet.existeInternet())
             {
                 ValidaLogin vi = new ValidaLogin(txtNome.Text.Trim(), txtSenha.Text.Trim(), txtCnpj.Text.Trim());
-                RetornoValidacao rv = new RetornoValidacao();
+                RetornoValidacao rv = new RetornoValidacao();                
 
                 if (txtCnpj.Text.Trim().Length > 0)
                 {
@@ -83,7 +85,7 @@ namespace GlassFilm
                         ValidaLogin.cnpj = buscaCnpj();
                     }
 
-                    rv = vi.inicia();
+                    rv = vi.inicia();                   
 
                     if (rv.pronto)
                     {
@@ -95,7 +97,8 @@ namespace GlassFilm
                             this.Close();
                         }
                         else
-                        {
+                        {                            
+
                             if (Glass.usuario.licenca.Length > 0)
                             {
                                 Mensagens.Informacao("Este Computador não possui uma Licença Ativa.");                                
@@ -247,6 +250,6 @@ namespace GlassFilm
         private void pnlToken_Paint(object sender, PaintEventArgs e)
         {
 
-        }
+        }        
     }
 }

@@ -29,9 +29,9 @@ namespace GlassFilm.Class
 
         public RetornoValidacao inicia()
         {            
-            RetornoValidacao rv = new RetornoValidacao();            
+            RetornoValidacao rv = new RetornoValidacao();
                            
-            Glass.usuario = buscaUsuario();          
+            Glass.usuario = buscaUsuario();            
 
             if (Glass.usuario != null && Glass.usuario.status.Equals("A"))
             {
@@ -243,6 +243,117 @@ namespace GlassFilm.Class
             {                
                                 
             }            
+        }
+
+        public static string mensalidadeAVencer()
+        {
+            string url = GlassService.GetUrl("verificaAtrasoMensalidades.php?tipo=vencer");
+
+            string responseString = "";
+            int pagina = 0;
+            
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            string postData = "";
+            postData += "&id=" + Glass.usuario.id;
+
+            byte[] data = Encoding.UTF8.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            try
+            {
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                responseString = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+                return responseString;
+
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+                throw;
+            }              
+        }
+
+        public static string mensalidadeAtrasada()
+        {
+            string url = GlassService.GetUrl("verificaAtrasoMensalidades.php?tipo=atraso");
+
+            string responseString = "";
+            int pagina = 0;
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            string postData = "";
+            postData += "&id=" + Glass.usuario.id;
+
+            byte[] data = Encoding.UTF8.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            try
+            {
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                responseString = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+                return responseString;
+
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+                throw;
+            }
+        }
+
+        public static string mensalidadeVencida()
+        {
+            string url = GlassService.GetUrl("verificaAtrasoMensalidades.php?tipo=vencido");
+
+            string responseString = "";
+            int pagina = 0;
+
+            var request = (HttpWebRequest)WebRequest.Create(url);
+            string postData = "";
+            postData += "&id=" + Glass.usuario.id;
+
+            byte[] data = Encoding.UTF8.GetBytes(postData);
+
+            request.Method = "POST";
+            request.ContentType = "application/x-www-form-urlencoded";
+            request.ContentLength = data.Length;
+
+            using (var stream = request.GetRequestStream())
+            {
+                stream.Write(data, 0, data.Length);
+            }
+
+            try
+            {
+
+                HttpWebResponse response = (HttpWebResponse)request.GetResponse();
+                responseString = (new StreamReader(response.GetResponseStream())).ReadToEnd();
+                return responseString;
+
+            }
+            catch (Exception ex)
+            {
+                Logs.Log(ex.Message);
+                throw;
+            }
         }
     }
 

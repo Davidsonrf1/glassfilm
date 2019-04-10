@@ -17,6 +17,7 @@ using System.IO.Ports;
 using GlassFilm.Sync;
 using System.Threading;
 using GlassFilm.Validacoes;
+using System.Net;
 
 namespace GlassFilm
 {
@@ -62,8 +63,7 @@ namespace GlassFilm
                     vvCorte.Document.DocHeight = filmeAtual.Largura;
                     break;
                 }
-            }
-            
+            }            
         }
 
         Filme filmeAtual = null;
@@ -80,8 +80,8 @@ namespace GlassFilm
                 }
             }
 
-            if (!Debugger.IsAttached)
-            {
+            //if (!Debugger.IsAttached)
+            //{
                 FrmLogin frm = new FrmLogin();
                 frm.ShowInTaskbar = false;
                 frm.ShowDialog();
@@ -101,19 +101,39 @@ namespace GlassFilm
                     }
 
                     Glass.usuario.nome = frm.txtNome.Text;
-                }
-            }
-            else
-            {
-                pnlFiltroInfo.Visible = true;
-                pnlprincipal.Visible = true;
-                //pnlMapa.Visible = true;
-                vvModelo.Visible = true;
-                toolCorte.Visible = true;
-                toolArquivo.Visible = true;
-                toollSincronizacao.Visible = true;
 
-            }
+                    string mensagemRetorno = ConexaoValidaLogin.mensalidadeAVencer();
+                    if (mensagemRetorno.Length > 0)
+                    {
+                        Mensagens.Informacao(mensagemRetorno);
+                    }
+
+                    mensagemRetorno = ConexaoValidaLogin.mensalidadeVencida();
+                    if (mensagemRetorno.Length > 0)
+                    {
+                        Mensagens.Informacao(mensagemRetorno);
+                    }
+
+                    mensagemRetorno = ConexaoValidaLogin.mensalidadeAtrasada();
+                    if (mensagemRetorno.Length > 0)
+                    {                        
+                        Mensagens.Atencao(mensagemRetorno);
+                        Application.Exit();
+                    }
+                    
+                }
+            //}
+            //else
+            //{
+            //    pnlFiltroInfo.Visible = true;
+            //    pnlprincipal.Visible = true;
+            //    //pnlMapa.Visible = true;
+            //    vvModelo.Visible = true;
+            //    toolCorte.Visible = true;
+            //    toolArquivo.Visible = true;
+            //    toollSincronizacao.Visible = true;
+
+            //}
 
 
             DBManager.VerificaTabelasAuxiliares();
@@ -1216,6 +1236,6 @@ namespace GlassFilm
         {
             FrmNovosVeiculos novos = new FrmNovosVeiculos();
             novos.ShowDialog();
-        }
+        }        
     }
 }
